@@ -1,0 +1,11 @@
+# packages
+**/*/build
+**/*/node_modules
+**/*/*.log
+**/*/.env
+**/*/.env.local
+node_modules
+package-lock.json
+yarn.lock
+.env
+*.log
