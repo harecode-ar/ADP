@@ -27,7 +27,7 @@ export default function NavItem({
   externalLink,
   ...other
 }: Props) {
-  const { title, path, icon, info, children, disabled, caption, roles } = item
+  const { title, path, icon, info, children, disabled, caption } = item
 
   const subItem = depth !== 1
 
@@ -90,11 +90,6 @@ export default function NavItem({
       )}
     </StyledItem>
   )
-
-  // Hidden item by role
-  if (roles && !roles.includes(`${config.currentRole}`)) {
-    return null
-  }
 
   // External link
   if (externalLink)
