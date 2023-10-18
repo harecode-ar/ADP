@@ -7,8 +7,8 @@ export class Area extends Model {
   public rolename!: string
   public description!: string
   public multiple!: boolean
-  public parentId!: number
-  public responsibleId!: number
+  public parentId!: number | null
+  public responsibleId!: number | null
 
   public createdAt!: string
   public updatedAt!: string
@@ -37,14 +37,15 @@ Area.init(
     multiple: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false,
     },
     parentId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
+      allowNull: true,
     },
     responsibleId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

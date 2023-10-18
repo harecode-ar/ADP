@@ -2,7 +2,7 @@ import type { IArea } from '@adp/shared/types'
 import { Area } from '../../database/models'
 import logger from '../../logger'
 
-const area = async (
+const area = (
   _: any,
   args: {
     id: number
@@ -10,23 +10,23 @@ const area = async (
 ): Promise<IArea | null> => {
   try {
     const { id } = args
-    return await Area.findByPk(id)
+    return Area.findByPk(id)
   } catch (error) {
     logger.error(error)
     throw error
   }
 }
 
-const areas = async (): Promise<IArea[]> => {
+const areas = (): Promise<IArea[]> => {
   try {
-    return await Area.findAll()
+    return Area.findAll()
   } catch (error) {
     logger.error(error)
     throw error
   }
 }
 
-const createArea = async (
+const createArea = (
   _: any,
   args: {
     name: string
@@ -46,7 +46,7 @@ const createArea = async (
       parentId,
       responsibleId,
     } = args
-    return await Area.create({
+    return Area.create({
       name,
       rolename,
       description,
@@ -60,6 +60,67 @@ const createArea = async (
   }
 }
 
+const updateArea = async (
+  _: any,
+  args: {
+    id: number
+    name: string
+    rolename: string
+    description: string
+    multiple: boolean
+    parentId: number
+    responsibleId: number
+  }
+): Promise<IArea | null> => {
+  try {
+    const {
+      id,
+      name,
+      rolename,
+      description,
+      multiple,
+      parentId,
+      responsibleId,
+    } = args
+    const area = await Area.findByPk(id)
+    if (!area) {
+      throw new Error('Area not found')
+    }
+    await area.update({
+      name,
+      rolename,
+      description,
+      multiple,
+      parentId,
+      responsibleId,
+    })
+    return area
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
+
+const deleteArea = async (
+  _: any,
+  args: {
+    id: number
+  }
+): Promise<IArea | null> => {
+  try {
+    const { id } = args
+    const area = await Area.findByPk(id)
+    if (!area) {
+      throw new Error('Area not found')
+    }
+    await area.destroy()
+    return area
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
+
 export default {
   Query: {
     area,
@@ -67,7 +128,7 @@ export default {
   },
   Mutation: {
     createArea,
-    // updateArea,
-    // deleteArea
+    updateArea,
+    deleteArea
   },
 }
