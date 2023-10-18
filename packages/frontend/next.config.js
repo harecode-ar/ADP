@@ -15,4 +15,7 @@ module.exports = {
     });
     return config;
   },
+  env: {
+    APP_URL: process.env.APP_URL,
+  },
 };

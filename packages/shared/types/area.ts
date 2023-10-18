@@ -6,8 +6,8 @@ export interface IArea {
   rolename: string
   description: string
   multiple: boolean
-  parentId: number
-  responsibleId: number
+  parentId: number | null
+  responsibleId: number | null
 
   createdAt: string
   updatedAt: string
@@ -16,5 +16,5 @@ export interface IArea {
   parent?: IArea
   children?: IArea[]
   responsible?: IUser
-  staff: IUser[]
+  staff?: IUser[]
 }
