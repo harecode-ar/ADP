@@ -8,13 +8,14 @@ import {
   NextSSRApolloClient,
   SSRMultipartLink,
 } from '@apollo/experimental-nextjs-app-support/ssr'
+import { APP_URL } from 'src/config-global'
 
 const STORAGE_KEY = 'accessToken'
 const accessToken = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) || '' : ''
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:4001/graphql',
+    uri: `${APP_URL}/graphql`,
     headers: {
       Authorization: accessToken,
     },

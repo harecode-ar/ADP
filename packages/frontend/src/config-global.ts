@@ -1,6 +1,7 @@
 // routes
 import { paths } from 'src/routes/paths'
 
+export const APP_URL = process.env.APP_URL
 // API
 // ----------------------------------------------------------------------
 
