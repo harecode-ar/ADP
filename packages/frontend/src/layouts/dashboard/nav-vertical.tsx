@@ -1,24 +1,19 @@
 'use client'
 
 import { useEffect } from 'react'
-// @mui
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Drawer from '@mui/material/Drawer'
-// hooks
 import { useResponsive } from 'src/hooks/use-responsive'
 import { useAuthContext } from 'src/auth/hooks'
-// components
 import Logo from 'src/components/logo'
 import Scrollbar from 'src/components/scrollbar'
 import { usePathname } from 'src/routes/hooks'
 import { NavSectionVertical } from 'src/components/nav-section'
-//
+import { hasRole, hasPermission } from 'src/utils/nav-config'
 import { NAV } from '../config-layout'
 import { useNavData } from './config-navigation'
 import { NavToggleButton, NavUpgrade } from '../_common'
-
-// ----------------------------------------------------------------------
 
 type Props = {
   openNav: boolean
@@ -26,13 +21,18 @@ type Props = {
 }
 
 export default function NavVertical({ openNav, onCloseNav }: Props) {
-  const { role } = useAuthContext()
+  const { role, permissions } = useAuthContext()
 
   const pathname = usePathname()
 
   const lgUp = useResponsive('up', 'lg')
 
   const navData = useNavData()
+
+  const filteredNavData = navData.filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions)).map((item) => ({
+    ...item,
+    items: item.items.filter((subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)),
+  }))
 
   useEffect(() => {
     if (openNav) {
@@ -55,7 +55,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
 
       <NavSectionVertical
-        data={navData}
+        data={filteredNavData}
         config={{
           currentRole: role?.name || 'guest',
         }}

@@ -1,6 +1,5 @@
 'use client'
 
-import { IPermission, IRole } from '@adp/shared'
 import React, { useState, memo, useCallback } from 'react'
 import parse from 'autosuggest-highlight/parse'
 import match from 'autosuggest-highlight/match'
@@ -21,25 +20,10 @@ import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
 import { useRouter } from 'src/routes/hooks'
 import SearchNotFound from 'src/components/search-not-found'
+import { hasRole, hasPermission } from 'src/utils/nav-config'
 import ResultItem from './result-item'
 import { useNavData } from '../../dashboard/config-navigation'
 import { applyFilter, groupedData, getAllItems } from './utils'
-
-const hasRole = (requiredRoles: string[], role: IRole | null) => {
-  if (requiredRoles.length === 0 || requiredRoles.includes(role?.name || '')) {
-    return true
-  }
-
-  return false
-}
-
-const hasPermission = (requiredPermissions: string[], permissions: IPermission[]) => {
-  if (requiredPermissions.length === 0 || requiredPermissions.some((permission: string) => permissions.find((p) => p.name === permission))) {
-    return true
-  }
-
-  return false
-}
 
 function Searchbar() {
   const theme = useTheme()

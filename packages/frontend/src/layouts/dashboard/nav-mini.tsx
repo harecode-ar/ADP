@@ -1,14 +1,11 @@
 // @mui
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
-// theme
 import { hideScroll } from 'src/theme/css'
-// hooks
 import { useAuthContext } from 'src/auth/hooks'
-// components
 import Logo from 'src/components/logo'
 import { NavSectionMini } from 'src/components/nav-section'
-//
+import { hasRole, hasPermission } from 'src/utils/nav-config'
 import { NAV } from '../config-layout'
 import { useNavData } from './config-navigation'
 import { NavToggleButton } from '../_common'
@@ -16,9 +13,14 @@ import { NavToggleButton } from '../_common'
 // ----------------------------------------------------------------------
 
 export default function NavMini() {
-  const { role } = useAuthContext()
+  const { role, permissions } = useAuthContext()
 
   const navData = useNavData()
+
+  const filteredNavData = navData.filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions)).map((item) => ({
+    ...item,
+    items: item.items.filter((subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)),
+  }))
 
   return (
     <Box
@@ -46,13 +48,7 @@ export default function NavMini() {
         }}
       >
         <Logo sx={{ mx: 'auto', my: 2 }} />
-
-        <NavSectionMini
-          data={navData}
-          config={{
-            currentRole: role?.name || 'guest',
-          }}
-        />
+        <NavSectionMini data={filteredNavData} />
       </Stack>
     </Box>
   )

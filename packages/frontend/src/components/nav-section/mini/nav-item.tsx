@@ -22,7 +22,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
     const theme = useTheme()
 
-    const { title, path, icon, children, disabled, caption, roles } = item
+    const { title, path, icon, children, disabled, caption } = item
 
     const subItem = depth !== 1
 
@@ -106,11 +106,6 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         )}
       </StyledItem>
     )
-
-    // Hidden item by role
-    if (roles && !roles.includes(`${config.currentRole}`)) {
-      return null
-    }
 
     // External link
     if (externalLink)
