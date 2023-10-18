@@ -10,9 +10,9 @@ export class Area extends Model {
   public parentId!: number
   public responsibleId!: number
 
-  public createdAt!: Date
-  public updatedAt!: Date
-  public deletedAt!: Date
+  public createdAt!: string
+  public updatedAt!: string
+  public deletedAt!: string | null
 
 }
 

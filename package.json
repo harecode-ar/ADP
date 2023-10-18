@@ -19,5 +19,8 @@
     "prettier": "npm run backend:prettier && npm run frontend:prettier && npm run shared:prettier"
   },
   "author": "Martin Facciuto",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.5.0"
+  }
 }

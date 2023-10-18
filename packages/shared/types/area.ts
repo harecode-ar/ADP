@@ -16,5 +16,5 @@ export interface IArea {
   parent?: IArea
   children?: IArea[]
   responsible?: IUser
-  staff: IUser[]
+  staff?: IUser[]
 }
