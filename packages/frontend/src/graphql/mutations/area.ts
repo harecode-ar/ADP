@@ -39,7 +39,7 @@ export const UPDATE_AREA = gql`
 `
 
 export const DELETE_AREA = gql`
-  mutation deleteArea($id: ID!) {
+  mutation deleteArea($id: Int!) {
     deleteArea(id: $id) {
       id
     }

@@ -68,7 +68,7 @@ export function useNavData(): TNavData[] {
       {
         subheader: 'overview v5.5.0',
         items: [
-          { title: 'one', path: paths.dashboard.root, icon: ICONS.dashboard },
+          { title: 'Areas', path: paths.dashboard.root, icon: ICONS.label },
           { title: 'one', path: '/test', icon: ICONS.dashboard },
           { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
           {

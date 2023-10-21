@@ -20,7 +20,7 @@ export const AREAS_FOR_SELECT = gql`
   }
 `
 export const AREA = gql`
-  query area($id: ID!) {
+  query area($id: Int!) {
     area(id: $id) {
       id
       name
