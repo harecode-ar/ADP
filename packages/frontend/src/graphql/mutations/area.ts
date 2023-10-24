@@ -15,7 +15,7 @@ export const CREATE_AREA = gql`
 
 export const UPDATE_AREA = gql`
   mutation updateArea(
-    $id: ID!
+    $id: Int!
     $name: String!
     $description: String!
     $rolename: String!
