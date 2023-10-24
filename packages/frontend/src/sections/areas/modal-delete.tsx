@@ -71,22 +71,30 @@ const ModalDelete = (props: TProps) => {
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           ¿Está seguro de eliminar dicha area?
-          <Box sx={{ flexGrow: 1, mt: 2 }}>
+          <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  sx={{ m: 1 }}
-                  onClick={() => onDelete(areaId)}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
                 >
-                  <Iconify sx={{ mx: 1 }} icon="material-symbols:delete" />
-                  Eliminar
-                </Button>
-                <Button onClick={modal.onFalse} variant="contained">
-                  <Iconify sx={{ mx: 1 }} icon="ic:baseline-cancel" />
-                  Cancelar
-                </Button>
+                  <Button onClick={modal.onFalse} variant="outlined" color="error">
+                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => onDelete(areaId)}
+                  >
+                    <Iconify sx={{ mr: 1 }} icon="material-symbols:delete" />
+                    Eliminar
+                  </Button>
+                </Box>
               </Grid>
             </Grid>
           </Box>
