@@ -79,7 +79,7 @@ function AvatarDisplay() {
           </Box>)}
           onMouseLeave={handlePopoverClose}
         >
-          <Avatar alt="Usuario 1" src="/ruta/a/la/imagen-usuario-1.jpg" style={avatarStyle} />
+          <Avatar alt="Usuario 1" src="/assets/images/pablocortado.png" style={avatarStyle} />
         </Typography>
         <Typography
           aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -121,7 +121,7 @@ function AvatarDisplay() {
           </Box>)}
           onMouseLeave={handlePopoverClose}
         >
-          <Avatar alt="Usuario 2" src="/ruta/a/la/imagen-usuario-2.jpg" style={avatarStyle} />
+          <Avatar alt="Usuario 2" src="/assets/images/MMM.jpg" style={avatarStyle} />
         </Typography>
         {/* Agrega más avatares aquí */}
       </Box>

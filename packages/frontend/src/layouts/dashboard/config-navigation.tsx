@@ -70,7 +70,7 @@ export function useNavData(): TNavData[] {
           subheader: 'overview v5.5.0',
           items: [
             { title: 'Areas', path: paths.dashboard.root, icon: ICONS.label },
-            { title: 'one', path: '/test', icon: ICONS.dashboard },
+            { title: 'one', path: paths.dashboard.root, icon: ICONS.dashboard },
             { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
             {
               title: 'three',
@@ -101,6 +101,7 @@ export function useNavData(): TNavData[] {
               icon: ICONS.user,
               children: [
                 { title: 'listado', path: paths.dashboard.area.listado },
+                { title: 'detalle', path: paths.dashboard.area.detalle }
               ],
             },
           ],

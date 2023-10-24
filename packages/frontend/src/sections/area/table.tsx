@@ -1,10 +1,18 @@
-import React from 'react'
+import React , {useMemo} from 'react'
 import CustomTable from 'src/components/table/custom-table'
 import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
 import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
-import { EColumnType } from 'src/components/table'
+import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
+import { AREAS_FOR_LIST } from 'src/graphql/queries'
+import Iconify from 'src/components/iconify'
+import { Typography, Box, IconButton } from '@mui/material'
+import { useBoolean } from 'src/hooks/use-boolean'
+import { useQuery } from '@apollo/client'
+import ModalCreate from 'src/sections/areas/modal-create'
+import ModalEdit from 'src/sections/areas/modal-edit'
+import ModalDelete from 'src/sections/areas/modal-delete'
 
 const columns: TColumn[] = [
   {
@@ -20,76 +28,82 @@ const columns: TColumn[] = [
     renderCell: (row: any) => row.name,
   },
   {
-    id: 'workStartTime',
-    label: 'Hora de inicio',
-    type: EColumnType.TIME,
-    renderCell: (row: any) => row.workStartTime,
-    searchValue: (row: any) => row.workStartTime,
+    id: 'description',
+    label: 'Descripcion',
+    type: EColumnType.STRING,
+    renderCell: (row: any) => row.description,
+    searchValue: (row: any) => row.description,
   },
   {
-    id: 'dayOfRest',
-    label: 'Día de descanso',
-    type: EColumnType.DATE,
-    renderCell: (row: any) => row.dayOfRest,
+    id: 'responsable',
+    label: 'Responsable',
+    type: EColumnType.STRING,
+    renderCell: (row: any) => row.responsable,
   },
 ]
+type TProps = {
+  modalCreate: ReturnType<typeof useBoolean>
+}
 
-const data = [
-  {
-    id: 1,
-    name: 'John',
-    workStartTime: '08:00',
-    dayOfRest: '2021-10-10',
-  },
-  {
-    id: 2,
-    name: 'Jane',
-    workStartTime: '09:00',
-    dayOfRest: '2021-10-11',
-  },
-  {
-    id: 3,
-    name: 'Joe',
-    workStartTime: '08:30',
-    dayOfRest: '2021-10-12',
-  },
-  {
-    id: 4,
-    name: 'Jill',
-    workStartTime: '08:45',
-    dayOfRest: '2021-10-13',
-  }
+const Table = (props: TProps) => {
+  const { modalCreate } = props
+  const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
+  const { selected } = useTable()
+  const modalEdit = useBoolean()
+  const modalDelete = useBoolean()
 
-]
-
-const Table = () => {
-  const [loading, setLoading] = React.useState(true)
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
-
-  const refetch = () => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }
+  const areas = useMemo(() => {
+    if (!data) return []
+    return data.areas || []
+  }, [data])
 
   return (
-    <div>
+    <Box>
+      <Typography variant="h5" gutterBottom>
+        Listado de Áreas
+      </Typography>
       {loading ? (
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
           <CustomTableToolbar id="one" columns={columns} download refetch={refetch} />
           <CustomTableSearch />
-          <CustomTable id="one" columns={columns} data={data} />
+          <CustomTable
+            id="one"
+            columns={columns}
+            data={areas}
+            action={
+              <React.Fragment>
+                {selected.length === 1 && (
+                  <React.Fragment>
+                    <IconButton
+                      onClick={() => {
+                        // setAreaId(Number(selected[0]))
+                        modalEdit.onTrue()
+                      }}
+                    >
+                      <Iconify icon="material-symbols:edit" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        console.log(selected)
+                        // setAreaId(Number(selected[0]))
+                        modalDelete.onTrue()
+                      }}
+                    >
+                      <Iconify icon="material-symbols:delete" />
+                    </IconButton>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            }
+          />
+          <ModalCreate modal={modalCreate} refetch={refetch} />
+          <ModalEdit modal={modalEdit} refetch={refetch} />
+          <ModalDelete modal={modalDelete} refetch={refetch} />
         </React.Fragment>
       )}
-    </div>
+    </Box>
   )
 }
 
