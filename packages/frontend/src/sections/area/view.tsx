@@ -16,7 +16,7 @@ import AvatarDisplay from './avatar-display';
 
 // ----------------------------------------------------------------------
 
-export default function AreaView() {
+export default function AreaDetailView() {
   const settings = useSettingsContext();
   const [value, setValue] = React.useState('1');
 

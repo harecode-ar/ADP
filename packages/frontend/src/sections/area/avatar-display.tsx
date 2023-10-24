@@ -24,6 +24,14 @@ function AvatarDisplay() {
   };
 
   const open = Boolean(anchorEl);
+  const miembro = 'lucas lezano'
+  const miembro2= 'Martin Facciuto'
+  const cargo = 'CEO'
+  const cargo2 = 'Manager'
+  const telefono = '24444455'
+  const telefono2 = '24444455'
+  const email = 'lucas@gmail.com'
+  const email2 = 'martin@gmail.com'
 
   return (
     <Paper elevation={3} sx={{ margin: 0, padding: 2, marginBottom: '16px' }}>
@@ -36,17 +44,36 @@ function AvatarDisplay() {
           aria-haspopup="true"
           onMouseEnter={(e) => handlePopoverOpen(e, <Box>
             <Box>
-              <strong>Integrante 1</strong>, Lucas Lezano
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Integrante 1
+                </Typography>
+                , {miembro}
+              </Typography>
             </Box>
             <Box>
-              <strong>Cargo :</strong> Manager
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Cargo
+                </Typography>
+                , {cargo}
+              </Typography>
             </Box>
             <Box>
-              <strong>Telefono :</strong> 22145575
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Telefono
+                </Typography>
+                , {telefono}
+              </Typography>
             </Box>
-
             <Box>
-              <strong>Email :</strong> lukitas@gmail.com
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Email
+                </Typography>
+                , {email}
+              </Typography>
             </Box>
             {/* Agrega más elementos aquí */}
           </Box>)}
@@ -59,13 +86,36 @@ function AvatarDisplay() {
           aria-haspopup="true"
           onMouseEnter={(e) => handlePopoverOpen(e, <Box>
             <Box>
-              <strong>Integrante 2</strong>, Martin facciuto
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Integrante 1
+                </Typography>
+                , {miembro2}
+              </Typography>
             </Box>
             <Box>
-              <strong>Telefono :</strong> 22145575
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Cargo
+                </Typography>
+                , {cargo2}
+              </Typography>
             </Box>
             <Box>
-              <strong>Email :</strong> martin@gmail.com
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Telefono
+                </Typography>
+                , {telefono2}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="body1">
+                <Typography variant="body1" style={{ fontWeight: 'bold',display: 'inline' }}>
+                  Email
+                </Typography>
+                , {email2}
+              </Typography>
             </Box>
             {/* Agrega más elementos aquí */}
           </Box>)}
