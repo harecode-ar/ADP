@@ -1,11 +1,10 @@
-import React from 'react';
+import React  from 'react';
 import { Typography, Paper, Box } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { /* useMutation, */ useQuery } from '@apollo/client'
 import { GET_AREA } from 'src/graphql/queries'
-import { useTable } from 'src/components/table'
 
 // const nombre = 'Area 1'
 // const descripcion = 'area de prueba'
@@ -30,10 +29,12 @@ function CustomListItem({ title, value }) {
   );
 }
 
-function AreaDetails({ id }) {
+function AreaDetails({ areaId }: { selected: string[] }) {
+  const id = Number(selected[0])
   const { data } = useQuery(GET_AREA, {
     variables: { id },
   });
+
 
   const areaData = data.area;
   // Aquí puedes utilizar la información del área para mostrar los detalles, por ejemplo:

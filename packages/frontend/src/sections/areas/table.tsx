@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, forwardRef } from 'react'
 import CustomTable from 'src/components/table/custom-table'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'
@@ -10,9 +10,15 @@ import { useQuery } from '@apollo/client'
 import { AREAS_FOR_LIST } from 'src/graphql/queries'
 import { Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import Link, { LinkProps } from 'next/link'
+import { paths} from 'src/routes/paths'
 import ModalCreate from './modal-create'
 import ModalEdit from './modal-edit'
 import ModalDelete from './modal-delete'
+
+
+
+
 
 const columns: TColumn[] = [
   {
@@ -74,6 +80,13 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
+                    <Link href={selected.length === 1 ? paths.dashboard.area.detalle.replace(':id', selected[0]) : ''}>
+                      <IconButton>
+
+                        <Iconify icon="material-symbols:visibility" />
+                      </IconButton>
+                    </Link>
+
                     <IconButton
                       onClick={() => {
                         // setAreaId(Number(selected[0]))

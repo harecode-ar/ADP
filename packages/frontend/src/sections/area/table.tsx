@@ -48,6 +48,7 @@ type TProps = {
 const Table = (props: TProps) => {
   const { modalCreate } = props
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
+  // const [selectedArea, setSelectedArea] = useState(null);
   const { selected } = useTable()
   const modalEdit = useBoolean()
   const modalDelete = useBoolean()
@@ -76,6 +77,14 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
+                    <IconButton
+                      onClick={() => {
+                        // setAreaId(Number(selected[0]))
+                        console.log(selected)
+                      }}
+                    >
+                      <Iconify icon="material-symbols:visibility" />
+                    </IconButton>
                     <IconButton
                       onClick={() => {
                         // setAreaId(Number(selected[0]))
