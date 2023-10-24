@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/client'
 import { AREAS_FOR_LIST } from 'src/graphql/queries'
 import { IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import ModalCreate from './modalCreate'
 import ModalEdit from './modalEdit'
 import ModalDelete from './modalDelete'
 
@@ -42,10 +43,14 @@ const columns: TColumn[] = [
 
 ]
 
-const Table = () => {
+type TProps = {
+  modalCreate: ReturnType<typeof useBoolean>
+}
 
+const Table = (props: TProps) => {
+  const { modalCreate } = props
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
-  const { selected } = useTable()
+  const { selected, setSelected } = useTable()
   const modalEdit = useBoolean();
   const modalDelete = useBoolean();
 
@@ -72,14 +77,14 @@ const Table = () => {
               {selected.length === 1 && (
                 <React.Fragment>
                   <IconButton onClick={() => {
-                    setAreaId(selected[0]);
+                    setAreaId(Number(selected[0]));
                     modalEdit.onTrue();
                   }}>
                     <Iconify icon="material-symbols:edit" />
                   </IconButton>
                   <IconButton onClick={() => {
                     console.log(selected)
-                    setAreaId(selected[0]);
+                    setAreaId(Number(selected[0]));
                     modalDelete.onTrue();
                   }}>
                     <Iconify icon="material-symbols:delete" />
@@ -88,8 +93,9 @@ const Table = () => {
               )}
             </React.Fragment>}
           />
-          <ModalEdit modal={modalEdit} areaId={areaId}/>
-          <ModalDelete modal={modalDelete} areaId={areaId} />
+          <ModalCreate modal={modalCreate} refetch={refetch} />
+          <ModalEdit modal={modalEdit} areaId={areaId} refetch={refetch} />
+          <ModalDelete modal={modalDelete} areaId={areaId} refetch={refetch} />
         </React.Fragment>
       )}
     </div>

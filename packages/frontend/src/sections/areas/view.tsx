@@ -6,7 +6,6 @@ import { useSettingsContext } from 'src/components/settings'
 import { TableContextProvider } from 'src/components/table/context'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean';
-import ModalCreate from './modalCreate'
 import Table from './table'
 
 
@@ -21,15 +20,14 @@ export default function OneView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography sx={{ mr: 2 }} variant="h4"> Áreas </Typography>
+        <Typography sx={{ mr: 2 }} variant="h4"> Areas </Typography>
         <IconButton onClick={modalCreate.onTrue}>
           <Iconify icon="mingcute:add-fill" />
         </IconButton>
       </Box>
       <TableContextProvider>
-        <Table />
+        <Table modalCreate={modalCreate}/>
       </TableContextProvider>
-      <ModalCreate modal={modalCreate} />
     </Container >
   )
 }

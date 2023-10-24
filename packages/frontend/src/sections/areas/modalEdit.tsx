@@ -31,11 +31,12 @@ const areaSchema = Yup.object().shape({
 type TProps = {
     modal: ReturnType<typeof useBoolean>
     areaId: number
+    refetch: () => void
 }
 
 const ModalEdit = (props: TProps) => {
 
-    const { modal, areaId } = props
+    const { modal, areaId, refetch } = props
 
 
 
@@ -49,6 +50,7 @@ const ModalEdit = (props: TProps) => {
         onSubmit: async (values) => {
             try {
                 console.log("Editado correctamente", values)
+                refetch()
             } catch (error) {
                 console.error(error)
             }

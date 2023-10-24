@@ -6,6 +6,7 @@ import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { DELETE_AREA } from 'src/graphql/mutations'
+import { useTable } from 'src/components/table'
 
 
 const styleModal = {
@@ -26,14 +27,16 @@ const styleModal = {
 type TProps = {
     modal: ReturnType<typeof useBoolean>
     areaId: number;
+    refetch: () => void
 }
 
 const ModalDelete = (props: TProps) => {
 
-    const { modal, areaId } = props
+    const { modal, areaId, refetch} = props
     const [deleteArea] = useMutation(DELETE_AREA)
     const [openAlert, setOpenAlert] = useState(false);
     const [openAlertError, setOpenAlertError] = useState(false);
+    const { setSelected } = useTable()
 
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -54,6 +57,8 @@ const ModalDelete = (props: TProps) => {
             })
             setOpenAlert(true);
             modal.onFalse()
+            refetch()
+            setSelected([])
             
         } catch (err) {
             console.log(err)

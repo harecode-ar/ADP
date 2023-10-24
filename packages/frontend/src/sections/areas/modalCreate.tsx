@@ -31,6 +31,7 @@ const areaSchema = Yup.object().shape({
 
 type TProps = {
     modal: ReturnType<typeof useBoolean>
+    refetch: () => void
 }
 
 const ModalCreate = (props: TProps) => {
@@ -38,7 +39,7 @@ const ModalCreate = (props: TProps) => {
     const [openAlert, setOpenAlert] = useState(false);
     const [openAlertError, setOpenAlertError] = useState(false);
     const [createArea] = useMutation(CREATE_AREA)
-    const { modal } = props
+    const { modal, refetch } = props
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -70,6 +71,7 @@ const ModalCreate = (props: TProps) => {
                 helpers.resetForm()
                 modal.onFalse()
                 router.push(paths.dashboard.root)
+                refetch()
 
             } catch (error) {
                 console.error(error)
