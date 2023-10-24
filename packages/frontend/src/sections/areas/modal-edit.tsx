@@ -3,13 +3,14 @@
 import React, { useMemo } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import { useFormik } from 'formik'
-import { /* useMutation, */ useQuery } from '@apollo/client'
+import { useFormik, FormikHelpers } from 'formik'
+import { useMutation, useQuery } from '@apollo/client'
 import { GET_AREA } from 'src/graphql/queries'
-// import { UPDATE_AREA } from 'src/graphql/mutations'
+import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
+import { UPDATE_AREA } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -42,9 +43,9 @@ type TArea = {
 
 const ModalEdit = (props: TProps) => {
   const { modal, refetch } = props
-
-  const { selected } = useTable()
-
+  const { enqueueSnackbar } = useSnackbar()
+  const { selected, setSelected } = useTable()
+  const [updateArea] = useMutation(UPDATE_AREA)
   const areaId = useMemo(() => Number(selected[0]), [selected])
 
   const formik = useFormik({
@@ -54,12 +55,25 @@ const ModalEdit = (props: TProps) => {
       description: '',
       responsable: '',
     } as TArea,
-    onSubmit: async (values: TArea) => {
+    onSubmit: async (values, helpers: FormikHelpers<TArea>) => {
       try {
-        console.log('Editado correctamente', values)
+        await updateArea({
+          variables: {
+            id: areaId,
+            name: values.name,
+            description: values.description,
+            rolename: 'prueba',
+            multiple: false,
+          },
+        })
+        enqueueSnackbar('Area editada correctamente.', { variant: 'success' })
+        helpers.resetForm()
+        modal.onFalse()
         refetch()
+        setSelected([])
       } catch (error) {
         console.error(error)
+        enqueueSnackbar('El Area no pudo ser editada.', { variant: 'error' })
       }
     },
     validationSchema: areaSchema,
@@ -67,7 +81,7 @@ const ModalEdit = (props: TProps) => {
 
   const { loading } = useQuery(GET_AREA, {
     variables: {
-      id: areaId
+      id: areaId,
     },
     skip: !areaId,
     onCompleted: (data) => {
@@ -80,7 +94,7 @@ const ModalEdit = (props: TProps) => {
           responsable: area.responsibleId,
         })
       }
-    }
+    },
   })
 
   return (
@@ -103,7 +117,7 @@ const ModalEdit = (props: TProps) => {
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   id="name"
                   name="name"
@@ -114,6 +128,18 @@ const ModalEdit = (props: TProps) => {
                   value={formik.values.name}
                   error={Boolean(formik.errors.name)}
                   helperText={formik.errors.name}
+                  onChange={formik.handleChange}
+                  disabled={loading}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="responsable"
+                  name="responsable"
+                  label="Responsable"
+                  variant="outlined"
+                  fullWidth
+                  value={formik.values.responsable}
                   onChange={formik.handleChange}
                   disabled={loading}
                 />
@@ -131,33 +157,25 @@ const ModalEdit = (props: TProps) => {
                   disabled={loading}
                 />
               </Grid>
+
               <Grid item xs={12}>
-                <TextField
-                  id="responsable"
-                  name="responsable"
-                  label="Responsable"
-                  variant="outlined"
-                  fullWidth
-                  value={formik.values.responsable}
-                  onChange={formik.handleChange}
-                  disabled={loading}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="success"
-                  sx={{ m: 1 }}
-                  onClick={() => formik.handleSubmit()}
-                  disabled={loading}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
                 >
-                  <Iconify sx={{ mx: 1 }} icon="mingcute:check-fill" />
-                  Enviar
-                </Button>
-                <Button onClick={modal.onFalse} variant="contained">
-                  <Iconify sx={{ mx: 1 }} icon="ic:baseline-cancel" />
-                  Cancelar
-                </Button>
+                  <Button onClick={modal.onFalse} color="primary" variant="outlined">
+                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    Cancelar
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                    <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                    Enviar
+                  </Button>
+                </Box>
               </Grid>
             </Grid>
           </Box>
