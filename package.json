@@ -30,5 +30,8 @@
   "license": "ISC",
   "devDependencies": {
     "ts-loader": "^9.5.0"
+  },
+  "dependencies": {
+    "notistack": "^3.0.1"
   }
 }
