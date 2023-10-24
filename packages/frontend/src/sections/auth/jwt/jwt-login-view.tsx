@@ -47,9 +47,13 @@ export default function JwtLoginView() {
   })
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    email: 'pkass@adp.com',
+    password: '123',
   }
+  // const defaultValues = {
+  //   email: 'demo@minimals.cc',
+  //   password: 'demo1234',
+  // }
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),

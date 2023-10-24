@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import CustomTable from 'src/components/table/custom-table'
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
 import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
@@ -8,10 +8,11 @@ import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { AREAS_FOR_LIST } from 'src/graphql/queries'
-import { IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import ModalEdit from './modalEdit'
-import ModalDelete from './modalDelete'
+import ModalCreate from './modal-create'
+import ModalEdit from './modal-edit'
+import ModalDelete from './modal-delete'
 
 const columns: TColumn[] = [
   {
@@ -39,17 +40,18 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     renderCell: (row: any) => row.responsable,
   },
-
 ]
 
-const Table = () => {
+type TProps = {
+  modalCreate: ReturnType<typeof useBoolean>
+}
 
+const Table = (props: TProps) => {
+  const { modalCreate } = props
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
   const { selected } = useTable()
-  const modalEdit = useBoolean();
-  const modalDelete = useBoolean();
-
-  const [areaId, setAreaId] = useState<number>(0);
+  const modalEdit = useBoolean()
+  const modalDelete = useBoolean()
 
   const areas = useMemo(() => {
     if (!data) return []
@@ -57,7 +59,7 @@ const Table = () => {
   }, [data])
 
   return (
-    <div>
+    <Box>
       {loading ? (
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
@@ -68,31 +70,38 @@ const Table = () => {
             id="one"
             columns={columns}
             data={areas}
-            action={<React.Fragment>
-              {selected.length === 1 && (
-                <React.Fragment>
-                  <IconButton onClick={() => {
-                    setAreaId(selected[0]);
-                    modalEdit.onTrue();
-                  }}>
-                    <Iconify icon="material-symbols:edit" />
-                  </IconButton>
-                  <IconButton onClick={() => {
-                    console.log(selected)
-                    setAreaId(selected[0]);
-                    modalDelete.onTrue();
-                  }}>
-                    <Iconify icon="material-symbols:delete" />
-                  </IconButton>
-                </React.Fragment>
-              )}
-            </React.Fragment>}
+            action={
+              <React.Fragment>
+                {selected.length === 1 && (
+                  <React.Fragment>
+                    <IconButton
+                      onClick={() => {
+                        // setAreaId(Number(selected[0]))
+                        modalEdit.onTrue()
+                      }}
+                    >
+                      <Iconify icon="material-symbols:edit" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        console.log(selected)
+                        // setAreaId(Number(selected[0]))
+                        modalDelete.onTrue()
+                      }}
+                    >
+                      <Iconify icon="material-symbols:delete" />
+                    </IconButton>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            }
           />
-          <ModalEdit modal={modalEdit} areaId={areaId}/>
-          <ModalDelete modal={modalDelete} areaId={areaId} />
+          <ModalCreate modal={modalCreate} refetch={refetch} />
+          <ModalEdit modal={modalEdit} refetch={refetch} />
+          <ModalDelete modal={modalDelete} refetch={refetch} />
         </React.Fragment>
       )}
-    </div>
+    </Box>
   )
 }
 

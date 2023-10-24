@@ -15,6 +15,7 @@
     "re-build-test": "rm -rf node_modules .next out dist build && npm install && npm run build"
   },
   "dependencies": {
+    "@adp/shared": "1.0.0",
     "@apollo/client": "3.8.0-rc.2",
     "@apollo/experimental-nextjs-app-support": "0.4.2",
     "@auth0/auth0-react": "2.2.1",
@@ -24,7 +25,6 @@
     "@hello-pangea/dnd": "^16.3.0",
     "@hookform/resolvers": "3.3.1",
     "@iconify/react": "4.1.1",
-    "@adp/shared": "1.0.0",
     "@mui/lab": "5.0.0-alpha.142",
     "@mui/material": "5.14.7",
     "autosuggest-highlight": "3.3.4",
@@ -36,6 +36,7 @@
     "graphql": "16.8.0",
     "lodash": "4.17.21",
     "next": "13.4.19",
+    "notistack": "^3.0.1",
     "nprogress": "0.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

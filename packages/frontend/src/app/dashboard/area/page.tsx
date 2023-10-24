@@ -1,12 +1,10 @@
-// sections
-import AreaView from 'src/sections/area/view'
-
-// ----------------------------------------------------------------------
+import { redirect } from 'next/navigation'
+import { paths } from 'src/routes/paths'
 
 export const metadata = {
-  title: 'Dashboard: Area',
+  title: 'Area',
 }
 
-export default function Page() {
-  return <AreaView />
+export default async function HomePage() {
+  redirect(paths.dashboard.area.listado)
 }
