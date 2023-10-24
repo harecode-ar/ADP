@@ -18,7 +18,7 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    area:`${ROOTS.DASHBOARD}/area`,
+    areas:`${ROOTS.DASHBOARD}/area`,
     one: `${ROOTS.DASHBOARD}/area-detalle/:id`,
     two: `${ROOTS.DASHBOARD}/two`,
     three: `${ROOTS.DASHBOARD}/three`,
