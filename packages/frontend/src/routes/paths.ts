@@ -26,5 +26,9 @@ export const paths = {
       five: `${ROOTS.DASHBOARD}/group/five`,
       six: `${ROOTS.DASHBOARD}/group/six`,
     },
+    area: {
+      root: `${ROOTS.DASHBOARD}/area`,
+      listado: `${ROOTS.DASHBOARD}/area/listado`,
+    },
   },
 }

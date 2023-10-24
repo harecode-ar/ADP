@@ -20,7 +20,7 @@ export default `#graphql
   }
 
   type Query {
-    area(id: Int): Area
+    area(id: Int!): Area
     areas: [Area]
   }
 

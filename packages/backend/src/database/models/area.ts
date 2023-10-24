@@ -3,17 +3,24 @@ import { sequelize } from '..'
 
 export class Area extends Model {
   public id!: number
+
   public name!: string
+
   public rolename!: string
+
   public description!: string
+
   public multiple!: boolean
+
   public parentId!: number | null
+
   public responsibleId!: number | null
 
   public createdAt!: string
-  public updatedAt!: string
-  public deletedAt!: string | null
 
+  public updatedAt!: string
+
+  public deletedAt!: string | null
 }
 
 Area.init(

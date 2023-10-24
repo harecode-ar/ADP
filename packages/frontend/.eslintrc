@@ -13,7 +13,10 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./packages/frontend/tsconfig.json",
+    // Cuando trabajan en local
+    // "project": "./packages/frontend/tsconfig.json",
+    // Cuando trabajan en producción o quieren hacer el lint
+    "project": "./tsconfig.json",
     "warnOnUnsupportedTypeScriptVersion": false
   },
   "settings": {
