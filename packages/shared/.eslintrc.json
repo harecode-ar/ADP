@@ -10,7 +10,10 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./packages/shared/tsconfig.json",
+    // LOCAL
+    // "project": "./packages/shared/tsconfig.json",
+    // PROD O LINT
+    "project": "./tsconfig.json",
     "warnOnUnsupportedTypeScriptVersion": false
   },
   "settings": {

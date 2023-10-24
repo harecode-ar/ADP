@@ -88,7 +88,6 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
       </StyledItem>
     )
 
-
     // External link
     if (externalLink)
       return (

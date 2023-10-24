@@ -19,7 +19,7 @@ export const AREAS_FOR_SELECT = gql`
     }
   }
 `
-export const AREA = gql`
+export const GET_AREA = gql`
   query area($id: Int!) {
     area(id: $id) {
       id

@@ -6,14 +6,12 @@ import 'react-lazy-load-image-component/src/effects/blur.css'
 
 // ----------------------------------------------------------------------
 
-// theme
 import ThemeProvider from 'src/theme'
+import SnackbarProvider from 'src/components/snackbar'
 import { primaryFont } from 'src/theme/typography'
-// components
 import ProgressBar from 'src/components/progress-bar'
 import { MotionLazy } from 'src/components/animate/motion-lazy'
 import { SettingsProvider, SettingsDrawer } from 'src/components/settings'
-// auth
 import { AuthProvider, AuthConsumer } from 'src/auth/context/jwt'
 import { ApolloWrapper } from 'src/lib/apollo-provider'
 
@@ -80,9 +78,11 @@ export default function RootLayout({ children }: Props) {
             >
               <ThemeProvider>
                 <MotionLazy>
-                  <SettingsDrawer />
-                  <ProgressBar />
-                  <AuthConsumer>{children}</AuthConsumer>
+                  <SnackbarProvider>
+                    <SettingsDrawer />
+                    <ProgressBar />
+                    <AuthConsumer>{children}</AuthConsumer>
+                  </SnackbarProvider>
                 </MotionLazy>
               </ThemeProvider>
             </SettingsProvider>

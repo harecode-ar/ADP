@@ -64,8 +64,20 @@ export const TableContextProvider = ({ children }: any) => {
   const prevFilters = usePrevious(filters)
 
   useEffect(() => {
-    const nonEmptyFilters = filters.filter((filter) => filter.value !== null && filter.value !== "" && filter.operator !== null && filter.column !== null)
-    const nonEmptyPrevFilters = prevFilters?.filter((filter) => filter.value !== null && filter.value !== "" && filter.operator !== null && filter.column !== null)
+    const nonEmptyFilters = filters.filter(
+      (filter) =>
+        filter.value !== null &&
+        filter.value !== '' &&
+        filter.operator !== null &&
+        filter.column !== null
+    )
+    const nonEmptyPrevFilters = prevFilters?.filter(
+      (filter) =>
+        filter.value !== null &&
+        filter.value !== '' &&
+        filter.operator !== null &&
+        filter.column !== null
+    )
     if (prevSearch !== search || !isEqual(nonEmptyFilters, nonEmptyPrevFilters)) {
       setSelected([])
     }

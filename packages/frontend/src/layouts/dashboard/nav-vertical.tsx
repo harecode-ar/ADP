@@ -29,10 +29,14 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
 
   const navData = useNavData()
 
-  const filteredNavData = navData.filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions)).map((item) => ({
-    ...item,
-    items: item.items.filter((subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)),
-  }))
+  const filteredNavData = navData
+    .filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions))
+    .map((item) => ({
+      ...item,
+      items: item.items.filter(
+        (subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)
+      ),
+    }))
 
   useEffect(() => {
     if (openNav) {

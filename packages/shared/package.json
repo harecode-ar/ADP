@@ -6,7 +6,7 @@
     "tsc": "tsc",
     "build": "tsc",
     "lint": "eslint --ignore-path .lintignore --ext .ts .",
-    "lint:fix": "eslint --fix --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts .",
     "prettier": "prettier --ignore-path .lintignore --write \"**/*.ts\""
   },
   "devDependencies": {

@@ -19,10 +19,14 @@ function NavHorizontal() {
 
   const navData = useNavData()
 
-  const filteredNavData = navData.filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions)).map((item) => ({
-    ...item,
-    items: item.items.filter((subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)),
-  }))
+  const filteredNavData = navData
+    .filter((item) => hasRole(item.roles, role) && hasPermission(item.permissions, permissions))
+    .map((item) => ({
+      ...item,
+      items: item.items.filter(
+        (subItem) => hasRole(subItem.roles, role) && hasPermission(subItem.permissions, permissions)
+      ),
+    }))
 
   return (
     <AppBar

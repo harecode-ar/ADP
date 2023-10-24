@@ -10,7 +10,10 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./packages/backend/tsconfig.json",
+    // LOCAL
+    // "project": "./packages/backend/tsconfig.json",
+    // PROD O LINT
+    "project": "./tsconfig.json",
     "warnOnUnsupportedTypeScriptVersion": false
   },
   "settings": {

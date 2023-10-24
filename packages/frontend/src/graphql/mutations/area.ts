@@ -7,12 +7,7 @@ export const CREATE_AREA = gql`
     $rolename: String!
     $multiple: Boolean!
   ) {
-    createArea(
-      name: $name
-      description: $description
-      rolename: $rolename
-      multiple: $multiple
-    ) {
+    createArea(name: $name, description: $description, rolename: $rolename, multiple: $multiple) {
       id
     }
   }
@@ -20,14 +15,14 @@ export const CREATE_AREA = gql`
 
 export const UPDATE_AREA = gql`
   mutation updateArea(
-    $id: ID!,
+    $id: ID!
     $name: String!
     $description: String!
     $rolename: String!
     $multiple: Boolean!
   ) {
     updateArea(
-      id: $id,
+      id: $id
       name: $name
       description: $description
       rolename: $rolename

@@ -62,55 +62,67 @@ export type TNavData = {
 
 export function useNavData(): TNavData[] {
   const data = useMemo(
-    () => [
-      // OVERVIEW
-      // ----------------------------------------------------------------------
-      {
-        subheader: 'overview v5.5.0',
-        items: [
-          { title: 'Areas', path: paths.dashboard.root, icon: ICONS.label },
-          { title: 'one', path: '/test', icon: ICONS.dashboard },
-          { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
-          {
-            title: 'three',
-            path: paths.dashboard.three,
-            icon: ICONS.analytics,
-          },
-        ],
-        roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER]
-      },
-      // MANAGEMENT
-      // ----------------------------------------------------------------------
-      {
-        subheader: 'management',
-        items: [
-          {
-            title: 'user',
-            path: paths.dashboard.group.root,
-            icon: ICONS.user,
-            children: [
-              { title: 'four', path: paths.dashboard.group.root },
-              { title: 'five', path: paths.dashboard.group.five },
-              { title: 'six', path: paths.dashboard.group.six },
-            ],
-          },
-        ],
-        roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER]
-      },
-    ].map((group) => ({
-      ...group,
-      // @ts-ignore
-      permissions: (group.permissions || []) as string[],
-      // @ts-ignore
-      roles: (group.roles || []) as string[],
-      items: group.items.map((item) => ({
-        ...item,
-        // @ts-ignore
-        permissions: (item?.permissions || []) as string[],
-        // @ts-ignore
-        roles: (item?.roles || []) as string[],
-      })),
-    } as TNavData)),
+    () =>
+      [
+        // OVERVIEW
+        // ----------------------------------------------------------------------
+        {
+          subheader: 'overview v5.5.0',
+          items: [
+            { title: 'Areas', path: paths.dashboard.root, icon: ICONS.label },
+            { title: 'one', path: '/test', icon: ICONS.dashboard },
+            { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
+            {
+              title: 'three',
+              path: paths.dashboard.three,
+              icon: ICONS.analytics,
+            },
+          ],
+          roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
+        },
+        // MANAGEMENT
+        // ----------------------------------------------------------------------
+        {
+          subheader: 'management',
+          items: [
+            {
+              title: 'user',
+              path: paths.dashboard.group.root,
+              icon: ICONS.user,
+              children: [
+                { title: 'four', path: paths.dashboard.group.root },
+                { title: 'five', path: paths.dashboard.group.five },
+                { title: 'six', path: paths.dashboard.group.six },
+              ],
+            },
+            {
+              title: 'area',
+              path: paths.dashboard.area.root,
+              icon: ICONS.user,
+              children: [
+                { title: 'listado', path: paths.dashboard.area.listado },
+              ],
+            },
+          ],
+          roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
+        },
+      ].map(
+        (group) =>
+          ({
+            ...group,
+            // @ts-ignore
+            permissions: (group.permissions || []) as string[],
+            // @ts-ignore
+            roles: (group.roles || []) as string[],
+            items: group.items.map((item) => ({
+              ...item,
+              // @ts-ignore
+              permissions: (item?.permissions || []) as string[],
+              // @ts-ignore
+              roles: (item?.roles || []) as string[],
+            })),
+          }) as TNavData
+      ),
     []
   )
 
