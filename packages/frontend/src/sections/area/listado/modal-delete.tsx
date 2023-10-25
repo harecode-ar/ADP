@@ -86,11 +86,7 @@ const ModalDelete = (props: TProps) => {
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => onDelete(areaId)}
-                  >
+                  <Button variant="contained" color="error" onClick={() => onDelete(areaId)}>
                     <Iconify sx={{ mr: 1 }} icon="material-symbols:delete" />
                     Eliminar
                   </Button>

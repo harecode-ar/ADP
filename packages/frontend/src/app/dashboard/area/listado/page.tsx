@@ -1,4 +1,4 @@
-import AreaListadoView from 'src/sections/areas/view'
+import AreaListadoView from 'src/sections/area/listado/view'
 
 export const metadata = {
   title: 'Area: Listado',

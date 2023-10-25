@@ -1,12 +1,8 @@
-// sections
-import OneView from 'src/sections/areas/view'
+import { redirect } from 'next/navigation'
+import { paths } from 'src/routes/paths'
 
 // ----------------------------------------------------------------------
 
-export const metadata = {
-  title: 'Dashboard: One',
-}
-
-export default function Page() {
-  return <OneView />
+export default async function HomePage() {
+  redirect(paths.dashboard.two)
 }

@@ -1,18 +1,20 @@
-import React , {useMemo} from 'react'
+import React, { useMemo, useState, forwardRef } from 'react'
 import CustomTable from 'src/components/table/custom-table'
+import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
 import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
-import { AREAS_FOR_LIST } from 'src/graphql/queries'
-import Iconify from 'src/components/iconify'
-import { Typography, Box, IconButton } from '@mui/material'
-import { useBoolean } from 'src/hooks/use-boolean'
 import { useQuery } from '@apollo/client'
-import ModalCreate from 'src/sections/areas/modal-create'
-import ModalEdit from 'src/sections/areas/modal-edit'
-import ModalDelete from 'src/sections/areas/modal-delete'
+import { AREAS_FOR_LIST } from 'src/graphql/queries'
+import { Box, IconButton } from '@mui/material'
+import Iconify from 'src/components/iconify'
+import Link from 'next/link'
+import { paths } from 'src/routes/paths'
+import ModalCreate from './modal-create'
+import ModalEdit from './modal-edit'
+import ModalDelete from './modal-delete'
 
 const columns: TColumn[] = [
   {
@@ -41,6 +43,7 @@ const columns: TColumn[] = [
     renderCell: (row: any) => row.responsable,
   },
 ]
+
 type TProps = {
   modalCreate: ReturnType<typeof useBoolean>
 }
@@ -48,7 +51,6 @@ type TProps = {
 const Table = (props: TProps) => {
   const { modalCreate } = props
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
-  // const [selectedArea, setSelectedArea] = useState(null);
   const { selected } = useTable()
   const modalEdit = useBoolean()
   const modalDelete = useBoolean()
@@ -60,9 +62,6 @@ const Table = (props: TProps) => {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        Listado de Áreas
-      </Typography>
       {loading ? (
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
@@ -77,14 +76,18 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
-                    <IconButton
-                      onClick={() => {
-                        // setAreaId(Number(selected[0]))
-                        console.log(selected)
-                      }}
+                    <Link
+                      href={
+                        selected.length === 1
+                          ? paths.dashboard.area.detalle.replace(':id', selected[0])
+                          : ''
+                      }
                     >
-                      <Iconify icon="material-symbols:visibility" />
-                    </IconButton>
+                      <IconButton>
+                        <Iconify icon="material-symbols:visibility" />
+                      </IconButton>
+                    </Link>
+
                     <IconButton
                       onClick={() => {
                         // setAreaId(Number(selected[0]))
