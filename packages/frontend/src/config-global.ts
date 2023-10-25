@@ -1,7 +1,7 @@
 // routes
 import { paths } from 'src/routes/paths'
 
-export const { APP_URL = 'http://localhost:4000' } = process.env
+export const { APP_URL = 'http://localhost:4005' } = process.env
 // API
 // ----------------------------------------------------------------------
 

@@ -10,6 +10,8 @@ export class User extends Model {
 
   public email!: string
 
+  public telephone!: string
+
   public password!: string
 
   public roleId!: number
@@ -37,6 +39,10 @@ User.init(
       allowNull: false,
     },
     email: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+    },
+    telephone: {
       type: DataTypes.STRING(128),
       allowNull: false,
     },
