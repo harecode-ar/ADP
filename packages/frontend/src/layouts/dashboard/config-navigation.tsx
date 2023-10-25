@@ -101,7 +101,7 @@ export function useNavData(): TNavData[] {
               icon: ICONS.user,
               children: [
                 { title: 'listado', path: paths.dashboard.area.listado },
-                { title: 'detalle', path: paths.dashboard.area.detalle }
+                { title: 'detalle', path: paths.dashboard.area.detalle },
               ],
             },
           ],
