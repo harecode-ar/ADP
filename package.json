@@ -27,11 +27,5 @@
     "lint:fix": "npm run backend:lint:fix && npm run frontend:lint:fix && npm run shared:lint:fix"
   },
   "author": "Martin Facciuto",
-  "license": "ISC",
-  "devDependencies": {
-    "ts-loader": "^9.5.0"
-  },
-  "dependencies": {
-    "notistack": "^3.0.1"
-  }
+  "license": "ISC"
 }
