@@ -1,10 +1,14 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import { useFormik, FormikHelpers } from 'formik'
 import Iconify from 'src/components/iconify'
-// import * as Yup from 'yup'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
+import IconButton from '@mui/material/IconButton'
+import * as Yup from 'yup'
+
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -39,6 +43,43 @@ const ChangePasswordModal = (props: TProps) => {
   // const [createArea] = useMutation(CREATE_AREA)
   const { modal } = props
   const { enqueueSnackbar } = useSnackbar()
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
+
+  const changePasswordSchema = Yup.object().shape({
+    currentPassword: Yup.string().required('Es requerido'),
+    newPassword: Yup.string()
+      .required('Es requerido')
+      .test(
+        'notSamePass',
+        'La contraseña nueva debe ser diferente a la anterior',
+        (value, { parent }) => value !== parent.currentPassword
+      ),
+    repeatPassword: Yup.string()
+      .required('Es requerido')
+      .test(
+        'samePass',
+        'La contraseña nueva debe coincidir',
+        (value, { parent }) => value === parent.newPassword
+      ),
+  })
+
+  const togglePasswordVisibility = (field: any) => {
+    switch (field) {
+      case 'currentPassword':
+        setShowCurrentPassword(!showCurrentPassword);
+        break;
+      case 'newPassword':
+        setShowNewPassword(!showNewPassword);
+        break;
+      case 'repeatPassword':
+        setShowRepeatPassword(!showRepeatPassword);
+        break;
+      default:
+        break;
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -71,7 +112,7 @@ const ChangePasswordModal = (props: TProps) => {
         enqueueSnackbar('la contraseña no pudo ser cambiada.', { variant: 'error' })
      }
     },
-
+    validationSchema: changePasswordSchema
   })
 
   return (
@@ -102,11 +143,22 @@ const ChangePasswordModal = (props: TProps) => {
               variant="outlined"
               fullWidth
               required
-              type="password"
+              type={showCurrentPassword ? 'text' : 'password'}
               value={formik.values.currentPassword}
               error={Boolean(formik.errors.currentPassword)}
               helperText={formik.errors.currentPassword}
               onChange={formik.handleChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => togglePasswordVisibility('currentPassword')} color="primary">
+                    {showCurrentPassword ? (
+                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
+                    ) : (
+                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
+                    )}
+                  </IconButton>
+                ),
+              }}
             />
           </Grid>
 
@@ -118,11 +170,22 @@ const ChangePasswordModal = (props: TProps) => {
               variant="outlined"
               fullWidth
               required
-              type="password"
+              type={showNewPassword ? 'text' : 'password'}
               value={formik.values.newPassword}
               error={Boolean(formik.errors.newPassword)}
               helperText={formik.errors.newPassword}
               onChange={formik.handleChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => togglePasswordVisibility('newPassword')} color="primary">
+                    {showNewPassword ? (
+                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
+                    ) : (
+                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
+                    )}
+                  </IconButton>
+                ),
+              }}
             />
           </Grid>
 
@@ -134,11 +197,22 @@ const ChangePasswordModal = (props: TProps) => {
               variant="outlined"
               fullWidth
               required
-              type="password"
+              type={showRepeatPassword ? 'text' : 'password'}
               value={formik.values.repeatPassword}
               error={Boolean(formik.errors.repeatPassword)}
               helperText={formik.errors.repeatPassword}
               onChange={formik.handleChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => togglePasswordVisibility('repeatPassword')} color="primary">
+                    {showRepeatPassword ? (
+                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
+                    ) : (
+                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
+                    )}
+                  </IconButton>
+                ),
+              }}
             />
           </Grid>
 
@@ -164,6 +238,7 @@ const ChangePasswordModal = (props: TProps) => {
         </Grid>
       </Box>
     </Typography>
+
   </Box>
 </Modal>
   )
