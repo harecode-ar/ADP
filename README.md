@@ -5,23 +5,23 @@
 # Backend
 
 ```bash
-  $ npm run backend:dev
+  $ yarn backend:dev
 
   # O
 
   $ cd packages/backend
-  $ npm run dev
+  $ yarn dev
 ```
 
 # Frontend
 
 ```bash
-  $ npm run frontend:dev
+  $ yarn frontend:dev
 
   # O
 
   $ cd packages/frontend
-  $ npm run dev
+  $ yarn dev
 ```
 
 # Como instalar una dependecia

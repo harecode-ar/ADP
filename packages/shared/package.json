@@ -7,7 +7,8 @@
     "build": "tsc",
     "lint": "eslint --ignore-path .lintignore --ext .ts .",
     "lint:fix": "eslint --fix --ext .ts .",
-    "prettier": "prettier --ignore-path .lintignore --write \"**/*.ts\""
+    "prettier": "prettier --ignore-path .lintignore --write \"**/*.ts\"",
+    "clear": "rm -rf node_modules .next out dist build yarn.lock yarn-error.log"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
