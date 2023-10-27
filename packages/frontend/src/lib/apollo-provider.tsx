@@ -11,7 +11,6 @@ import {
 import { APP_URL } from 'src/config-global'
 
 function makeClient() {
-
   const httpLink = new HttpLink({
     uri: `${APP_URL}/graphql`,
   })

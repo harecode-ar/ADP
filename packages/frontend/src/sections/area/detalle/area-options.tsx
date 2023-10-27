@@ -13,8 +13,6 @@ import {
   Grid,
   Backdrop,
 } from '@mui/material'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -28,11 +26,6 @@ const styleModal = {
   boxShadow: 24,
   p: 4,
 }
-
-const areaSchema = Yup.object().shape({
-  name: Yup.string().required('Nombre requerido'),
-  responsable: Yup.string().required('Responsable requerido'),
-})
 
 const AreaOptions = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

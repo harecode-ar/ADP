@@ -102,6 +102,7 @@ export function useNavData(): TNavData[] {
               children: [
                 { title: 'listado', path: paths.dashboard.area.listado },
                 { title: 'detalle', path: paths.dashboard.area.detalle },
+                { title: 'organigrama', path: paths.dashboard.area.organigrama },
               ],
             },
           ],

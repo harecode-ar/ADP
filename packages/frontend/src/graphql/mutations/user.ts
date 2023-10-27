@@ -9,7 +9,14 @@ export const CREATE_USER = gql`
     $password: String!
     $roleId: Int!
   ) {
-    createUser(firstname: $firstname, lastname: $lastname, email: $email, telephone: $telephone, password: $password, roleId: $roleId) {
+    createUser(
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      telephone: $telephone
+      password: $password
+      roleId: $roleId
+    ) {
       id
     }
   }
@@ -30,8 +37,8 @@ export const UPDATE_USER = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      telephone: $telephone,
-      password: $password,
+      telephone: $telephone
+      password: $password
       roleId: $roleId
     ) {
       id

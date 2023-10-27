@@ -31,6 +31,7 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/area`,
       listado: `${ROOTS.DASHBOARD}/area/listado`,
       detalle: `${ROOTS.DASHBOARD}/area/detalle/:id`,
+      organigrama: `${ROOTS.DASHBOARD}/area/organigrama`,
     },
   },
 }
