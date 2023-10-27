@@ -11,34 +11,22 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 // routes
 import { useRouter } from 'src/routes/hooks'
-// auth
+import { useBoolean } from 'src/hooks/use-boolean'
 import { useAuthContext } from 'src/auth/hooks'
 // components
 import { varHover } from 'src/components/animate'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import ChangePasswordModal from './change-password-modal'
 
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: '/#1',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-]
+
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const router = useRouter()
-
+  const changePasswordModal = useBoolean()
   const { user, logout } = useAuthContext()
 
   const popover = usePopover()
@@ -51,11 +39,6 @@ export default function AccountPopover() {
     } catch (error) {
       console.error(error)
     }
-  }
-
-  const handleClickItem = (path: string) => {
-    popover.onClose()
-    router.push(path)
   }
 
   return (
@@ -104,11 +87,9 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          {OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
-              {option.label}
+           <MenuItem onClick={() => changePasswordModal.onTrue()}>
+              Cambiar contraseña
             </MenuItem>
-          ))}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -117,9 +98,10 @@ export default function AccountPopover() {
           onClick={handleLogout}
           sx={{ m: 1, fontWeight: 'fontWeightBold', color: 'error.main' }}
         >
-          Logout
+          Cerrar sesion
         </MenuItem>
       </CustomPopover>
+      <ChangePasswordModal modal={changePasswordModal}/>
     </React.Fragment>
   )
 }

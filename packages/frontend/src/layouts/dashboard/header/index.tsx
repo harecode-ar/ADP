@@ -15,7 +15,7 @@ import Logo from 'src/components/logo'
 import SvgColor from 'src/components/svg-color'
 import { useSettingsContext } from 'src/components/settings'
 //
-import { HEADER, NAV } from '../config-layout'
+import { HEADER, NAV } from '../../config-layout'
 import {
   Searchbar,
   AccountPopover,
@@ -23,7 +23,7 @@ import {
   LanguagePopover,
   ContactsPopover,
   NotificationsPopover,
-} from '../_common'
+} from '../../_common'
 
 // ----------------------------------------------------------------------
 
