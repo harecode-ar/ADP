@@ -9,8 +9,8 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import type { TAreaTree } from 'src/contexts/area-tree-context/types'
+import { AREA_TREE_MOCK } from 'src/mocks'
 import Chart from './chart'
-import { AREA_TREE_MOCK } from './mock'
 import DeleteAreaModal from './delete-area-modal'
 
 export default function OrganigramaView() {

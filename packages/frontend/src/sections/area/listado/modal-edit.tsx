@@ -1,5 +1,6 @@
 'use client'
 
+import type { IUser } from '@adp/shared'
 import React, { useMemo } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -11,6 +12,8 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_AREA } from 'src/graphql/mutations'
+import UserPicker from 'src/components/user-picker'
+import { USER_MOCK } from 'src/mocks'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -27,6 +30,7 @@ const styleModal = {
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
+  responsible: Yup.object().required('Responsable requerido'),
 })
 
 type TProps = {
@@ -38,7 +42,7 @@ type TArea = {
   id: number | null
   name: string | null
   description: string | null
-  responsable: string | null
+  responsible: IUser | null
 }
 
 const ModalEdit = (props: TProps) => {
@@ -53,7 +57,7 @@ const ModalEdit = (props: TProps) => {
       id: null,
       name: '',
       description: '',
-      responsable: '',
+      responsible: null,
     } as TArea,
     onSubmit: async (values, helpers: FormikHelpers<TArea>) => {
       try {
@@ -64,6 +68,7 @@ const ModalEdit = (props: TProps) => {
             description: values.description,
             rolename: 'prueba',
             multiple: false,
+            responsibleId: values.responsible?.id,
           },
         })
         enqueueSnackbar('Area editada correctamente.', { variant: 'success' })
@@ -91,7 +96,7 @@ const ModalEdit = (props: TProps) => {
           id: area.id,
           name: area.name,
           description: area.description,
-          responsable: area.responsibleId,
+          responsible: area.responsibleId,
         })
       }
     },
@@ -133,15 +138,16 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  id="responsable"
-                  name="responsable"
+                <UserPicker
+                  users={USER_MOCK}
+                  value={formik.values.responsible}
+                  onChange={(_, value) => formik.setFieldValue('responsible', value)}
                   label="Responsable"
+                  placeholder="Buscar responsible"
                   variant="outlined"
-                  fullWidth
-                  value={formik.values.responsable}
-                  onChange={formik.handleChange}
                   disabled={loading}
+                  error={Boolean(formik.errors.responsible)}
+                  helperText={formik.errors.responsible}
                 />
               </Grid>
               <Grid item xs={12}>

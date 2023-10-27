@@ -1,5 +1,6 @@
 'use client'
 
+import type { IUser } from '@adp/shared'
 import React from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -11,6 +12,8 @@ import { useMutation } from '@apollo/client'
 import { CREATE_AREA } from 'src/graphql/mutations'
 import { paths } from 'src/routes/paths'
 import * as Yup from 'yup'
+import UserPicker from 'src/components/user-picker'
+import { USER_MOCK } from 'src/mocks'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -27,6 +30,7 @@ const styleModal = {
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
+  responsible: Yup.object().required('Responsable requerido'),
 })
 
 type TProps = {
@@ -44,11 +48,11 @@ const ModalCreate = (props: TProps) => {
     initialValues: {
       name: '',
       description: '',
-      responsable: '',
+      responsible: null as IUser | null,
     },
     onSubmit: async (
       values,
-      helpers: FormikHelpers<{ name: string; description: string; responsable: string }>
+      helpers: FormikHelpers<{ name: string; description: string; responsible: IUser | null }>
     ) => {
       try {
         await createArea({
@@ -57,6 +61,7 @@ const ModalCreate = (props: TProps) => {
             description: values.description,
             rolename: 'prueba',
             multiple: false,
+            responsibleId: values.responsible?.id,
           },
         })
         enqueueSnackbar('Area creada correctamente.', { variant: 'success' })
@@ -108,14 +113,15 @@ const ModalCreate = (props: TProps) => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <TextField
-                  id="responsable"
-                  name="responsable"
+                <UserPicker
+                  users={USER_MOCK}
+                  value={formik.values.responsible}
+                  onChange={(_, value) => formik.setFieldValue('responsible', value)}
                   label="Responsable"
+                  placeholder="Buscar responsible"
                   variant="outlined"
-                  fullWidth
-                  value={formik.values.responsable}
-                  onChange={formik.handleChange}
+                  error={Boolean(formik.errors.responsible)}
+                  helperText={formik.errors.responsible}
                 />
               </Grid>
               <Grid item xs={12}>
