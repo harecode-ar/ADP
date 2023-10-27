@@ -14,4 +14,32 @@ export default `#graphql
     createdAt: String
     updatedAt: String
   }
+
+  type Query {
+    user(id: Int!): User
+    users: [User]
+  }
+
+  type Mutation {
+    createUser(
+      firstname: String!
+      lastname: String!
+      email: String!
+      telephone: String!
+      password: String!
+      roleId: Int
+    ): User
+
+    updateUser(
+      id: Int!
+      firstname: String!
+      lastname: String!
+      email: String!
+      telephone: String!
+      password: String!
+      roleId: Int
+    ): User
+
+    deleteUser(id: Int!): User
+  }
 `

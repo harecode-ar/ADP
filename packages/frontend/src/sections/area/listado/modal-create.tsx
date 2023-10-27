@@ -62,7 +62,7 @@ const ModalCreate = (props: TProps) => {
         enqueueSnackbar('Area creada correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
-        router.push(paths.dashboard.root)
+        router.push(paths.dashboard.area.listado)
         refetch()
       } catch (error) {
         console.error(error)
