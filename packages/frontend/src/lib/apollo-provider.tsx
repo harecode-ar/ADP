@@ -1,37 +1,34 @@
 'use client'
 
 import React from 'react'
-import { ApolloLink, HttpLink } from '@apollo/client'
+import { HttpLink } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import {
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
   NextSSRApolloClient,
-  SSRMultipartLink,
 } from '@apollo/experimental-nextjs-app-support/ssr'
 import { APP_URL } from 'src/config-global'
 
-const STORAGE_KEY = 'accessToken'
-const accessToken = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) || '' : ''
-
 function makeClient() {
+
   const httpLink = new HttpLink({
     uri: `${APP_URL}/graphql`,
-    headers: {
-      Authorization: accessToken,
-    },
+  })
+
+  const authLink = setContext((_, { headers }) => {
+    const accessToken = localStorage.getItem('accessToken')
+    return {
+      headers: {
+        ...headers,
+        authorization: accessToken || '',
+      },
+    }
   })
 
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
-    link:
-      typeof window === 'undefined'
-        ? ApolloLink.from([
-            new SSRMultipartLink({
-              stripDefer: true,
-            }),
-            httpLink,
-          ])
-        : httpLink,
+    link: authLink.concat(httpLink),
   })
 }
 
