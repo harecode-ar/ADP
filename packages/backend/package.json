@@ -9,7 +9,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "clear-all": "rm -rf node_modules .next out dist build",
+    "clear": "rm -rf node_modules .next out dist build yarn.lock yarn-error.log",
     "seed": "ts-node src/database/seeders/index.ts"
   },
   "dependencies": {
