@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  redirect(paths.dashboard.area.listado)
+  redirect(paths.dashboard.area.organigrama)
 }

@@ -19,6 +19,22 @@ export const AREAS_FOR_SELECT = gql`
     }
   }
 `
+
+export const GET_AREAS_FOR_TREE = gql`
+  query areasForTree {
+    areas {
+      id
+      name
+      parentId
+      responsible {
+        id
+        email
+        fullname
+      }
+    }
+  }
+`
+
 export const GET_AREA = gql`
   query area($id: Int!) {
     area(id: $id) {
@@ -27,6 +43,15 @@ export const GET_AREA = gql`
       rolename
       description
       multiple
+      responsible {
+        id
+        email
+        fullname
+      }
+      parent {
+        id
+        name
+      }
     }
   }
 `

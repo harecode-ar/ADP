@@ -68,16 +68,7 @@ export function useNavData(): TNavData[] {
         // ----------------------------------------------------------------------
         {
           subheader: 'overview v5.5.0',
-          items: [
-            { title: 'Areas', path: paths.dashboard.root, icon: ICONS.label },
-            { title: 'one', path: paths.dashboard.root, icon: ICONS.dashboard },
-            { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
-            {
-              title: 'three',
-              path: paths.dashboard.three,
-              icon: ICONS.analytics,
-            },
-          ],
+          items: [],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
         },
         // MANAGEMENT
@@ -86,21 +77,10 @@ export function useNavData(): TNavData[] {
           subheader: 'management',
           items: [
             {
-              title: 'user',
-              path: paths.dashboard.group.root,
-              icon: ICONS.user,
-              children: [
-                { title: 'four', path: paths.dashboard.group.root },
-                { title: 'five', path: paths.dashboard.group.five },
-                { title: 'six', path: paths.dashboard.group.six },
-              ],
-            },
-            {
               title: 'area',
               path: paths.dashboard.area.root,
               icon: ICONS.user,
               children: [
-                { title: 'listado', path: paths.dashboard.area.listado },
                 { title: 'detalle', path: paths.dashboard.area.detalle },
                 { title: 'organigrama', path: paths.dashboard.area.organigrama },
               ],
