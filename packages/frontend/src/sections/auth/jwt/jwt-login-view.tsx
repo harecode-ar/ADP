@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import InputAdornment from '@mui/material/InputAdornment'
+import { RouterLink } from 'src/routes/components'
+import { paths } from 'src/routes/paths'
 // routes
 // import { paths } from 'src/routes/paths';
 // import { RouterLink } from 'src/routes/components';
@@ -113,8 +115,9 @@ export default function JwtLoginView() {
         }}
       />
 
-      <Link variant="body2" color="inherit" underline="always" sx={{ alignSelf: 'flex-end' }}>
-        Forgot password?
+      <Link variant="body2" color="inherit" underline="always" component={RouterLink}
+        href={paths.authDemo.classic.forgotPassword} sx={{ alignSelf: 'flex-end' }}>
+        Olvidó su contaseña?
       </Link>
 
       <LoadingButton

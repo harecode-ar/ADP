@@ -3,6 +3,7 @@
 const ROOTS = {
   AUTH: '/auth',
   DASHBOARD: '/dashboard',
+  AUTH_DEMO: '/auth-demo'
 }
 
 // ----------------------------------------------------------------------
@@ -13,6 +14,23 @@ export const paths = {
   auth: {
     jwt: {
       login: `${ROOTS.AUTH}/jwt/login`,
+    },
+  },
+  authDemo: {
+    classic: {
+      // login: `${ROOTS.AUTH_DEMO}/classic/login`,
+      login: `${ROOTS.AUTH}/jwt/login`,
+      register: `${ROOTS.AUTH_DEMO}/classic/register`,
+      forgotPassword: `${ROOTS.AUTH_DEMO}/classic/forgot-password`,
+      newPassword: `${ROOTS.AUTH_DEMO}/classic/new-password`,
+      verify: `${ROOTS.AUTH_DEMO}/classic/verify`,
+    },
+    modern: {
+      login: `${ROOTS.AUTH_DEMO}/modern/login`,
+      register: `${ROOTS.AUTH_DEMO}/modern/register`,
+      forgotPassword: `${ROOTS.AUTH_DEMO}/modern/forgot-password`,
+      newPassword: `${ROOTS.AUTH_DEMO}/modern/new-password`,
+      verify: `${ROOTS.AUTH_DEMO}/modern/verify`,
     },
   },
   // DASHBOARD

@@ -23,10 +23,6 @@ const styleModal = {
   p: 4,
 }
 
-// const areaSchema = Yup.object().shape({
-//   actualPassword: Yup.string().required('Nombre requerido'),
-// })
-
 type TProps = {
   modal: ReturnType<typeof useBoolean>
 
@@ -39,8 +35,6 @@ type TformikValues = {
 };
 
 const ChangePasswordModal = (props: TProps) => {
-  // const router = useRouter()
-  // const [createArea] = useMutation(CREATE_AREA)
   const { modal } = props
   const { enqueueSnackbar } = useSnackbar()
   const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
@@ -93,20 +87,11 @@ const ChangePasswordModal = (props: TProps) => {
     ) => {
       try {
         console.log('values: ',values)
-        console.log('contrasenia enviada')
-    //     await createArea({
-    //       variables: {
-    //         newPass: values.newPassword,
-    //         description: values.description,
-    //         rolename: 'prueba',
-    //         multiple: false,
-    //       },
-    //     })
+        console.log('Contraseña enviada')
           enqueueSnackbar('Contraseña modificada exitosamente.', { variant: 'success' })
           helpers.resetForm()
           modal.onFalse()
-    //     router.push(paths.dashboard.root)
-    //     refetch()
+
     } catch (error) {
         console.error(error)
         enqueueSnackbar('la contraseña no pudo ser cambiada.', { variant: 'error' })
