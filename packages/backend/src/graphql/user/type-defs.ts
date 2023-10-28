@@ -39,7 +39,8 @@ export default `#graphql
       password: String!
       roleId: Int
     ): User
-
     deleteUser(id: Int!): User
+    forgotPassword(email: String!): Boolean
+    newPassword(token: String!, email: String!, password: String!): Boolean
   }
 `

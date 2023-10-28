@@ -4,6 +4,7 @@ import { RolePermission } from './role-permission'
 import { Session } from './session'
 import { User } from './user'
 import { Area } from './area'
+import { Token } from './token'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -14,4 +15,4 @@ Session.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Role.belongsToMany(Permission, { as: 'permissions', through: RolePermission, foreignKey: 'roleId' })
 Permission.belongsToMany(Role, { as: 'roles', through: RolePermission, foreignKey: 'permissionId' })
 
-export { Permission, Role, RolePermission, Session, User, Area }
+export { Permission, Role, RolePermission, Session, User, Area, Token }
