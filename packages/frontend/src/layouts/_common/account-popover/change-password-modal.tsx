@@ -1,14 +1,11 @@
-import React ,{useState} from 'react'
+import React, { useState } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import { useFormik, FormikHelpers } from 'formik'
 import Iconify from 'src/components/iconify'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import IconButton from '@mui/material/IconButton'
 import * as Yup from 'yup'
-
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -25,21 +22,20 @@ const styleModal = {
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
-
 }
 
 type TformikValues = {
-  currentPassword: string;
-  newPassword: string;
-  repeatPassword: string;
-};
+  currentPassword: string
+  newPassword: string
+  repeatPassword: string
+}
 
 const ChangePasswordModal = (props: TProps) => {
   const { modal } = props
   const { enqueueSnackbar } = useSnackbar()
-  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
-  const [showNewPassword, setShowNewPassword] = React.useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false)
+  const [showNewPassword, setShowNewPassword] = React.useState(false)
+  const [showRepeatPassword, setShowRepeatPassword] = React.useState(false)
 
   const changePasswordSchema = Yup.object().shape({
     currentPassword: Yup.string().required('Es requerido'),
@@ -62,170 +58,198 @@ const ChangePasswordModal = (props: TProps) => {
   const togglePasswordVisibility = (field: any) => {
     switch (field) {
       case 'currentPassword':
-        setShowCurrentPassword(!showCurrentPassword);
-        break;
+        setShowCurrentPassword(!showCurrentPassword)
+        break
       case 'newPassword':
-        setShowNewPassword(!showNewPassword);
-        break;
+        setShowNewPassword(!showNewPassword)
+        break
       case 'repeatPassword':
-        setShowRepeatPassword(!showRepeatPassword);
-        break;
+        setShowRepeatPassword(!showRepeatPassword)
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   const formik = useFormik({
     initialValues: {
       currentPassword: '',
       newPassword: '',
-      repeatPassword: ''
+      repeatPassword: '',
     },
-    onSubmit: async (
-      values,
-      helpers: FormikHelpers<TformikValues>
-    ) => {
+    onSubmit: async (values, helpers: FormikHelpers<TformikValues>) => {
       try {
-        console.log('values: ',values)
+        console.log('values: ', values)
         console.log('Contraseña enviada')
-          enqueueSnackbar('Contraseña modificada exitosamente.', { variant: 'success' })
-          helpers.resetForm()
-          modal.onFalse()
-
-    } catch (error) {
+        enqueueSnackbar('Contraseña modificada exitosamente.', { variant: 'success' })
+        helpers.resetForm()
+        modal.onFalse()
+      } catch (error) {
         console.error(error)
         enqueueSnackbar('la contraseña no pudo ser cambiada.', { variant: 'error' })
-     }
+      }
     },
-    validationSchema: changePasswordSchema
+    validationSchema: changePasswordSchema,
   })
 
   return (
     <Modal
-    open={modal.value}
-    closeAfterTransition
-    slots={{ backdrop: Backdrop }}
-    slotProps={{
-      backdrop: {
-        timeout: 500,
-      },
-    }}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-  >
-  <Box sx={styleModal}>
-    <Typography id="modal-modal-title" variant="h6" component="h2">
-      Cambiar Contraseña
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              id="currentPassword"
-              name="currentPassword"
-              label="Contraseña actual"
-              variant="outlined"
-              fullWidth
-              required
-              type={showCurrentPassword ? 'text' : 'password'}
-              value={formik.values.currentPassword}
-              error={Boolean(formik.errors.currentPassword)}
-              helperText={formik.errors.currentPassword}
-              onChange={formik.handleChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={() => togglePasswordVisibility('currentPassword')} color="primary">
-                    {showCurrentPassword ? (
-                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
-                    ) : (
-                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
-                    )}
-                  </IconButton>
-                ),
-              }}
-            />
-          </Grid>
+      open={modal.value}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={styleModal}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          Cambiar Contraseña
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  id="currentPassword"
+                  name="currentPassword"
+                  label="Contraseña actual"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  type={showCurrentPassword ? 'text' : 'password'}
+                  value={formik.values.currentPassword}
+                  error={Boolean(formik.errors.currentPassword)}
+                  helperText={formik.errors.currentPassword}
+                  onChange={formik.handleChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => togglePasswordVisibility('currentPassword')}
+                        color="primary"
+                      >
+                        {showCurrentPassword ? (
+                          <Iconify
+                            icon="solar:eye-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        ) : (
+                          <Iconify
+                            icon="solar:eye-closed-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        )}
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              id="newPassword"
-              name="newPassword"
-              label="Contraseña nueva"
-              variant="outlined"
-              fullWidth
-              required
-              type={showNewPassword ? 'text' : 'password'}
-              value={formik.values.newPassword}
-              error={Boolean(formik.errors.newPassword)}
-              helperText={formik.errors.newPassword}
-              onChange={formik.handleChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={() => togglePasswordVisibility('newPassword')} color="primary">
-                    {showNewPassword ? (
-                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
-                    ) : (
-                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
-                    )}
-                  </IconButton>
-                ),
-              }}
-            />
-          </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="newPassword"
+                  name="newPassword"
+                  label="Contraseña nueva"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  type={showNewPassword ? 'text' : 'password'}
+                  value={formik.values.newPassword}
+                  error={Boolean(formik.errors.newPassword)}
+                  helperText={formik.errors.newPassword}
+                  onChange={formik.handleChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => togglePasswordVisibility('newPassword')}
+                        color="primary"
+                      >
+                        {showNewPassword ? (
+                          <Iconify
+                            icon="solar:eye-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        ) : (
+                          <Iconify
+                            icon="solar:eye-closed-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        )}
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              id="repeatPassword"
-              name="repeatPassword"
-              label="Repetir contraseña"
-              variant="outlined"
-              fullWidth
-              required
-              type={showRepeatPassword ? 'text' : 'password'}
-              value={formik.values.repeatPassword}
-              error={Boolean(formik.errors.repeatPassword)}
-              helperText={formik.errors.repeatPassword}
-              onChange={formik.handleChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={() => togglePasswordVisibility('repeatPassword')} color="primary">
-                    {showRepeatPassword ? (
-                      <VisibilityOffIcon fontSize="small" style={{ color: 'black' }} />
-                    ) : (
-                      <VisibilityIcon fontSize="small" style={{ color: 'black' }} />
-                    )}
-                  </IconButton>
-                ),
-              }}
-            />
-          </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="repeatPassword"
+                  name="repeatPassword"
+                  label="Repetir contraseña"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  type={showRepeatPassword ? 'text' : 'password'}
+                  value={formik.values.repeatPassword}
+                  error={Boolean(formik.errors.repeatPassword)}
+                  helperText={formik.errors.repeatPassword}
+                  onChange={formik.handleChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => togglePasswordVisibility('repeatPassword')}
+                        color="primary"
+                      >
+                        {showRepeatPassword ? (
+                          <Iconify
+                            icon="solar:eye-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        ) : (
+                          <Iconify
+                            icon="solar:eye-closed-bold"
+                            fontSize="small"
+                            style={{ color: 'black' }}
+                          />
+                        )}
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </Grid>
 
-          <Grid item xs={12}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                gap: 1,
-              }}
-            >
-              <Button onClick={modal.onFalse} color="primary" variant="outlined">
-                <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                Cancelar
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
-                <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                Enviar
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
+                >
+                  <Button onClick={modal.onFalse} color="primary" variant="outlined">
+                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    Cancelar
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                    <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                    Enviar
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Typography>
       </Box>
-    </Typography>
-
-  </Box>
-</Modal>
+    </Modal>
   )
 }
 

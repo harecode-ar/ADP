@@ -8,7 +8,7 @@ import { useAuthContext } from '../hooks'
 // ----------------------------------------------------------------------
 
 const loginPaths: Record<string, string> = {
-  jwt: paths.auth.jwt.login,
+  jwt: paths.auth.login,
 }
 
 // ----------------------------------------------------------------------

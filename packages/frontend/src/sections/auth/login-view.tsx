@@ -4,7 +4,6 @@ import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
-// @mui
 import LoadingButton from '@mui/lab/LoadingButton'
 import Link from '@mui/material/Link'
 import Alert from '@mui/material/Alert'
@@ -14,48 +13,30 @@ import Typography from '@mui/material/Typography'
 import InputAdornment from '@mui/material/InputAdornment'
 import { RouterLink } from 'src/routes/components'
 import { paths } from 'src/routes/paths'
-// routes
-// import { paths } from 'src/routes/paths';
-// import { RouterLink } from 'src/routes/components';
 import { useSearchParams, useRouter } from 'src/routes/hooks'
-// config
 import { PATH_AFTER_LOGIN } from 'src/config-global'
-// hooks
 import { useBoolean } from 'src/hooks/use-boolean'
-// auth
 import { useAuthContext } from 'src/auth/hooks'
-// components
 import Iconify from 'src/components/iconify'
 import FormProvider, { RHFTextField } from 'src/components/hook-form'
+import { Box } from '@mui/material'
 
-// ----------------------------------------------------------------------
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().required('Email es requerido').email('Email debe ser una direccion valida'),
+  password: Yup.string().required('Contraseña es requerida'),
+})
 
 export default function JwtLoginView() {
   const { login } = useAuthContext()
-
   const router = useRouter()
-
   const [errorMsg, setErrorMsg] = useState('')
-
   const searchParams = useSearchParams()
-
   const returnTo = searchParams.get('returnTo')
-
-  const password = useBoolean()
-
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string().required('Password is required'),
-  })
-
+  const showPassword = useBoolean()
   const defaultValues = {
     email: 'pkass@adp.com',
     password: '123',
   }
-  // const defaultValues = {
-  //   email: 'demo@minimals.cc',
-  //   password: 'demo1234',
-  // }
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
@@ -82,15 +63,7 @@ export default function JwtLoginView() {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Minimal</Typography>
-
-      {/* <Stack direction="row" spacing={0.5}>
-				<Typography variant="body2">New user?</Typography>
-
-				<Link component={RouterLink} href={paths.auth.jwt.register} variant="subtitle2">
-					Create an account
-				</Link>
-			</Stack> */}
+      <Typography variant="h4">Iniciar sesión</Typography>
     </Stack>
   )
 
@@ -98,27 +71,22 @@ export default function JwtLoginView() {
     <Stack spacing={2.5}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
-      <RHFTextField name="email" label="Email address" />
+      <RHFTextField name="email" label="Email" />
 
       <RHFTextField
         name="password"
-        label="Password"
-        type={password.value ? 'text' : 'password'}
+        label="Contraseña"
+        type={showPassword.value ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={password.onToggle} edge="end">
-                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              <IconButton onClick={showPassword.onToggle} edge="end">
+                <Iconify icon={showPassword.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
               </IconButton>
             </InputAdornment>
           ),
         }}
       />
-
-      <Link variant="body2" color="inherit" underline="always" component={RouterLink}
-        href={paths.authDemo.classic.forgotPassword} sx={{ alignSelf: 'flex-end' }}>
-        Olvidó su contaseña?
-      </Link>
 
       <LoadingButton
         fullWidth
@@ -128,8 +96,26 @@ export default function JwtLoginView() {
         variant="contained"
         loading={isSubmitting}
       >
-        Login
+        Iniciar sesión
       </LoadingButton>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Link
+          variant="body2"
+          color="inherit"
+          underline="always"
+          component={RouterLink}
+          href={paths.auth.forgotPassword}
+          sx={{ alignSelf: 'flex-end' }}
+        >
+          ¿Olvidó su contase&ntilde;a?
+        </Link>
+      </Box>
     </Stack>
   )
 
