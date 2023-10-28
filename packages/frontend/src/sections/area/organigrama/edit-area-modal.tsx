@@ -1,19 +1,19 @@
 'use client'
 
-import type { IUser } from '@adp/shared'
+import type { IArea, IUser } from '@adp/shared'
 import React, { useMemo } from 'react'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
+import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_AREA } from 'src/graphql/queries'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_AREA } from 'src/graphql/mutations'
 import UserPicker from 'src/components/user-picker'
 import { USER_MOCK } from 'src/mocks'
+import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -30,12 +30,12 @@ const styleModal = {
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  responsible: Yup.object().required('Responsable requerido'),
 })
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
+  areas: IArea[]
 }
 
 type TArea = {
@@ -43,14 +43,16 @@ type TArea = {
   name: string | null
   description: string | null
   responsible: IUser | null
+  parent: IArea | null
 }
 
-const ModalEdit = (props: TProps) => {
-  const { modal, refetch } = props
+const EditAreaModal = (props: TProps) => {
+  const { modal, refetch, areas } = props
   const { enqueueSnackbar } = useSnackbar()
-  const { selected, setSelected } = useTable()
+  const { selected } = useAreaTreeContext()
   const [updateArea] = useMutation(UPDATE_AREA)
-  const areaId = useMemo(() => Number(selected[0]), [selected])
+
+  const filteredAreas = useMemo(() => areas.filter((area) => area.id !== selected?.id), [areas, selected])
 
   const formik = useFormik({
     initialValues: {
@@ -58,24 +60,26 @@ const ModalEdit = (props: TProps) => {
       name: '',
       description: '',
       responsible: null,
+      parent: null,
     } as TArea,
     onSubmit: async (values, helpers: FormikHelpers<TArea>) => {
       try {
+        if (!values.id) return
         await updateArea({
           variables: {
-            id: areaId,
+            id: values.id,
             name: values.name,
             description: values.description,
             rolename: 'prueba',
             multiple: false,
             responsibleId: values.responsible?.id,
+            parentId: values.parent?.id,
           },
         })
         enqueueSnackbar('Area editada correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
-        setSelected([])
       } catch (error) {
         console.error(error)
         enqueueSnackbar('El Area no pudo ser editada.', { variant: 'error' })
@@ -86,9 +90,9 @@ const ModalEdit = (props: TProps) => {
 
   const { loading } = useQuery(GET_AREA, {
     variables: {
-      id: areaId,
+      id: selected?.id,
     },
-    skip: !areaId,
+    skip: !selected,
     onCompleted: (data) => {
       const { area } = data
       if (area) {
@@ -96,7 +100,8 @@ const ModalEdit = (props: TProps) => {
           id: area.id,
           name: area.name,
           description: area.description,
-          responsible: area.responsibleId,
+          responsible: area.responsible,
+          parent: area.parent,
         })
       }
     },
@@ -151,6 +156,24 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               <Grid item xs={12}>
+                <Autocomplete
+                  options={filteredAreas}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.parent}
+                  onChange={(_, value) => formik.setFieldValue('parent', value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Area padre"
+                      variant="outlined"
+                      placeholder="Buscar area"
+                      error={Boolean(formik.errors.parent)}
+                      helperText={formik.errors.parent}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   id="description"
                   name="description"
@@ -179,7 +202,7 @@ const ModalEdit = (props: TProps) => {
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Enviar
+                    Editar
                   </Button>
                 </Box>
               </Grid>
@@ -191,4 +214,4 @@ const ModalEdit = (props: TProps) => {
   )
 }
 
-export default ModalEdit
+export default EditAreaModal

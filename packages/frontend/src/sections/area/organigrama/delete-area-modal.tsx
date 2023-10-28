@@ -5,6 +5,8 @@ import { Typography, Button, Modal, Box, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
+import { useMutation } from '@apollo/client'
+import { DELETE_AREA } from 'src/graphql/mutations'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 
 const styleModal = {
@@ -28,11 +30,16 @@ const DeleteAreaModal = (props: TProps) => {
   const { modal } = props
   const { selected, setSelected, deleteNode } = useAreaTreeContext()
   const { enqueueSnackbar } = useSnackbar()
+  const [deleteArea] = useMutation(DELETE_AREA)
 
   const onDelete = async () => {
     try {
       if (!selected) return
-      console.log('delete area: ', selected?.name)
+      await deleteArea({
+        variables: {
+          id: selected.id,
+        },
+      })
       deleteNode(selected)
       enqueueSnackbar('Area borrada correctamente.', { variant: 'success' })
       modal.onFalse()

@@ -17,18 +17,8 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
-    areas: `${ROOTS.DASHBOARD}/area`,
-    // one: `${ROOTS.DASHBOARD}/area-detalle/:id`,
-    two: `${ROOTS.DASHBOARD}/two`,
-    three: `${ROOTS.DASHBOARD}/three`,
-    group: {
-      root: `${ROOTS.DASHBOARD}/group`,
-      five: `${ROOTS.DASHBOARD}/group/five`,
-      six: `${ROOTS.DASHBOARD}/group/six`,
-    },
     area: {
       root: `${ROOTS.DASHBOARD}/area`,
-      listado: `${ROOTS.DASHBOARD}/area/listado`,
       detalle: `${ROOTS.DASHBOARD}/area/detalle/:id`,
       organigrama: `${ROOTS.DASHBOARD}/area/organigrama`,
     },

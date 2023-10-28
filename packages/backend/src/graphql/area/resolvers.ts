@@ -1,8 +1,20 @@
-import type { IArea } from '@adp/shared/types'
-import { Area } from '../../database/models'
+import type { IArea, IUser } from '@adp/shared/types'
+import { Area, User } from '../../database/models'
 import logger from '../../logger'
 
 export default {
+  Area: {
+    parent: (area: IArea): Promise<IArea | null> => {
+      if (area.parent) return Promise.resolve(area.parent)
+      if (!area.parentId) return Promise.resolve(null)
+      return Area.findByPk(area.parentId)
+    },
+    responsible: (area: IArea): Promise<IUser | null> => {
+      if (area.responsible) return Promise.resolve(area.responsible)
+      if (!area.responsibleId) return Promise.resolve(null)
+      return User.findByPk(area.responsibleId)
+    },
+  },
   Query: {
     area: (
       _: any,
@@ -35,8 +47,8 @@ export default {
         rolename: string
         description: string
         multiple: boolean
-        parentId: number
-        responsibleId: number
+        parentId?: number
+        responsibleId?: number
       }
     ): Promise<IArea> => {
       try {
@@ -62,8 +74,8 @@ export default {
         rolename: string
         description: string
         multiple: boolean
-        parentId: number
-        responsibleId: number
+        parentId?: number
+        responsibleId?: number
       }
     ): Promise<IArea | null> => {
       try {

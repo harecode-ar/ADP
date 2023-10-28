@@ -1,19 +1,19 @@
 'use client'
 
-import type { IUser } from '@adp/shared'
+import type { IArea, IUser } from '@adp/shared'
 import React from 'react'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
+import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
-import { useRouter } from 'next/navigation'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation } from '@apollo/client'
+import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import { CREATE_AREA } from 'src/graphql/mutations'
-import { paths } from 'src/routes/paths'
 import * as Yup from 'yup'
 import UserPicker from 'src/components/user-picker'
 import { USER_MOCK } from 'src/mocks'
+import { TAreaTree } from 'src/contexts/area-tree-context/types'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -30,18 +30,22 @@ const styleModal = {
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  responsible: Yup.object().required('Responsable requerido'),
+  // responsible: Yup.object().required('Responsable requerido'),
+  parent: Yup.object().required('Area padre requerida'),
 })
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
+  areas: IArea[]
 }
 
-const ModalCreate = (props: TProps) => {
-  const router = useRouter()
+type TFormikValues = { name: string; description: string; responsible: IUser | null; parent: TAreaTree | null }
+
+const CreateAreaModal = (props: TProps) => {
+  const { modal, refetch, areas } = props
+  const { selected } = useAreaTreeContext()
   const [createArea] = useMutation(CREATE_AREA)
-  const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
 
   const formik = useFormik({
@@ -49,10 +53,11 @@ const ModalCreate = (props: TProps) => {
       name: '',
       description: '',
       responsible: null as IUser | null,
-    },
+      parent: selected,
+    } as TFormikValues,
     onSubmit: async (
       values,
-      helpers: FormikHelpers<{ name: string; description: string; responsible: IUser | null }>
+      helpers: FormikHelpers<TFormikValues>
     ) => {
       try {
         await createArea({
@@ -62,12 +67,12 @@ const ModalCreate = (props: TProps) => {
             rolename: 'prueba',
             multiple: false,
             responsibleId: values.responsible?.id,
+            parentId: values.parent?.id,
           },
         })
         enqueueSnackbar('Area creada correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
-        router.push(paths.dashboard.area.listado)
         refetch()
       } catch (error) {
         console.error(error)
@@ -125,6 +130,24 @@ const ModalCreate = (props: TProps) => {
                 />
               </Grid>
               <Grid item xs={12}>
+                <Autocomplete
+                  options={areas}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.parent}
+                  onChange={(_, value) => formik.setFieldValue('parent', value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Area padre"
+                      variant="outlined"
+                      placeholder="Buscar area"
+                      error={Boolean(formik.errors.parent)}
+                      helperText={formik.errors.parent}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   id="description"
                   name="description"
@@ -151,7 +174,7 @@ const ModalCreate = (props: TProps) => {
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Enviar
+                    Crear
                   </Button>
                 </Box>
               </Grid>
@@ -163,4 +186,4 @@ const ModalCreate = (props: TProps) => {
   )
 }
 
-export default ModalCreate
+export default CreateAreaModal
