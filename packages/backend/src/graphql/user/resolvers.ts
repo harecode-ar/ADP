@@ -1,3 +1,4 @@
+import { ETokenType } from '@adp/shared/types'
 import type { IUser } from '@adp/shared/types'
 import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
@@ -142,7 +143,7 @@ export default {
         }
         const token = await Token.create({
           userId: user.id,
-          type: 'reset-password',
+          type: ETokenType.NEW_PASSWORD,
         })
         const resetLink = `${APP_URL}/auth/nueva-clave/${token.token}`
         await sendResetPasswordMail(user, resetLink)
@@ -162,18 +163,18 @@ export default {
     ): Promise<boolean> => {
       try {
         const { token, email, password } = args
-        const tokenInstance = await Token.findOne({
+        const foundToken = await Token.findOne({
           where: {
             token,
-            type: 'reset-password',
+            type: ETokenType.NEW_PASSWORD,
           },
         })
-        if (!tokenInstance) {
+        if (!foundToken) {
           throw new Error('Token inválido')
         }
         const user = await User.findOne({
           where: {
-            id: tokenInstance.userId,
+            id: foundToken.userId,
             email,
           },
         })
@@ -184,7 +185,7 @@ export default {
         await user.update({
           password: hashedPassword,
         })
-        await tokenInstance.destroy()
+        await foundToken.destroy()
         return true
       } catch (error) {
         logger.error(error)
