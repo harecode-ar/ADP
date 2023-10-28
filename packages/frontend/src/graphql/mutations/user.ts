@@ -53,3 +53,15 @@ export const DELETE_USER = gql`
     }
   }
 `
+
+export const FORGOT_PASSWORD = gql`
+  mutation forgotPassword($email: String!) {
+    forgotPassword(email: $email)
+  }
+`
+
+export const NEW_PASSWORD = gql`
+  mutation newPassword($token: String!, $email: String!, $password: String!) {
+    newPassword(token: $token, email: $email, password: $password)
+  }
+`

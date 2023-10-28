@@ -1,7 +1,9 @@
 'use client'
 
+import React from 'react'
 import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
+import { useSnackbar } from 'src/components/snackbar'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
@@ -12,21 +14,25 @@ import { RouterLink } from 'src/routes/components'
 import { PasswordIcon } from 'src/assets/icons'
 import Iconify from 'src/components/iconify'
 import FormProvider, { RHFTextField } from 'src/components/hook-form'
-import React from 'react'
+import { useMutation } from '@apollo/client'
+import { FORGOT_PASSWORD } from 'src/graphql/mutations'
 
-// ----------------------------------------------------------------------
+const forgotPasswordSchema = Yup.object().shape({
+  email: Yup.string().required('Email es requerido').email('Email debe ser una direccion valida'),
+})
 
 export default function ForgotPasswordView() {
-  const ForgotPasswordSchema = Yup.object().shape({
-    email: Yup.string().required('Email es requerido').email('Email debe ser una direccion valida'),
-  })
+
+  const [forgotPassword] = useMutation(FORGOT_PASSWORD)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const defaultValues = {
     email: '',
   }
 
   const methods = useForm({
-    resolver: yupResolver(ForgotPasswordSchema),
+    resolver: yupResolver(forgotPasswordSchema),
     defaultValues,
   })
 
@@ -37,10 +43,18 @@ export default function ForgotPasswordView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      console.info('DATA', data)
+      await forgotPassword({
+        variables: {
+          email: data.email,
+        },
+      })
+      enqueueSnackbar('Se ha enviado un enlace de restablecimiento de contraseña a su correo electronico', {
+        variant: 'success',
+      })
     } catch (error) {
-      console.error(error)
+      enqueueSnackbar(typeof error === 'string' ? error : error.message, {
+        variant: 'error',
+      })
     }
   })
 

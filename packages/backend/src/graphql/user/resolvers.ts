@@ -1,6 +1,14 @@
+import { ETokenType } from '@adp/shared/types'
 import type { IUser } from '@adp/shared/types'
-import { Role, User } from '../../database/models'
+import dotenv from 'dotenv'
+import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'
+import { sendResetPasswordMail } from '../../services/nodemailer'
+import { hashPassword } from '../../utils/password'
+
+dotenv.config()
+
+const { APP_URL } = process.env
 
 export default {
   User: {
@@ -112,6 +120,73 @@ export default {
         }
         await user.destroy()
         return user
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    forgotPassword: async (
+      _: any,
+      args: {
+        email: string
+      }
+    ): Promise<boolean> => {
+      try {
+        const { email } = args
+        const user = await User.findOne({
+          where: {
+            email,
+          },
+        })
+        if (!user) {
+          throw new Error('No existe un usuario con el email ingresado')
+        }
+        const token = await Token.create({
+          userId: user.id,
+          type: ETokenType.NEW_PASSWORD,
+        })
+        const resetLink = `${APP_URL}/auth/nueva-clave/${token.token}`
+        await sendResetPasswordMail(user, resetLink)
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    newPassword: async (
+      _: any,
+      args: {
+        token: string
+        email: string
+        password: string
+      }
+    ): Promise<boolean> => {
+      try {
+        const { token, email, password } = args
+        const foundToken = await Token.findOne({
+          where: {
+            token,
+            type: ETokenType.NEW_PASSWORD,
+          },
+        })
+        if (!foundToken) {
+          throw new Error('Token inválido')
+        }
+        const user = await User.findOne({
+          where: {
+            id: foundToken.userId,
+            email,
+          },
+        })
+        if (!user) {
+          throw new Error('Usuario no encontrado')
+        }
+        const hashedPassword = await hashPassword(password)
+        await user.update({
+          password: hashedPassword,
+        })
+        await foundToken.destroy()
+        return true
       } catch (error) {
         logger.error(error)
         throw error
