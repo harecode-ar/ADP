@@ -1,23 +1,15 @@
-// @mui
 import { useTheme } from '@mui/material/styles'
 import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-// theme
 import { bgBlur } from 'src/theme/css'
-// routes
 import { RouterLink } from 'src/routes/components'
-// hooks
 import { useOffSetTop } from 'src/hooks/use-off-set-top'
-// components
 import Logo from 'src/components/logo'
-//
 import { HEADER } from '../config-layout'
 import HeaderShadow from './header-shadow'
 import SettingsButton from './settings-button'
-
-// ----------------------------------------------------------------------
 
 export default function HeaderSimple() {
   const theme = useTheme()
@@ -53,7 +45,7 @@ export default function HeaderSimple() {
           <SettingsButton />
 
           <Link href="/" component={RouterLink} color="inherit" sx={{ typography: 'subtitle2' }}>
-            Need help?
+            ¿Necesitas ayuda?
           </Link>
         </Stack>
       </Toolbar>

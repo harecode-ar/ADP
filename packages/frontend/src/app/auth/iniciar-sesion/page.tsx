@@ -1,12 +1,12 @@
 // sections
-import { JwtLoginView } from 'src/sections/auth/jwt'
+import LoginView from 'src/sections/auth/login-view'
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Jwt: Login',
+  title: 'Iniciar sesión',
 }
 
 export default function LoginPage() {
-  return <JwtLoginView />
+  return <LoginView />
 }

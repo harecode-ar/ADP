@@ -23,7 +23,7 @@ const METHODS = [
   {
     id: 'jwt',
     label: 'Jwt',
-    path: paths.auth.jwt.login,
+    path: paths.auth.login,
     icon: '/assets/icons/auth/ic_jwt.svg',
   },
 ]
@@ -83,7 +83,7 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
       }}
     >
       <Typography variant="h3" sx={{ maxWidth: 480, textAlign: 'center' }}>
-        {title || 'Hi, Welcome back'}
+        {title || 'Bienvenido'}
       </Typography>
 
       <Box

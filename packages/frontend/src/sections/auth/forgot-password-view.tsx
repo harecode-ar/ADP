@@ -1,0 +1,98 @@
+'use client'
+
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Link from '@mui/material/Link'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { paths } from 'src/routes/paths'
+import { RouterLink } from 'src/routes/components'
+import { PasswordIcon } from 'src/assets/icons'
+import Iconify from 'src/components/iconify'
+import FormProvider, { RHFTextField } from 'src/components/hook-form'
+import React from 'react'
+
+// ----------------------------------------------------------------------
+
+export default function ForgotPasswordView() {
+  const ForgotPasswordSchema = Yup.object().shape({
+    email: Yup.string().required('Email es requerido').email('Email debe ser una direccion valida'),
+  })
+
+  const defaultValues = {
+    email: '',
+  }
+
+  const methods = useForm({
+    resolver: yupResolver(ForgotPasswordSchema),
+    defaultValues,
+  })
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      console.info('DATA', data)
+    } catch (error) {
+      console.error(error)
+    }
+  })
+
+  const renderForm = (
+    <Stack spacing={3} alignItems="center">
+      <RHFTextField name="email" label="Email" />
+
+      <LoadingButton
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+        loading={isSubmitting}
+      >
+        Enviar enlace de restablecimiento
+      </LoadingButton>
+
+      <Link
+        component={RouterLink}
+        href={paths.auth.login}
+        color="inherit"
+        variant="subtitle2"
+        sx={{
+          alignItems: 'center',
+          display: 'inline-flex',
+        }}
+      >
+        <Iconify icon="eva:arrow-ios-back-fill" width={16} />
+        Volver a inicio de sesion
+      </Link>
+    </Stack>
+  )
+
+  const renderHead = (
+    <React.Fragment>
+      <PasswordIcon sx={{ height: 96 }} />
+
+      <Stack spacing={1} sx={{ my: 5 }}>
+        <Typography variant="h3">¿Olvidó su contraseña?</Typography>
+
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Ingrese su direccion de email para recibir un enlace de restablecimiento de contraseña
+        </Typography>
+      </Stack>
+    </React.Fragment>
+  )
+
+  return (
+    <FormProvider methods={methods} onSubmit={onSubmit}>
+      {renderHead}
+
+      {renderForm}
+    </FormProvider>
+  )
+}
