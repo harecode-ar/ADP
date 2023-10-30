@@ -17,8 +17,7 @@ export const USERS_FOR_SELECT = gql`
   query usersForSelect {
     users {
       id
-      firstname
-      lastname
+      fullname
     }
   }
 `

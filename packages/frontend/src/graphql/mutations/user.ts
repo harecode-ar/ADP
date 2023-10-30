@@ -6,7 +6,6 @@ export const CREATE_USER = gql`
     $lastname: String!
     $email: String!
     $telephone: String!
-    $password: String!
     $roleId: Int!
   ) {
     createUser(
@@ -14,7 +13,6 @@ export const CREATE_USER = gql`
       lastname: $lastname
       email: $email
       telephone: $telephone
-      password: $password
       roleId: $roleId
     ) {
       id
@@ -29,7 +27,6 @@ export const UPDATE_USER = gql`
     $lastname: String!
     $email: String!
     $telephone: String!
-    $password: String!
     $roleId: Int!
   ) {
     updateUser(
@@ -38,7 +35,6 @@ export const UPDATE_USER = gql`
       lastname: $lastname
       email: $email
       telephone: $telephone
-      password: $password
       roleId: $roleId
     ) {
       id
@@ -63,5 +59,11 @@ export const FORGOT_PASSWORD = gql`
 export const NEW_PASSWORD = gql`
   mutation newPassword($token: String!, $email: String!, $password: String!) {
     newPassword(token: $token, email: $email, password: $password)
+  }
+`
+
+export const UPDATE_PASSWORD = gql`
+  mutation changePassword($email: String!, $newPassword: String!, $oldPassword: String!) {
+    changePassword(email: $email, newPassword: $newPassword, oldPassword: $oldPassword)
   }
 `

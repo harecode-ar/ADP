@@ -6,6 +6,8 @@ import { permissionSeed } from './permission'
 import { rolePermissionSeed } from './role-permission'
 import { userSeed } from './user'
 import { areaSeed } from './area'
+import { projectStateSeed } from './project-state'
+import { stageStateSeed } from './stage-state'
 import { wait } from '../../utils/wait'
 
 const seed = async () => {
@@ -19,6 +21,8 @@ const seed = async () => {
     await rolePermissionSeed({ transaction, roles, permissions })
     await userSeed({ transaction, roles })
     await areaSeed({ transaction })
+    await projectStateSeed({ transaction })
+    await stageStateSeed({ transaction })
 
     await transaction.commit()
     // eslint-disable-next-line no-console

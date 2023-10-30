@@ -12,7 +12,7 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
 import { UPDATE_AREA } from 'src/graphql/mutations'
 import UserPicker from 'src/components/user-picker'
-import { USER_MOCK } from 'src/mocks'
+import { USERS_FOR_SELECT } from 'src/graphql/queries/user'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 
 const styleModal = {
@@ -51,6 +51,12 @@ const EditAreaModal = (props: TProps) => {
   const { enqueueSnackbar } = useSnackbar()
   const { selected } = useAreaTreeContext()
   const [updateArea] = useMutation(UPDATE_AREA)
+  const { data } = useQuery(USERS_FOR_SELECT)
+
+  const users: Pick<IUser, 'id'| 'fullname'>[] = useMemo(()=>{
+    if (data?.users) return data.users
+    return []
+  },[data])
 
   const filteredAreas = useMemo(() => areas.filter((area) => area.id !== selected?.id), [areas, selected])
 
@@ -144,7 +150,7 @@ const EditAreaModal = (props: TProps) => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <UserPicker
-                  users={USER_MOCK}
+                  users={users}
                   value={formik.values.responsible}
                   onChange={(_, value) => formik.setFieldValue('responsible', value)}
                   label="Responsable"
