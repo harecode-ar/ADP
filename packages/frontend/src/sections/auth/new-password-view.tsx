@@ -1,44 +1,46 @@
-'use client';
+'use client'
 
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
+import React from 'react'
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'src/components/snackbar'
-import { yupResolver } from '@hookform/resolvers/yup';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-import { useBoolean } from 'src/hooks/use-boolean';
+import { yupResolver } from '@hookform/resolvers/yup'
+import Link from '@mui/material/Link'
+import Stack from '@mui/material/Stack'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import LoadingButton from '@mui/lab/LoadingButton'
+import InputAdornment from '@mui/material/InputAdornment'
+import { paths } from 'src/routes/paths'
+import { RouterLink } from 'src/routes/components'
+import { useBoolean } from 'src/hooks/use-boolean'
 import { useRouter } from 'src/routes/hooks'
-import { SentIcon } from 'src/assets/icons';
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { SentIcon } from 'src/assets/icons'
+import Iconify from 'src/components/iconify'
+import FormProvider, { RHFTextField } from 'src/components/hook-form'
 import { useMutation } from '@apollo/client'
 import { NEW_PASSWORD } from 'src/graphql/mutations'
 
 const newPasswordSchema = Yup.object().shape({
-  email: Yup.string().required('El email es requerido').email('El email debe ser una direccion valida'),
+  email: Yup.string()
+    .required('El email es requerido')
+    .email('El email debe ser una direccion valida'),
   password: Yup.string()
     .min(6, 'La contraseña debe tener al menos 6 caracteres')
     .required('La contraseña es requerida'),
   confirmPassword: Yup.string()
     .required('La confirmacion de contraseña es requerida')
     .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir'),
-});
+})
 
 type TProps = {
   token: string
 }
 
 export default function ClassicNewPasswordView(props: TProps) {
-
   const { token } = props
   const [newPassword] = useMutation(NEW_PASSWORD)
-  const showPassword = useBoolean();
+  const showPassword = useBoolean()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
 
@@ -46,18 +48,18 @@ export default function ClassicNewPasswordView(props: TProps) {
     email: '',
     password: '',
     confirmPassword: '',
-  };
+  }
 
   const methods = useForm({
     mode: 'onChange',
     resolver: yupResolver(newPasswordSchema),
     defaultValues,
-  });
+  })
 
   const {
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -77,14 +79,11 @@ export default function ClassicNewPasswordView(props: TProps) {
         variant: 'error',
       })
     }
-  });
+  })
 
   const renderForm = (
     <Stack spacing={3} alignItems="center">
-      <RHFTextField
-        name="email"
-        label="Email"
-      />
+      <RHFTextField name="email" label="Email" />
 
       <RHFTextField
         name="password"
@@ -140,10 +139,10 @@ export default function ClassicNewPasswordView(props: TProps) {
         Volver a inicio de sesion
       </Link>
     </Stack>
-  );
+  )
 
   const renderHead = (
-    <>
+    <React.Fragment>
       <SentIcon sx={{ height: 96 }} />
 
       <Stack spacing={1} sx={{ my: 5 }}>
@@ -155,8 +154,8 @@ export default function ClassicNewPasswordView(props: TProps) {
           que desea utilizar
         </Typography>
       </Stack>
-    </>
-  );
+    </React.Fragment>
+  )
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -164,5 +163,5 @@ export default function ClassicNewPasswordView(props: TProps) {
 
       {renderForm}
     </FormProvider>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { ROLE_MAP } from '@adp/shared'
+import { ROLE_MAP } from '@adp/shared/constants'
 import { useMemo } from 'react'
 // routes
 import { paths } from 'src/routes/paths'
@@ -76,6 +76,12 @@ export function useNavData(): TNavData[] {
         {
           subheader: 'management',
           items: [
+            {
+              title: 'Usuarios',
+              path: paths.dashboard.user.root,
+              icon: ICONS.user,
+              children: [{ title: 'Listado', path: paths.dashboard.user.list }],
+            },
             {
               title: 'area',
               path: paths.dashboard.area.root,

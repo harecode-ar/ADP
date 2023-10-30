@@ -5,7 +5,7 @@ type TParams = {
   resetLink: string
 }
 
-export default function ({ firstname, lastname, email, resetLink }: TParams) {
+export default function generateTemplate({ firstname, lastname, email, resetLink }: TParams) {
   return `
   <!DOCTYPE html>
   <html>

@@ -5,9 +5,10 @@ import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 
-const roles = (_: any, __: any, context: IContext): Promise<IRole[]> => {
+// const roles = (_: any, __: any, context: IContext): Promise<IRole[]> => {
+const roles = (_: any, __: any): Promise<IRole[]> => {
   try {
-    needPermission([P.ROLE_READ], context)
+    // needPermission([P.ROLE_READ], context)
     return Role.findAll()
   } catch (error) {
     logger.error(error)

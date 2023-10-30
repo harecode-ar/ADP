@@ -44,8 +44,8 @@ export type TColumn = {
   type: TColumnType
   hidden?: boolean
   searchable?: boolean
-  renderCell: (value: any) => JSX.Element
-  searchValue?: (value: any) => string
+  renderCell: (value: any) => JSX.Element | string | number
+  searchValue?: (value: any) => string | number
 }
 
 export type TOperator = EOperator

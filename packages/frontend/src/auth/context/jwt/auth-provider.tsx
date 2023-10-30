@@ -1,6 +1,6 @@
 'use client'
 
-import type { IUser, IRole, IPermission } from '@adp/shared'
+import type { IUser, IRole, IPermission } from '@adp/shared/types'
 import { useState, useEffect, useReducer, useCallback, useMemo } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { GET_SESSION } from 'src/graphql/queries'

@@ -2,7 +2,16 @@
 
 import type { IArea, IUser } from '@adp/shared'
 import React, { useMemo } from 'react'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
+import {
+  Typography,
+  Button,
+  Modal,
+  Box,
+  TextField,
+  Grid,
+  Backdrop,
+  Autocomplete,
+} from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -40,7 +49,12 @@ type TProps = {
   areas: IArea[]
 }
 
-type TFormikValues = { name: string; description: string; responsible: IUser | null; parent: TAreaTree | null }
+type TFormikValues = {
+  name: string
+  description: string
+  responsible: IUser | null
+  parent: TAreaTree | null
+}
 
 const CreateAreaModal = (props: TProps) => {
   const { modal, refetch, areas } = props
@@ -49,10 +63,10 @@ const CreateAreaModal = (props: TProps) => {
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(USERS_FOR_SELECT)
 
-  const users: Pick<IUser, 'id'| 'fullname'>[] = useMemo(()=>{
+  const users: Pick<IUser, 'id' | 'fullname'>[] = useMemo(() => {
     if (data?.users) return data.users
     return []
-  },[data])
+  }, [data])
 
   const formik = useFormik({
     initialValues: {
@@ -61,10 +75,7 @@ const CreateAreaModal = (props: TProps) => {
       responsible: null as IUser | null,
       parent: selected,
     } as TFormikValues,
-    onSubmit: async (
-      values,
-      helpers: FormikHelpers<TFormikValues>
-    ) => {
+    onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         await createArea({
           variables: {

@@ -22,7 +22,6 @@ const forgotPasswordSchema = Yup.object().shape({
 })
 
 export default function ForgotPasswordView() {
-
   const [forgotPassword] = useMutation(FORGOT_PASSWORD)
 
   const { enqueueSnackbar } = useSnackbar()
@@ -48,9 +47,12 @@ export default function ForgotPasswordView() {
           email: data.email,
         },
       })
-      enqueueSnackbar('Se ha enviado un enlace de restablecimiento de contraseña a su correo electronico', {
-        variant: 'success',
-      })
+      enqueueSnackbar(
+        'Se ha enviado un enlace de restablecimiento de contraseña a su correo electronico',
+        {
+          variant: 'success',
+        }
+      )
     } catch (error) {
       enqueueSnackbar(typeof error === 'string' ? error : error.message, {
         variant: 'error',
