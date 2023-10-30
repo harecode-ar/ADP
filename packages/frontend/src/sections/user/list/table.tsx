@@ -121,8 +121,8 @@ const Table = (props: TProps) => {
               </React.Fragment>
             }
           />
-          <ModalCreate modal={modalCreate} refetch={refetch} />
-          <ModalEdit modal={modalEdit} refetch={refetch} />
+          {modalCreate.value && <ModalCreate modal={modalCreate} refetch={refetch}/>}
+          {modalEdit.value && <ModalEdit modal={modalEdit} refetch={refetch} />}
           <ModalDelete modal={modalDelete} refetch={refetch} />
         </React.Fragment>
       )}

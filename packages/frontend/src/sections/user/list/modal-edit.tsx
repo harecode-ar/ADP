@@ -1,16 +1,19 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import type { IRole } from '@adp/shared/types'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_USER } from 'src/graphql/queries'
+import { GET_USER, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_USER } from 'src/graphql/mutations'
+import { fData } from 'src/utils/format-number';
+import { UploadAvatar } from 'src/components/upload';
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -29,7 +32,7 @@ const userSchema = Yup.object().shape({
   firstname: Yup.string().required('Nombre requerido'),
   lastname: Yup.string().required('Apellido requerido'),
   email: Yup.string().email('Email inválido').required('Email requerido'),
-  roleId: Yup.number().required('Rol requerido'),
+  role: Yup.object().required('Rol requerido'),
 })
 
 type TProps = {
@@ -37,13 +40,16 @@ type TProps = {
   refetch: () => void
 }
 
+type TRole = Pick<IRole, 'id' | 'name'>
+
 type TUser = {
   id: number | null
   firstname: string | null
   lastname: string | null
   email: string | null
   telephone: string | null
-  roleId: number | null
+  role: IRole | null
+  file: File | null
 }
 
 const ModalEdit = (props: TProps) => {
@@ -53,6 +59,12 @@ const ModalEdit = (props: TProps) => {
   const [updateUser] = useMutation(UPDATE_USER)
   const userId = useMemo(() => Number(selected[0]), [selected])
 
+  const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
+  const roles: TRole[] = useMemo(() => {
+    if (!rolesQuery.data) return []
+    return rolesQuery.data.roles || []
+  }, [rolesQuery.data])
+
   const formik = useFormik({
     initialValues: {
       id: null,
@@ -61,24 +73,26 @@ const ModalEdit = (props: TProps) => {
       email: '',
       password: '123',
       telephone: '',
-      roleId: null,
+      role: null as IRole | null,
+      file: null,
     } as TUser,
     onSubmit: async (values, helpers: FormikHelpers<TUser>) => {
       try {
         await updateUser({
           variables: {
-            id: userId,
+            id: values.id,
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
             password: '123',
             telephone: values.telephone,
-            roleId: Number(values.roleId),
+            roleId: Number(values.role?.id),
           },
         })
         enqueueSnackbar('Usuario editado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
+        // router.push(paths.dashboard.user.list)
         refetch()
         setSelected([])
       } catch (error) {
@@ -96,7 +110,6 @@ const ModalEdit = (props: TProps) => {
     skip: !userId,
     onCompleted: (data) => {
       const { user } = data
-      console.log('userrrrrrr', user)
       if (user) {
         formik.setValues({
           id: user.id,
@@ -104,11 +117,24 @@ const ModalEdit = (props: TProps) => {
           lastname: user.lastname,
           email: user.email,
           telephone: user.telephone,
-          roleId: user.roleId,
+          role: roles.find((role) => role.id === Number(user.roleId)) || null,
+          file: null,
         })
       }
     },
   })
+
+  const handleDropAvatar = useCallback((acceptedFiles: (File | null)[] ) => {
+    const newFile = acceptedFiles[0];
+    if (newFile) {
+      formik.setFieldValue(
+        'file',
+        Object.assign(newFile, {
+          preview: URL.createObjectURL(newFile),
+        })
+      );
+    }
+  }, [formik]);
 
   return (
     <Modal
@@ -128,6 +154,37 @@ const ModalEdit = (props: TProps) => {
           Editar usuario
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+          <UploadAvatar
+            file={formik.values.file}
+            onDrop={handleDropAvatar}
+            validator={(fileData: File) => {
+              if (fileData.size > 1000000) {
+                return {
+                  code: 'file-too-large',
+                  message: `File is larger than ${fData(1000000)}`,
+                };
+              }
+              return null;
+            }}
+            helperText={
+              <Typography
+                variant="caption"
+                sx={{
+                  mt: 1,
+                  mx: 'auto',
+                  display: 'block',
+                  textAlign: 'center',
+                  color: 'text.disabled',
+                  marginBottom: 5
+                }}
+              >
+                Archivos *.jpeg, *.jpg, *.png
+                <br /> Max {fData(3145728)}
+              </Typography>
+            }
+          />
+
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
@@ -140,7 +197,7 @@ const ModalEdit = (props: TProps) => {
                   required
                   value={formik.values.firstname}
                   error={Boolean(formik.errors.firstname)}
-                  // helperText={formik.errors.firstname}
+                  helperText={formik.errors.firstname}
                   onChange={formik.handleChange}
                   disabled={loading}
                 />
@@ -155,29 +212,29 @@ const ModalEdit = (props: TProps) => {
                   required
                   value={formik.values.lastname}
                   error={Boolean(formik.errors.lastname)}
-                  // helperText={formik.errors.lastname}
+                  helperText={formik.errors.lastname}
                   onChange={formik.handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  id="roleId"
-                  name="roleId"
-                  label="Role ID"
-                  variant="outlined"
+                <Autocomplete
                   fullWidth
-                  required
-                  value={formik.values.roleId}
-                  error={Boolean(formik.errors.roleId)}
-                  onChange={formik.handleChange}
+                  options={roles}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.role}
+                  onChange={(event, value) => {
+                    formik.setFieldValue('role', value)
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Rol"
+                      error={Boolean(formik.errors.role)}
+                      helperText={formik.errors.role}
+                    />
+                  )}
                 />
-                {/* <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={formik.values.roleId}
-                  sx={{ width: 300 }}
-                  renderInput={(params) => <TextField {...params} label="Movie" />}
-                /> */}
+
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -188,7 +245,6 @@ const ModalEdit = (props: TProps) => {
                   fullWidth
                   value={formik.values.telephone}
                   error={Boolean(formik.errors.telephone)}
-                  // helperText={formik.errors.telephone}
                   onChange={formik.handleChange}
                 />
               </Grid>
@@ -202,7 +258,7 @@ const ModalEdit = (props: TProps) => {
                   required
                   value={formik.values.email}
                   error={Boolean(formik.errors.email)}
-                  // helperText={formik.errors.email}
+                  helperText={formik.errors.email}
                   onChange={formik.handleChange}
                 />
               </Grid>

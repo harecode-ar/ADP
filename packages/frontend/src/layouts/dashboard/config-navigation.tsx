@@ -77,6 +77,14 @@ export function useNavData(): TNavData[] {
           subheader: 'management',
           items: [
             {
+              title: 'Usuarios',
+              path: paths.dashboard.user.root,
+              icon: ICONS.user,
+              children: [
+                { title: 'Listado', path: paths.dashboard.user.list },
+              ],
+            },
+            {
               title: 'area',
               path: paths.dashboard.area.root,
               icon: ICONS.user,

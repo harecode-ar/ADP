@@ -1,14 +1,16 @@
 'use client'
 
-import React, { useCallback } from 'react'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
+import React, { useCallback, useMemo } from 'react'
+import type { IRole } from '@adp/shared/types'
+import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_USER } from 'src/graphql/mutations'
+import { GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import { paths } from 'src/routes/paths'
 import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number';
@@ -31,7 +33,7 @@ const userSchema = Yup.object().shape({
   firstname: Yup.string().required('Nombre requerido'),
   lastname: Yup.string().required('Apellido requerido'),
   email: Yup.string().email('Email inválido').required('Email requerido'),
-  rolId: Yup.number().required('Rol requerido'),
+  role: Yup.object().required('Rol requerido'),
 })
 
 type TProps = {
@@ -39,14 +41,17 @@ type TProps = {
   refetch: () => void
 }
 
+type TRole = Pick<IRole, 'id' | 'name'>
+
 type TFormikValues = {
   firstname: string
   lastname: string
   email: string
   telephone: string
+  role: IRole | null
   file: File | null
-  rolId: number
 }
+
 
 
 const ModalCreate = (props: TProps) => {
@@ -55,11 +60,17 @@ const ModalCreate = (props: TProps) => {
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
 
+  const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
+  const roles: TRole[] = useMemo(() => {
+    if (!rolesQuery.data) return []
+    return rolesQuery.data.roles || []
+  }, [rolesQuery.data])
+
   const formik = useFormik({
     initialValues: {
       firstname: '',
       lastname: '',
-      rolId: 1,
+      role: null as IRole | null,
       email: '',
       telephone: '',
       file: null,
@@ -75,7 +86,7 @@ const ModalCreate = (props: TProps) => {
             lastname: values.lastname,
             email: values.email,
             telephone: values.telephone,
-            roleId: values.rolId,
+            roleId: values.role?.id,
             password: '123',
           },
         })
@@ -165,7 +176,7 @@ const ModalCreate = (props: TProps) => {
                   required
                   value={formik.values.firstname}
                   error={Boolean(formik.errors.firstname)}
-                  // helperText={formik.errors.firstname}
+                  helperText={formik.errors.firstname}
                   onChange={formik.handleChange}
                 />
               </Grid>
@@ -180,21 +191,27 @@ const ModalCreate = (props: TProps) => {
                   required
                   value={formik.values.lastname}
                   error={Boolean(formik.errors.lastname)}
-                  // helperText={formik.errors.lastname}
+                  helperText={formik.errors.lastname}
                   onChange={formik.handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  id="rolId"
-                  name="rolId"
-                  label="Rol ID"
-                  variant="outlined"
+                <Autocomplete
                   fullWidth
-                  required
-                  value={formik.values.rolId}
-                  error={Boolean(formik.errors.rolId)}
-                  onChange={formik.handleChange}
+                  options={roles}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.role}
+                  onChange={(event, value) => {
+                    formik.setFieldValue('role', value)
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Rol"
+                      error={Boolean(formik.errors.role)}
+                      helperText={formik.errors.role}
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -219,7 +236,7 @@ const ModalCreate = (props: TProps) => {
                   required
                   value={formik.values.email}
                   error={Boolean(formik.errors.email)}
-                  // helperText={formik.errors.email}
+                  helperText={formik.errors.email}
                   onChange={formik.handleChange}
                 />
               </Grid>
