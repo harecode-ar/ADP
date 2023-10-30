@@ -1,6 +1,6 @@
 'use client'
 
-import type { IArea, IUser } from '@adp/shared'
+import type { IArea, IUser } from '@adp/shared/types'
 import React, { useMemo } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'

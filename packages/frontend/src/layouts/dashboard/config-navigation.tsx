@@ -1,4 +1,4 @@
-import { ROLE_MAP } from '@adp/shared'
+import { ROLE_MAP } from '@adp/shared/constants'
 import { useMemo } from 'react'
 // routes
 import { paths } from 'src/routes/paths'

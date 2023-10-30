@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { IUser } from '@adp/shared'
+import { IUser } from '@adp/shared/types'
 
 type Props = {
   user: IUser

@@ -1,4 +1,4 @@
-import type { IUser } from '@adp/shared'
+import type { IUser } from '@adp/shared/types'
 import React from 'react'
 import { Autocomplete, TextField, Box } from '@mui/material'
 import UserIcon from '../user-icon'
