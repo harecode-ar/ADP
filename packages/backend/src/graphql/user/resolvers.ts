@@ -141,6 +141,33 @@ export default {
         if (!user) {
           throw new Error('No existe un usuario con el email ingresado')
         }
+
+        const foundToken = await Token.findOne({
+          where: {
+            userId: user.id,
+            type: ETokenType.NEW_PASSWORD,
+          },
+        })
+
+        if (foundToken) {
+          const now = new Date()
+          const createdAt = new Date(foundToken.createdAt)
+          const diff = now.getTime() - createdAt.getTime()
+          const minutes = Math.floor(diff / 1000 / 60)
+          if (minutes < 2) {
+            throw new Error(
+              'Ya se ha enviado un correo con un link para cambiar la clave, por favor espere unos minutos'
+            )
+          }
+        }
+
+        await Token.destroy({
+          where: {
+            userId: user.id,
+            type: ETokenType.NEW_PASSWORD,
+          },
+        })
+
         const token = await Token.create({
           userId: user.id,
           type: ETokenType.NEW_PASSWORD,
