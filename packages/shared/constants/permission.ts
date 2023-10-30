@@ -7,6 +7,22 @@ export const PERMISSION_MAP = {
   PERMISSION_CREATE: 'permission:create',
   PERMISSION_UPDATE: 'permission:update',
   PERMISSION_DELETE: 'permission:delete',
+  STAGE_STATE_READ: 'stageState:read',
+  STAGE_STATE_CREATE: 'stageState:create',
+  STAGE_STATE_UPDATE: 'stageState:update',
+  STAGE_STATE_DELETE: 'stageState:delete',
+  PROJECT_STATE_READ: 'projectState:read',
+  PROJECT_STATE_CREATE: 'projectState:create',
+  PROJECT_STATE_UPDATE: 'projectState:update',
+  PROJECT_STATE_DELETE: 'projectState:delete',
+  PROJECT_READ: 'project:read',
+  PROJECT_CREATE: 'project:create',
+  PROJECT_UPDATE: 'project:update',
+  PROJECT_DELETE: 'project:delete',
+  STAGE_READ: 'stage:read',
+  STAGE_CREATE: 'stage:create',
+  STAGE_UPDATE: 'stage:update',
+  STAGE_DELETE: 'stage:delete',
 }
 
 export const PERMISSION_ARRAY = Object.values(PERMISSION_MAP)
