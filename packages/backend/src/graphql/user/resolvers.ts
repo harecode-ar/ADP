@@ -4,7 +4,8 @@ import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
-import { hashPassword, comparePassword } from '../../utils/password'
+import { sendNewUserMail } from '../../services/nodemailer/new-user'
+import { hashPassword, comparePassword, generateRandomPassword } from '../../utils/password'
 
 dotenv.config()
 
@@ -48,7 +49,7 @@ export default {
     },
   },
   Mutation: {
-    createUser: (
+    createUser: async (
       _: any,
       args: {
         firstname: string
@@ -60,13 +61,20 @@ export default {
     ): Promise<IUser> => {
       try {
         const { firstname, lastname, email, telephone, roleId } = args
-        return User.create({
+        const password = generateRandomPassword(8)
+        const hashedPassword = await hashPassword(password)
+        const createdUser = await User.create({
           firstname,
           lastname,
           email,
+          password: hashedPassword,
           telephone,
           roleId,
         })
+
+        await sendNewUserMail(createdUser, password)
+
+        return createdUser
       } catch (error) {
         logger.error(error)
         throw error
