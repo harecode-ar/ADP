@@ -1,17 +1,17 @@
 export const PROJECT_STATE_ARRAY = [
   {
     id: 1,
-    name: 'New',
-    description: 'New project',
+    name: 'Nuevo',
+    description: 'Nuevo proyecto',
   },
   {
     id: 2,
-    name: 'In Progress',
-    description: 'Project in progress',
+    name: 'En progreso',
+    description: 'Proyecto en progreso',
   },
   {
     id: 3,
-    name: 'Completed',
-    description: 'Project completed',
+    name: 'Completado',
+    description: 'Proyecto completado',
   },
 ]

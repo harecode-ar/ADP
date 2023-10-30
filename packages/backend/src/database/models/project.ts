@@ -18,7 +18,7 @@ export class Project extends Model {
 
   public stateId!: number
 
-  public areaId!: number
+  public areaId!: number | null
 
   public readonly createdAt!: string
 
