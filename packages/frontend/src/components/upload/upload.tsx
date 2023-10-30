@@ -1,19 +1,17 @@
-import { useDropzone } from 'react-dropzone';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { alpha } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-
-import { UploadIllustration } from 'src/assets/illustrations';
-
-import Iconify from '../iconify';
-import { UploadProps } from './types';
-import MultiFilePreview from './preview-multi-file';
-import RejectionFiles from './errors-rejection-files';
-import SingleFilePreview from './preview-single-file';
+import React from 'react'
+import { useDropzone } from 'react-dropzone'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Button from '@mui/material/Button'
+import { alpha } from '@mui/material/styles'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import { UploadIllustration } from 'src/assets/illustrations'
+import Iconify from '../iconify'
+import { UploadProps } from './types'
+import MultiFilePreview from './preview-multi-file'
+import RejectionFiles from './errors-rejection-files'
+import SingleFilePreview from './preview-single-file'
 
 // ----------------------------------------------------------------------
 
@@ -38,13 +36,13 @@ export default function Upload({
     multiple,
     disabled,
     ...other,
-  });
+  })
 
-  const hasFile = !!file && !multiple;
+  const hasFile = !!file && !multiple
 
-  const hasFiles = !!files && multiple && !!files.length;
+  const hasFiles = !!files && multiple && !!files.length
 
-  const hasError = isDragReject || !!error;
+  const hasError = isDragReject || !!error
 
   const renderPlaceholder = (
     <Stack spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
@@ -67,11 +65,11 @@ export default function Upload({
         </Typography>
       </Stack>
     </Stack>
-  );
+  )
 
   const renderSinglePreview = (
     <SingleFilePreview imgUrl={typeof file === 'string' ? file : file?.preview} />
-  );
+  )
 
   const removeSinglePreview = hasFile && onDelete && (
     <IconButton
@@ -91,10 +89,10 @@ export default function Upload({
     >
       <Iconify icon="mingcute:close-line" width={18} />
     </IconButton>
-  );
+  )
 
   const renderMultiPreview = hasFiles && (
-    <>
+    <React.Fragment>
       <Box sx={{ my: 3 }}>
         <MultiFilePreview files={files} thumbnail={thumbnail} onRemove={onRemove} />
       </Box>
@@ -117,8 +115,8 @@ export default function Upload({
           </Button>
         )}
       </Stack>
-    </>
-  );
+    </React.Fragment>
+  )
 
   return (
     <Box sx={{ width: 1, position: 'relative', ...sx }}>
@@ -167,5 +165,5 @@ export default function Upload({
 
       {renderMultiPreview}
     </Box>
-  );
+  )
 }

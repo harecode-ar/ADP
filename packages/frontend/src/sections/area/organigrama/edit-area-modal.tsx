@@ -2,7 +2,16 @@
 
 import type { IArea, IUser } from '@adp/shared/types'
 import React, { useMemo } from 'react'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
+import {
+  Typography,
+  Button,
+  Modal,
+  Box,
+  TextField,
+  Grid,
+  Backdrop,
+  Autocomplete,
+} from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
@@ -53,12 +62,15 @@ const EditAreaModal = (props: TProps) => {
   const [updateArea] = useMutation(UPDATE_AREA)
   const { data } = useQuery(USERS_FOR_SELECT)
 
-  const users: Pick<IUser, 'id'| 'fullname'>[] = useMemo(()=>{
+  const users: Pick<IUser, 'id' | 'fullname'>[] = useMemo(() => {
     if (data?.users) return data.users
     return []
-  },[data])
+  }, [data])
 
-  const filteredAreas = useMemo(() => areas.filter((area) => area.id !== selected?.id), [areas, selected])
+  const filteredAreas = useMemo(
+    () => areas.filter((area) => area.id !== selected?.id),
+    [areas, selected]
+  )
 
   const formik = useFormik({
     initialValues: {
@@ -99,8 +111,8 @@ const EditAreaModal = (props: TProps) => {
       id: selected?.id,
     },
     skip: !selected,
-    onCompleted: (data) => {
-      const { area } = data
+    onCompleted: (areaData) => {
+      const { area } = areaData
       if (area) {
         formik.setValues({
           id: area.id,

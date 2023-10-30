@@ -2,7 +2,16 @@
 
 import React, { useCallback, useMemo } from 'react'
 import type { IRole } from '@adp/shared/types'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
+import {
+  Typography,
+  Button,
+  Modal,
+  Box,
+  TextField,
+  Grid,
+  Backdrop,
+  Autocomplete,
+} from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
@@ -12,8 +21,8 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_USER } from 'src/graphql/mutations'
-import { fData } from 'src/utils/format-number';
-import { UploadAvatar } from 'src/components/upload';
+import { fData } from 'src/utils/format-number'
+import { UploadAvatar } from 'src/components/upload'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -84,7 +93,6 @@ const ModalEdit = (props: TProps) => {
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
-            password: '123',
             telephone: values.telephone,
             roleId: Number(values.role?.id),
           },
@@ -124,17 +132,20 @@ const ModalEdit = (props: TProps) => {
     },
   })
 
-  const handleDropAvatar = useCallback((acceptedFiles: (File | null)[] ) => {
-    const newFile = acceptedFiles[0];
-    if (newFile) {
-      formik.setFieldValue(
-        'file',
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      );
-    }
-  }, [formik]);
+  const handleDropAvatar = useCallback(
+    (acceptedFiles: (File | null)[]) => {
+      const newFile = acceptedFiles[0]
+      if (newFile) {
+        formik.setFieldValue(
+          'file',
+          Object.assign(newFile, {
+            preview: URL.createObjectURL(newFile),
+          })
+        )
+      }
+    },
+    [formik]
+  )
 
   return (
     <Modal
@@ -154,7 +165,6 @@ const ModalEdit = (props: TProps) => {
           Editar usuario
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-
           <UploadAvatar
             file={formik.values.file}
             onDrop={handleDropAvatar}
@@ -163,9 +173,9 @@ const ModalEdit = (props: TProps) => {
                 return {
                   code: 'file-too-large',
                   message: `File is larger than ${fData(1000000)}`,
-                };
+                }
               }
-              return null;
+              return null
             }}
             helperText={
               <Typography
@@ -176,7 +186,7 @@ const ModalEdit = (props: TProps) => {
                   display: 'block',
                   textAlign: 'center',
                   color: 'text.disabled',
-                  marginBottom: 5
+                  marginBottom: 5,
                 }}
               >
                 Archivos *.jpeg, *.jpg, *.png
@@ -234,7 +244,6 @@ const ModalEdit = (props: TProps) => {
                     />
                   )}
                 />
-
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -272,10 +281,14 @@ const ModalEdit = (props: TProps) => {
                     gap: 1,
                   }}
                 >
-                  <Button onClick={() => {
-                    modal.onFalse()
-                    formik.resetForm()
-                  }} color="primary" variant="outlined">
+                  <Button
+                    onClick={() => {
+                      modal.onFalse()
+                      formik.resetForm()
+                    }}
+                    color="primary"
+                    variant="outlined"
+                  >
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>

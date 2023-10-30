@@ -1,12 +1,12 @@
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 
-import Image from '../image';
+import Image from '../image'
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  imgUrl?: string;
-};
+  imgUrl?: string
+}
 
 export default function SingleFilePreview({ imgUrl = '' }: Props) {
   return (
@@ -30,5 +30,5 @@ export default function SingleFilePreview({ imgUrl = '' }: Props) {
         }}
       />
     </Box>
-  );
+  )
 }

@@ -3,7 +3,7 @@ import type { IUser } from '@adp/shared/types'
 import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'
-import { sendResetPasswordMail } from '../../services/nodemailer'
+import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
 import { hashPassword } from '../../utils/password'
 
 dotenv.config()
@@ -218,18 +218,18 @@ export default {
     changePassword: async (
       _: any,
       args: {
-        email: String,
+        email: String
         newPassword: string
         oldPassword: string
       }
     ): Promise<boolean> => {
       try {
-        const {email, newPassword, oldPassword } = args
+        const { email, newPassword, oldPassword } = args
 
         const user = await User.findOne({
           where: {
             email,
-            password: oldPassword
+            password: oldPassword,
           },
         })
         if (!user) {
@@ -238,7 +238,7 @@ export default {
         const hashedNewPassword = await hashPassword(newPassword)
         await user.update({
           password: hashedNewPassword,
-        })        
+        })
         return true
       } catch (error) {
         logger.error(error)

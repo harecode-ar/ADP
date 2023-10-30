@@ -1,7 +1,6 @@
 import type { IBackendEnvironment } from '@adp/shared/types'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
-export * from './reset-password'
 
 dotenv.config()
 

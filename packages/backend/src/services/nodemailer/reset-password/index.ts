@@ -1,7 +1,7 @@
 import type { IUser, IBackendEnvironment } from '@adp/shared/types'
+import dotenv from 'dotenv'
 import { transporter } from '..'
 import generateTemplate from './template'
-import dotenv from 'dotenv'
 
 dotenv.config()
 

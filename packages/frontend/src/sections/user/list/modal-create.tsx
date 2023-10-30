@@ -2,7 +2,16 @@
 
 import React, { useCallback, useMemo } from 'react'
 import type { IRole } from '@adp/shared/types'
-import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
+import {
+  Typography,
+  Button,
+  Modal,
+  Box,
+  TextField,
+  Grid,
+  Backdrop,
+  Autocomplete,
+} from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -13,8 +22,8 @@ import { CREATE_USER } from 'src/graphql/mutations'
 import { GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import { paths } from 'src/routes/paths'
 import * as Yup from 'yup'
-import { fData } from 'src/utils/format-number';
-import { UploadAvatar } from 'src/components/upload';
+import { fData } from 'src/utils/format-number'
+import { UploadAvatar } from 'src/components/upload'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -52,8 +61,6 @@ type TFormikValues = {
   file: File | null
 }
 
-
-
 const ModalCreate = (props: TProps) => {
   const router = useRouter()
   const [createUser] = useMutation(CREATE_USER)
@@ -75,10 +82,7 @@ const ModalCreate = (props: TProps) => {
       telephone: '',
       file: null,
     } as TFormikValues,
-    onSubmit: async (
-      values,
-      helpers: FormikHelpers<TFormikValues>
-    ) => {
+    onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         await createUser({
           variables: {
@@ -87,7 +91,6 @@ const ModalCreate = (props: TProps) => {
             email: values.email,
             telephone: values.telephone,
             roleId: values.role?.id,
-            password: '123',
           },
         })
         enqueueSnackbar('Usuario creado correctamente.', { variant: 'success' })
@@ -103,17 +106,20 @@ const ModalCreate = (props: TProps) => {
     validationSchema: userSchema,
   })
 
-  const handleDropAvatar = useCallback((acceptedFiles: (File | null)[] ) => {
-    const newFile = acceptedFiles[0];
-    if (newFile) {
-      formik.setFieldValue(
-        'file',
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      );
-    }
-  }, [formik]);
+  const handleDropAvatar = useCallback(
+    (acceptedFiles: (File | null)[]) => {
+      const newFile = acceptedFiles[0]
+      if (newFile) {
+        formik.setFieldValue(
+          'file',
+          Object.assign(newFile, {
+            preview: URL.createObjectURL(newFile),
+          })
+        )
+      }
+    },
+    [formik]
+  )
 
   return (
     <Modal
@@ -132,8 +138,7 @@ const ModalCreate = (props: TProps) => {
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Nuevo usuario
         </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-
+        <Box id="modal-modal-description" sx={{ mt: 2 }}>
           <UploadAvatar
             file={formik.values.file}
             onDrop={handleDropAvatar}
@@ -142,9 +147,9 @@ const ModalCreate = (props: TProps) => {
                 return {
                   code: 'file-too-large',
                   message: `File is larger than ${fData(1000000)}`,
-                };
+                }
               }
-              return null;
+              return null
             }}
             helperText={
               <Typography
@@ -155,7 +160,7 @@ const ModalCreate = (props: TProps) => {
                   display: 'block',
                   textAlign: 'center',
                   color: 'text.disabled',
-                  marginBottom: 5
+                  marginBottom: 5,
                 }}
               >
                 Archivos *.jpeg, *.jpg, *.png
@@ -249,10 +254,14 @@ const ModalCreate = (props: TProps) => {
                     gap: 1,
                   }}
                 >
-                  <Button onClick={() => {
-                    modal.onFalse()
-                    formik.resetForm()
-                  }} color="primary" variant="outlined">
+                  <Button
+                    onClick={() => {
+                      modal.onFalse()
+                      formik.resetForm()
+                    }}
+                    color="primary"
+                    variant="outlined"
+                  >
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
@@ -264,7 +273,7 @@ const ModalCreate = (props: TProps) => {
               </Grid>
             </Grid>
           </Box>
-        </Typography>
+        </Box>
       </Box>
     </Modal>
   )

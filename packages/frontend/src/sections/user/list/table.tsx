@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import type { IRole, IUser } from '@adp/shared/types'
 import CustomTable from 'src/components/table/custom-table'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'
@@ -7,53 +8,56 @@ import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
-import { USERS_FOR_LIST } from 'src/graphql/queries'
+import { USERS_FOR_LIST, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import { Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import Link from 'next/link'
-import { paths } from 'src/routes/paths'
 import ModalCreate from './modal-create'
 import ModalEdit from './modal-edit'
 import ModalDelete from './modal-delete'
+
+type TRow = Pick<IUser, 'id' | 'firstname' | 'lastname' | 'email' | 'telephone' | 'roleId' | 'role'>
 
 const columns: TColumn[] = [
   {
     id: 'id',
     label: 'ID',
     type: EColumnType.NUMBER,
-    renderCell: (row: any) => row.id,
+    renderCell: (row: TRow) => row.id,
   },
   {
     id: 'firstname',
     label: 'Nombre',
     type: EColumnType.STRING,
-    renderCell: (row: any) => row.firstname,
+    renderCell: (row: TRow) => row.firstname,
   },
   {
     id: 'lastname',
     label: 'Apellido',
     type: EColumnType.STRING,
-    renderCell: (row: any) => row.lastname,
+    renderCell: (row: TRow) => row.lastname,
   },
   {
     id: 'email',
     label: 'Email',
     type: EColumnType.STRING,
-    renderCell: (row: any) => row.email,
+    renderCell: (row: TRow) => row.email,
   },
   {
     id: 'telephone',
     label: 'Telefono',
     type: EColumnType.STRING,
-    renderCell: (row: any) => row.telephone,
+    renderCell: (row: TRow) => row.telephone,
   },
   {
     id: 'roleId',
-    label: 'RolId',
+    label: 'Rol',
     type: EColumnType.STRING,
-    renderCell: (row: any) => row.roleId,
-  }
+    renderCell: (row: TRow) => (row.role ? row.role.name : 'Sin rol'),
+    searchValue: (row: TRow) => (row.role ? row.role.name : 'Sin rol'),
+  },
 ]
+
+type TRole = Pick<IRole, 'id' | 'name'>
 
 type TProps = {
   modalCreate: ReturnType<typeof useBoolean>
@@ -66,10 +70,22 @@ const Table = (props: TProps) => {
   const modalEdit = useBoolean()
   const modalDelete = useBoolean()
 
+  const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
+  const roles: TRole[] = useMemo(() => {
+    if (!rolesQuery.data) return []
+    return rolesQuery.data.roles || []
+  }, [rolesQuery.data])
+
   const users = useMemo(() => {
     if (!data) return []
-    return data.users || []
-  }, [data])
+    return data.users.map((user: IUser) => {
+      const role = roles.find((r) => r.id === user.roleId)
+      return {
+        ...user,
+        role,
+      }
+    })
+  }, [data, roles])
 
   return (
     <Box>
@@ -87,21 +103,8 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
-                    <Link
-                      href={
-                        selected.length === 1
-                          ? paths.dashboard.area.detalle.replace(':id', selected[0])
-                          : ''
-                      }
-                    >
-                      <IconButton>
-                        <Iconify icon="material-symbols:visibility" />
-                      </IconButton>
-                    </Link>
-
                     <IconButton
                       onClick={() => {
-                        // setAreaId(Number(selected[0]))
                         modalEdit.onTrue()
                       }}
                     >
@@ -110,7 +113,6 @@ const Table = (props: TProps) => {
                     <IconButton
                       onClick={() => {
                         console.log(selected)
-                        // setAreaId(Number(selected[0]))
                         modalDelete.onTrue()
                       }}
                     >
@@ -121,7 +123,7 @@ const Table = (props: TProps) => {
               </React.Fragment>
             }
           />
-          {modalCreate.value && <ModalCreate modal={modalCreate} refetch={refetch}/>}
+          {modalCreate.value && <ModalCreate modal={modalCreate} refetch={refetch} />}
           {modalEdit.value && <ModalEdit modal={modalEdit} refetch={refetch} />}
           <ModalDelete modal={modalDelete} refetch={refetch} />
         </React.Fragment>

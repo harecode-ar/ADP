@@ -72,27 +72,29 @@ export default function OrganigramaView() {
           heading="Organigrama"
           links={[{ name: 'Area', href: paths.dashboard.area.root }, { name: 'Organigrama' }]}
         />
-        {
-          !!tree && (<Chart lineHeight="40px" onDelete={onDelete} onAdd={onAdd} onEdit={onEdit} />)
-        }
-        {
-          !tree && !loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-              <h1>No hay areas para mostrar</h1>
-            </Box>
-          )
-        }
-        {
-          loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-              <h1>Cargando...</h1>
-            </Box>
-          )
-        }
+        {!!tree && <Chart lineHeight="40px" onDelete={onDelete} onAdd={onAdd} onEdit={onEdit} />}
+        {!tree && !loading && (
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+          >
+            <h1>No hay areas para mostrar</h1>
+          </Box>
+        )}
+        {loading && (
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+          >
+            <h1>Cargando...</h1>
+          </Box>
+        )}
       </Box>
       <DeleteAreaModal modal={deleteAreaModal} />
-      {createAreaModal.value && <CreateAreaModal modal={createAreaModal} refetch={refetch} areas={areas} />}
-      {editAreaModal.value && <EditAreaModal modal={editAreaModal} refetch={refetch} areas={areas} />}
+      {createAreaModal.value && (
+        <CreateAreaModal modal={createAreaModal} refetch={refetch} areas={areas} />
+      )}
+      {editAreaModal.value && (
+        <EditAreaModal modal={editAreaModal} refetch={refetch} areas={areas} />
+      )}
     </Container>
   )
 }

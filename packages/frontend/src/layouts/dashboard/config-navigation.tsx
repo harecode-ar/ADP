@@ -80,9 +80,7 @@ export function useNavData(): TNavData[] {
               title: 'Usuarios',
               path: paths.dashboard.user.root,
               icon: ICONS.user,
-              children: [
-                { title: 'Listado', path: paths.dashboard.user.list },
-              ],
+              children: [{ title: 'Listado', path: paths.dashboard.user.list }],
             },
             {
               title: 'area',
