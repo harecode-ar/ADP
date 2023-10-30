@@ -26,7 +26,6 @@ export default `#graphql
       lastname: String!
       email: String!
       telephone: String!
-      password: String!
       roleId: Int
     ): User
 
@@ -36,11 +35,11 @@ export default `#graphql
       lastname: String!
       email: String!
       telephone: String!
-      password: String!
       roleId: Int
     ): User
     deleteUser(id: Int!): User
     forgotPassword(email: String!): Boolean
     newPassword(token: String!, email: String!, password: String!): Boolean
+    changePassword(email: String!, newPassword: String!, oldPassword: String!): Boolean
   }
 `

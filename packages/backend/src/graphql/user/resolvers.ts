@@ -55,18 +55,16 @@ export default {
         lastname: string
         email: string
         telephone: string
-        password: string
         roleId: number
       }
     ): Promise<IUser> => {
       try {
-        const { firstname, lastname, email, telephone, password, roleId } = args
+        const { firstname, lastname, email, telephone, roleId } = args
         return User.create({
           firstname,
           lastname,
           email,
           telephone,
-          password,
           roleId,
         })
       } catch (error) {
@@ -82,12 +80,11 @@ export default {
         lastname: string
         email: string
         telephone: string
-        password: string
         roleId: number
       }
     ): Promise<IUser | null> => {
       try {
-        const { id, firstname, lastname, email, telephone, password, roleId } = args
+        const { id, firstname, lastname, email, telephone, roleId } = args
         const user = await User.findByPk(id)
         if (!user) {
           throw new Error('User not found')
@@ -97,7 +94,6 @@ export default {
           lastname,
           email,
           telephone,
-          password,
           roleId,
         })
         return user
@@ -213,6 +209,36 @@ export default {
           password: hashedPassword,
         })
         await foundToken.destroy()
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    changePassword: async (
+      _: any,
+      args: {
+        email: String,
+        newPassword: string
+        oldPassword: string
+      }
+    ): Promise<boolean> => {
+      try {
+        const {email, newPassword, oldPassword } = args
+
+        const user = await User.findOne({
+          where: {
+            email,
+            password: oldPassword
+          },
+        })
+        if (!user) {
+          throw new Error('Usuario no encontrado')
+        }
+        const hashedNewPassword = await hashPassword(newPassword)
+        await user.update({
+          password: hashedNewPassword,
+        })        
         return true
       } catch (error) {
         logger.error(error)
