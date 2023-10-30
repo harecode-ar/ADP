@@ -1,6 +1,4 @@
-import type { TExtension, TMimeType } from '../types'
-
-export const MIME_TYPE_MAP: Record<TExtension, TMimeType> = {
+export const MIME_TYPE_MAP = {
   '.aac': 'audio/aac',
   '.abw': 'application/x-abiword',
   '.arc': 'application/x-freearc',
