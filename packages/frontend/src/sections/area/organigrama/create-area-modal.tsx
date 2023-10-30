@@ -1,19 +1,19 @@
 'use client'
 
 import type { IArea, IUser } from '@adp/shared'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop, Autocomplete } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import { CREATE_AREA } from 'src/graphql/mutations'
 import * as Yup from 'yup'
 import UserPicker from 'src/components/user-picker'
-import { USER_MOCK } from 'src/mocks'
 import { TAreaTree } from 'src/contexts/area-tree-context/types'
+import { USERS_FOR_SELECT } from 'src/graphql/queries/user'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -47,6 +47,12 @@ const CreateAreaModal = (props: TProps) => {
   const { selected } = useAreaTreeContext()
   const [createArea] = useMutation(CREATE_AREA)
   const { enqueueSnackbar } = useSnackbar()
+  const { data } = useQuery(USERS_FOR_SELECT)
+
+  const users: Pick<IUser, 'id'| 'fullname'>[] = useMemo(()=>{
+    if (data?.users) return data.users
+    return []
+  },[data])
 
   const formik = useFormik({
     initialValues: {
@@ -119,7 +125,7 @@ const CreateAreaModal = (props: TProps) => {
 
               <Grid item xs={12} md={6}>
                 <UserPicker
-                  users={USER_MOCK}
+                  users={users}
                   value={formik.values.responsible}
                   onChange={(_, value) => formik.setFieldValue('responsible', value)}
                   label="Responsable"

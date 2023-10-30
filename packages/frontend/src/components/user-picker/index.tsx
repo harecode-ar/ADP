@@ -3,10 +3,12 @@ import React from 'react'
 import { Autocomplete, TextField, Box } from '@mui/material'
 import UserIcon from '../user-icon'
 
+type TUser = Pick<IUser, 'id' | 'fullname'>
+
 type TProps = {
-  users: IUser[]
-  value: IUser | IUser[] | null
-  onChange: (event: any, value: IUser | null) => void
+  users: TUser[]
+  value: TUser | TUser[] | null
+  onChange: (event: any, value: TUser | null) => void
   label: string
   placeholder: string
   variant?: 'standard' | 'filled' | 'outlined'
