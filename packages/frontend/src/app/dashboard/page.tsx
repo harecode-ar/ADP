@@ -4,5 +4,5 @@ import { paths } from 'src/routes/paths'
 // ----------------------------------------------------------------------
 
 export default async function HomePage() {
-  redirect(paths.dashboard.two)
+  redirect(paths.dashboard.area.organigrama)
 }
