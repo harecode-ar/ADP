@@ -13,32 +13,23 @@
     "backend:prettier": "cd packages/backend && yarn prettier",
     "backend:lint": "cd packages/backend && yarn lint",
     "backend:lint:fix": "cd packages/backend && yarn lint:fix",
-    "backend:clear": "cd packages/backend && yarn",
+    "backend:clear": "cd packages/backend && yarn clear",
     "frontend:dev": "cd packages/frontend && yarn dev",
     "frontend:build": "cd packages/frontend && yarn build",
     "frontend:prettier": "cd packages/frontend && yarn prettier",
     "frontend:lint": "cd packages/frontend && yarn lint",
     "frontend:lint:fix": "cd packages/frontend && yarn lint:fix",
-    "frontend:clear": "cd packages/frontend && yarn",
+    "frontend:clear": "cd packages/frontend && yarn clear",
     "shared:build": "cd packages/shared && yarn build",
     "shared:prettier": "cd packages/shared && yarn prettier",
     "shared:lint": "cd packages/shared && yarn lint",
     "shared:lint:fix": "cd packages/shared && yarn lint:fix",
-    "shared:clear": "cd packages/shared && yarn",
+    "shared:clear": "cd packages/shared && yarn clear",
     "prettier": "yarn backend:prettier && yarn frontend:prettier && yarn shared:prettier",
     "lint": "yarn backend:lint && yarn frontend:lint && yarn shared:lint",
     "lint:fix": "yarn backend:lint:fix && yarn frontend:lint:fix && yarn shared:lint:fix",
     "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear"
   },
   "author": "Martin Facciuto",
-  "license": "ISC",
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@mui/icons-material": "^5.14.15",
-    "@mui/material": "^5.14.15"
-  }
+  "license": "ISC"
 }
