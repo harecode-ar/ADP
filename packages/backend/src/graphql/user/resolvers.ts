@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
-import { hashPassword } from '../../utils/password'
+import { hashPassword, comparePassword } from '../../utils/password'
 
 dotenv.config()
 
@@ -218,7 +218,7 @@ export default {
     changePassword: async (
       _: any,
       args: {
-        email: String
+        email: string
         newPassword: string
         oldPassword: string
       }
@@ -229,12 +229,14 @@ export default {
         const user = await User.findOne({
           where: {
             email,
-            password: oldPassword,
           },
         })
-        if (!user) {
-          throw new Error('Usuario no encontrado')
-        }
+        if (!user) throw new Error('Usuario no encontrado')
+
+        const validPassword = await comparePassword(oldPassword, user.password)
+
+        if (!validPassword) throw new Error('Usuario no encontrado')
+
         const hashedNewPassword = await hashPassword(newPassword)
         await user.update({
           password: hashedNewPassword,

@@ -1,11 +1,15 @@
 import React from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import { useFormik, FormikHelpers } from 'formik'
+import { useMutation} from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import IconButton from '@mui/material/IconButton'
+import {UPDATE_PASSWORD} from 'src/graphql/mutations'
 import * as Yup from 'yup'
+import { useAuthContext } from 'src/auth/hooks'
+
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -24,15 +28,18 @@ type TProps = {
   modal: ReturnType<typeof useBoolean>
 }
 
-type TformikValues = {
+type TFormikValues = {
   currentPassword: string
   newPassword: string
   repeatPassword: string
 }
 
 const ChangePasswordModal = (props: TProps) => {
+
+  const { user } = useAuthContext()
   const { modal } = props
   const { enqueueSnackbar } = useSnackbar()
+  const [changePassword] = useMutation(UPDATE_PASSWORD)
   const [showCurrentPassword, setShowCurrentPassword] = React.useState(false)
   const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatPassword, setShowRepeatPassword] = React.useState(false)
@@ -75,12 +82,18 @@ const ChangePasswordModal = (props: TProps) => {
     initialValues: {
       currentPassword: '',
       newPassword: '',
-      repeatPassword: '',
+      repeatPassword: ''
     },
-    onSubmit: async (values, helpers: FormikHelpers<TformikValues>) => {
+    onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        console.log('values: ', values)
-        console.log('Contraseña enviada')
+        if (!user?.email) return
+        await changePassword({
+          variables: {
+            email: user.email,
+            newPassword: values.newPassword,
+            oldPassword: values.currentPassword
+          },
+        })
         enqueueSnackbar('Contraseña modificada exitosamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
