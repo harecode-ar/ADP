@@ -31,9 +31,5 @@
     "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear"
   },
   "author": "Martin Facciuto",
-  "license": "ISC",
-  "dependencies": {
-    "numeral": "2.0.6",
-    "react-dropzone": "14.2.3"
-  }
+  "license": "ISC"
 }
