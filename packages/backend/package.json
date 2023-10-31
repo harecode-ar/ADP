@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "clear": "rm -rf node_modules .next out dist build yarn.lock yarn-error.log",
-    "seed": "ts-node src/database/seeders/index.ts"
+    "seed": "yarn workspace @adp/shared build && ts-node src/database/seeders/index.ts"
   },
   "dependencies": {
     "@adp/shared": "1.0.0",

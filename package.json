@@ -14,6 +14,7 @@
     "backend:lint": "cd packages/backend && yarn lint",
     "backend:lint:fix": "cd packages/backend && yarn lint:fix",
     "backend:clear": "cd packages/backend && yarn clear",
+    "backend:seed": "cd packages/backend && yarn seed",
     "frontend:dev": "cd packages/frontend && yarn dev",
     "frontend:build": "cd packages/frontend && yarn build",
     "frontend:prettier": "cd packages/frontend && yarn prettier",
