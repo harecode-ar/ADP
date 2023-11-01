@@ -8,11 +8,11 @@ import {
   NextSSRInMemoryCache,
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr'
-import { APP_URL } from 'src/config-global'
+import { NEXT_PUBLIC_APP_URL } from 'src/config-global'
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: `${APP_URL}/graphql`,
+    uri: `${NEXT_PUBLIC_APP_URL}/graphql`,
   })
 
   const authLink = setContext((_, { headers }) => {

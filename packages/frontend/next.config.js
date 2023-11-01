@@ -12,10 +12,7 @@ module.exports = {
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
-    });
-    return config;
+    })
+    return config
   },
-  env: {
-    APP_URL: process.env.APP_URL,
-  },
-};
+}
