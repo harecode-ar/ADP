@@ -91,6 +91,11 @@ export function useNavData(): TNavData[] {
                 { title: 'organigrama', path: paths.dashboard.area.organigrama },
               ],
             },
+            {
+              title: 'Proyectos',
+              path: paths.dashboard.project.root,
+              icon: ICONS.user,
+            },
           ],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
         },
