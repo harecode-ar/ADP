@@ -20,8 +20,6 @@ export class Project extends Model {
 
   public areaId!: number | null
 
-  public responsibleId!: number | null
-
   public readonly createdAt!: string
 
   public readonly updatedAt!: string
@@ -62,10 +60,6 @@ Project.init(
       allowNull: false,
     },
     areaId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true,
-    },
-    responsibleId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,
     },
