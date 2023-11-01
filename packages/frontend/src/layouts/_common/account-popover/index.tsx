@@ -96,7 +96,7 @@ export default function AccountPopover() {
           Cerrar sesion
         </MenuItem>
       </CustomPopover>
-      {changePasswordModal.value && <ChangePasswordModal modal={changePasswordModal}/> }
+      {changePasswordModal.value && <ChangePasswordModal modal={changePasswordModal} />}
     </React.Fragment>
   )
 }

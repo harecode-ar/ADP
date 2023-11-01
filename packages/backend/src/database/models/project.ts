@@ -68,7 +68,7 @@ Project.init(
     responsibleId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,
-    }
+    },
   },
   {
     sequelize,
