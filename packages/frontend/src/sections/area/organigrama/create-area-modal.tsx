@@ -100,93 +100,106 @@ const CreateAreaModal = (props: TProps) => {
   })
 
   return (
-    <Box sx={styleModal}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Nuevo projecto
-      </Typography>
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                id="name"
-                name="name"
-                label="Nombre"
-                variant="outlined"
-                fullWidth
-                required
-                value={formik.values.name}
-                error={Boolean(formik.errors.name)}
-                helperText={formik.errors.name}
-                onChange={formik.handleChange}
-              />
-            </Grid>
+    <Modal
+      open={modal.value}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={styleModal}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          Nueva área
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="name"
+                  name="name"
+                  label="Nombre"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={formik.values.name}
+                  error={Boolean(formik.errors.name)}
+                  helperText={formik.errors.name}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
 
-            <Grid item xs={12} md={6}>
-              <UserPicker
-                users={users}
-                value={formik.values.responsible}
-                onChange={(_, value) => formik.setFieldValue('responsible', value)}
-                label="Responsable"
-                placeholder="Buscar responsible"
-                variant="outlined"
-                error={Boolean(formik.errors.responsible)}
-                helperText={formik.errors.responsible}
-              />
+              <Grid item xs={12} md={6}>
+                <UserPicker
+                  users={users}
+                  value={formik.values.responsible}
+                  onChange={(_, value) => formik.setFieldValue('responsible', value)}
+                  label="Responsable"
+                  placeholder="Buscar responsible"
+                  variant="outlined"
+                  error={Boolean(formik.errors.responsible)}
+                  helperText={formik.errors.responsible}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={areas}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.parent}
+                  onChange={(_, value) => formik.setFieldValue('parent', value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Area padre"
+                      variant="outlined"
+                      placeholder="Buscar area"
+                      error={Boolean(formik.errors.parent)}
+                      helperText={formik.errors.parent}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="description"
+                  name="description"
+                  label="Descripción"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 1,
+                  }}
+                >
+                  <Button onClick={modal.onFalse} color="primary" variant="outlined">
+                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    Cancelar
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                    <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                    Crear
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Autocomplete
-                options={areas}
-                getOptionLabel={(option) => option.name}
-                value={formik.values.parent}
-                onChange={(_, value) => formik.setFieldValue('parent', value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Area padre"
-                    variant="outlined"
-                    placeholder="Buscar area"
-                    error={Boolean(formik.errors.parent)}
-                    helperText={formik.errors.parent}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="description"
-                name="description"
-                label="Descripción"
-                variant="outlined"
-                fullWidth
-                multiline
-                value={formik.values.description}
-                onChange={formik.handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  gap: 1,
-                }}
-              >
-                <Button onClick={modal.onFalse} color="primary" variant="outlined">
-                  <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                  Cancelar
-                </Button>
-                <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
-                  <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                  Crear
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Typography>
-    </Box>
+          </Box>
+        </Typography>
+      </Box>
+    </Modal>
   )
 }
 
