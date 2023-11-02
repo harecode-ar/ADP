@@ -7,8 +7,7 @@ import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
-import { USERS_FOR_LIST } from 'src/graphql/queries'
-import { PROJECT_MOCK } from 'src/mocks/project'
+import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
 import { Box } from '@mui/material'
 import Label from 'src/components/label'
 
@@ -94,10 +93,8 @@ const columns: TColumn[] = [
   },
 ]
 
-const projects = PROJECT_MOCK
-
 const Table = () => {
-  const { loading, refetch } = useQuery(USERS_FOR_LIST)
+  const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
   const { hideColumns } = useTable()
 
   useEffect(() => {
@@ -112,7 +109,7 @@ const Table = () => {
         <React.Fragment>
           <CustomTableToolbar id="one" columns={columns} download refetch={refetch} />
           <CustomTableSearch />
-          <CustomTable id="one" columns={columns} data={projects} checkbox={false} />
+          <CustomTable id="one" columns={columns} data={data.projects} checkbox={false} />
         </React.Fragment>
       )}
     </Box>
