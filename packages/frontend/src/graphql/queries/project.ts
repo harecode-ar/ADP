@@ -5,10 +5,19 @@ export const PROJECTS_FOR_LIST = gql`
     projects {
       id
       name
-      areaId
-      responsibleId
       progress
-      stateId
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+      }
+      state {
+        id
+        name
+      }
     }
   }
 `
@@ -31,9 +40,18 @@ export const GET_PROJECT = gql`
       startDate
       endDate
       progress
-      stateId
-      areaId
-      responsibleId
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+      }
+      state {
+        id
+        name
+      }
     }
   }
 `
