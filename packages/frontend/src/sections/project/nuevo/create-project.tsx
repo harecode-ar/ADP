@@ -1,4 +1,5 @@
 import type { IArea } from '@adp/shared'
+import { useRouter } from 'src/routes/hooks'
 import React, { useMemo } from 'react'
 import { Button, Box, TextField, Grid, Autocomplete, Card } from '@mui/material'
 
@@ -33,6 +34,7 @@ const CreateProject = () => {
   const [createProject] = useMutation(CREATE_PROJECT)
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
+  const router = useRouter()
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (data?.areas) return data.areas
@@ -61,6 +63,7 @@ const CreateProject = () => {
           },
         })
         enqueueSnackbar('Proyecto creado correctamente.', { variant: 'success' })
+        router.push('/dashboard/projects/list')
         helpers.resetForm()
       } catch (error) {
         console.error(error)

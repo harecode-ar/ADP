@@ -25,8 +25,8 @@ Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Area.hasMany(Area, { as: 'childAreas', foreignKey: 'parentId' })
 Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
 
-User.hasOne(Area, { as: 'areas', foreignKey: 'userId' })
-Area.belongsTo(User, { as: 'responsible', foreignKey: 'userId' })
+User.hasOne(Area, { as: 'areas', foreignKey: 'responsibleId' })
+Area.belongsTo(User, { as: 'responsible', foreignKey: 'responsibleId' })
 
 Area.hasMany(Project, { as: 'projects', foreignKey: 'areaId' })
 Project.belongsTo(Area, { as: 'area', foreignKey: 'areaId' })

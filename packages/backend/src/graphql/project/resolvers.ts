@@ -27,10 +27,12 @@ export default {
       if (project.area && project.area.responsible) return Promise.resolve(project.area.responsible)
       if (project.areaId) {
         const area: IArea | null = await Area.findByPk(project.areaId, {
-          include: {
-            model: User,
-            as: 'responsible',
-          },
+          include: [
+            {
+              model: User,
+              as: 'responsible',
+            },
+          ],
         })
         if (area && area.responsible) return Promise.resolve(area.responsible)
       }

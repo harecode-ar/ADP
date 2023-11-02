@@ -9,7 +9,6 @@ export default `#graphql
     progress: Int
     stateId: Int
     areaId: Int
-    responsibleId: Int
 
     createdAt: String
     updatedAt: String
