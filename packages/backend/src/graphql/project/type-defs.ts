@@ -9,6 +9,7 @@ export default `#graphql
     progress: Int
     stateId: Int
     areaId: Int
+    responsibleId: Int
 
     createdAt: String
     updatedAt: String
@@ -16,6 +17,7 @@ export default `#graphql
     state: ProjectState
     area: Area
     stages: [Stage]
+    responsible: User
   }
 
   type Query {

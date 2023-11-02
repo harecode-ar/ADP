@@ -1,15 +1,14 @@
 import React from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import { useFormik, FormikHelpers } from 'formik'
-import { useMutation} from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import IconButton from '@mui/material/IconButton'
-import {UPDATE_PASSWORD} from 'src/graphql/mutations'
+import { UPDATE_PASSWORD } from 'src/graphql/mutations'
 import * as Yup from 'yup'
 import { useAuthContext } from 'src/auth/hooks'
-
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -35,7 +34,6 @@ type TFormikValues = {
 }
 
 const ChangePasswordModal = (props: TProps) => {
-
   const { user } = useAuthContext()
   const { modal } = props
   const { enqueueSnackbar } = useSnackbar()
@@ -82,7 +80,7 @@ const ChangePasswordModal = (props: TProps) => {
     initialValues: {
       currentPassword: '',
       newPassword: '',
-      repeatPassword: ''
+      repeatPassword: '',
     },
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -91,7 +89,7 @@ const ChangePasswordModal = (props: TProps) => {
           variables: {
             email: user.email,
             newPassword: values.newPassword,
-            oldPassword: values.currentPassword
+            oldPassword: values.currentPassword,
           },
         })
         enqueueSnackbar('Contraseña modificada exitosamente.', { variant: 'success' })

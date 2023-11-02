@@ -11,7 +11,7 @@ export default {
       _: any,
       __: any,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages'>[]> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>[]> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findAll()
@@ -24,7 +24,7 @@ export default {
       _: any,
       args: Pick<IProject, 'id'>,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages'> | null> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'> | null> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findByPk(args.id)
