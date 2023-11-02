@@ -28,6 +28,11 @@ export const paths = {
     },
     project: {
       root: `${ROOTS.DASHBOARD}/projects`,
+      nuevo: `${ROOTS.DASHBOARD}/projects/nuevo`,
+      list: `${ROOTS.DASHBOARD}/projects/list`,
+    },
+    tablero: {
+      root: `${ROOTS.DASHBOARD}/tablero`,
     },
   },
 }

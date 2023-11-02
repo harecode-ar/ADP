@@ -1,9 +1,10 @@
-import ProjectListView from 'src/sections/project/view'
+import { redirect } from 'next/navigation'
+import { paths } from 'src/routes/paths'
 
 export const metadata = {
-  title: 'Proyectos',
+  title: 'Proyecto',
 }
 
-export default function Page() {
-  return <ProjectListView />
+export default async function HomePage() {
+  redirect(paths.dashboard.project.list)
 }

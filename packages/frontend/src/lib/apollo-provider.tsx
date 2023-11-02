@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { HttpLink } from '@apollo/client'
+import { HttpLink, DefaultOptions } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import {
   ApolloNextAppProvider,
@@ -9,6 +9,12 @@ import {
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr'
 import { NEXT_PUBLIC_APP_URL } from 'src/config-global'
+
+const defaultOptions: DefaultOptions = {
+  query: {
+    fetchPolicy: 'network-only',
+  },
+}
 
 function makeClient() {
   const httpLink = new HttpLink({
@@ -28,6 +34,7 @@ function makeClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link: authLink.concat(httpLink),
+    defaultOptions
   })
 }
 

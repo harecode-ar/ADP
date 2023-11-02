@@ -49,7 +49,6 @@ export default function OrganigramaView() {
   }
 
   const onAdd = (node: TAreaTree) => {
-    console.log(node)
     setSelected(node)
     createAreaModal.onTrue()
   }

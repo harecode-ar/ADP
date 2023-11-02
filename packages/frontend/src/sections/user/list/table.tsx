@@ -112,7 +112,6 @@ const Table = (props: TProps) => {
                     </IconButton>
                     <IconButton
                       onClick={() => {
-                        console.log(selected)
                         modalDelete.onTrue()
                       }}
                     >
