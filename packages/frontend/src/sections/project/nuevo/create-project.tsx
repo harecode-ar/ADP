@@ -14,7 +14,7 @@ import { paths } from 'src/routes/paths'
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   description: Yup.string().required('Descripcion requerida'),
-  areaId: Yup.object().required('Area requerida'),
+  area: Yup.object().required('Area requerida'),
   cost: Yup.string().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
   endDate: Yup.string().required('Fecha de finalizacion requerida'),
@@ -60,11 +60,11 @@ const CreateProject = () => {
             endDate: values.endDate,
           },
         })
-        enqueueSnackbar('Area creada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Proyecto creado correctamente.', { variant: 'success' })
         helpers.resetForm()
       } catch (error) {
         console.error(error)
-        enqueueSnackbar('El Area no pudo ser creada.', { variant: 'error' })
+        enqueueSnackbar('El proyecto no pudo ser creado.', { variant: 'error' })
       }
     },
     validationSchema: projectSchema,
@@ -80,7 +80,7 @@ const CreateProject = () => {
     >
       <CustomBreadcrumbs
         heading="Crear proyecto"
-        links={[{ name: 'Projecto', href: paths.dashboard.project.root }, { name: 'Nuevo' }]}
+        links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Nuevo' }]}
         action={
           <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
             Guardar
