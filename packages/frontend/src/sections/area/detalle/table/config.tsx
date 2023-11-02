@@ -42,6 +42,7 @@ export const columns: TColumn[] = [
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => row.name,
+    searchValue: (row: TRow) => row.name,
   },
   {
     id: 'area',
@@ -81,6 +82,6 @@ export const columns: TColumn[] = [
         </Label>
       )
     },
-    searchValue: (row: any) => row.state?.name,
+    searchValue: (row: any) => row.state?.name || 'No tiene',
   },
 ]

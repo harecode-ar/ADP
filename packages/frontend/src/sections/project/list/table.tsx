@@ -50,6 +50,7 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => row.name,
+    searchValue: (row: TRow) => row.name,
   },
   {
     id: 'area',
@@ -57,8 +58,8 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     hidden: true,
     searchable: true,
-    renderCell: (row: any) => (row.area ? row.area?.name : 'Sin area'),
-    searchValue: (row: any) => (row.area ? row.area?.name : 'Sin area'),
+    renderCell: (row: any) => (row.area ? row.area.name : 'Sin area'),
+    searchValue: (row: any) => (row.area ? row.area.name : 'Sin area'),
   },
   {
     id: 'fullName',
@@ -89,7 +90,7 @@ const columns: TColumn[] = [
         </Label>
       )
     },
-    searchValue: (row: any) => row.state?.name,
+    searchValue: (row: any) => row.state?.name || 'No tiene',
   },
 ]
 
