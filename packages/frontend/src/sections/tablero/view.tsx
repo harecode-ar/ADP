@@ -32,8 +32,6 @@ export default function TableroView() {
     [areas, search]
   )
 
-  console.log(areas, filteredAreas)
-
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
