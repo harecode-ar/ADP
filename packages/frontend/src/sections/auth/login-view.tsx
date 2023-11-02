@@ -14,7 +14,11 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { RouterLink } from 'src/routes/components'
 import { paths } from 'src/routes/paths'
 import { useSearchParams, useRouter } from 'src/routes/hooks'
-import { NEXT_PUBLIC_DEFAULT_EMAIL, NEXT_PUBLIC_DEFAULT_PASSWORD, PATH_AFTER_LOGIN } from 'src/config-global'
+import {
+  NEXT_PUBLIC_DEFAULT_EMAIL,
+  NEXT_PUBLIC_DEFAULT_PASSWORD,
+  PATH_AFTER_LOGIN,
+} from 'src/config-global'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAuthContext } from 'src/auth/hooks'
 import Iconify from 'src/components/iconify'

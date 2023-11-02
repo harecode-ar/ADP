@@ -24,4 +24,29 @@ export default `#graphql
     projects: [Project]
     project(id: ID): Project
   }
+
+  type Mutation {
+    createProject(
+      name: String!
+      description: String!
+      areaId: Int!
+      cost: String
+      startDate: String!
+      endDate: String!
+    ): Project
+
+    updateProject(
+      id: Int!
+      name: String
+      description: String
+      areaId: Int
+      cost: String
+      startDate: String
+      endDate: String
+      progress: Int
+      stateId: Int
+    ): Project
+
+    deleteProject(id: Int!): Project
+  }
 `
