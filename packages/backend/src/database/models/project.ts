@@ -49,7 +49,7 @@ Project.init(
     },
     endDate: {
       type: DataTypes.DATEONLY,
-      allowNull: true,
+      allowNull: false,
     },
     progress: {
       type: DataTypes.FLOAT,
