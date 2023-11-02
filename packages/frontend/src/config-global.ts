@@ -2,6 +2,8 @@
 import { paths } from 'src/routes/paths'
 
 export const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || ''
+export const NEXT_PUBLIC_DEFAULT_EMAIL = process.env.NEXT_PUBLIC_DEFAULT_EMAIL || ''
+export const NEXT_PUBLIC_DEFAULT_PASSWORD = process.env.NEXT_PUBLIC_DEFAULT_PASSWORD || ''
 
 export const HOST_API = process.env.NEXT_PUBLIC_HOST_API
 export const ASSETS_API = process.env.NEXT_PUBLIC_ASSETS_API

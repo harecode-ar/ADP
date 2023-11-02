@@ -65,4 +65,91 @@ export default {
       }
     },
   },
+  Mutation: {
+    createProject: (
+      _: any,
+      args: Pick<
+        IProject,
+        'name' | 'description' | 'areaId' | 'cost' | 'startDate' | 'endDate' | 'stateId'
+      >,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const { name, description, areaId, cost, startDate, endDate } = args
+        return Project.create({
+          name,
+          description,
+          areaId,
+          cost,
+          startDate,
+          endDate,
+          stateId: 1,
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    updateProject: async (
+      _: any,
+      args: Pick<
+        IProject,
+        | 'id'
+        | 'name'
+        | 'description'
+        | 'areaId'
+        | 'cost'
+        | 'startDate'
+        | 'endDate'
+        | 'progress'
+        | 'stateId'
+      >,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const { id, name, description, areaId, cost, startDate, endDate, progress, stateId } = args
+        const project = await Project.findByPk(id)
+        if (!project) {
+          throw new Error('Project not found')
+        }
+        await project.update({
+          name,
+          description,
+          areaId,
+          cost,
+          startDate,
+          endDate,
+          progress,
+          stateId,
+        })
+        return project
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    deleteProject: async (
+      _: any,
+      args: Pick<IProject, 'id'>,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const { id } = args
+        const project = await Project.findByPk(id)
+        if (!project) {
+          throw new Error('Project not found')
+        }
+        await project.destroy()
+        return project
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+  },
 }

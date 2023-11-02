@@ -4,8 +4,8 @@ export const CREATE_PROJECT = gql`
   mutation createProject(
     $name: String!
     $description: String!
-    $areaId: String!
-    $cost: String!
+    $areaId: Int!
+    $cost: String
     $startDate: String!
     $endDate: String!
   ) {
@@ -25,14 +25,16 @@ export const CREATE_PROJECT = gql`
 export const UPDATE_PROJECT = gql`
   mutation updateProject(
     $id: Int!
-    $name: String!
-    $description: String!
-    $areaId: String!
-    $cost: String!
-    $startDate: String!
-    $endDate: String!
+    $name: String
+    $description: String
+    $areaId: Int
+    $cost: String
+    $startDate: String
+    $endDate: String
+    $progress: Int
+    $stateId: Int
   ) {
-    updateArea(
+    updateProject(
       id: $id
       name: $name
       description: $description
@@ -40,6 +42,8 @@ export const UPDATE_PROJECT = gql`
       cost: $cost
       startDate: $startDate
       endDate: $endDate
+      progress: $progress
+      stateId: $stateId
     ) {
       id
     }

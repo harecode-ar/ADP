@@ -5,11 +5,19 @@ export const PROJECTS_FOR_LIST = gql`
     projects {
       id
       name
-      description
-      areaId
-      cost
-      startDate
-      endDate
+      progress
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+      }
+      state {
+        id
+        name
+      }
     }
   }
 `
@@ -22,32 +30,25 @@ export const PROJECTS_FOR_SELECT = gql`
   }
 `
 
-export const GET_PROJECTS_FOR_TREE = gql`
-  query projectsForTree {
-    projects {
-      id
-      name
-      parentId
-      responsible {
-        id
-        email
-        fullname
-      }
-    }
-  }
-`
 export const GET_PROJECT = gql`
   query project($id: Int!) {
     project(id: $id) {
       id
       name
       description
+      cost
+      startDate
+      endDate
+      progress
+      area {
+        id
+        name
+      }
       responsible {
         id
-        email
         fullname
       }
-      parent {
+      state {
         id
         name
       }
