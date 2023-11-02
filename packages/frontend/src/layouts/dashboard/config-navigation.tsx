@@ -96,6 +96,11 @@ export function useNavData(): TNavData[] {
               path: paths.dashboard.project.root,
               icon: ICONS.user,
             },
+            {
+              title: 'Tablero',
+              path: paths.dashboard.tablero.root,
+              icon: ICONS.user,
+            },
           ],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
         },

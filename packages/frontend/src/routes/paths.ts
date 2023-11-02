@@ -29,6 +29,9 @@ export const paths = {
     project: {
       root: `${ROOTS.DASHBOARD}/projects`,
     },
+    tablero: {
+      root: `${ROOTS.DASHBOARD}/tablero`,
+    },
   },
 }
 
