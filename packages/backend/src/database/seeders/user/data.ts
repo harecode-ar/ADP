@@ -4,7 +4,7 @@ export default [
   {
     firstname: 'Martin',
     lastname: 'Facciuto',
-    email: 'mfacciuto@adp.com',
+    email: 'martin_facciuto@hotmail.com',
     telephone: '1234567',
     password: '123',
     role: ROLE_MAP.ADMIN,
@@ -12,7 +12,7 @@ export default [
   {
     firstname: 'Andres',
     lastname: 'Gomez',
-    email: 'agomez@adp.com',
+    email: 'andresgomezic@gmail.com',
     telephone: '1234567',
     password: '123',
     role: ROLE_MAP.ADMIN,
@@ -20,7 +20,7 @@ export default [
   {
     firstname: 'Lucas',
     lastname: 'Lezano',
-    email: 'llezano@adp.com',
+    email: 'lukitaslezano@gmail.com',
     telephone: '1234567',
     password: '123',
     role: ROLE_MAP.ADMIN,
@@ -28,7 +28,7 @@ export default [
   {
     firstname: 'Pablo',
     lastname: 'Kass',
-    email: 'pkass@adp.com',
+    email: 'kasspablo@gmail.com',
     telephone: '1234567',
     password: '123',
     role: ROLE_MAP.ADMIN,
