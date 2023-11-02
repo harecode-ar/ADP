@@ -22,8 +22,11 @@ Permission.belongsToMany(Role, { as: 'roles', through: RolePermission, foreignKe
 User.hasMany(Token, { as: 'tokens', foreignKey: 'userId' })
 Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
+Area.hasMany(Area, { as: 'childAreas', foreignKey: 'parentId' })
+Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
+
 User.hasOne(Area, { as: 'areas', foreignKey: 'userId' })
-Area.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+Area.belongsTo(User, { as: 'responsible', foreignKey: 'userId' })
 
 Area.hasMany(Project, { as: 'projects', foreignKey: 'areaId' })
 Project.belongsTo(Area, { as: 'area', foreignKey: 'areaId' })
