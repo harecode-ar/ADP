@@ -32,7 +32,7 @@
     "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear",
     "build": "yarn backend:build && yarn frontend:build && yarn shared:build",
     "pull": "git pull && yarn install && yarn shared:build",
-    "precommit": "yarn prettier && yarn lint && yarn build"
+    "precommit": "yarn prettier && yarn lint:fix && yarn build"
   },
   "author": "Martin Facciuto",
   "license": "ISC"
