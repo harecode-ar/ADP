@@ -42,7 +42,7 @@ function makeClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link: authLink.concat(httpLink),
-    defaultOptions
+    defaultOptions,
   })
 }
 
