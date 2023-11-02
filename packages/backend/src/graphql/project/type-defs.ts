@@ -23,5 +23,6 @@ export default `#graphql
   type Query {
     projects: [Project]
     project(id: ID): Project
+    projectsByArea(areaId: Int): [Project]
   }
 `

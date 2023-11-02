@@ -1,13 +1,11 @@
 import React from 'react'
-import Card from '@mui/material/Card'
-import Avatar from '@mui/material/Avatar'
-import MenuItem from '@mui/material/MenuItem'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
+import NextLink from 'next/link'
+import { Link, Card, Avatar, MenuItem, IconButton, Typography, Box } from '@mui/material'
 import { Theme, SxProps } from '@mui/material/styles'
 import Iconify from 'src/components/iconify'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
 import type { TAreaTree } from 'src/contexts/area-tree-context/types'
+import { paths } from 'src/routes/paths'
 
 // ----------------------------------------------------------------------
 
@@ -67,6 +65,24 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
         arrow="left-center"
         sx={{ width: 160 }}
       >
+        <MenuItem>
+          <Link
+            component={NextLink}
+            href={paths.dashboard.area.detalle.replace(':id', String(node.id))}
+            color="inherit"
+            underline="none"
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Iconify icon="eva:eye-fill" />
+              Detalle
+            </Box>
+          </Link>
+        </MenuItem>
         {onAdd && (
           <MenuItem
             onClick={() => {
