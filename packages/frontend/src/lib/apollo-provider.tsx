@@ -11,8 +11,16 @@ import {
 import { NEXT_PUBLIC_APP_URL } from 'src/config-global'
 
 const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
   query: {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+  mutate: {
+    errorPolicy: 'all',
   },
 }
 
@@ -34,7 +42,7 @@ function makeClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link: authLink.concat(httpLink),
-    defaultOptions
+    defaultOptions,
   })
 }
 

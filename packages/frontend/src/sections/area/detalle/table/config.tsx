@@ -1,14 +1,6 @@
-import React, { useEffect } from 'react'
 import type { IProject } from '@adp/shared/types'
-import CustomTable from 'src/components/table/custom-table'
-import CustomTableSearch from 'src/components/table/custom-table-search'
-import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
-import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
-import { EColumnType, useTable } from 'src/components/table'
+import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
-import { useQuery } from '@apollo/client'
-import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
-import { Box } from '@mui/material'
 import Label from 'src/components/label'
 
 const getLabelColor = (id: number) => {
@@ -43,7 +35,7 @@ type TRow = Pick<
   | 'responsible'
 >
 
-const columns: TColumn[] = [
+export const columns: TColumn[] = [
   {
     id: 'name',
     label: 'Nombre de proyecto',
@@ -58,8 +50,8 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     hidden: true,
     searchable: true,
-    renderCell: (row: any) => (row.area ? row.area.name : 'Sin area'),
-    searchValue: (row: any) => (row.area ? row.area.name : 'Sin area'),
+    renderCell: (row: any) => (row.area ? row.area?.name : 'Sin area'),
+    searchValue: (row: any) => (row.area ? row.area?.name : 'Sin area'),
   },
   {
     id: 'fullName',
@@ -93,28 +85,3 @@ const columns: TColumn[] = [
     searchValue: (row: any) => row.state?.name || 'No tiene',
   },
 ]
-
-const Table = () => {
-  const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
-  const { hideColumns } = useTable()
-
-  useEffect(() => {
-    hideColumns(columns)
-  }, [hideColumns])
-
-  return (
-    <Box>
-      {loading ? (
-        <CustomTableSkeleton columns={columns.length} search />
-      ) : (
-        <React.Fragment>
-          <CustomTableToolbar id="one" columns={columns} download refetch={refetch} />
-          <CustomTableSearch />
-          <CustomTable id="one" columns={columns} data={data.projects} checkbox={false} />
-        </React.Fragment>
-      )}
-    </Box>
-  )
-}
-
-export default Table

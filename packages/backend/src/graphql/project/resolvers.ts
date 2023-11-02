@@ -66,6 +66,26 @@ export default {
         throw error
       }
     },
+    projectsByArea: (
+      _: any,
+      args: Pick<IProject, 'areaId'>,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>[]> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        return Project.findAll({
+          where: { areaId: args.areaId },
+          include: [
+            { model: Area, as: 'area' },
+            { model: Stage, as: 'stages' },
+            { model: ProjectState, as: 'state' },
+          ],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createProject: (

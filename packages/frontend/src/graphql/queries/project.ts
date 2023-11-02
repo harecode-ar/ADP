@@ -1,5 +1,39 @@
 import { gql } from '@apollo/client'
 
+export const GET_PROJECTS_BY_AREA = gql`
+  query projectsByArea($areaId: Int!) {
+    projectsByArea(areaId: $areaId) {
+      id
+      name
+      description
+      progress
+      cost
+      startDate
+      endDate
+
+      state {
+        id
+        name
+      }
+
+      responsible {
+        id
+        fullname
+      }
+
+      area {
+        id
+        name
+      }
+
+      stages {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const PROJECTS_FOR_LIST = gql`
   query projectsForList {
     projects {

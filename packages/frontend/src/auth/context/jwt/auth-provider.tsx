@@ -5,9 +5,10 @@ import { useState, useEffect, useReducer, useCallback, useMemo } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { GET_SESSION } from 'src/graphql/queries'
 import { LOGIN as LOGIN_MUTATION } from 'src/graphql/mutations'
-import { localStorageSetItem } from 'src/utils/storage-available'
+import { localStorageSetItem, localStorageGetItem } from 'src/utils/storage-available'
+import { wait } from 'src/utils/wait'
 import { AuthContext } from './auth-context'
-import { isValidToken, setSession } from './utils'
+import { setSession } from './utils'
 import { ActionMapType, AuthStateType } from '../../types'
 
 enum Types {
@@ -88,9 +89,9 @@ export function AuthProvider({ children }: Props) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = sessionStorage.getItem(STORAGE_KEY)
+      const accessToken = localStorageGetItem(STORAGE_KEY)
 
-      if (accessToken && isValidToken(accessToken)) {
+      if (accessToken) {
         setSession(accessToken)
 
         const response = await getSession()
@@ -137,8 +138,10 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     if (!initialized) {
-      initialize()
-      setInitialized(true)
+      wait(600).then(() => {
+        initialize()
+        setInitialized(true)
+      })
     }
   }, [initialize, initialized])
 

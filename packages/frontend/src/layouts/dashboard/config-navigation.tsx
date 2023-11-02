@@ -86,10 +86,7 @@ export function useNavData(): TNavData[] {
               title: 'area',
               path: paths.dashboard.area.root,
               icon: ICONS.user,
-              children: [
-                { title: 'detalle', path: paths.dashboard.area.detalle },
-                { title: 'organigrama', path: paths.dashboard.area.organigrama },
-              ],
+              children: [{ title: 'organigrama', path: paths.dashboard.area.organigrama }],
             },
             {
               title: 'Proyectos',
