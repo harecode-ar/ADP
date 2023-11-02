@@ -31,7 +31,8 @@
     "lint:fix": "yarn backend:lint:fix && yarn frontend:lint:fix && yarn shared:lint:fix",
     "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear",
     "build": "yarn backend:build && yarn frontend:build && yarn shared:build",
-    "pull": "git pull && yarn install && yarn shared:build"
+    "pull": "git pull && yarn install && yarn shared:build",
+    "precommit": "yarn prettier && yarn lint && yarn build"
   },
   "author": "Martin Facciuto",
   "license": "ISC"
