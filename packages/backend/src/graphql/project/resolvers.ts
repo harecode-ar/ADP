@@ -72,7 +72,7 @@ export default {
         IProject,
         'name' | 'description' | 'areaId' | 'cost' | 'startDate' | 'endDate' | 'stateId'
       >,
-      context: IContext,
+      context: IContext
     ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -95,10 +95,18 @@ export default {
     updateProject: async (
       _: any,
       args: Pick<
-      IProject,
-      'id' | 'name' | 'description' | 'areaId' | 'cost' | 'startDate' | 'endDate' | 'progress' | 'stateId'
+        IProject,
+        | 'id'
+        | 'name'
+        | 'description'
+        | 'areaId'
+        | 'cost'
+        | 'startDate'
+        | 'endDate'
+        | 'progress'
+        | 'stateId'
       >,
-      context: IContext,
+      context: IContext
     ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -127,9 +135,9 @@ export default {
     deleteProject: async (
       _: any,
       args: Pick<IProject, 'id'>,
-      context: IContext,
-      ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
-        try {
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+      try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { id } = args
         const project = await Project.findByPk(id)
@@ -142,6 +150,6 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
 }
