@@ -68,7 +68,7 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
         <MenuItem>
           <Link
             component={NextLink}
-            href={paths.dashboard.area.detalle.replace(':id', String(node.id))}
+            href={paths.dashboard.area.detail.replace(':id', String(node.id))}
             color="inherit"
             underline="none"
           >

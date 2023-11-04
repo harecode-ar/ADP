@@ -1,9 +1,9 @@
-import { redirect } from 'next/navigation'
-// config
-import { PATH_AFTER_LOGIN } from 'src/config-global'
+import TableroView from 'src/sections/tablero/view'
 
-// ----------------------------------------------------------------------
+export const metadata = {
+  title: 'Tablero',
+}
 
-export default async function HomePage() {
-  redirect(PATH_AFTER_LOGIN)
+export default function Page() {
+  return <TableroView />
 }

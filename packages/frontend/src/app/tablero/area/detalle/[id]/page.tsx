@@ -7,6 +7,6 @@ export const metadata = {
   title: 'Area: Detalle',
 }
 
-export default function Page({ params }: { params: { area_id: string } }) {
-  return <AreaDetailView areaId={params.area_id} />
+export default function Page({ params }: { params: { id: string } }) {
+  return <AreaDetailView areaId={params.id} />
 }

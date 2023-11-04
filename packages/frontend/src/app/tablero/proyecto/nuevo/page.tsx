@@ -1,7 +1,7 @@
 import NewProjectView from 'src/sections/project/nuevo/view'
 
 export const metadata = {
-  title: 'Proyecto-nuevo',
+  title: 'Proyecto: Nuevo',
 }
 
 export default function Page() {
