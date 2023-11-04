@@ -86,7 +86,7 @@ function AreaCard({ area }: AreaCardProps) {
         flexDirection: 'column',
         cursor: 'pointer',
       }}
-      onClick={() => router.push(paths.dashboard.area.detalle.replace(':id', String(id)))}
+      onClick={() => router.push(paths.dashboard.area.detail.replace(':id', String(id)))}
     >
       <Avatar
         alt={responsible?.fullname || 'Sin responsable'}

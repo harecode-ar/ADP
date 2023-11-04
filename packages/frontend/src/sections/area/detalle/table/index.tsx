@@ -6,8 +6,9 @@ import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
 import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { useTable } from 'src/components/table'
-import { Box, Card, Typography, Link, Button } from '@mui/material'
+import { Box, Card, Typography, Link, Button, IconButton } from '@mui/material'
 import { paths } from 'src/routes/paths'
+import Iconify from 'src/components/iconify'
 import { columns } from './config'
 
 type TProps = {
@@ -18,7 +19,7 @@ type TProps = {
 
 const Table = (props: TProps) => {
   const { loading = false, refetch, projects } = props
-  const { hideColumns } = useTable()
+  const { hideColumns, selected } = useTable()
 
   useEffect(() => {
     hideColumns(columns)
@@ -40,7 +41,20 @@ const Table = (props: TProps) => {
             id="area-projects-list-table"
             columns={columns}
             data={projects}
-            checkbox={false}
+            action={
+              <React.Fragment>
+                {selected.length === 1 && (
+                  <Link
+                    component={NextLink}
+                    href={paths.dashboard.project.detail.replace(':id', selected[0])}
+                  >
+                    <IconButton>
+                      <Iconify icon="mdi:eye" />
+                    </IconButton>
+                  </Link>
+                )}
+              </React.Fragment>
+            }
           />
         </React.Fragment>
       )}

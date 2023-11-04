@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import type { IProject } from '@adp/shared/types'
+import NextLink from 'next/link'
 import CustomTable from 'src/components/table/custom-table'
 import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
@@ -8,8 +9,10 @@ import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
-import { Box } from '@mui/material'
+import { Box, IconButton, Link } from '@mui/material'
 import Label from 'src/components/label'
+import { paths } from 'src/routes/paths'
+import Iconify from 'src/components/iconify'
 
 const getLabelColor = (id: number) => {
   switch (id) {
@@ -96,7 +99,7 @@ const columns: TColumn[] = [
 
 const Table = () => {
   const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
-  const { hideColumns } = useTable()
+  const { hideColumns, selected } = useTable()
 
   useEffect(() => {
     hideColumns(columns)
@@ -108,9 +111,32 @@ const Table = () => {
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
-          <CustomTableToolbar id="one" columns={columns} download refetch={refetch} />
+          <CustomTableToolbar
+            id="project-list-table"
+            columns={columns}
+            download
+            refetch={refetch}
+          />
           <CustomTableSearch />
-          <CustomTable id="one" columns={columns} data={data.projects} checkbox={false} />
+          <CustomTable
+            id="project-list-table"
+            columns={columns}
+            data={data.projects}
+            action={
+              <React.Fragment>
+                {selected.length === 1 && (
+                  <Link
+                    component={NextLink}
+                    href={paths.dashboard.project.detail.replace(':id', selected[0])}
+                  >
+                    <IconButton>
+                      <Iconify icon="mdi:eye" />
+                    </IconButton>
+                  </Link>
+                )}
+              </React.Fragment>
+            }
+          />
         </React.Fragment>
       )}
     </Box>
