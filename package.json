@@ -5,7 +5,8 @@
   "workspaces": [
     "packages/backend",
     "packages/frontend",
-    "packages/shared"
+    "packages/shared",
+    "packages/scripts"
   ],
   "scripts": {
     "backend:dev": "cd packages/backend && yarn dev",
@@ -26,10 +27,16 @@
     "shared:lint": "cd packages/shared && yarn lint",
     "shared:lint:fix": "cd packages/shared && yarn lint:fix",
     "shared:clear": "cd packages/shared && yarn clear",
-    "prettier": "yarn backend:prettier && yarn frontend:prettier && yarn shared:prettier",
-    "lint": "yarn backend:lint && yarn frontend:lint && yarn shared:lint",
-    "lint:fix": "yarn backend:lint:fix && yarn frontend:lint:fix && yarn shared:lint:fix",
-    "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear",
+    "scripts:build": "cd packages/scripts && yarn build",
+    "scripts:prettier": "cd packages/scripts && yarn prettier",
+    "scripts:lint": "cd packages/scripts && yarn lint",
+    "scripts:lint:fix": "cd packages/scripts && yarn lint:fix",
+    "scripts:clear": "cd packages/scripts && yarn clear",
+    "scripts:next-fix": "cd packages/scripts && yarn next-fix",
+    "prettier": "yarn backend:prettier && yarn frontend:prettier && yarn shared:prettier && yarn scripts:prettier",
+    "lint": "yarn backend:lint && yarn frontend:lint && yarn shared:lint && yarn scripts:lint",
+    "lint:fix": "yarn backend:lint:fix && yarn frontend:lint:fix && yarn shared:lint:fix && yarn scripts:lint:fix",
+    "clear": "yarn backend:clear && yarn frontend:clear && yarn shared:clear && yarn scripts:clear",
     "build": "yarn backend:build && yarn frontend:build && yarn shared:build",
     "pull": "git pull && yarn install && yarn shared:build",
     "precommit": "yarn prettier && yarn lint:fix && yarn build"
