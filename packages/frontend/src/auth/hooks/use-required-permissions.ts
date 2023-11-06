@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { paths } from 'src/routes/paths'
 import { useAuthContext } from './use-auth-context'
 
 export const usePermissions = (
@@ -15,7 +16,7 @@ export const usePermissions = (
     : requiredPermissions.some((permission) => mappedPermissions.includes(permission))
 
   if (redirect && !hasPermissions) {
-    router.push('/403')
+    router.push(paths[403])
   }
 
   return hasPermissions

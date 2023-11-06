@@ -63,7 +63,7 @@ const CreateProject = () => {
           },
         })
         enqueueSnackbar('Proyecto creado correctamente.', { variant: 'success' })
-        router.push('/dashboard/projects/list')
+        router.push(paths.dashboard.project.list)
         helpers.resetForm()
       } catch (error) {
         console.error(error)

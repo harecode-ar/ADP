@@ -100,7 +100,6 @@ const ModalEdit = (props: TProps) => {
         enqueueSnackbar('Usuario editado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
-        // router.push(paths.dashboard.user.list)
         refetch()
         setSelected([])
       } catch (error) {
