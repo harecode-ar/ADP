@@ -32,7 +32,6 @@ const GanttComponent = (props: TProps) => {
     console.log('etapa seleccionada: ', task.id)
   }
   const isDark = mode === 'dark'
-  console.log(mode)
   return (
     <Box className={`gantt-container ${mode}`}>
       <ViewSwitcher onViewModeChange={(viewMode) => setView(viewMode)} />
