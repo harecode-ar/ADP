@@ -1,0 +1,23 @@
+.gantt-container.dark .calendarTop>text,
+.gantt-container.dark .content>.bar>g>text,
+.gantt-container.dark .calendar>text,
+.gantt-container .calendar>rect,
+.gantt-container .grid>.gridBody>.rows>rect {
+  fill: #fff;
+}
+
+.gantt-container .calendarTop>text,
+.gantt-container.dark .calendar>rect,
+.gantt-container .calendar>text,
+.gantt-container.dark .grid>.gridBody>.rows>rect {
+  fill: #212b36;
+}
+
+.gantt-container .calendarTop>line,
+.gantt-container .calendar>rect,
+.gantt-container .grid>.gridBody>.rows>rect,
+.gantt-container .grid>.gridBody>.ticks>line,
+.gantt-container .grid>.gridBody>.rowLines>line {
+  stroke: rgba(145, 158, 171, 0.2);
+}
+
