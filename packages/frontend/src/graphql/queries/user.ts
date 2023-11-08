@@ -8,7 +8,6 @@ export const USERS_FOR_LIST = gql`
       lastname
       email
       telephone
-      password
       roleId
     }
   }
@@ -29,7 +28,6 @@ export const GET_USER = gql`
       lastname
       email
       telephone
-      password
       roleId
     }
   }

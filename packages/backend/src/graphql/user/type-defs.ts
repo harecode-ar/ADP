@@ -5,7 +5,6 @@ export default `#graphql
     lastname: String
     email: String
     telephone: String
-    password: String
     roleId: Int
 
     role: Role

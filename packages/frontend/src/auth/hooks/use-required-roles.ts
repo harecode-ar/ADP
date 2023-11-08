@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { paths } from 'src/routes/paths'
 import { useAuthContext } from './use-auth-context'
 
 export const useRequiredRoles = (requiredRoles: string[], redirect: boolean = true) => {
@@ -8,7 +9,7 @@ export const useRequiredRoles = (requiredRoles: string[], redirect: boolean = tr
   const hasRoles = requiredRoles.some((r) => role?.name === r)
 
   if (redirect && !hasRoles) {
-    router.push('/403')
+    router.push(paths[403])
   }
 
   return hasRoles

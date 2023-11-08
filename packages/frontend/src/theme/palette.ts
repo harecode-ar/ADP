@@ -20,7 +20,7 @@ declare module '@mui/material/styles/createPalette' {
 
 // SETUP COLORS
 
-const GREY = {
+export const GREY = {
   0: '#FFFFFF',
   100: '#F9FAFB',
   200: '#F4F6F8',
@@ -33,7 +33,7 @@ const GREY = {
   900: '#161C24',
 }
 
-const PRIMARY = {
+export const PRIMARY = {
   lighter: '#C8FAD6',
   light: '#5BE49B',
   main: '#00A76F',
@@ -42,7 +42,7 @@ const PRIMARY = {
   contrastText: '#FFFFFF',
 }
 
-const SECONDARY = {
+export const SECONDARY = {
   lighter: '#EFD6FF',
   light: '#C684FF',
   main: '#8E33FF',
@@ -51,7 +51,7 @@ const SECONDARY = {
   contrastText: '#FFFFFF',
 }
 
-const INFO = {
+export const INFO = {
   lighter: '#CAFDF5',
   light: '#61F3F3',
   main: '#00B8D9',
@@ -60,7 +60,7 @@ const INFO = {
   contrastText: '#FFFFFF',
 }
 
-const SUCCESS = {
+export const SUCCESS = {
   lighter: '#D3FCD2',
   light: '#77ED8B',
   main: '#22C55E',
@@ -69,7 +69,7 @@ const SUCCESS = {
   contrastText: '#ffffff',
 }
 
-const WARNING = {
+export const WARNING = {
   lighter: '#FFF5CC',
   light: '#FFD666',
   main: '#FFAB00',
@@ -78,7 +78,7 @@ const WARNING = {
   contrastText: GREY[800],
 }
 
-const ERROR = {
+export const ERROR = {
   lighter: '#FFE9D5',
   light: '#FFAC82',
   main: '#FF5630',
@@ -87,7 +87,7 @@ const ERROR = {
   contrastText: '#FFFFFF',
 }
 
-const COMMON = {
+export const COMMON = {
   common: {
     black: '#000000',
     white: '#FFFFFF',

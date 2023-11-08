@@ -14,13 +14,11 @@ import {
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
-import { useRouter } from 'next/navigation'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_USER } from 'src/graphql/mutations'
 import { GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
-import { paths } from 'src/routes/paths'
 import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
@@ -62,7 +60,6 @@ type TFormikValues = {
 }
 
 const ModalCreate = (props: TProps) => {
-  const router = useRouter()
   const [createUser] = useMutation(CREATE_USER)
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
@@ -96,7 +93,6 @@ const ModalCreate = (props: TProps) => {
         enqueueSnackbar('Usuario creado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
-        router.push(paths.dashboard.user.list)
         refetch()
       } catch (error) {
         console.error(error)
