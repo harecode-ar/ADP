@@ -17,14 +17,12 @@ export default function StagesTab(props: TProps) {
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Typography variant="h4">
-          Crear etapas
-        </Typography>
+        <Typography variant="h4">Crear etapas</Typography>
         <IconButton onClick={modalCreate.onTrue}>
           <Iconify icon="mingcute:add-fill" />
         </IconButton>
       </Box>
-      {modalCreate.value && <ModalCreate modal={modalCreate} project={project}/>}
+      {modalCreate.value && <ModalCreate modal={modalCreate} project={project} />}
     </Box>
   )
 }

@@ -39,7 +39,6 @@ export default {
     },
   },
 
-  
   Mutation: {
     createStage: async (
       _: any,
@@ -51,8 +50,8 @@ export default {
     ): Promise<Omit<IStage, 'state' | 'area' | 'project' | 'parentStage' | 'childStages'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const { name, description, startDate, endDate, areaId, projectId, parentStageId  } = args
-        
+        const { name, description, startDate, endDate, areaId, projectId, parentStageId } = args
+
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
         const end = new Date(endDate).toISOString().slice(0, 10)
@@ -63,7 +62,7 @@ export default {
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Dates out of range')
-        const state = (start > actualDate) ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
+        const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
         return await Stage.create({
           name,
@@ -73,7 +72,7 @@ export default {
           stateId: state,
           areaId,
           projectId,
-          parentStageId
+          parentStageId,
         })
       } catch (error) {
         logger.error(error)
@@ -85,52 +84,79 @@ export default {
       _: any,
       args: Pick<
         IStage,
-        'id' | 'name' | 'description' | 'startDate' | 'endDate' | 'stateId' | 'progress' | 'areaId' | 'projectId' | 'parentStageId'
+        | 'id'
+        | 'name'
+        | 'description'
+        | 'startDate'
+        | 'endDate'
+        | 'stateId'
+        | 'progress'
+        | 'areaId'
+        | 'projectId'
+        | 'parentStageId'
       >,
       context: IContext
     ): Promise<Omit<IStage, 'state' | 'area' | 'project' | 'parentStage' | 'childStages'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const { id, name, description, startDate, endDate, stateId, progress, areaId, projectId, parentStageId } = args
+        const {
+          id,
+          name,
+          description,
+          startDate,
+          endDate,
+          stateId,
+          progress,
+          areaId,
+          projectId,
+          parentStageId,
+        } = args
 
-        const stage = await Stage.findByPk(id);
+        const stage = await Stage.findByPk(id)
         if (!stage) {
-          throw new Error('Stage not found');
+          throw new Error('Stage not found')
         }
 
-        const project = await Project.findByPk(projectId);
-        if (!project) throw new Error('Project not found');
+        const project = await Project.findByPk(projectId)
+        if (!project) throw new Error('Project not found')
 
         if (startDate) {
-          const previousStageEnd = stage.endDate;
-          const newStageStart = new Date(startDate).toISOString().slice(0, 10);
-          const projectStart = new Date(project.startDate).toISOString().slice(0, 10);
-          if (newStageStart < projectStart) throw new Error('Start date is out of project date range');
+          const previousStageEnd = stage.endDate
+          const newStageStart = new Date(startDate).toISOString().slice(0, 10)
+          const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
+          if (newStageStart < projectStart)
+            throw new Error('Start date is out of project date range')
           if (previousStageEnd < newStageStart) {
             if (endDate) {
-              const newStageEnd = new Date(endDate).toISOString().slice(0, 10);
-              if (newStageStart > newStageEnd) throw new Error('End date must be greater than start date');
+              const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
+              if (newStageStart > newStageEnd)
+                throw new Error('End date must be greater than start date')
             } else {
-              throw new Error('Start date is after previous stage end date, consider changing both dates simultaneously.');
+              throw new Error(
+                'Start date is after previous stage end date, consider changing both dates simultaneously.'
+              )
             }
           }
         }
-        
+
         if (endDate) {
-          const previousStageStart = stage.startDate;
-          const newStageEnd = new Date(endDate).toISOString().slice(0, 10);
-          const projectEnd = new Date(project.endDate).toISOString().slice(0, 10);
-          if (newStageEnd > projectEnd) throw new Error('End date is out of project date range');
+          const previousStageStart = stage.startDate
+          const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
+          const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
+          if (newStageEnd > projectEnd) throw new Error('End date is out of project date range')
           if (previousStageStart > newStageEnd) {
             if (startDate) {
-              const newStageStart = new Date(startDate).toISOString().slice(0, 10);
-              if (newStageStart > newStageEnd) throw new Error('End date must be greater than start date');
+              const newStageStart = new Date(startDate).toISOString().slice(0, 10)
+              if (newStageStart > newStageEnd)
+                throw new Error('End date must be greater than start date')
             } else {
-              throw new Error('End date is before previous stage start date, consider changing both dates simultaneously.');
+              throw new Error(
+                'End date is before previous stage start date, consider changing both dates simultaneously.'
+              )
             }
           }
         }
-        
+
         await stage.update({
           name,
           description,
@@ -139,7 +165,7 @@ export default {
           stateId,
           progress,
           areaId,
-          parentStageId
+          parentStageId,
         })
         return stage
       } catch (error) {
@@ -167,6 +193,6 @@ export default {
         logger.error(error)
         throw error
       }
-    }
-  }
+    },
+  },
 }

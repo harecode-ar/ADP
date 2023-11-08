@@ -39,23 +39,35 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required('Descripción requerida'),
   startDate: Yup.string()
     .required('Fecha de inicio requerida')
-    .test('is-end-date-in-range', 'La fecha de inicio esta fuera del rango del proyecto', (value, { parent }) => {
-      const {startDate} = parent;
-      const {projectStartDate} = parent;
-      return new Date(startDate) >= new Date(projectStartDate);
-    }),
+    .test(
+      'is-end-date-in-range',
+      'La fecha de inicio esta fuera del rango del proyecto',
+      (value, { parent }) => {
+        const { startDate } = parent
+        const { projectStartDate } = parent
+        return new Date(startDate) >= new Date(projectStartDate)
+      }
+    ),
   endDate: Yup.string()
     .required('Fecha de finalización requerida')
-    .test('is-start-date-before-end-date', 'La fecha de finalización debe ser mayor o igual a la fecha de inicio', (value, { parent }) => {
-      const {startDate} = parent;
-      return new Date(startDate) <= new Date(value);
-    })
-    .test('is-end-date-in-range', 'La fecha de finalizacion esta fuera del rango del proyecto', (value, { parent }) => {
-      const {projectEndDate} = parent;
-      return new Date(value) <= new Date(projectEndDate);
-    }),
+    .test(
+      'is-start-date-before-end-date',
+      'La fecha de finalización debe ser mayor o igual a la fecha de inicio',
+      (value, { parent }) => {
+        const { startDate } = parent
+        return new Date(startDate) <= new Date(value)
+      }
+    )
+    .test(
+      'is-end-date-in-range',
+      'La fecha de finalizacion esta fuera del rango del proyecto',
+      (value, { parent }) => {
+        const { projectEndDate } = parent
+        return new Date(value) <= new Date(projectEndDate)
+      }
+    ),
   area: Yup.object().required('Área requerida'),
-});
+})
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
