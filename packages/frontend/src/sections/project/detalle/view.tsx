@@ -46,7 +46,7 @@ export default function ProjectDetailView(props: TProps) {
     variables: { projectId: Number(projectId) },
     skip: !projectId,
     onCompleted: (d) => {
-      if (!d.project) {
+      if (!d.stagesByProject) {
         enqueueSnackbar('Stage no encontrado', { variant: 'error' })
         router.push(paths.dashboard.project.root)
       }
@@ -102,7 +102,9 @@ export default function ProjectDetailView(props: TProps) {
             </Card>
 
             {tab === ETab.DETAIL && <DetailTab project={project} />}
-            {tab === ETab.STAGES && <StagesTab project={project} stages={stages} refetch={stageQuery.refetch}/>}
+            {tab === ETab.STAGES && (
+              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+            )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
           </React.Fragment>
         )}

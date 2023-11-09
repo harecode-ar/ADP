@@ -1,17 +1,17 @@
-import { IProject } from '@adp/shared'
+import { IProject, IStage } from '@adp/shared'
 import React from 'react'
 import { Task } from 'gantt-task-react'
-import { STAGES_MOCK } from 'src/mocks/stage'
 import GanttComponent from './gantt-component'
 
 type TProps = {
   project: IProject
+  stages: IStage[]
 }
 
 export default function GanttTab(props: TProps) {
-  const { project } = props
+  const { project, stages } = props
 
-  const mappedStages: Task[] = STAGES_MOCK.map((stage, index) => ({
+  const mappedStages: Task[] = stages.map((stage, index) => ({
     displayOrder: index + 2,
     id: String(stage.id),
     name: String(stage.name),

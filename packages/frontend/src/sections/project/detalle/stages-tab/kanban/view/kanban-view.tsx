@@ -9,17 +9,17 @@ import KanbanColumn from './kanban-column'
 // ----------------------------------------------------------------------
 
 type TProps = {
-  stages: IStage[],
+  stages: IStage[]
 }
 
 export default function KanbanComponent(props: TProps) {
-  const {stages} = props
+  const { stages } = props
 
   const stagesByState: Record<string, IStage[]> = {
-    Pendiente: [],
-    'En Progreso': [],
-    Finalizada: [],
-    Cancelada: [],
+    Nuevo: [],
+    'En progreso': [],
+    Completado: [],
+    Cancelado: [],
   }
 
   stages.forEach((stage) => stagesByState[stage.state.name].push(stage))

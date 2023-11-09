@@ -15,8 +15,6 @@ type TProps = {
 export default function StagesTab(props: TProps) {
   const { project, stages, refetch } = props
 
-  
-
   const modalCreate = useBoolean()
 
   return (

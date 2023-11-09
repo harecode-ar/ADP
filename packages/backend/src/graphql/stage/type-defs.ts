@@ -17,6 +17,7 @@ export default `#graphql
 
     state: StageState
     area: Area
+    responsible: User
     parentStage: Stage
     childStages: [Stage]
     project: Project
@@ -24,8 +25,8 @@ export default `#graphql
 
   type Query {
     stages: [Stage]
-    stage(id: ID): Stage
-    stagesByProject(projectId: ID): [Stage]
+    stage(id: Int): Stage
+    stagesByProject(projectId: Int): [Stage]
   }
 
   type Mutation {
