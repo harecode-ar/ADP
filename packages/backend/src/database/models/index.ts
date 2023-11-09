@@ -9,6 +9,7 @@ import { Project } from './project'
 import { ProjectState } from './project-state'
 import { Stage } from './stage'
 import { StageState } from './stage-state'
+import { ProjectNote } from './project-note'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -46,6 +47,9 @@ Stage.belongsTo(Stage, { as: 'parentStage', foreignKey: 'parentStageId' })
 StageState.hasMany(Stage, { as: 'stages', foreignKey: 'stateId' })
 Stage.belongsTo(StageState, { as: 'state', foreignKey: 'stateId' })
 
+Project.hasMany(ProjectNote, { as: 'notes', foreignKey: 'projectId' })
+ProjectNote.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
+
 export {
   Permission,
   Role,
@@ -56,6 +60,7 @@ export {
   Token,
   Project,
   ProjectState,
+  ProjectNote,
   Stage,
   StageState,
 }

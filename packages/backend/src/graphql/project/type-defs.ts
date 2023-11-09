@@ -17,6 +17,7 @@ export default `#graphql
     area: Area
     stages: [Stage]
     responsible: User
+    notes: [ProjectNote]
   }
 
   type Query {

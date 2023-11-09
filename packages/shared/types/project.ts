@@ -2,6 +2,7 @@ import type { IProjectState } from './project-state'
 import type { IArea } from './area'
 import type { IStage } from './stage'
 import { IUser } from './user'
+import { IProjectNote } from './project-note'
 
 export interface IProject {
   id: number
@@ -21,4 +22,5 @@ export interface IProject {
   area: IArea | null
   stages: IStage[]
   responsible: IUser | null
+  notes: IProjectNote[]
 }

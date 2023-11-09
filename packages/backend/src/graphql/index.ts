@@ -7,6 +7,7 @@ import user from './user'
 import area from './area'
 import project from './project'
 import projectState from './project-state'
+import projectNote from './project-note'
 import stage from './stage'
 import stageState from './stage-state'
 
@@ -18,6 +19,7 @@ export const typeDefs = mergeTypeDefs([
   area.typeDefs,
   project.typeDefs,
   projectState.typeDefs,
+  projectNote.typeDefs,
   stage.typeDefs,
   stageState.typeDefs,
 ])
@@ -30,6 +32,7 @@ export const resolvers = mergeResolvers([
   area.resolvers,
   project.resolvers,
   projectState.resolvers,
+  projectNote.resolvers,
   stage.resolvers,
   stageState.resolvers,
 ])

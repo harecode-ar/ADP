@@ -1,6 +1,6 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IProject, IProjectState, IArea, IStage, IUser } from '@adp/shared/types'
-import { Project, ProjectState, Area, Stage, User } from '../../database/models'
+import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared/types'
+import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
@@ -40,13 +40,17 @@ export default {
       }
       return Promise.resolve(null)
     },
+    notes: (project: IProject): Promise<IProjectNote[]> => {
+      if (project.notes) return Promise.resolve(project.notes)
+      return ProjectNote.findAll({ where: { projectId: project.id } })
+    },
   },
   Query: {
     projects: (
       _: any,
       __: any,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>[]> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findAll()
@@ -59,7 +63,7 @@ export default {
       _: any,
       args: Pick<IProject, 'id'>,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'> | null> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'> | null> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findByPk(args.id)
@@ -72,7 +76,7 @@ export default {
       _: any,
       args: Pick<IProject, 'areaId'>,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>[]> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findAll({
@@ -97,7 +101,7 @@ export default {
         'name' | 'description' | 'areaId' | 'cost' | 'startDate' | 'endDate' | 'stateId'
       >,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { name, description, areaId, cost, startDate, endDate } = args
@@ -131,7 +135,7 @@ export default {
         | 'stateId'
       >,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { id, name, description, areaId, cost, startDate, endDate, progress, stateId } = args
@@ -160,7 +164,7 @@ export default {
       _: any,
       args: Pick<IProject, 'id'>,
       context: IContext
-    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible'>> => {
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { id } = args
