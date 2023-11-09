@@ -72,7 +72,9 @@ export default {
           roleId,
         })
 
-        await sendNewUserMail(createdUser, password)
+        sendNewUserMail(createdUser, password).catch((error) => {
+          logger.error(error)
+        })
 
         return createdUser
       } catch (error) {
@@ -177,7 +179,9 @@ export default {
           type: ETokenType.NEW_PASSWORD,
         })
         const resetLink = `${APP_URL}/auth/nueva-clave/${token.token}`
-        await sendResetPasswordMail(user, resetLink)
+        sendResetPasswordMail(user, resetLink).catch((error) => {
+          logger.error(error)
+        })
         return true
       } catch (error) {
         logger.error(error)
