@@ -29,7 +29,7 @@ export default function ProjectDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const [tab, setTab] = useState<ETab>(ETab.DETAIL)
+  const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
     variables: { id: Number(projectId) },
@@ -78,7 +78,7 @@ export default function ProjectDetailView(props: TProps) {
                 }}
               >
                 <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                  <Tab label={ETab.DETAIL} value={ETab.DETAIL} />
+                  <Tab label={ETab.DETAIL} value={ETab.DETAIL} disabled />
                   <Tab label={ETab.STAGES} value={ETab.STAGES} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
