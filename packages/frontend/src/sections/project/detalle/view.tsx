@@ -2,7 +2,8 @@
 
 import type { IProject } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Tab, Tabs } from '@mui/material'
+import { Box, Container, Card, Tab, Tabs, Grid, TextField } from '@mui/material'
+
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
@@ -47,6 +48,11 @@ export default function ProjectDetailView(props: TProps) {
     return projectQuery.data.project
   }, [projectQuery.data])
 
+  const formatDate = (dateString: string) => {
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' } as Intl.DateTimeFormatOptions;
+    return new Date(dateString).toLocaleDateString('es-ES', options);
+  };
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box
@@ -65,9 +71,121 @@ export default function ProjectDetailView(props: TProps) {
 
         {!!project && (
           <React.Fragment>
-            <Card sx={{ p: 2, maxHeight: 150, overflowY: 'scroll' }}>
-              <pre>{JSON.stringify(project, null, 2)}</pre>
-            </Card>
+            <Box>
+              <Grid container spacing={2}>
+                {/* name */}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    id="name"
+                    name="name"
+                    label="Nombre"
+                    variant="outlined"
+                    fullWidth
+                    value={project.name}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* status */}
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    id="status"
+                    name="status"
+                    label="Estado"
+                    variant="outlined"
+                    fullWidth
+                    value={project.state.name}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* cost */}
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    id="cost"
+                    name="cost"
+                    label="Costo"
+                    variant="outlined"
+                    fullWidth
+                    value={project.cost}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* startDate */}
+                <Grid item xs={12} md={2}>
+                  <TextField
+                    id="startDate"
+                    name="startDate"
+                    label="Fecha de inicio"
+                    variant="outlined"
+                    fullWidth
+                    value={formatDate(project.startDate)}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* endDate */}
+                <Grid item xs={12} md={2}>
+                  <TextField
+                    id="endDate"
+                    name="endDate"
+                    label="Fecha de finalizacion"
+                    variant="outlined"
+                    fullWidth
+                    value={formatDate(project.startDate)}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* progress */}
+                <Grid item xs={12} md={2}>
+                  <TextField
+                    id="progress"
+                    name="progress"
+                    label="Progreso"
+                    variant="outlined"
+                    fullWidth
+                    value={`${project.progress*100}%`}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* area */}
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    id="area"
+                    name="area"
+                    label="Area"
+                    variant="outlined"
+                    fullWidth
+                    value={project.area ? project.area.name : 'Sin area'}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* responsible */}
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    id="responsible"
+                    name="responsible"
+                    label="Responsable"
+                    variant="outlined"
+                    fullWidth
+                    value={project.responsible ? project.responsible.fullname : 'Sin responsable'}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+                {/* description */}
+                <Grid item xs={12}>
+                  <TextField
+                    id="description"
+                    name="description"
+                    label="Descripción"
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    value={project.description}
+                    InputProps={{ readOnly: true }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+            
+
 
             <Card sx={{ p: 2 }}>
               <Box

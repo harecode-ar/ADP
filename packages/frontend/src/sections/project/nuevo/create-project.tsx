@@ -47,8 +47,8 @@ const CreateProject = () => {
       description: '',
       area: null,
       cost: '',
-      startDate: '',
-      endDate: '',
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -135,6 +135,8 @@ const CreateProject = () => {
               multiline
               value={formik.values.cost}
               onChange={formik.handleChange}
+              error={Boolean(formik.errors.cost)}
+              helperText={formik.errors.cost}
             />
           </Grid>
           <Grid item xs={4}>
@@ -150,6 +152,8 @@ const CreateProject = () => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={Boolean(formik.errors.startDate)}
+              helperText={formik.errors.startDate}
             />
           </Grid>
           <Grid item xs={4}>
@@ -165,6 +169,8 @@ const CreateProject = () => {
               InputLabelProps={{
                 shrink: true,
               }}
+              error={Boolean(formik.errors.endDate)}
+              helperText={formik.errors.endDate}
             />
           </Grid>
           <Grid item xs={12}>
@@ -177,6 +183,8 @@ const CreateProject = () => {
               multiline
               value={formik.values.description}
               onChange={formik.handleChange}
+              error={Boolean(formik.errors.description)}
+              helperText={formik.errors.description}
             />
           </Grid>
         </Grid>
