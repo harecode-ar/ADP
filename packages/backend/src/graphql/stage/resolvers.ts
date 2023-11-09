@@ -11,7 +11,7 @@ export default {
       _: any,
       __: any,
       context: IContext
-    ): Promise<Omit<IStage, 'state' | 'area' | 'parentStage' | 'childStages' | 'project'>[]> => {
+    ): Promise<Omit<IStage, 'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'>[]> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
         return Stage.findAll()
@@ -27,7 +27,7 @@ export default {
       context: IContext
     ): Promise<Omit<
       IStage,
-      'state' | 'area' | 'parentStage' | 'childStages' | 'project'
+      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'
     > | null> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
@@ -47,7 +47,7 @@ export default {
         'name' | 'description' | 'startDate' | 'endDate' | 'areaId' | 'projectId' | 'parentStageId'
       >,
       context: IContext
-    ): Promise<Omit<IStage, 'state' | 'area' | 'project' | 'parentStage' | 'childStages'>> => {
+    ): Promise<Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { name, description, startDate, endDate, areaId, projectId, parentStageId } = args
@@ -96,7 +96,7 @@ export default {
         | 'parentStageId'
       >,
       context: IContext
-    ): Promise<Omit<IStage, 'state' | 'area' | 'project' | 'parentStage' | 'childStages'>> => {
+    ): Promise<Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const {
@@ -180,7 +180,7 @@ export default {
         id: number
       },
       context: IContext
-    ): Promise<Omit<IStage, 'state' | 'area' | 'project' | 'parentStage' | 'childStages'>> => {
+    ): Promise<Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const stage = await Stage.findByPk(args.id)
