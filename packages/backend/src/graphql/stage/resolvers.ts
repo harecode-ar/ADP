@@ -1,11 +1,38 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
-import type { IStage } from '@adp/shared/types'
-import { Stage, Project, StageState, Area } from '../../database/models'
+import type { IStage, IUser, IProjectState, IArea } from '@adp/shared/types'
+import { Stage, Project, StageState, Area, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 
 export default {
+  Stage: {
+    state: (stage: IStage): Promise<IProjectState | null> => {
+      if (stage.state) return Promise.resolve(stage.state)
+      return StageState.findByPk(stage.stateId)
+    },
+    area: (stage: IStage): Promise<IArea | null> => {
+      if (stage.area) return Promise.resolve(stage.area)
+      if (!stage.areaId) return Promise.resolve(null)
+      return Area.findByPk(stage.areaId)
+    },
+    responsible: async (stage: IStage): Promise<IUser | null> => {
+      if (stage.responsible) return Promise.resolve(stage.responsible)
+      if (stage.area && stage.area.responsible) return Promise.resolve(stage.area.responsible)
+      if (stage.areaId) {
+        const area: IArea | null = await Area.findByPk(stage.areaId, {
+          include: [
+            {
+              model: User,
+              as: 'responsible',
+            },
+          ],
+        })
+        if (area && area.responsible) return Promise.resolve(area.responsible)
+      }
+      return Promise.resolve(null)
+    },
+  },
   Query: {
     stages: (
       _: any,
