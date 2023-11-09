@@ -249,7 +249,7 @@ const ModalCreate = (props: TProps) => {
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Enviar
+                    Crear
                   </Button>
                 </Box>
               </Grid>

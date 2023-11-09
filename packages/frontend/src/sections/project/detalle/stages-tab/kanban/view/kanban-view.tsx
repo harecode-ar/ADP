@@ -1,7 +1,7 @@
 'use client'
 
 import { IStage } from '@adp/shared'
-import { Stack, Container } from '@mui/material'
+import { Stack, Box } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { STAGES_MOCK } from 'src/mocks/stage'
@@ -24,12 +24,7 @@ export default function KanbanComponent() {
   stages.forEach((stage) => stagesByState[stage.state.name].push(stage));
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        height: 1,
-      }}
-    >
+    <Box>
       <DragDropContext onDragEnd={() => null}>
         <Scrollbar
           sx={{
@@ -49,15 +44,15 @@ export default function KanbanComponent() {
               height: 1,
             }}
           >
-            <KanbanColumn stage={stages} title="Etapas de Proyecto" />
+            {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
             {Object.entries(stagesByState).map(([state, stateStages]) => (
               <KanbanColumn stage={stateStages} title={state} />
             ))}
-            
+
 
           </Stack>
         </Scrollbar>
       </DragDropContext>
-    </Container>
+    </Box>
   )
 }

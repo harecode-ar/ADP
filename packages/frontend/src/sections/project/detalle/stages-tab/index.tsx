@@ -1,6 +1,6 @@
 import { IProject } from '@adp/shared'
 import React from 'react'
-import { Typography, Box, IconButton } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCreate from './create-stage'
@@ -16,15 +16,17 @@ export default function StagesTab(props: TProps) {
   const modalCreate = useBoolean()
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 , mb:2}}>
-        <Typography variant="h4">Crear etapas</Typography>
-        <IconButton onClick={modalCreate.onTrue}>
-          <Iconify icon="mingcute:add-fill" />
-        </IconButton>
-      </Box>
-      {modalCreate.value && <ModalCreate modal={modalCreate} project={project} />}
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 2,
+    }}>
+      <Button variant="contained" color="primary" onClick={modalCreate.onTrue} sx={{ width: 'fit-content' }}>
+        <Iconify icon="mingcute:add-fill" mr={1} />
+        Crear etapa
+      </Button>
       <KanbanComponent />
+      {modalCreate.value && <ModalCreate modal={modalCreate} project={project} />}
     </Box>
   )
 }
