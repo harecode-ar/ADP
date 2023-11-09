@@ -18,7 +18,7 @@ export default {
     },
     stages: (
       project: IProject
-    ): Promise<Omit<IStage, 'area' | 'state' | 'project' | 'parentStage' | 'childStages'>[]> => {
+    ): Promise<Omit<IStage, 'area' | 'responsible' | 'state' | 'project' | 'parentStage' | 'childStages'>[]> => {
       if (project.stages) return Promise.resolve(project.stages)
       return Stage.findAll({ where: { projectId: project.id, parentStageId: null } })
     },
