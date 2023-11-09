@@ -49,9 +49,13 @@ export default function ProjectDetailView(props: TProps) {
   }, [projectQuery.data])
 
   const formatDate = (dateString: string) => {
-    const options = { day: 'numeric', month: 'numeric', year: 'numeric' } as Intl.DateTimeFormatOptions;
-    return new Date(dateString).toLocaleDateString('es-ES', options);
-  };
+    const options = {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    } as Intl.DateTimeFormatOptions
+    return new Date(dateString).toLocaleDateString('es-ES', options)
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -141,7 +145,7 @@ export default function ProjectDetailView(props: TProps) {
                     label="Progreso"
                     variant="outlined"
                     fullWidth
-                    value={`${project.progress*100}%`}
+                    value={`${project.progress * 100}%`}
                     InputProps={{ readOnly: true }}
                   />
                 </Grid>
@@ -184,8 +188,6 @@ export default function ProjectDetailView(props: TProps) {
                 </Grid>
               </Grid>
             </Box>
-            
-
 
             <Card sx={{ p: 2 }}>
               <Box
