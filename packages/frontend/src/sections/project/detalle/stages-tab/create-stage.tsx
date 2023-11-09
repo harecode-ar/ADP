@@ -72,6 +72,7 @@ const validationSchema = Yup.object().shape({
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   project: IProject
+  refetch: VoidFunction
 }
 
 type TFormikValues = {
@@ -83,8 +84,8 @@ type TFormikValues = {
 }
 
 const ModalCreate = (props: TProps) => {
+  const { modal, project, refetch } = props
   const [createStage] = useMutation(CREATE_STAGE)
-  const { modal, project } = props
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
 
@@ -118,6 +119,7 @@ const ModalCreate = (props: TProps) => {
         if (errors) throw new Error(errors[0].message)
         enqueueSnackbar('Etapa creada correctamente.', { variant: 'success' })
         helpers.resetForm()
+        refetch()
         modal.onFalse()
       } catch (error) {
         console.error(error)

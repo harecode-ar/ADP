@@ -4,13 +4,16 @@ import { IStage } from '@adp/shared'
 import { Stack, Box } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { DragDropContext } from '@hello-pangea/dnd'
-import { STAGES_MOCK } from 'src/mocks/stage'
 import KanbanColumn from './kanban-column'
 
 // ----------------------------------------------------------------------
 
-export default function KanbanComponent() {
-  const stages = STAGES_MOCK as IStage[]
+type TProps = {
+  stages: IStage[],
+}
+
+export default function KanbanComponent(props: TProps) {
+  const {stages} = props
 
   const stagesByState: Record<string, IStage[]> = {
     Pendiente: [],
