@@ -1,6 +1,6 @@
 import { IStage } from '@adp/shared'
 import Paper from '@mui/material/Paper'
-import {Stack , Typography} from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import KanbanTaskItem from './kanban-task-item'
 
 // ----------------------------------------------------------------------
@@ -10,7 +10,7 @@ type Props = {
   title: string
 }
 
-export default function KanbanColumn({stage, title }: Props) {
+export default function KanbanColumn({ stage, title }: Props) {
   return (
     <Paper
       sx={{
@@ -31,11 +31,9 @@ export default function KanbanColumn({stage, title }: Props) {
             width: 225,
           }}
         >
-
-          {stage.map((stageItem, id) => (
-            <KanbanTaskItem index={id} task={stageItem} />
+          {stage.map((stageItem, index) => (
+            <KanbanTaskItem key={index} task={stageItem} />
           ))}
-
         </Stack>
       </Stack>
     </Paper>

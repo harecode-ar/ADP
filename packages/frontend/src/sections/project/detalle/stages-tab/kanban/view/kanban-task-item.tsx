@@ -10,10 +10,6 @@ import { ERROR, INFO, WARNING } from 'src/theme/palette'
 
 type Props = PaperProps & {
   task: IStage
-  responsible: {
-    id: number
-    fullname: String
-  }
 }
 
 const getColorVariant = (progress: number) => {

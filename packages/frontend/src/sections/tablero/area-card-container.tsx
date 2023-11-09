@@ -2,7 +2,16 @@
 
 import * as React from 'react'
 import NextLink from 'next/link'
-import { Box, Card, Stack, Avatar, TextField, Typography, InputAdornment, Link } from '@mui/material'
+import {
+  Box,
+  Card,
+  Stack,
+  Avatar,
+  TextField,
+  Typography,
+  InputAdornment,
+  Link,
+} from '@mui/material'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
@@ -69,7 +78,11 @@ type AreaCardProps = {
 function AreaCard({ area }: AreaCardProps) {
   const { id, name, rolename, responsible } = area
   return (
-    <Link component={NextLink} href={paths.dashboard.area.detail.replace(':id', String(id))} underline='none'>
+    <Link
+      component={NextLink}
+      href={paths.dashboard.area.detail.replace(':id', String(id))}
+      underline="none"
+    >
       <Card
         sx={{
           py: 5,

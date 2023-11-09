@@ -16,12 +16,19 @@ export default function StagesTab(props: TProps) {
   const modalCreate = useBoolean()
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 2,
-    }}>
-      <Button variant="contained" color="primary" onClick={modalCreate.onTrue} sx={{ width: 'fit-content' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={modalCreate.onTrue}
+        sx={{ width: 'fit-content' }}
+      >
         <Iconify icon="mingcute:add-fill" mr={1} />
         Crear etapa
       </Button>

@@ -9,19 +9,17 @@ import KanbanColumn from './kanban-column'
 
 // ----------------------------------------------------------------------
 
-
 export default function KanbanComponent() {
   const stages = STAGES_MOCK as IStage[]
 
-
   const stagesByState: Record<string, IStage[]> = {
-    'Pendiente': [],
+    Pendiente: [],
     'En Progreso': [],
-    'Finalizada': [],
-    'Cancelada': [],
-  };
+    Finalizada: [],
+    Cancelada: [],
+  }
 
-  stages.forEach((stage) => stagesByState[stage.state.name].push(stage));
+  stages.forEach((stage) => stagesByState[stage.state.name].push(stage))
 
   return (
     <Box>
@@ -48,8 +46,6 @@ export default function KanbanComponent() {
             {Object.entries(stagesByState).map(([state, stateStages]) => (
               <KanbanColumn stage={stateStages} title={state} />
             ))}
-
-
           </Stack>
         </Scrollbar>
       </DragDropContext>

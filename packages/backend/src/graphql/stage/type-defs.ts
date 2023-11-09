@@ -25,6 +25,7 @@ export default `#graphql
   type Query {
     stages: [Stage]
     stage(id: ID): Stage
+    stagesByProject(projectId: ID): [Stage]
   }
 
   type Mutation {
