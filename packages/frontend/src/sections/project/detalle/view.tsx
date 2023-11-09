@@ -1,6 +1,6 @@
 'use client'
 
-import type { IProject } from '@adp/shared'
+import type { IProject, IStage } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Tab, Tabs, Grid, TextField } from '@mui/material'
 
@@ -9,7 +9,7 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_PROJECT } from 'src/graphql/queries'
+import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import DetailTab from './detail-tab'
 import StagesTab from './stages-tab'
@@ -43,11 +43,26 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
+  const stageQuery = useQuery(GET_STAGES_BY_PROJECT, {
+    variables: { projectId: Number(projectId) },
+    skip: !projectId,
+    onCompleted: (d) => {
+      if (!d.stagesByProject) {
+        enqueueSnackbar('Stage no encontrado', { variant: 'error' })
+        router.push(paths.dashboard.project.root)
+      }
+    },
+  })
+
   const project: IProject | null = useMemo(() => {
     if (!projectQuery.data) return null
     return projectQuery.data.project
   }, [projectQuery.data])
 
+  const stages: IStage[] = useMemo(() => {
+    if (!stageQuery.data) return []
+    return stageQuery.data.stagesByProject
+  }, [stageQuery.data])
   const formatDate = (dateString: string) => {
     const options = {
       day: 'numeric',
@@ -206,8 +221,10 @@ export default function ProjectDetailView(props: TProps) {
             </Card>
 
             {tab === ETab.DETAIL && <DetailTab project={project} />}
-            {tab === ETab.STAGES && <StagesTab project={project} />}
-            {tab === ETab.GANTT && <GanttTab project={project} />}
+            {tab === ETab.STAGES && (
+              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+            )}
+            {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
           </React.Fragment>
         )}
       </Box>
