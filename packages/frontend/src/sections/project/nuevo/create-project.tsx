@@ -28,7 +28,7 @@ const projectSchema = Yup.object().shape({
         const { startDate } = parent
         return new Date(startDate) <= new Date(value)
       }
-    )
+    ),
 })
 
 type TFormikValues = {

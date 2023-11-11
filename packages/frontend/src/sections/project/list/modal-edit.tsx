@@ -11,20 +11,19 @@ import {
   Grid,
   Backdrop,
   Autocomplete,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_PROJECT } from 'src/graphql/queries'
-import { AREAS_FOR_SELECT,  } from 'src/graphql/queries/area'
+import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import { PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries/project-state'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_PROJECT } from 'src/graphql/mutations'
-
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -82,7 +81,7 @@ type TFormikValues = {
 const ModalEdit = (props: TProps) => {
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
-  const { data: dataAreas} = useQuery(AREAS_FOR_SELECT)
+  const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
   const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
   const { selected, setSelected } = useTable()
   const [updateProject] = useMutation(UPDATE_PROJECT)
@@ -95,7 +94,7 @@ const ModalEdit = (props: TProps) => {
 
   const states: Pick<IProjectState, 'id' | 'name'>[] = useMemo(() => {
     if (dataProjectState?.projectStates) return dataProjectState.projectStates
-    return [] 
+    return []
   }, [dataProjectState])
 
   const formik = useFormik({
@@ -349,11 +348,7 @@ const ModalEdit = (props: TProps) => {
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button
-                    onClick={() => formik.handleSubmit()}
-                    color="primary"
-                    variant="contained"
-                  >
+                  <Button onClick={() => formik.handleSubmit()} color="primary" variant="contained">
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
                     Enviar
                   </Button>
