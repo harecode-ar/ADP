@@ -6,7 +6,7 @@ export default `#graphql
     cost: String
     startDate: String
     endDate: String
-    progress: Int
+    progress: Float
     stateId: Int
     areaId: Int
 
@@ -44,7 +44,7 @@ export default `#graphql
       cost: String
       startDate: String
       endDate: String
-      progress: Int
+      progress: Float
       stateId: Int
     ): Project
 

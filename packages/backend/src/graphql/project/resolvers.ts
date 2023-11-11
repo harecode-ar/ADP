@@ -1,4 +1,4 @@
-import { PERMISSION_MAP } from '@adp/shared'
+import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared/types'
 import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
 import logger from '../../logger'
@@ -105,6 +105,13 @@ export default {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { name, description, areaId, cost, startDate, endDate } = args
+
+        const projectStartDate = new Date(startDate).toISOString().slice(0, 10)
+        const projectEndDate = new Date(endDate).toISOString().slice(0, 10)
+        if (projectStartDate > projectEndDate) {
+          throw new Error('Start date must be before end date')
+        }
+
         return Project.create({
           name,
           description,
@@ -112,7 +119,7 @@ export default {
           cost,
           startDate,
           endDate,
-          stateId: 1,
+          stateId: STAGE_STATE.NEW,
         })
       } catch (error) {
         logger.error(error)
@@ -143,6 +150,39 @@ export default {
         if (!project) {
           throw new Error('Project not found')
         }
+
+        if (startDate) {
+          const previousEndDate = project.endDate
+          const newStartDate = new Date(startDate).toISOString().slice(0, 10)
+          if (previousEndDate < newStartDate) {
+            if (endDate) {
+              const newEndDate = new Date(endDate).toISOString().slice(0, 10)
+              if (newStartDate > newEndDate)
+                throw new Error('End date must be greater than start date')
+            } else {
+              throw new Error(
+                'Start date is after previous project end date, consider changing both dates simultaneously.'
+              )
+            }
+          }
+        }
+
+        if (endDate) {
+          const previousStartDate = project.startDate
+          const newEndDate = new Date(endDate).toISOString().slice(0, 10)
+          if (previousStartDate > newEndDate) {
+            if (startDate) {
+              const newStartDate = new Date(startDate).toISOString().slice(0, 10)
+              if (newStartDate > newEndDate)
+                throw new Error('End date must be greater than start date')
+            } else {
+              throw new Error(
+                'End date is before previous project start date, consider changing both dates simultaneously.'
+              )
+            }
+          }
+        }
+
         await project.update({
           name,
           description,

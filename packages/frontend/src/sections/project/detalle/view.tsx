@@ -1,8 +1,8 @@
 'use client'
 
-import type { IProject, IStage } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Tab, Tabs, Grid, TextField } from '@mui/material'
+import type { IProject, IStage } from '@adp/shared'
+import { Box, Container, Card, Tab, Tabs, Grid, TextField, InputAdornment } from '@mui/material'
 
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -64,12 +64,12 @@ export default function ProjectDetailView(props: TProps) {
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
   const formatDate = (dateString: string) => {
-    const options = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-    } as Intl.DateTimeFormatOptions
-    return new Date(dateString).toLocaleDateString('es-ES', options)
+    // console.log(dateString)
+    // console.log(new Date(dateString).toLocaleDateString('es-ES'))
+    // return new Date(dateString).toLocaleDateString('es-ES')
+    const [anno, mes, dia] = dateString.split("-");
+    const nuevaFechaString = `${dia}/${mes}/${anno}`;
+    return nuevaFechaString;
   }
 
   return (
@@ -121,11 +121,14 @@ export default function ProjectDetailView(props: TProps) {
                   <TextField
                     id="cost"
                     name="cost"
-                    label="Costo"
+                    label="Costo proyectado"
                     variant="outlined"
                     fullWidth
                     value={project.cost}
-                    InputProps={{ readOnly: true }}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                      readOnly: true,
+                    }}
                   />
                 </Grid>
                 {/* startDate */}
@@ -148,7 +151,7 @@ export default function ProjectDetailView(props: TProps) {
                     label="Fecha de finalizacion"
                     variant="outlined"
                     fullWidth
-                    value={formatDate(project.startDate)}
+                    value={formatDate(project.endDate)}
                     InputProps={{ readOnly: true }}
                   />
                 </Grid>
@@ -160,8 +163,11 @@ export default function ProjectDetailView(props: TProps) {
                     label="Progreso"
                     variant="outlined"
                     fullWidth
-                    value={`${project.progress * 100}%`}
-                    InputProps={{ readOnly: true }}
+                    value={`${project.progress * 100}`}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      readOnly: true,
+                    }}
                   />
                 </Grid>
                 {/* area */}

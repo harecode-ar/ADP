@@ -36,7 +36,7 @@ const styleModal = {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  description: Yup.string().required('Descripción requerida'),
+  area: Yup.object().required('Área requerida'),
   startDate: Yup.string()
     .required('Fecha de inicio requerida')
     .test(
@@ -66,7 +66,7 @@ const validationSchema = Yup.object().shape({
         return new Date(value) <= new Date(projectEndDate)
       }
     ),
-  area: Yup.object().required('Área requerida'),
+  description: Yup.string().required('Descripción requerida'),
 })
 
 type TProps = {
@@ -77,10 +77,10 @@ type TProps = {
 
 type TFormikValues = {
   name: string
-  description: string
   area: IArea | null
   startDate: string
   endDate: string
+  description: string
 }
 
 const ModalCreate = (props: TProps) => {
@@ -97,10 +97,10 @@ const ModalCreate = (props: TProps) => {
   const formik = useFormik({
     initialValues: {
       name: '',
-      description: '',
+      area: null,
       startDate: new Date().toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0],
-      area: null,
+      description: '',
       projectStartDate: project.startDate,
       projectEndDate: project.endDate,
     } as TFormikValues,
@@ -109,10 +109,10 @@ const ModalCreate = (props: TProps) => {
         const { errors } = await createStage({
           variables: {
             name: values.name,
-            description: values.description,
+            areaId: values.area?.id,
             startDate: values.startDate,
             endDate: values.endDate,
-            areaId: values.area?.id,
+            description: values.description,
             projectId: project.id,
           },
         })
@@ -175,6 +175,7 @@ const ModalCreate = (props: TProps) => {
                       label="Área asignada"
                       variant="outlined"
                       placeholder="Buscar área"
+                      required
                       error={Boolean(formik.errors.area)}
                       helperText={formik.errors.area}
                     />
@@ -190,11 +191,9 @@ const ModalCreate = (props: TProps) => {
                   label="Fecha de inicio"
                   variant="outlined"
                   fullWidth
+                  required
                   value={formik.values.startDate}
                   onChange={formik.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   error={Boolean(formik.errors.startDate)}
                   helperText={formik.errors.startDate}
                 />
@@ -207,11 +206,9 @@ const ModalCreate = (props: TProps) => {
                   label="Fecha de finalizacion"
                   variant="outlined"
                   fullWidth
+                  required
                   value={formik.values.endDate}
                   onChange={formik.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   error={Boolean(formik.errors.endDate)}
                   helperText={formik.errors.endDate}
                 />
@@ -223,9 +220,12 @@ const ModalCreate = (props: TProps) => {
                   label="Descripción"
                   variant="outlined"
                   fullWidth
+                  required
                   multiline
                   value={formik.values.description}
                   onChange={formik.handleChange}
+                  error={Boolean(formik.errors.description)}
+                  helperText={formik.errors.description}
                 />
               </Grid>
 

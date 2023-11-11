@@ -1,7 +1,7 @@
-import type { IArea } from '@adp/shared'
-import { useRouter } from 'src/routes/hooks'
 import React, { useMemo } from 'react'
-import { Button, Box, TextField, Grid, Autocomplete, Card } from '@mui/material'
+import type { IArea } from '@adp/shared/types'
+import { useRouter } from 'src/routes/hooks'
+import { Button, Box, TextField, Grid, Autocomplete, Card, InputAdornment } from '@mui/material'
 
 import { useFormik, FormikHelpers } from 'formik'
 import { useSnackbar } from 'src/components/snackbar'
@@ -18,7 +18,17 @@ const projectSchema = Yup.object().shape({
   area: Yup.object().required('Area requerida'),
   cost: Yup.string().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
-  endDate: Yup.string().required('Fecha de finalizacion requerida'),
+  // endDate: Yup.string().required('Fecha de finalizacion requerida'),
+  endDate: Yup.string()
+    .required('Fecha de finalización requerida')
+    .test(
+      'is-start-date-before-end-date',
+      'La fecha de finalización debe ser mayor o igual a la fecha de inicio',
+      (value, { parent }) => {
+        const { startDate } = parent
+        return new Date(startDate) <= new Date(value)
+      }
+    )
 })
 
 type TFormikValues = {
@@ -35,6 +45,7 @@ const CreateProject = () => {
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
   const router = useRouter()
+  const threeHours = 3 * 60 * 60 * 1000
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (data?.areas) return data.areas
@@ -47,8 +58,8 @@ const CreateProject = () => {
       description: '',
       area: null,
       cost: '',
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
+      startDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
+      endDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -93,6 +104,7 @@ const CreateProject = () => {
 
       <Card sx={{ p: 2 }}>
         <Grid container spacing={2}>
+          {/* nombre */}
           <Grid item xs={12} md={6}>
             <TextField
               id="name"
@@ -102,11 +114,63 @@ const CreateProject = () => {
               fullWidth
               required
               value={formik.values.name}
+              onChange={formik.handleChange}
               error={Boolean(formik.errors.name)}
               helperText={formik.errors.name}
-              onChange={formik.handleChange}
             />
           </Grid>
+          {/* cost */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              id="cost"
+              name="cost"
+              label="Costo proyectado"
+              variant="outlined"
+              fullWidth
+              required
+              multiline
+              value={formik.values.cost}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">$</InputAdornment>,
+              }}
+              onChange={formik.handleChange}
+              error={Boolean(formik.errors.cost)}
+              helperText={formik.errors.cost}
+            />
+          </Grid>
+          {/* startDate */}
+          <Grid item xs={12} md={3}>
+            <TextField
+              type="date"
+              id="startDate"
+              name="startDate"
+              label="Fecha de inicio"
+              variant="outlined"
+              fullWidth
+              required
+              value={formik.values.startDate}
+              onChange={formik.handleChange}
+              error={Boolean(formik.errors.startDate)}
+              helperText={formik.errors.startDate}
+            />
+          </Grid>
+          {/* endDate */}
+          <Grid item xs={12} md={3}>
+            <TextField
+              type="date"
+              id="endDate"
+              name="endDate"
+              label="Fecha de finalizacion"
+              variant="outlined"
+              fullWidth
+              required
+              value={formik.values.endDate}
+              onChange={formik.handleChange}
+              error={Boolean(formik.errors.endDate)}
+              helperText={formik.errors.endDate}
+            />
+          </Grid>
+          {/* area */}
           <Grid item xs={12} md={6}>
             <Autocomplete
               options={areas}
@@ -116,63 +180,17 @@ const CreateProject = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Área a la que pertenece"
+                  label="Área"
                   variant="outlined"
                   placeholder="Buscar área"
+                  required
                   error={Boolean(formik.errors.area)}
                   helperText={formik.errors.area}
                 />
               )}
             />
           </Grid>
-          <Grid item xs={4}>
-            <TextField
-              id="cost"
-              name="cost"
-              label="Costo proyectado"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={formik.values.cost}
-              onChange={formik.handleChange}
-              error={Boolean(formik.errors.cost)}
-              helperText={formik.errors.cost}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              type="date"
-              id="startDate"
-              name="startDate"
-              label="Fecha de inicio"
-              variant="outlined"
-              fullWidth
-              value={formik.values.startDate}
-              onChange={formik.handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              error={Boolean(formik.errors.startDate)}
-              helperText={formik.errors.startDate}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              type="date"
-              id="endDate"
-              name="endDate"
-              label="Fecha de finalizacion"
-              variant="outlined"
-              fullWidth
-              value={formik.values.endDate}
-              onChange={formik.handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              error={Boolean(formik.errors.endDate)}
-              helperText={formik.errors.endDate}
-            />
-          </Grid>
+          {/* description */}
           <Grid item xs={12}>
             <TextField
               id="description"
@@ -180,6 +198,7 @@ const CreateProject = () => {
               label="Descripción"
               variant="outlined"
               fullWidth
+              required
               multiline
               value={formik.values.description}
               onChange={formik.handleChange}
