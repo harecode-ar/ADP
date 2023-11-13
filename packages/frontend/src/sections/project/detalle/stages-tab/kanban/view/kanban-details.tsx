@@ -162,7 +162,7 @@ export default function KanbanDetails(props: TProps) {
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
-            <StyledLabel>Fecha de finalización</StyledLabel>
+            <StyledLabel>Descripción</StyledLabel>
             <TextField
               fullWidth
               multiline
