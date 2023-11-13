@@ -9,7 +9,7 @@ export const GET_STAGES_BY_PROJECT = gql`
       startDate
       endDate
       description
-      area{
+      area {
         id
         name
       }

@@ -10,7 +10,6 @@ import { styled } from '@mui/material/styles'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 
-
 // ----------------------------------------------------------------------
 
 type TProps = {
