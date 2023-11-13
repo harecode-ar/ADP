@@ -53,10 +53,6 @@ const validationSchema = Yup.object().shape({
         return new Date(startDate) <= new Date(value)
       }
     ),
-  progress: Yup.number()
-    .required('Progreso requerido')
-    .min(0, 'El progreso debe ser mayor o igual a 0')
-    .max(100, 'El progreso debe ser menor o igual a 100'),
   area: Yup.object().required('Area requerida'),
   description: Yup.string().required('Descripcion requerida'),
 })
@@ -73,7 +69,6 @@ type TFormikValues = {
   cost: string
   startDate: string
   endDate: string
-  progress: number
   area: IArea | null
   description: string
 }
@@ -105,7 +100,6 @@ const ModalEdit = (props: TProps) => {
       cost: '',
       startDate: '',
       endDate: '',
-      progress: 0,
       area: null,
       description: '',
     } as TFormikValues,
@@ -119,7 +113,6 @@ const ModalEdit = (props: TProps) => {
             cost: values.cost,
             startDate: values.startDate,
             endDate: values.endDate,
-            progress: values.progress / 100,
             areaId: values.area?.id,
             description: values.description,
           },
@@ -152,7 +145,6 @@ const ModalEdit = (props: TProps) => {
           cost: project.cost,
           startDate: new Date(project.startDate).toISOString().split('T')[0],
           endDate: new Date(project.endDate).toISOString().split('T')[0],
-          progress: project.progress * 100,
           area: project.area,
           description: project.description,
         })
@@ -273,26 +265,8 @@ const ModalEdit = (props: TProps) => {
                   helperText={formik.errors.endDate}
                 />
               </Grid>
-              {/* progress */}
-              <Grid item xs={12} md={2}>
-                <TextField
-                  id="progress"
-                  name="progress"
-                  label="Progreso"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  value={`${formik.values.progress}`}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                  }}
-                  onChange={formik.handleChange}
-                  error={Boolean(formik.errors.progress)}
-                  helperText={formik.errors.progress}
-                />
-              </Grid>
               {/* area */}
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <Autocomplete
                   options={areas}
                   getOptionLabel={(option) => option.name}
