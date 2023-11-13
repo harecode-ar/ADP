@@ -45,10 +45,7 @@ export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
   return (
     <React.Fragment>
       <Paper
-        onClick={() => {
-          console.log(task.id)
-          openDetails.onTrue()
-        }}
+        onClick={openDetails.onTrue}
         sx={{
           width: 1,
           borderRadius: 1.5,
@@ -101,8 +98,8 @@ export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
               }),
               ...(task.progress > 0.3 &&
                 task.progress <= 0.6 && {
-                  color: 'warning.main',
-                }),
+                color: 'warning.main',
+              }),
               ...(task.progress <= 0.3 && {
                 color: 'error.main',
               }),

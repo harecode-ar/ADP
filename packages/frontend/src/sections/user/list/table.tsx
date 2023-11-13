@@ -109,17 +109,11 @@ const Table = (props: TProps) => {
                 {selected.length === 1 && (
                   <React.Fragment>
                     <IconButton
-                      onClick={() => {
-                        modalEdit.onTrue()
-                      }}
+                      onClick={modalEdit.onTrue}
                     >
                       <Iconify icon="material-symbols:edit" />
                     </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        modalDelete.onTrue()
-                      }}
-                    >
+                    <IconButton onClick={modalDelete.onTrue}>
                       <Iconify icon="material-symbols:delete" />
                     </IconButton>
                   </React.Fragment>
