@@ -40,7 +40,7 @@ export default {
       }
       return Promise.resolve(null)
     },
-    notes: (project: IProject): Promise<IProjectNote[]> => {
+    notes: (project: IProject): Promise<Omit<IProjectNote, 'user'>[]> => {
       if (project.notes) return Promise.resolve(project.notes)
       return ProjectNote.findAll({ where: { projectId: project.id } })
     },

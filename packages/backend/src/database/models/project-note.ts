@@ -9,6 +9,10 @@ export class ProjectNote extends Model {
   public projectId!: number
 
   public userId!: number
+
+  public readonly createdAt!: string
+
+  public readonly updatedAt!: string
 }
 
 ProjectNote.init(
@@ -28,8 +32,8 @@ ProjectNote.init(
     },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     sequelize,

@@ -20,6 +20,8 @@ export default `#graphql
       message: String!
       projectId: Int!
     ): ProjectNote
+
+    deleteProjectNote(id: Int!): ProjectNote
   }
 
 `

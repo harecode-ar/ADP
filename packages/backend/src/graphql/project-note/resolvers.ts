@@ -25,7 +25,8 @@ export default {
           include: [{
             model: User,
             as: 'user'
-          }]
+          }],
+          order: [['createdAt', 'DESC']],
         })
       } catch (error) {
         logger.error(error)
@@ -48,6 +49,26 @@ export default {
           ...args,
           userId: user.id
         })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    deleteProjectNote: async (
+      _: any,
+      args: Pick<IProjectNote, 'id'>,
+      context: IContext
+    ): Promise<Omit<IProjectNote, 'user'>> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_NOTE_DELETE], context)
+        const { id } = args
+        const project = await ProjectNote.findByPk(id)
+        if (!project) {
+          throw new Error('Project not found')
+        }
+        await project.destroy()
+        return project
       } catch (error) {
         logger.error(error)
         throw error
