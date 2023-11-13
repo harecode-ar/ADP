@@ -145,9 +145,7 @@ const Table = () => {
                   </Link>
                 )}
                 <IconButton
-                  onClick={() => {
-                    modalEdit.onTrue()
-                  }}
+                  onClick={modalEdit.onTrue}
                 >
                   <Iconify icon="material-symbols:edit" />
                 </IconButton>

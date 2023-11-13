@@ -97,9 +97,7 @@ export default function KanbanDetails(props: TProps) {
           </Tooltip>
           <Tooltip title="Eliminar">
             <IconButton
-              onClick={() => {
-                modalDelete.onTrue()
-              }}
+              onClick={modalDelete.onTrue}
             >
               <Iconify icon="solar:trash-bin-trash-bold" />
             </IconButton>
