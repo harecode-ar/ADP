@@ -8,6 +8,11 @@ export const GET_STAGES_BY_PROJECT = gql`
       progress
       startDate
       endDate
+      description
+      area{
+        id
+        name
+      }
       responsible {
         id
         fullname
