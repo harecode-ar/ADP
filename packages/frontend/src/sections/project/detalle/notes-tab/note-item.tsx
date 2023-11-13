@@ -12,12 +12,10 @@ import { fDate } from 'src/utils/format-time'
 
 import Iconify from 'src/components/iconify'
 import { IProjectNote } from '@adp/shared'
-import { DELETE_PROJECT_NOTE } from 'src/graphql/mutations'
-import { useMutation } from '@apollo/client'
-import { useSnackbar } from 'src/components/snackbar'
+import { useBoolean } from 'src/hooks/use-boolean'
+import ModalDelete from './modal-delete'
 
 // ----------------------------------------------------------------------
-
 interface TProps {
   refetch: () => void
   note: IProjectNote
@@ -26,22 +24,7 @@ interface TProps {
 export default function NoteItem(props: TProps) {
   const { note, refetch } = props
   const { user } = note
-  const { enqueueSnackbar } = useSnackbar()
-  const [deleteProjectNote] = useMutation(DELETE_PROJECT_NOTE)
-
-  const onDelete = async () => {
-    try {
-      await deleteProjectNote({
-        variables: {
-          id: note.id,
-        },
-      })
-      refetch()
-      enqueueSnackbar('Nota borrada correctamente.', { variant: 'success' })
-    } catch (err) {
-      enqueueSnackbar('La nota no pudo ser borrada.', { variant: 'error' })
-    }
-  }
+  const modalDelete = useBoolean()
 
   const renderHead = (
     <CardHeader
@@ -64,8 +47,12 @@ export default function NoteItem(props: TProps) {
         </Box>
       }
       action={
-        <IconButton>
-          <Iconify sx={{ mr: 1 }} icon="material-symbols:delete" onClick={onDelete} />
+        <IconButton
+          onClick={() => {
+            modalDelete.onTrue()
+          }}
+        >
+          <Iconify icon="solar:trash-bin-trash-bold" />
         </IconButton>
       }
     />
@@ -82,6 +69,7 @@ export default function NoteItem(props: TProps) {
       >
         {note.message}
       </Typography>
+      <ModalDelete modal={modalDelete} refetch={refetch} noteId={note.id} />
     </Card>
   )
 }
