@@ -11,6 +11,7 @@ import KanbanDetails from './kanban-details'
 
 type Props = PaperProps & {
   task: IStage
+  refetch: () => void
 }
 
 const getColorVariant = (progress: number) => {
@@ -33,7 +34,7 @@ const getColor = (progress: number) => {
   return ERROR.main
 }
 
-export default function KanbanTaskItem({ task, sx, ...other }: Props) {
+export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
   const theme = useTheme()
 
   const hasUser = Boolean(task.responsible)
@@ -116,6 +117,7 @@ export default function KanbanTaskItem({ task, sx, ...other }: Props) {
         </Stack>
       </Paper>
       <KanbanDetails
+        refetch={refetch}
         stage={task}
         openDetails={openDetails.value}
         onCloseDetails={openDetails.onFalse}
