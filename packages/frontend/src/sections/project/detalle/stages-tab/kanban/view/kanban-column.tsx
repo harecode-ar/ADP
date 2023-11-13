@@ -8,9 +8,10 @@ import KanbanTaskItem from './kanban-task-item'
 type Props = {
   stage: IStage[]
   title: string
+  refetch: VoidFunction
 }
 
-export default function KanbanColumn({ stage, title }: Props) {
+export default function KanbanColumn({ stage, title, refetch }: Props) {
   return (
     <Paper
       sx={{
@@ -32,7 +33,7 @@ export default function KanbanColumn({ stage, title }: Props) {
           }}
         >
           {stage.map((stageItem, index) => (
-            <KanbanTaskItem key={index} task={stageItem} />
+            <KanbanTaskItem key={index} task={stageItem} refetch={refetch}/>
           ))}
         </Stack>
       </Stack>

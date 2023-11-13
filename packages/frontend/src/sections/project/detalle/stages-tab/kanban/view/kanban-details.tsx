@@ -7,8 +7,10 @@ import Divider from '@mui/material/Divider'
 import Scrollbar from 'src/components/scrollbar'
 import { Tooltip, IconButton, Button, Box, Avatar, Typography, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
+import ModalDelete from './modal-delete'
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +18,7 @@ type TProps = {
   stage: IStage
   openDetails: boolean
   onCloseDetails: VoidFunction
+  refetch: () => void
 }
 
 const StyledLabel = styled('span')(({ theme }) => ({
@@ -50,8 +53,9 @@ const getColor = (progress: number) => {
 }
 
 export default function KanbanDetails(props: TProps) {
-  const { stage, openDetails, onCloseDetails } = props
+  const { stage, openDetails, onCloseDetails, refetch } = props
   const color = getColor(stage.progress)
+  const modalDelete = useBoolean()
 
   return (
     <Drawer
@@ -92,7 +96,11 @@ export default function KanbanDetails(props: TProps) {
             </IconButton>
           </Tooltip>
           <Tooltip title="Eliminar">
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                modalDelete.onTrue()
+              }}
+            >
               <Iconify icon="solar:trash-bin-trash-bold" />
             </IconButton>
           </Tooltip>
@@ -173,6 +181,7 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
         </Stack>
       </Scrollbar>
+      <ModalDelete modal={modalDelete} refetch={refetch} stageId={stage.id}/>
     </Drawer>
   )
 }

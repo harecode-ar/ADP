@@ -10,10 +10,11 @@ import KanbanColumn from './kanban-column'
 
 type TProps = {
   stages: IStage[]
+  refetch: VoidFunction
 }
 
 export default function KanbanComponent(props: TProps) {
-  const { stages } = props
+  const { stages, refetch } = props
 
   const stagesByState: Record<string, IStage[]> = {
     Nuevo: [],
@@ -47,7 +48,7 @@ export default function KanbanComponent(props: TProps) {
           >
             {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
             {Object.entries(stagesByState).map(([state, stateStages]) => (
-              <KanbanColumn stage={stateStages} title={state} />
+              <KanbanColumn stage={stateStages} title={state} refetch={refetch}/>
             ))}
           </Stack>
         </Scrollbar>
