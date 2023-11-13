@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import type { IRole, IUser } from '@adp/shared/types'
 import CustomTable from 'src/components/table/custom-table'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -66,7 +66,7 @@ type TProps = {
 const Table = (props: TProps) => {
   const { modalCreate } = props
   const { data, loading, refetch } = useQuery(USERS_FOR_LIST)
-  const { selected } = useTable()
+  const { selected, setMultiple } = useTable()
   const modalEdit = useBoolean()
   const modalDelete = useBoolean()
 
@@ -87,16 +87,21 @@ const Table = (props: TProps) => {
     })
   }, [data, roles])
 
+  useEffect(() => {
+    setMultiple(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Box>
       {loading ? (
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
-          <CustomTableToolbar id="one" columns={columns} download refetch={refetch} />
+          <CustomTableToolbar id="user-list-table" columns={columns} download refetch={refetch} />
           <CustomTableSearch />
           <CustomTable
-            id="one"
+            id="user-list-table"
             columns={columns}
             data={users}
             action={

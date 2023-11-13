@@ -103,12 +103,17 @@ const columns: TColumn[] = [
 
 const Table = () => {
   const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
-  const { hideColumns, selected } = useTable()
+  const { hideColumns, selected, setMultiple } = useTable()
   const modalEdit = useBoolean()
 
   useEffect(() => {
     hideColumns(columns)
   }, [hideColumns])
+
+  useEffect(() => {
+    setMultiple(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Box>

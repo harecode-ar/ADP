@@ -19,11 +19,16 @@ type TProps = {
 
 const Table = (props: TProps) => {
   const { loading = false, refetch, projects } = props
-  const { hideColumns, selected } = useTable()
+  const { hideColumns, selected, setMultiple } = useTable()
 
   useEffect(() => {
     hideColumns(columns)
   }, [hideColumns])
+
+  useEffect(() => {
+    setMultiple(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Card sx={{ p: 2 }}>
