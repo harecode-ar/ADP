@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import type { IProject } from '@adp/shared/types'
+import type { IProject } from '@adp/shared'
 import NextLink from 'next/link'
 import CustomTable from 'src/components/table/custom-table'
 import CustomTableSearch from 'src/components/table/custom-table-search'
 import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
 import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
+import { useBoolean } from 'src/hooks/use-boolean'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
@@ -13,17 +14,20 @@ import { Box, IconButton, Link } from '@mui/material'
 import Label from 'src/components/label'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
+import ModalEdit from './modal-edit'
 
 const getLabelColor = (id: number) => {
   switch (id) {
     case 1:
-      return 'primary'
+      return 'secondary'
     case 2:
       return 'warning'
     case 3:
+      return 'success'
+    case 4:
       return 'error'
     default:
-      return 'primary'
+      return 'warning'
   }
 }
 
@@ -100,6 +104,7 @@ const columns: TColumn[] = [
 const Table = () => {
   const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
   const { hideColumns, selected } = useTable()
+  const modalEdit = useBoolean()
 
   useEffect(() => {
     hideColumns(columns)
@@ -134,9 +139,17 @@ const Table = () => {
                     </IconButton>
                   </Link>
                 )}
+                <IconButton
+                  onClick={() => {
+                    modalEdit.onTrue()
+                  }}
+                >
+                  <Iconify icon="material-symbols:edit" />
+                </IconButton>
               </React.Fragment>
             }
           />
+          {modalEdit.value && <ModalEdit modal={modalEdit} refetch={refetch} />}
         </React.Fragment>
       )}
     </Box>
