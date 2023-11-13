@@ -7,6 +7,8 @@ export class ProjectNote extends Model {
   public message!: string
 
   public projectId!: number
+
+  public userId!: number
 }
 
 ProjectNote.init(
@@ -24,6 +26,10 @@ ProjectNote.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false
+    }
   },
   {
     sequelize,

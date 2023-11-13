@@ -24,6 +24,7 @@ export const PERMISSION_MAP = {
   STAGE_UPDATE: 'stage:update',
   STAGE_DELETE: 'stage:delete',
   PROJECT_NOTE_CREATE: 'projectNote:create',
+  PROJECT_NOTE_READ: 'projectNote:read'
 }
 
 export const PERMISSION_ARRAY = Object.values(PERMISSION_MAP)

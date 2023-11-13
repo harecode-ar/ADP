@@ -3,6 +3,16 @@ export default `#graphql
     id: Int
     message: String
     projectId: Int
+    userId: Int
+
+    createdAt: String
+    updatedAt: String
+
+    user: User
+  }
+
+  type Query {
+    projectNotes(projectId: Int!): [ProjectNote]
   }
 
   type Mutation {
@@ -11,4 +21,5 @@ export default `#graphql
       projectId: Int!
     ): ProjectNote
   }
+
 `

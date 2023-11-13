@@ -1,0 +1,39 @@
+import { IProject, IProjectNote } from '@adp/shared'
+import React, { useMemo }from 'react'
+import { useQuery } from '@apollo/client'
+import { GET_PROJECT_NOTES } from 'src/graphql/queries'
+import Divider from '@mui/material/Divider'
+import PostCommentForm from './notes-form'
+import PostCommentList from './notes-list'
+import NoteItem from './note-item'
+
+
+type TProps = {
+  project: IProject
+}
+
+export default function NotesTab(props: TProps) {
+  const { project } = props
+  const { data } = useQuery(GET_PROJECT_NOTES, {
+    variables: { projectId: Number(project.id)},
+    skip: !project
+  })
+
+
+
+  const notes: IProjectNote[] = useMemo(() => {
+    if (!data) return []
+    return data.projectNotes
+  }, [data])
+
+  console.log(project)
+  return (
+    <React.Fragment>
+      <PostCommentForm />
+      <Divider variant="middle" sx={{ marginTop: '16px' }} />
+      {
+        notes.map(note=><NoteItem key={note.id} note={note}/>)
+      }
+    </React.Fragment>
+  )
+}

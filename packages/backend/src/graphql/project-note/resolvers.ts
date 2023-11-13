@@ -1,12 +1,39 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IProjectNote } from '@adp/shared/types'
-import { ProjectNote } from '../../database/models'
+import type { IProjectNote, IUser } from '@adp/shared/types'
+import { ProjectNote, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 
 export default {
-  Query: {},
+  ProjectNote : {
+    user: (projectNote: IProjectNote): Promise<IUser | null> => {
+      if (projectNote.user) return Promise.resolve(projectNote.user)
+      return User.findByPk(projectNote.userId)
+    },
+  },
+  Query: {
+    projectNotes: (
+      _: any,
+      args: { projectId: number },
+      context: IContext
+    ): Promise<IProjectNote[]> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_NOTE_READ], context)
+        return ProjectNote.findAll({
+          where: { projectId: args.projectId },
+          include: [{
+            model: User,
+            as: 'user'
+          }]
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+  },
   Mutation: {
     createProjectNote: (
       _: any,
@@ -14,8 +41,13 @@ export default {
       context: IContext
     ): Promise<IProjectNote> => {
       try {
+        const { user } = context
+        if (!user) throw new Error ('No se encontro un usuario')
         needPermission([PERMISSION_MAP.PROJECT_NOTE_CREATE], context)
-        return ProjectNote.create(args)
+        return ProjectNote.create({
+          ...args,
+          userId: user.id
+        })
       } catch (error) {
         logger.error(error)
         throw error
