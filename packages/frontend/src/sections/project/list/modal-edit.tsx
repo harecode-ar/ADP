@@ -54,7 +54,6 @@ const validationSchema = Yup.object().shape({
       }
     ),
   area: Yup.object().required('Area requerida'),
-  description: Yup.string().required('Descripcion requerida'),
 })
 
 type TProps = {
