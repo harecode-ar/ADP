@@ -31,7 +31,6 @@ export const UPDATE_PROJECT = gql`
     $cost: String
     $startDate: String
     $endDate: String
-    $progress: Int
     $stateId: Int
   ) {
     updateProject(
@@ -42,7 +41,6 @@ export const UPDATE_PROJECT = gql`
       cost: $cost
       startDate: $startDate
       endDate: $endDate
-      progress: $progress
       stateId: $stateId
     ) {
       id
