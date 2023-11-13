@@ -18,7 +18,6 @@ const projectSchema = Yup.object().shape({
   area: Yup.object().required('Area requerida'),
   cost: Yup.string().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
-  // endDate: Yup.string().required('Fecha de finalizacion requerida'),
   endDate: Yup.string()
     .required('Fecha de finalización requerida')
     .test(

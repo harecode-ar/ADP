@@ -64,9 +64,6 @@ export default function ProjectDetailView(props: TProps) {
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
   const formatDate = (dateString: string) => {
-    // console.log(dateString)
-    // console.log(new Date(dateString).toLocaleDateString('es-ES'))
-    // return new Date(dateString).toLocaleDateString('es-ES')
     const [anno, mes, dia] = dateString.split('-')
     const nuevaFechaString = `${dia}/${mes}/${anno}`
     return nuevaFechaString
