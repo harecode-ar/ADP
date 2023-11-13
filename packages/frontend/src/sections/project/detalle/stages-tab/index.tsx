@@ -34,7 +34,7 @@ export default function StagesTab(props: TProps) {
         <Iconify icon="mingcute:add-fill" mr={1} />
         Crear etapa
       </Button>
-      <KanbanComponent stages={stages} refetch={refetch}/>
+      <KanbanComponent stages={stages} refetch={refetch} />
       {modalCreate.value && <ModalCreate modal={modalCreate} project={project} refetch={refetch} />}
     </Box>
   )

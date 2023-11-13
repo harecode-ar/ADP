@@ -181,7 +181,7 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
         </Stack>
       </Scrollbar>
-      <ModalDelete modal={modalDelete} refetch={refetch} stageId={stage.id}/>
+      <ModalDelete modal={modalDelete} refetch={refetch} stageId={stage.id} />
     </Drawer>
   )
 }
