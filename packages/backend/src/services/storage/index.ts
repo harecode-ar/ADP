@@ -25,8 +25,8 @@ export const uploadFile = async (file: any, filename: string) => {
       },
     })
     return response
-  } catch (error: any) {
-    logger.error(error.name, error)
+  } catch (error) {
+    logger.error(error)
     throw error
   }
 }
@@ -53,8 +53,8 @@ export const uploadFiles = async (
       },
     })
     return response
-  } catch (error: any) {
-    logger.error(error.name, error)
+  } catch (error) {
+    logger.error(error)
     throw error
   }
 }
@@ -67,9 +67,8 @@ export const deleteFile = async (filename: string) => {
       },
     })
     return response.data
-  } catch (error: any) {
-    console.log('error: ', error.message)
-    logger.error(error.name, error)
+  } catch (error) {
+    logger.error(error)
     throw error
   }
 }
@@ -90,8 +89,8 @@ export const getFile = async (filename: string) => {
       responseType: 'arraybuffer',
     })
     return file
-  } catch (error: any) {
-    logger.error(error.name, error)
+  } catch (error) {
+    logger.error(error)
     throw error
   }
 }
