@@ -6,7 +6,7 @@ import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 
 export default {
-  ProjectNote : {
+  ProjectNote: {
     user: (projectNote: IProjectNote): Promise<IUser | null> => {
       if (projectNote.user) return Promise.resolve(projectNote.user)
       return User.findByPk(projectNote.userId)
@@ -22,10 +22,12 @@ export default {
         needPermission([PERMISSION_MAP.PROJECT_NOTE_READ], context)
         return ProjectNote.findAll({
           where: { projectId: args.projectId },
-          include: [{
-            model: User,
-            as: 'user'
-          }],
+          include: [
+            {
+              model: User,
+              as: 'user',
+            },
+          ],
           order: [['createdAt', 'DESC']],
         })
       } catch (error) {
@@ -33,7 +35,6 @@ export default {
         throw error
       }
     },
-
   },
   Mutation: {
     createProjectNote: (
@@ -43,11 +44,11 @@ export default {
     ): Promise<IProjectNote> => {
       try {
         const { user } = context
-        if (!user) throw new Error ('No se encontro un usuario')
+        if (!user) throw new Error('No se encontro ningun usuario')
         needPermission([PERMISSION_MAP.PROJECT_NOTE_CREATE], context)
         return ProjectNote.create({
           ...args,
-          userId: user.id
+          userId: user.id,
         })
       } catch (error) {
         logger.error(error)
@@ -63,12 +64,12 @@ export default {
       try {
         needPermission([PERMISSION_MAP.PROJECT_NOTE_DELETE], context)
         const { id } = args
-        const project = await ProjectNote.findByPk(id)
-        if (!project) {
-          throw new Error('Project not found')
+        const projectNote = await ProjectNote.findByPk(id)
+        if (!projectNote) {
+          throw new Error('Nota de proyecto no encontrada')
         }
-        await project.destroy()
-        return project
+        await projectNote.destroy()
+        return projectNote
       } catch (error) {
         logger.error(error)
         throw error
