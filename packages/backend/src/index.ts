@@ -3,6 +3,7 @@ import type { IBackendEnvironment } from '@adp/shared'
 import dotenv from 'dotenv'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
+import { graphqlUploadExpress } from 'graphql-upload-ts'
 import colors from 'colors'
 import path from 'path'
 import next from 'next'
@@ -24,6 +25,8 @@ const nextApp = next({
 const nextHandler = nextApp.getRequestHandler()
 
 const app = express()
+
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 
 const server = new ApolloServer({
   typeDefs,

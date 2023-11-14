@@ -32,6 +32,9 @@ export interface IBackendEnvironment {
   LOG_FILENAME: string
 
   JWT_SECRET: string
+
+  STORAGE_URL: string
+  STORAGE_KEY: string
 }
 
 export type IFrontendEnvironment = {
