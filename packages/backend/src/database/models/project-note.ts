@@ -7,6 +7,12 @@ export class ProjectNote extends Model {
   public message!: string
 
   public projectId!: number
+
+  public userId!: number
+
+  public readonly createdAt!: string
+
+  public readonly updatedAt!: string
 }
 
 ProjectNote.init(
@@ -21,6 +27,10 @@ ProjectNote.init(
       allowNull: false,
     },
     projectId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+    },
+    userId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },

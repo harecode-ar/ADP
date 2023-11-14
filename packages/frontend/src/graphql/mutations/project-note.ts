@@ -7,3 +7,10 @@ export const CREATE_PROJECT_NOTE = gql`
     }
   }
 `
+export const DELETE_PROJECT_NOTE = gql`
+  mutation deleteProjectNote($id: Int!) {
+    deleteProjectNote(id: $id) {
+      id
+    }
+  }
+`
