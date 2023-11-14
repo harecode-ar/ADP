@@ -1,10 +1,11 @@
 'use client'
 
 import * as React from 'react'
-import { Container, Typography, Box } from '@mui/material'
+import { Container, Box } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { TableContextProvider } from 'src/components/table/context'
-
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
+import { paths } from 'src/routes/paths'
 import Table from './table'
 
 export default function ProjectListView() {
@@ -13,9 +14,10 @@ export default function ProjectListView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography sx={{ mr: 2 }} variant="h4">
-          Proyectos
-        </Typography>
+        <CustomBreadcrumbs
+          heading="Proyectos"
+          links={[{ name: 'Proyectos', href: paths.dashboard.project.root }, { name: 'Listado' }]}
+        />
       </Box>
       <TableContextProvider>
         <Table />
