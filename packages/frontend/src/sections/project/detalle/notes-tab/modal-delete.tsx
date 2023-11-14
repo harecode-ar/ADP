@@ -39,12 +39,11 @@ const ModalDelete = (props: TProps) => {
           id,
         },
       })
-      enqueueSnackbar('Nota borrada correctamente.', { variant: 'success' })
+      enqueueSnackbar('Nota eliminada correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
     } catch (err) {
-      console.log(err)
-      enqueueSnackbar('La Nota no pudo ser borrado.', { variant: 'error' })
+      enqueueSnackbar('La Nota no pudo ser eliminada.', { variant: 'error' })
     }
   }
 

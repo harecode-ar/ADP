@@ -196,7 +196,6 @@ const CreateProject = () => {
               label="Descripción"
               variant="outlined"
               fullWidth
-              required
               multiline
               value={formik.values.description}
               onChange={formik.handleChange}

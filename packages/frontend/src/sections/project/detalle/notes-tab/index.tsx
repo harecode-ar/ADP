@@ -2,7 +2,6 @@ import { IProject, IProjectNote } from '@adp/shared'
 import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_PROJECT_NOTES } from 'src/graphql/queries'
-import Divider from '@mui/material/Divider'
 import PostCommentForm from './notes-form'
 import NoteItem from './note-item'
 
@@ -25,7 +24,6 @@ export default function NotesTab(props: TProps) {
   return (
     <React.Fragment>
       <PostCommentForm project={project} refetch={refetch} />
-      <Divider variant="middle" sx={{ marginTop: '16px' }} />
       {notes.map((note) => (
         <NoteItem key={note.id} note={note} refetch={refetch} />
       ))}
