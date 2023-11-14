@@ -12,16 +12,14 @@ import { useSnackbar } from 'src/components/snackbar'
 import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
-import DetailTab from './detail-tab'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 
 enum ETab {
-  DETAIL = 'Detalle',
+  NOTES = 'Notas',
   STAGES = 'Etapas',
   GANTT = 'Gantt',
-  NOTES = 'Notas',
 }
 
 type TProps = {
@@ -219,7 +217,6 @@ export default function ProjectDetailView(props: TProps) {
                 }}
               >
                 <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                  <Tab label={ETab.DETAIL} value={ETab.DETAIL} disabled />
                   <Tab label={ETab.STAGES} value={ETab.STAGES} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                   <Tab label={ETab.NOTES} value={ETab.NOTES} />
@@ -227,7 +224,6 @@ export default function ProjectDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {tab === ETab.DETAIL && <DetailTab project={project} />}
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
             )}

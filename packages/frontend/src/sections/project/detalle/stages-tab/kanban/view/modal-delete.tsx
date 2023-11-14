@@ -42,8 +42,7 @@ const ModalDelete = (props: TProps) => {
       enqueueSnackbar('Etapa borrada correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
-    } catch (err) {
-      console.log(err)
+    } catch {
       enqueueSnackbar('La etapa no pudo ser borrada.', { variant: 'error' })
     }
   }

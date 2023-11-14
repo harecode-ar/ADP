@@ -44,8 +44,7 @@ const DeleteAreaModal = (props: TProps) => {
       enqueueSnackbar('Area borrada correctamente.', { variant: 'success' })
       modal.onFalse()
       setSelected(null)
-    } catch (err) {
-      console.log(err)
+    } catch {
       enqueueSnackbar('El Area no pudo ser borrada.', { variant: 'error' })
     }
   }
