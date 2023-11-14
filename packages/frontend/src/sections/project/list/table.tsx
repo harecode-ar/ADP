@@ -144,9 +144,7 @@ const Table = () => {
                     </IconButton>
                   </Link>
                 )}
-                <IconButton
-                  onClick={modalEdit.onTrue}
-                >
+                <IconButton onClick={modalEdit.onTrue}>
                   <Iconify icon="material-symbols:edit" />
                 </IconButton>
               </React.Fragment>

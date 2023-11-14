@@ -8,7 +8,7 @@ import {
   NextSSRInMemoryCache,
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr'
-import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
+import { createUploadLink } from 'src/lib/apollo-upload-client'
 import { NEXT_PUBLIC_APP_URL } from 'src/config-global'
 
 const defaultOptions: DefaultOptions = {
@@ -40,6 +40,7 @@ function makeClient() {
     }
   })
 
+  // @ts-ignore
   const uploadLink = createUploadLink({
     uri: `${NEXT_PUBLIC_APP_URL}/graphql`,
   })
