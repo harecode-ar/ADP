@@ -224,10 +224,9 @@ export default {
         }
 
         let progress
-        if ( stateId === STAGE_STATE.COMPLETED) {
+        if (stateId === STAGE_STATE.COMPLETED) {
           progress = 1
-        }
-        else if ( stage.stateId === STAGE_STATE.COMPLETED && stateId !== STAGE_STATE.COMPLETED) {
+        } else if (stage.stateId === STAGE_STATE.COMPLETED && stateId !== STAGE_STATE.COMPLETED) {
           progress = 0
         }
 

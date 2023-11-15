@@ -22,7 +22,6 @@ import SearchNotFound from 'src/components/search-not-found'
 import { getStorageFileUrl } from 'src/utils/storage'
 
 export default function AreaCardContainer() {
-
   const [search, setSearch] = useState('')
 
   const handleSearch = (event: any) => {
@@ -46,12 +45,7 @@ export default function AreaCardContainer() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Stack
-        spacing={2}
-        justifyContent="end"
-        direction={{ xs: 'column', sm: 'row' }}
-
-      >
+      <Stack spacing={2} justifyContent="end" direction={{ xs: 'column', sm: 'row' }}>
         <TextField
           value={search}
           onChange={handleSearch}

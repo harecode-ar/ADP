@@ -53,7 +53,11 @@ export default function UserCard() {
                 'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
               )}
               alt={user.fullname}
-              sx={(theme) => ({ width: 128, height: 128, border: `2px solid ${theme.palette.background.paper}` })}
+              sx={(theme) => ({
+                width: 128,
+                height: 128,
+                border: `2px solid ${theme.palette.background.paper}`,
+              })}
             />
           ) : null}
           <Box
