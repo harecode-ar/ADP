@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import type { IArea, IProject } from '@adp/shared'
+import type { IArea, IProjectState, IStage, IProject } from '@adp/shared'
 import {
   Typography,
   Button,
@@ -14,19 +14,20 @@ import {
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
-import { useBoolean } from 'src/hooks/use-boolean'
-import { useSnackbar } from 'src/components/snackbar'
 import { useMutation, useQuery } from '@apollo/client'
-import { CREATE_STAGE } from 'src/graphql/mutations'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
+import { PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries/project-state'
+import { useSnackbar } from 'src/components/snackbar'
+import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
+import { UPDATE_STAGE } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
+  maxWidth: 900,
   bgcolor: 'background.paper',
   border: '1px solid #000',
   borderRadius: '10px',
@@ -36,7 +37,7 @@ const styleModal = {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  area: Yup.object().required('Área requerida'),
+  state: Yup.object().required('Estado requerido'),
   startDate: Yup.string()
     .required('Fecha de inicio requerida')
     .test(
@@ -44,86 +45,103 @@ const validationSchema = Yup.object().shape({
       'La fecha de inicio esta fuera del rango del proyecto',
       (value, { parent }) => {
         const { startDate } = parent
-        const { projectStartDate } = parent
-        return new Date(startDate) >= new Date(projectStartDate)
+        const { projectStartDate, projectEndDate } = parent
+        return startDate >= projectStartDate && startDate <= projectEndDate
       }
     ),
   endDate: Yup.string()
-    .required('Fecha de finalización requerida')
-    .test(
-      'is-start-date-before-end-date',
-      'La fecha de finalización debe ser mayor o igual a la fecha de inicio',
-      (value, { parent }) => {
-        const { startDate } = parent
-        return new Date(startDate) <= new Date(value)
-      }
-    )
+    .required('Fecha de finalizacion requerida')
     .test(
       'is-end-date-in-range',
       'La fecha de finalizacion esta fuera del rango del proyecto',
       (value, { parent }) => {
-        const { projectEndDate } = parent
-        return new Date(value) <= new Date(projectEndDate)
+        const { endDate } = parent
+        const { projectStartDate, projectEndDate } = parent
+        return endDate >= projectStartDate && endDate <= projectEndDate
+      }
+    )
+    .test(
+      'is-start-date-before-end-date',
+      'La fecha de finalizacion debe ser mayor o igual a la fecha de inicio',
+      (value, { parent }) => {
+        const { startDate } = parent
+        return new Date(startDate) <= new Date(value)
       }
     ),
-  description: Yup.string().required('Descripción requerida'),
+  area: Yup.object().required('Area requerida'),
+  description: Yup.string().required('Descripcion requerida'),
 })
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
+  refetch: () => void
+  stage: IStage
   project: IProject
-  refetch: VoidFunction
 }
 
 type TFormikValues = {
+  id: number | null
   name: string
-  area: IArea | null
+  state: IProjectState | null
   startDate: string
   endDate: string
+  area: IArea | null
   description: string
+  projectId: number | null
 }
 
-const ModalCreate = (props: TProps) => {
-  const { modal, project, refetch } = props
-  const [createStage] = useMutation(CREATE_STAGE)
+const ModalEdit = (props: TProps) => {
+  const { modal, refetch, stage, project } = props
   const { enqueueSnackbar } = useSnackbar()
-  const { data } = useQuery(AREAS_FOR_SELECT)
+  const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
+  const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
+  const [updateStage] = useMutation(UPDATE_STAGE)
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
-    if (data?.areas) return data.areas
+    if (dataAreas?.areas) return dataAreas.areas
     return []
-  }, [data])
+  }, [dataAreas])
+
+  const states: Pick<IProjectState, 'id' | 'name'>[] = useMemo(() => {
+    if (dataProjectState?.projectStates) return dataProjectState.projectStates
+    return []
+  }, [dataProjectState])
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      area: null,
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
-      description: '',
+      id: null,
+      name: stage.name,
+      state: stage.state,
+      startDate: stage.startDate,
+      endDate: stage.endDate,
+      area: stage.area,
+      projectId: stage.projectId,
+      description: stage.description,
       projectStartDate: project.startDate,
       projectEndDate: project.endDate,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        const { errors } = await createStage({
+        const { errors } = await updateStage({
           variables: {
+            id: stage.id,
             name: values.name,
-            areaId: values.area?.id,
+            stateId: values.state?.id,
             startDate: values.startDate,
             endDate: values.endDate,
+            areaId: values.area?.id,
+            projectId: values.projectId,
             description: values.description,
-            projectId: project.id,
           },
         })
         if (errors) throw new Error(errors[0].message)
-        enqueueSnackbar('Etapa creada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Etapa editada correctamente.', { variant: 'success' })
         helpers.resetForm()
-        refetch()
         modal.onFalse()
+        refetch()
       } catch (error) {
         console.error(error)
-        enqueueSnackbar(`La etapa no pudo ser creada. ${error.message}`, { variant: 'error' })
+        enqueueSnackbar('La etapa no pudo ser editada.', { variant: 'error' })
       }
     },
     validationSchema,
@@ -144,11 +162,12 @@ const ModalCreate = (props: TProps) => {
     >
       <Box sx={styleModal}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Nueva etapa
+          Editar etapa
         </Typography>
-        <Box id="modal-modal-description" sx={{ mt: 2 }}>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
+              {/* name */}
               <Grid item xs={12} md={6}>
                 <TextField
                   id="name"
@@ -158,32 +177,33 @@ const ModalCreate = (props: TProps) => {
                   fullWidth
                   required
                   value={formik.values.name}
-                  onChange={formik.handleChange}
                   error={Boolean(formik.errors.name)}
                   helperText={formik.errors.name}
+                  onChange={formik.handleChange}
                 />
               </Grid>
+              {/* state */}
               <Grid item xs={12} md={6}>
                 <Autocomplete
-                  options={areas}
+                  options={states}
                   getOptionLabel={(option) => option.name}
-                  value={formik.values.area}
-                  onChange={(_, value) => formik.setFieldValue('area', value)}
+                  value={formik.values.state}
+                  onChange={(_, value) => formik.setFieldValue('state', value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Área asignada"
+                      label="Estado"
                       variant="outlined"
-                      placeholder="Buscar área"
+                      placeholder="Buscar estado"
                       required
-                      error={Boolean(formik.errors.area)}
-                      helperText={formik.errors.area}
+                      error={Boolean(formik.errors.state)}
+                      helperText={formik.errors.state}
                     />
                   )}
                 />
               </Grid>
-
-              <Grid item xs={12} md={6}>
+              {/* startDate */}
+              <Grid item xs={12} md={3}>
                 <TextField
                   type="date"
                   id="startDate"
@@ -194,11 +214,15 @@ const ModalCreate = (props: TProps) => {
                   required
                   value={formik.values.startDate}
                   onChange={formik.handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   error={Boolean(formik.errors.startDate)}
                   helperText={formik.errors.startDate}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* endDate */}
+              <Grid item xs={12} md={3}>
                 <TextField
                   type="date"
                   id="endDate"
@@ -209,10 +233,34 @@ const ModalCreate = (props: TProps) => {
                   required
                   value={formik.values.endDate}
                   onChange={formik.handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   error={Boolean(formik.errors.endDate)}
                   helperText={formik.errors.endDate}
                 />
               </Grid>
+              {/* area */}
+              <Grid item xs={12} md={6}>
+                <Autocomplete
+                  options={areas}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.area}
+                  onChange={(_, value) => formik.setFieldValue('area', value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Área"
+                      variant="outlined"
+                      placeholder="Buscar área"
+                      required
+                      error={Boolean(formik.errors.area)}
+                      helperText={formik.errors.area}
+                    />
+                  )}
+                />
+              </Grid>
+              {/* description */}
               <Grid item xs={12}>
                 <TextField
                   id="description"
@@ -229,7 +277,7 @@ const ModalCreate = (props: TProps) => {
                   helperText={formik.errors.description}
                 />
               </Grid>
-
+              {/* buttons */}
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -250,18 +298,24 @@ const ModalCreate = (props: TProps) => {
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                  <Button
+                    onClick={() => {
+                      formik.handleSubmit()
+                    }}
+                    color="primary"
+                    variant="contained"
+                  >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Crear
+                    Enviar
                   </Button>
                 </Box>
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </Typography>
       </Box>
     </Modal>
   )
 }
 
-export default ModalCreate
+export default ModalEdit
