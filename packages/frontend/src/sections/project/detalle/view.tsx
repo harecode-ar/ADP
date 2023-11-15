@@ -235,13 +235,11 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
-            <Card sx={{ p: 3 }}>
-              {tab === ETab.NOTES && <NotesTab project={project} />}
-              {tab === ETab.STAGES && (
-                <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
-              )}
-              {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
-            </Card>
+            {tab === ETab.NOTES && <NotesTab project={project} />}
+            {tab === ETab.STAGES && (
+              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+            )}
+            {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
           </React.Fragment>
         )}
       </Box>

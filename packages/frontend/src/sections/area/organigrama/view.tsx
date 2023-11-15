@@ -87,7 +87,7 @@ export default function OrganigramaView() {
           </Box>
         )}
       </Box>
-      <DeleteAreaModal modal={deleteAreaModal} />
+      <DeleteAreaModal modal={deleteAreaModal} refetch={refetch} />
       {createAreaModal.value && (
         <CreateAreaModal modal={createAreaModal} refetch={refetch} areas={areas} />
       )}

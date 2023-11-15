@@ -1,6 +1,6 @@
 import { IProject, IStage } from '@adp/shared'
 import React from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Card } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCreate from './create-stage'
@@ -18,31 +18,34 @@ export default function StagesTab(props: TProps) {
   const modalCreate = useBoolean()
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
+    <Card sx={{ p: 3 }}>
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'end',
+          flexDirection: 'column',
+          gap: 2,
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={modalCreate.onTrue}
-          sx={{ width: 'fit-content' }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+          }}
         >
-          <Iconify icon="mingcute:add-fill" mr={1} />
-          Crear etapa
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={modalCreate.onTrue}
+            sx={{ width: 'fit-content' }}
+          >
+            <Iconify icon="mingcute:add-fill" mr={1} />
+            Crear etapa
+          </Button>
+        </Box>
+        <KanbanComponent stages={stages} project={project} refetch={refetch} />
+        {modalCreate.value && <ModalCreate modal={modalCreate} project={project} refetch={refetch} />}
       </Box>
-      <KanbanComponent stages={stages} project={project} refetch={refetch} />
-      {modalCreate.value && <ModalCreate modal={modalCreate} project={project} refetch={refetch} />}
-    </Box>
+    </Card>
+
   )
 }

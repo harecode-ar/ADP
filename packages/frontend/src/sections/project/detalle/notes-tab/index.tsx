@@ -23,7 +23,11 @@ export default function NotesTab(props: TProps) {
   }, [data])
 
   return (
-    <React.Fragment>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 2,
+    }}>
       <PostCommentForm project={project} refetch={refetch} />
       {notes.length === 0 ? (
         <Box style={{ textAlign: 'center', padding: '20px' }}>
@@ -32,6 +36,6 @@ export default function NotesTab(props: TProps) {
       ) : (
         notes.map((note) => <NoteItem key={note.id} note={note} refetch={refetch} />)
       )}
-    </React.Fragment>
+    </Box>
   )
 }

@@ -33,7 +33,7 @@ const GanttComponent = (props: TProps) => {
   }
   const isDark = mode === 'dark'
   return (
-    <Card sx={{ p: 2 }}>
+    <Card sx={{ p: 3 }}>
       <Box className={`gantt-container ${mode}`}>
         <ViewSwitcher onViewModeChange={(viewMode) => setView(viewMode)} />
         <Gantt

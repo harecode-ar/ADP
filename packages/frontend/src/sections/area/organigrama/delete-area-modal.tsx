@@ -24,10 +24,11 @@ const styleModal = {
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
+  refetch: VoidFunction
 }
 
 const DeleteAreaModal = (props: TProps) => {
-  const { modal } = props
+  const { modal, refetch } = props
   const { selected, setSelected, deleteNode } = useAreaTreeContext()
   const { enqueueSnackbar } = useSnackbar()
   const [deleteArea] = useMutation(DELETE_AREA)
@@ -42,6 +43,7 @@ const DeleteAreaModal = (props: TProps) => {
       })
       deleteNode(selected)
       enqueueSnackbar('Area borrada correctamente.', { variant: 'success' })
+      refetch()
       modal.onFalse()
       setSelected(null)
     } catch {
