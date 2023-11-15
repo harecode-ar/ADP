@@ -4,6 +4,7 @@ export const CREATE_AREA = gql`
   mutation createArea(
     $name: String!
     $description: String!
+    $color: String!
     $rolename: String!
     $multiple: Boolean!
     $parentId: Int
@@ -12,6 +13,7 @@ export const CREATE_AREA = gql`
     createArea(
       name: $name
       description: $description
+      color: $color
       rolename: $rolename
       multiple: $multiple
       parentId: $parentId
@@ -27,6 +29,7 @@ export const UPDATE_AREA = gql`
     $id: Int!
     $name: String!
     $description: String!
+    $color: String!
     $rolename: String!
     $multiple: Boolean!
     $parentId: Int
@@ -36,6 +39,7 @@ export const UPDATE_AREA = gql`
       id: $id
       name: $name
       description: $description
+      color: $color
       rolename: $rolename
       multiple: $multiple
       parentId: $parentId

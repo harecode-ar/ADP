@@ -46,17 +46,19 @@ export default {
         name: string
         rolename: string
         description: string
+        color: string
         multiple: boolean
         parentId?: number
         responsibleId?: number
       }
     ): Promise<IArea> => {
       try {
-        const { name, rolename, description, multiple, parentId, responsibleId } = args
+        const { name, rolename, description, color, multiple, parentId, responsibleId } = args
         return Area.create({
           name,
           rolename,
           description,
+          color,
           multiple,
           parentId,
           responsibleId,
@@ -73,13 +75,14 @@ export default {
         name: string
         rolename: string
         description: string
+        color: string
         multiple: boolean
         parentId?: number
         responsibleId?: number
       }
     ): Promise<IArea | null> => {
       try {
-        const { id, name, rolename, description, multiple, parentId, responsibleId } = args
+        const { id, name, rolename, description, color, multiple, parentId, responsibleId } = args
         const area = await Area.findByPk(id)
         if (!area) {
           throw new Error('Area not found')
@@ -88,6 +91,7 @@ export default {
           name,
           rolename,
           description,
+          color,
           multiple,
           parentId,
           responsibleId,
