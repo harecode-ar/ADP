@@ -10,6 +10,7 @@ export const GET_STAGES_BY_PROJECT = gql`
       endDate
       description
       projectId
+      stateId
       area {
         id
         name

@@ -5,6 +5,7 @@ import { Container, Box } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { _mock } from 'src/_mock'
+import Scrollbar from 'src/components/scrollbar'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
@@ -71,7 +72,15 @@ export default function OrganigramaView() {
           heading="Organigrama"
           links={[{ name: 'Area', href: paths.dashboard.area.root }, { name: 'Organigrama' }]}
         />
-        {!!tree && <Chart lineHeight="40px" onDelete={onDelete} onAdd={onAdd} onEdit={onEdit} />}
+        {!!tree && (
+          <Scrollbar
+            sx={{
+              maxHeight: 'calc(70vh)',
+            }}
+          >
+            <Chart lineHeight="40px" onDelete={onDelete} onAdd={onAdd} onEdit={onEdit} />
+          </Scrollbar>
+        )}
         {!tree && !loading && (
           <Box
             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}

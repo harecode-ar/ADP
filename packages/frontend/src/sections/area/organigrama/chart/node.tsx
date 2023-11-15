@@ -27,7 +27,7 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
       <Card
         sx={{
           p: 2,
-          minWidth: 200,
+          width: 180,
           borderRadius: 1.5,
           textAlign: 'left',
           position: 'relative',
@@ -55,9 +55,7 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
           sx={{ mr: 2, mb: 1, width: 48, height: 48 }}
         />
 
-        <Typography variant="subtitle2" noWrap>
-          {node.name}
-        </Typography>
+        <Typography variant="subtitle2">{node.name}</Typography>
 
         <Typography variant="caption" component="div" noWrap sx={{ color: 'text.secondary' }}>
           {responsible}

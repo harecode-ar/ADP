@@ -43,9 +43,10 @@ export default function StagesTab(props: TProps) {
           </Button>
         </Box>
         <KanbanComponent stages={stages} project={project} refetch={refetch} />
-        {modalCreate.value && <ModalCreate modal={modalCreate} project={project} refetch={refetch} />}
+        {modalCreate.value && (
+          <ModalCreate modal={modalCreate} project={project} refetch={refetch} />
+        )}
       </Box>
     </Card>
-
   )
 }

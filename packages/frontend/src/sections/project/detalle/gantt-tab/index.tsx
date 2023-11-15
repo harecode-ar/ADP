@@ -1,4 +1,4 @@
-import { IProject, IStage } from '@adp/shared'
+import { IProject, IStage, STAGE_STATE } from '@adp/shared'
 import React from 'react'
 import { Task } from 'gantt-task-react'
 import GanttComponent from './gantt-component'
@@ -11,16 +11,18 @@ type TProps = {
 export default function GanttTab(props: TProps) {
   const { project, stages } = props
 
-  const mappedStages: Task[] = stages.map((stage, index) => ({
-    displayOrder: index + 2,
-    id: String(stage.id),
-    name: String(stage.name),
-    progress: stage.progress * 100,
-    start: new Date(stage.startDate),
-    end: new Date(stage.endDate),
-    project: String(project.id),
-    type: 'task',
-  }))
+  const mappedStages: Task[] = stages
+    .filter((stage) => stage.stateId !== STAGE_STATE.CANCELLED)
+    .map((stage, index) => ({
+      displayOrder: index + 2,
+      id: String(stage.id),
+      name: String(stage.name),
+      progress: stage.progress * 100,
+      start: new Date(stage.startDate),
+      end: new Date(stage.endDate),
+      project: String(project.id),
+      type: 'task',
+    }))
 
   const mappedProject: Task = {
     displayOrder: 1,

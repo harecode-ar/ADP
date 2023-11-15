@@ -89,6 +89,7 @@ export default {
               as: 'state',
             },
           ],
+          order: [['startDate', 'ASC']],
         }) as unknown as Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]>
       } catch (error) {
         logger.error(error)
@@ -226,7 +227,11 @@ export default {
         let progress
         if (stateId === STAGE_STATE.COMPLETED) {
           progress = 1
-        } else if (stage.stateId === STAGE_STATE.COMPLETED && stateId !== STAGE_STATE.COMPLETED) {
+        } else if (
+          stage.stateId === STAGE_STATE.COMPLETED &&
+          stateId !== STAGE_STATE.COMPLETED &&
+          stateId !== STAGE_STATE.CANCELLED
+        ) {
           progress = 0
         }
 

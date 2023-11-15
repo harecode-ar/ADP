@@ -31,6 +31,7 @@ const GanttComponent = (props: TProps) => {
   const handleClick = (task: Task) => {
     console.log('etapa seleccionada: ', task.id)
   }
+
   const isDark = mode === 'dark'
   return (
     <Card sx={{ p: 3 }}>

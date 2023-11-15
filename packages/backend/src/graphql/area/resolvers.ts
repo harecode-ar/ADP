@@ -32,7 +32,9 @@ export default {
     },
     areas: (): Promise<IArea[]> => {
       try {
-        return Area.findAll()
+        return Area.findAll({
+          order: [['parentId', 'ASC']],
+        })
       } catch (error) {
         logger.error(error)
         throw error

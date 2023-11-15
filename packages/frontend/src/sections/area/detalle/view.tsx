@@ -1,7 +1,7 @@
 'use client'
 
 import type { IArea, IProject } from '@adp/shared'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { TableContextProvider } from 'src/components/table/context'
@@ -12,6 +12,13 @@ import { useSnackbar } from 'src/components/snackbar'
 import { GET_AREA, GET_PROJECTS_BY_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import Table from './table'
+import GanttTab from './gantt-tab'
+
+enum ETab {
+  PROJECTS = 'Proyectos',
+  STATISTICS = 'Estadisticas',
+  GANTT = 'Gantt',
+}
 
 type TProps = {
   areaId: string
@@ -22,6 +29,7 @@ export default function AreaDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
+  const [tab, setTab] = useState<ETab>(ETab.PROJECTS)
 
   const areaQuery = useQuery(GET_AREA, {
     variables: { id: Number(areaId) },
@@ -111,19 +119,24 @@ export default function AreaDetailView(props: TProps) {
                   alignItems: 'center',
                 }}
               >
-                <Tabs value={0} indicatorColor="primary">
-                  <Tab label="Proyectos" />
-                  <Tab label="Estadistica" disabled />
+                <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
+                  <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
+                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
+                  <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
               </Box>
             </Card>
-            <TableContextProvider>
-              <Table
-                loading={projectQuery.loading}
-                refetch={projectQuery.refetch}
-                projects={projects}
-              />
-            </TableContextProvider>
+
+            {tab === ETab.PROJECTS && (
+              <TableContextProvider>
+                <Table
+                  loading={projectQuery.loading}
+                  refetch={projectQuery.refetch}
+                  projects={projects}
+                />
+              </TableContextProvider>
+            )}
+            {tab === ETab.GANTT && <GanttTab projects={projects} />}
           </React.Fragment>
         )}
       </Box>

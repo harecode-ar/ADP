@@ -1,7 +1,7 @@
 import { Project } from '../../models'
-import projects from './data'
+import { PROJECTS } from './data'
 
 export const projectSeed = async (context: { transaction: any }) => {
   const { transaction } = context
-  return Project.bulkCreate(projects, { transaction })
+  return Project.bulkCreate(PROJECTS, { transaction })
 }

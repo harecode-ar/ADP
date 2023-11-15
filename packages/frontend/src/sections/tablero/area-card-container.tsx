@@ -101,6 +101,7 @@ function AreaCard({ area }: AreaCardProps) {
           flexDirection: 'column',
           cursor: 'pointer',
           backgroundColor: color,
+          height: '100%',
         }}
       >
         <Avatar
@@ -109,7 +110,14 @@ function AreaCard({ area }: AreaCardProps) {
           sx={{ width: 64, height: 64, mb: 3 }}
         />
 
-        <Typography variant="subtitle1" color="black" fontSize={20}>
+        <Typography
+          variant="subtitle1"
+          color="black"
+          fontSize={20}
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           {name}
         </Typography>
 

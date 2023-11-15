@@ -23,11 +23,13 @@ export default function NotesTab(props: TProps) {
   }, [data])
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 2,
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       <PostCommentForm project={project} refetch={refetch} />
       {notes.length === 0 ? (
         <Box style={{ textAlign: 'center', padding: '20px' }}>

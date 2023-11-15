@@ -57,7 +57,9 @@ export default {
     ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        return Project.findAll()
+        return Project.findAll({
+          order: [['startDate', 'ASC']],
+        })
       } catch (error) {
         logger.error(error)
         throw error
@@ -90,6 +92,7 @@ export default {
             { model: Stage, as: 'stages' },
             { model: ProjectState, as: 'state' },
           ],
+          order: [['startDate', 'ASC']],
         })
       } catch (error) {
         logger.error(error)
