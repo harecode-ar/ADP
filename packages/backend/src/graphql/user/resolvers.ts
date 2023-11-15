@@ -1,11 +1,12 @@
 import { ETokenType } from '@adp/shared/types'
-import type { IUser } from '@adp/shared/types'
+import type { IUpload, IUser } from '@adp/shared/types'
 import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
 import { sendNewUserMail } from '../../services/nodemailer/new-user'
 import { hashPassword, comparePassword, generateRandomPassword } from '../../utils/password'
+import { deleteFiles, uploadFile } from '../../services/storage'
 
 dotenv.config()
 
@@ -55,22 +56,36 @@ export default {
         firstname: string
         lastname: string
         email: string
-        telephone: string
+        telephone: string | null
+        image: IUpload | null
         roleId: number
       }
     ): Promise<IUser> => {
       try {
-        const { firstname, lastname, email, telephone, roleId } = args
+        const { firstname, lastname, email, telephone, image, roleId } = args
         const password = generateRandomPassword(8)
         const hashedPassword = await hashPassword(password)
-        const createdUser = await User.create({
+
+        const userData: Omit<IUser, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> = {
           firstname,
           lastname,
           email,
           password: hashedPassword,
           telephone,
+          image: null,
           roleId,
-        })
+        }
+
+        if (image) {
+          const { createReadStream, filename: originalFilename } = await image
+          const stream = createReadStream()
+          const response = await uploadFile(stream, originalFilename)
+          if (!response) throw new Error('Error al subir la imagen')
+          const { filename } = response
+          userData.image = filename
+        }
+
+        const createdUser = await User.create(userData)
 
         sendNewUserMail(createdUser, password).catch((error) => {
           logger.error(error)
@@ -90,22 +105,41 @@ export default {
         lastname: string
         email: string
         telephone: string
+        image: IUpload | null
         roleId: number
       }
     ): Promise<IUser | null> => {
       try {
-        const { id, firstname, lastname, email, telephone, roleId } = args
+        const { id, firstname, lastname, email, telephone, image, roleId } = args
         const user = await User.findByPk(id)
         if (!user) {
           throw new Error('User not found')
         }
-        await user.update({
+
+        const prevImage = user.image
+
+        const userData: Omit<IUser, 'id' | 'password' | 'createdAt' | 'updatedAt' | 'deletedAt'> = {
           firstname,
           lastname,
           email,
           telephone,
+          image: prevImage,
           roleId,
-        })
+        }
+
+        if (image) {
+          const { createReadStream, filename: originalFilename } = await image
+          const stream = createReadStream()
+          const response = await uploadFile(stream, originalFilename)
+          if (!response) throw new Error('Error al subir la imagen')
+          const { filename } = response
+          userData.image = filename
+        }
+
+        await user.update(userData)
+
+        deleteFiles([prevImage])
+
         return user
       } catch (error) {
         logger.error(error)

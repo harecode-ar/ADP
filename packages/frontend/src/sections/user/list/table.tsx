@@ -46,7 +46,8 @@ const columns: TColumn[] = [
     id: 'telephone',
     label: 'Telefono',
     type: EColumnType.STRING,
-    renderCell: (row: TRow) => row.telephone,
+    renderCell: (row: TRow) => row.telephone || 'Sin telefono',
+    searchValue: (row: TRow) => row.telephone || 'Sin telefono',
   },
   {
     id: 'roleId',

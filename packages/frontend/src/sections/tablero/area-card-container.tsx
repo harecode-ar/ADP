@@ -17,6 +17,7 @@ import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import SearchNotFound from 'src/components/search-not-found'
 import { IArea } from '@adp/shared'
+import { getStorageFileUrl } from 'src/utils/storage'
 
 // ----------------------------------------------------------------------
 type Props = {
@@ -95,7 +96,7 @@ function AreaCard({ area }: AreaCardProps) {
       >
         <Avatar
           alt={responsible?.fullname || 'Sin responsable'}
-          src='https://api-prod-minimal-v510.vercel.app/assets/images/avatar/avatar_2.jpg"'
+          src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
           sx={{ width: 64, height: 64, mb: 3 }}
         />
 

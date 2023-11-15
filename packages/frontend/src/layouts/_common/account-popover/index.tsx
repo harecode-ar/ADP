@@ -16,6 +16,7 @@ import { useAuthContext } from 'src/auth/hooks'
 // components
 import { varHover } from 'src/components/animate'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import { getStorageFileUrl } from 'src/utils/storage'
 import ChangePasswordModal from './change-password-modal'
 
 // ----------------------------------------------------------------------
@@ -57,17 +58,22 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar
-          src="https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg"
-          alt={user?.fullname || ''}
-          sx={{
-            width: 36,
-            height: 36,
-            border: (theme) => `solid 2px ${theme.palette.background.default}`,
-          }}
-        >
-          {(user?.fullname || '').charAt(0).toUpperCase()}
-        </Avatar>
+        {user && (
+          <Avatar
+            src={getStorageFileUrl(
+              user.image,
+              'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+            )}
+            alt={user.fullname || ''}
+            sx={{
+              width: 36,
+              height: 36,
+              border: (theme) => `solid 2px ${theme.palette.background.default}`,
+            }}
+          >
+            {(user.fullname || '').charAt(0).toUpperCase()}
+          </Avatar>
+        )}
       </IconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>

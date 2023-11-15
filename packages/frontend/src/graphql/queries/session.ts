@@ -11,6 +11,7 @@ export const GET_SESSION = gql`
         lastname
         fullname
         email
+        image
 
         role {
           id

@@ -1,5 +1,6 @@
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
+import upload from './upload'
 import session from './session'
 import role from './role'
 import permission from './permission'
@@ -12,6 +13,7 @@ import stage from './stage'
 import stageState from './stage-state'
 
 export const typeDefs = mergeTypeDefs([
+  upload.typeDefs,
   session.typeDefs,
   role.typeDefs,
   permission.typeDefs,
@@ -25,6 +27,7 @@ export const typeDefs = mergeTypeDefs([
 ])
 
 export const resolvers = mergeResolvers([
+  upload.resolvers,
   session.resolvers,
   role.resolvers,
   permission.resolvers,

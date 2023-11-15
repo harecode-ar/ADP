@@ -10,13 +10,14 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
+
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
-import DetailTab from './detail-tab'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
+import NotesTab from './notes-tab'
 
 enum ETab {
-  DETAIL = 'Detalle',
+  NOTES = 'Notas',
   STAGES = 'Etapas',
   GANTT = 'Gantt',
 }
@@ -63,6 +64,7 @@ export default function ProjectDetailView(props: TProps) {
     if (!stageQuery.data) return []
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
+
   const formatDate = (dateString: string) => {
     const [anno, mes, dia] = dateString.split('-')
     const nuevaFechaString = `${dia}/${mes}/${anno}`
@@ -206,7 +208,6 @@ export default function ProjectDetailView(props: TProps) {
                 </Grid>
               </Grid>
             </Box>
-
             <Card sx={{ p: 2 }}>
               <Box
                 sx={{
@@ -216,14 +217,14 @@ export default function ProjectDetailView(props: TProps) {
                 }}
               >
                 <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                  <Tab label={ETab.DETAIL} value={ETab.DETAIL} disabled />
+                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
                   <Tab label={ETab.STAGES} value={ETab.STAGES} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
               </Box>
             </Card>
 
-            {tab === ETab.DETAIL && <DetailTab project={project} />}
+            {tab === ETab.NOTES && <NotesTab project={project} />}
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
             )}

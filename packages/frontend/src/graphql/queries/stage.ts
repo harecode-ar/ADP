@@ -43,6 +43,7 @@ export const GET_STAGE = gql`
       responsible {
         id
         fullname
+        image
       }
       state {
         id

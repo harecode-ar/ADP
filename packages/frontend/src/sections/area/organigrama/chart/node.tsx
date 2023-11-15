@@ -6,6 +6,7 @@ import Iconify from 'src/components/iconify'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
 import type { TAreaTree } from 'src/contexts/area-tree-context/types'
 import { paths } from 'src/routes/paths'
+import { getStorageFileUrl } from 'src/utils/storage'
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +47,11 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
 
         <Avatar
           alt={responsible}
-          src="/assets/images/avatar/avatar_2.jpg"
+          src={
+            node.responsible?.image
+              ? getStorageFileUrl(node.responsible.image)
+              : '/broken-image.jpg'
+          }
           sx={{ mr: 2, mb: 1, width: 48, height: 48 }}
         />
 

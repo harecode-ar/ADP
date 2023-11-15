@@ -14,7 +14,6 @@ import { paths } from 'src/routes/paths'
 
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  description: Yup.string().required('Descripcion requerida'),
   area: Yup.object().required('Area requerida'),
   cost: Yup.string().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
@@ -197,7 +196,6 @@ const CreateProject = () => {
               label="Descripción"
               variant="outlined"
               fullWidth
-              required
               multiline
               value={formik.values.description}
               onChange={formik.handleChange}

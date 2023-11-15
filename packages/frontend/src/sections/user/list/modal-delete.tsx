@@ -46,8 +46,7 @@ const ModalDelete = (props: TProps) => {
       modal.onFalse()
       refetch()
       setSelected([])
-    } catch (err) {
-      console.log(err)
+    } catch {
       enqueueSnackbar('El usuario no pudo ser borrado.', { variant: 'error' })
     }
   }
