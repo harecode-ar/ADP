@@ -20,7 +20,7 @@ export default function TableroView() {
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <UserCard />
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 1 }}>
           <Box
             sx={{
               display: 'flex',
@@ -33,7 +33,9 @@ export default function TableroView() {
             </Tabs>
           </Box>
         </Card>
-        {tab === ETab.AREAS && <AreaCardContainer />}
+        <Card sx={{ p: 2 }}>
+          {tab === ETab.AREAS && <AreaCardContainer />}
+        </Card>
       </Box>
     </Container>
   )
