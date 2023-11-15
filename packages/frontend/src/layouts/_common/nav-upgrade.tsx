@@ -10,6 +10,7 @@ import { useAuthContext } from 'src/auth/hooks'
 import { paths } from 'src/routes/paths'
 // components
 import Label from 'src/components/label'
+import { getStorageFileUrl } from 'src/utils/storage'
 
 // ----------------------------------------------------------------------
 
@@ -27,11 +28,16 @@ export default function NavUpgrade() {
       <Stack alignItems="center">
         <Box sx={{ position: 'relative' }}>
           {/* <Avatar src={user?.photoURL} alt={user?.fullname} sx={{ width: 48, height: 48 }} /> */}
-          <Avatar
-            src="https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg"
-            alt={user?.fullname}
-            sx={{ width: 48, height: 48 }}
-          />
+          {user && (
+            <Avatar
+              src={getStorageFileUrl(
+                user.image,
+                'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+              )}
+              alt={user.fullname}
+              sx={{ width: 48, height: 48 }}
+            />
+          )}
           <Label
             color="success"
             variant="filled"

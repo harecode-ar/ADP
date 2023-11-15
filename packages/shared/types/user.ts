@@ -5,8 +5,9 @@ export interface IUser {
   firstname: string
   lastname: string
   email: string
-  telephone: string
+  telephone: string | null
   password: string
+  image: string | null
   roleId: number
 
   role?: IRole

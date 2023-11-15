@@ -13,6 +13,7 @@ import { fDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify'
 import { IProjectNote } from '@adp/shared'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { getStorageFileUrl } from 'src/utils/storage'
 import ModalDelete from './modal-delete'
 
 // ----------------------------------------------------------------------
@@ -30,10 +31,15 @@ export default function NoteItem(props: TProps) {
     <CardHeader
       disableTypography
       avatar={
-        <Avatar
-          src="https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg"
-          alt={user?.fullname}
-        />
+        user ? (
+          <Avatar
+            src={getStorageFileUrl(
+              user.image,
+              'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+            )}
+            alt={user.fullname}
+          />
+        ) : null
       }
       title={
         <Link color="inherit" variant="subtitle1">

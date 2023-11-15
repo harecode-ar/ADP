@@ -57,6 +57,7 @@ type TFormikValues = {
   telephone: string
   role: IRole | null
   file: File | null
+  preview: string | null
 }
 
 const ModalCreate = (props: TProps) => {
@@ -78,6 +79,7 @@ const ModalCreate = (props: TProps) => {
       email: '',
       telephone: '',
       file: null,
+      preview: null,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -87,6 +89,7 @@ const ModalCreate = (props: TProps) => {
             lastname: values.lastname,
             email: values.email,
             telephone: values.telephone,
+            image: values.file,
             roleId: values.role?.id,
           },
         })
@@ -106,12 +109,8 @@ const ModalCreate = (props: TProps) => {
     (acceptedFiles: (File | null)[]) => {
       const newFile = acceptedFiles[0]
       if (newFile) {
-        formik.setFieldValue(
-          'file',
-          Object.assign(newFile, {
-            preview: URL.createObjectURL(newFile),
-          })
-        )
+        formik.setFieldValue('file', newFile)
+        formik.setFieldValue('preview', URL.createObjectURL(newFile))
       }
     },
     [formik]
@@ -137,12 +136,13 @@ const ModalCreate = (props: TProps) => {
         <Box id="modal-modal-description" sx={{ mt: 2 }}>
           <UploadAvatar
             file={formik.values.file}
+            preview={formik.values.preview}
             onDrop={handleDropAvatar}
             validator={(fileData: File) => {
-              if (fileData.size > 1000000) {
+              if (fileData.size > 2000000) {
                 return {
                   code: 'file-too-large',
-                  message: `File is larger than ${fData(1000000)}`,
+                  message: `El archivo es muy grande, el tamaño máximo es de ${fData(2000000)}`,
                 }
               }
               return null
@@ -160,7 +160,7 @@ const ModalCreate = (props: TProps) => {
                 }}
               >
                 Archivos *.jpeg, *.jpg, *.png
-                <br /> Max {fData(3145728)}
+                <br /> Max {fData(2000000)}
               </Typography>
             }
           />

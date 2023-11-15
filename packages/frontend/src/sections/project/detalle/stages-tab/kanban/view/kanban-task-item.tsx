@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
+import { getStorageFileUrl } from 'src/utils/storage'
 import KanbanDetails from './kanban-details'
 
 // ----------------------------------------------------------------------
@@ -37,7 +38,6 @@ const getColor = (progress: number) => {
 export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
   const theme = useTheme()
 
-  const hasUser = Boolean(task.responsible)
   const color = getColor(task.progress)
 
   const openDetails = useBoolean()
@@ -73,8 +73,8 @@ export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
             </Typography>
             <Avatar
               src={
-                hasUser
-                  ? 'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+                task.responsible
+                  ? getStorageFileUrl(task.responsible.image, '/broken-image.jpg')
                   : '/broken-image.jpg'
               }
               sx={{ width: 35, height: 35, border: `solid 2px ${color}` }}

@@ -5,6 +5,7 @@ export default `#graphql
     lastname: String
     email: String
     telephone: String
+    image: String
     roleId: Int
 
     role: Role
@@ -26,6 +27,7 @@ export default `#graphql
       email: String!
       telephone: String
       roleId: Int!
+      image: Upload
     ): User
 
     updateUser(
@@ -35,6 +37,7 @@ export default `#graphql
       email: String!
       telephone: String
       roleId: Int!
+      image: Upload
     ): User
     deleteUser(id: Int!): User
     forgotPassword(email: String!): Boolean

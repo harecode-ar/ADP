@@ -6,6 +6,7 @@ export const CREATE_USER = gql`
     $lastname: String!
     $email: String!
     $telephone: String!
+    $image: Upload
     $roleId: Int!
   ) {
     createUser(
@@ -13,6 +14,7 @@ export const CREATE_USER = gql`
       lastname: $lastname
       email: $email
       telephone: $telephone
+      image: $image
       roleId: $roleId
     ) {
       id
@@ -27,6 +29,7 @@ export const UPDATE_USER = gql`
     $lastname: String!
     $email: String!
     $telephone: String!
+    $image: Upload
     $roleId: Int!
   ) {
     updateUser(
@@ -35,6 +38,7 @@ export const UPDATE_USER = gql`
       lastname: $lastname
       email: $email
       telephone: $telephone
+      image: $image
       roleId: $roleId
     ) {
       id

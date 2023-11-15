@@ -14,6 +14,7 @@ import RejectionFiles from './errors-rejection-files'
 export default function UploadAvatar({
   error,
   file,
+  preview,
   disabled,
   helperText,
   sx,
@@ -28,11 +29,11 @@ export default function UploadAvatar({
     ...other,
   })
 
-  const hasFile = !!file
+  const hasFile = !!file || !!preview
 
   const hasError = isDragReject || !!error
 
-  const imgUrl = typeof file === 'string' ? file : file?.preview
+  const imgUrl = preview || ''
 
   const renderPreview = hasFile && (
     <Image

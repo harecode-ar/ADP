@@ -2,7 +2,7 @@ import type { IUser, IArea } from '@adp/shared'
 import React from 'react'
 
 export type TAreaTree = Pick<IArea, 'id' | 'name' | 'parentId'> & {
-  responsible?: Pick<IUser, 'id' | 'email' | 'fullname'>
+  responsible?: Pick<IUser, 'id' | 'email' | 'fullname' | 'image'>
   children?: TAreaTree[]
 }
 
