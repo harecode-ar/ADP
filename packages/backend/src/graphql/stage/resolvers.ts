@@ -32,6 +32,10 @@ export default {
       }
       return Promise.resolve(null)
     },
+    progress: (stage: IStage): number => {
+      if (stage.progress) return Number((stage.progress).toFixed(2))
+      return 0
+    }
   },
   Query: {
     stages: (
