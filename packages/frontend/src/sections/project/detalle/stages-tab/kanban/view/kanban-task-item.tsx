@@ -99,8 +99,8 @@ export default function KanbanTaskItem({ project, task, sx, refetch, ...other }:
               }),
               ...(task.progress > 0.3 &&
                 task.progress <= 0.6 && {
-                color: 'warning.main',
-              }),
+                  color: 'warning.main',
+                }),
               ...(task.progress <= 0.3 && {
                 color: 'error.main',
               }),
@@ -116,12 +116,12 @@ export default function KanbanTaskItem({ project, task, sx, refetch, ...other }:
       </Paper>
       {openDetails.value && (
         <KanbanDetails
-        refetch={refetch}
-        project={project}
-        stageId={task.id}
-        openDetails={openDetails.value}
-        onCloseDetails={openDetails.onFalse}
-      />
+          refetch={refetch}
+          project={project}
+          stageId={task.id}
+          openDetails={openDetails.value}
+          onCloseDetails={openDetails.onFalse}
+        />
       )}
     </React.Fragment>
   )

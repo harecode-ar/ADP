@@ -61,7 +61,7 @@ export default function KanbanDetails(props: TProps) {
   const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
-  
+
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
       id: stageId,
@@ -116,16 +116,12 @@ export default function KanbanDetails(props: TProps) {
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           <Tooltip title="Editar">
-            <IconButton
-              onClick={modalEdit.onTrue}
-            >
+            <IconButton onClick={modalEdit.onTrue}>
               <Iconify icon="mdi:pencil" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Eliminar">
-            <IconButton
-              onClick={modalDelete.onTrue}
-            >
+            <IconButton onClick={modalDelete.onTrue}>
               <Iconify icon="solar:trash-bin-trash-bold" />
             </IconButton>
           </Tooltip>
@@ -206,7 +202,9 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
         </Stack>
       </Scrollbar>
-      {modalEdit.value && (<ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />)}
+      {modalEdit.value && (
+        <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
+      )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
     </Drawer>
   )

@@ -22,7 +22,6 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
 import { UPDATE_STAGE } from 'src/graphql/mutations'
 
-
 const styleModal = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -40,16 +39,16 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   state: Yup.object().required('Estado requerido'),
   startDate: Yup.string()
-  .required('Fecha de inicio requerida')
-  .test(
-    'is-end-date-in-range',
-    'La fecha de inicio esta fuera del rango del proyecto',
-    (value, { parent }) => {
-      const { startDate } = parent
-      const { projectStartDate, projectEndDate } = parent
-      return ((startDate >= projectStartDate) && (startDate <= projectEndDate))
-    }
-  ),
+    .required('Fecha de inicio requerida')
+    .test(
+      'is-end-date-in-range',
+      'La fecha de inicio esta fuera del rango del proyecto',
+      (value, { parent }) => {
+        const { startDate } = parent
+        const { projectStartDate, projectEndDate } = parent
+        return startDate >= projectStartDate && startDate <= projectEndDate
+      }
+    ),
   endDate: Yup.string()
     .required('Fecha de finalizacion requerida')
     .test(
@@ -58,7 +57,7 @@ const validationSchema = Yup.object().shape({
       (value, { parent }) => {
         const { endDate } = parent
         const { projectStartDate, projectEndDate } = parent
-        return ((endDate >= projectStartDate) && (endDate <= projectEndDate))
+        return endDate >= projectStartDate && endDate <= projectEndDate
       }
     )
     .test(
@@ -92,7 +91,6 @@ type TFormikValues = {
 }
 
 const ModalEdit = (props: TProps) => {
-  
   const { modal, refetch, stage, project } = props
   const { enqueueSnackbar } = useSnackbar()
   const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
@@ -124,7 +122,7 @@ const ModalEdit = (props: TProps) => {
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        const { errors } = await updateStage({          
+        const { errors } = await updateStage({
           variables: {
             id: stage.id,
             name: values.name,
@@ -300,10 +298,13 @@ const ModalEdit = (props: TProps) => {
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button onClick={() => {
+                  <Button
+                    onClick={() => {
                       formik.handleSubmit()
                     }}
-                    color="primary" variant="contained">
+                    color="primary"
+                    variant="contained"
+                  >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
                     Enviar
                   </Button>
