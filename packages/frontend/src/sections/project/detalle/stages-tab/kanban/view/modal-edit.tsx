@@ -69,7 +69,6 @@ const validationSchema = Yup.object().shape({
       }
     ),
   area: Yup.object().required('Area requerida'),
-  description: Yup.string().required('Descripcion requerida'),
 })
 
 type TProps = {
@@ -268,7 +267,6 @@ const ModalEdit = (props: TProps) => {
                   label="Descripción"
                   variant="outlined"
                   fullWidth
-                  required
                   multiline
                   maxRows={10}
                   value={formik.values.description}
