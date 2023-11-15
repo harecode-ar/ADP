@@ -33,9 +33,7 @@ export default function TableroView() {
             </Tabs>
           </Box>
         </Card>
-        <Card sx={{ p: 2 }}>
-          {tab === ETab.AREAS && <AreaCardContainer />}
-        </Card>
+        <Card sx={{ p: 2 }}>{tab === ETab.AREAS && <AreaCardContainer />}</Card>
       </Box>
     </Container>
   )
