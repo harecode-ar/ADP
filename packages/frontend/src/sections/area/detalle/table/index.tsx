@@ -80,7 +80,7 @@ const Table = (props: TProps) => {
           <Button variant="contained" color="primary">
             <Link
               component={NextLink}
-              href={paths.dashboard.project.root}
+              href={paths.dashboard.project.new}
               underline="none"
               color="inherit"
             >
