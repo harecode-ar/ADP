@@ -8,7 +8,7 @@ export const PROJECT = {
   endDate: '2024-12-31',
   cost: String(3000000 * 1000),
   progress: 0,
-  areaId: 3,
+  areaId: 1,
   stateId: PROJECT_STATE.IN_PROGRESS,
 }
 
@@ -20,7 +20,7 @@ export const STAGES = [
     startDate: '2023-01-01',
     endDate: '2023-03-31',
     progress: 1,
-    areaId: 3,
+    areaId: 1,
     stateId: STAGE_STATE.COMPLETED,
   },
   {
@@ -30,7 +30,7 @@ export const STAGES = [
     startDate: '2023-04-01',
     endDate: '2023-06-30',
     progress: 1,
-    areaId: 3,
+    areaId: 1,
     stateId: STAGE_STATE.COMPLETED,
   },
   {
@@ -40,7 +40,7 @@ export const STAGES = [
     startDate: '2023-07-01',
     endDate: '2024-06-30',
     progress: 0,
-    areaId: 3,
+    areaId: 1,
     stateId: STAGE_STATE.IN_PROGRESS,
   },
   {
@@ -50,7 +50,7 @@ export const STAGES = [
     startDate: '2024-07-01',
     endDate: '2024-09-30',
     progress: 0,
-    areaId: 3,
+    areaId: 1,
     stateId: STAGE_STATE.NEW,
   },
   {
@@ -60,7 +60,7 @@ export const STAGES = [
     startDate: '2024-10-01',
     endDate: '2024-12-31',
     progress: 0,
-    areaId: 3,
+    areaId: 1,
     stateId: STAGE_STATE.NEW,
   },
 ]
