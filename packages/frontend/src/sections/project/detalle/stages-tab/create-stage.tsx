@@ -65,8 +65,7 @@ const validationSchema = Yup.object().shape({
         const { projectEndDate } = parent
         return new Date(value) <= new Date(projectEndDate)
       }
-    ),
-  description: Yup.string().required('Descripción requerida'),
+    )
 })
 
 type TProps = {
@@ -220,7 +219,6 @@ const ModalCreate = (props: TProps) => {
                   label="Descripción"
                   variant="outlined"
                   fullWidth
-                  required
                   multiline
                   maxRows={10}
                   value={formik.values.description}
