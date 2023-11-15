@@ -8,6 +8,13 @@ export const AREAS_FOR_LIST = gql`
       rolename
       description
       multiple
+
+      responsible {
+        id
+        email
+        fullname
+        image
+      }
     }
   }
 `
@@ -30,6 +37,7 @@ export const GET_AREAS_FOR_TREE = gql`
         id
         email
         fullname
+        image
       }
     }
   }
@@ -47,6 +55,7 @@ export const GET_AREA = gql`
         id
         email
         fullname
+        image
       }
       parent {
         id
