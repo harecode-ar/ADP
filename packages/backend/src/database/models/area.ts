@@ -1,3 +1,4 @@
+import { COLORS } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
 
@@ -9,6 +10,8 @@ export class Area extends Model {
   public rolename!: string
 
   public description!: string
+
+  public color!: string
 
   public multiple!: boolean
 
@@ -33,6 +36,11 @@ Area.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    color: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: () => COLORS[Math.floor(Math.random() * COLORS.length)].color,
     },
     rolename: {
       type: DataTypes.STRING,

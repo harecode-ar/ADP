@@ -4,6 +4,7 @@ export interface IArea {
   id: number
   name: string
   rolename: string
+  color: string
   description: string
   multiple: boolean
   parentId: number | null

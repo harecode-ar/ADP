@@ -4,6 +4,7 @@ export default `#graphql
     name: String
     rolename: String
     description: String
+    color: String
     multiple: Boolean
     parentId: Int
     responsibleId: Int
@@ -29,6 +30,7 @@ export default `#graphql
       name: String!
       rolename: String!
       description: String!
+      color: String!
       multiple: Boolean!
       parentId: Int
       responsibleId: Int
@@ -39,6 +41,7 @@ export default `#graphql
       name: String
       rolename: String
       description: String
+      color: String!
       multiple: Boolean
       parentId: Int
       responsibleId: Int

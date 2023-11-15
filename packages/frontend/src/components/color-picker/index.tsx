@@ -64,6 +64,7 @@ const ColorPicker = (props: TProps) => {
         </FormControl>
       )}
       onChange={onChange}
+      clearIcon={null}
     />
   )
 }

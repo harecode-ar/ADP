@@ -65,7 +65,7 @@ export function useNavData(): TNavData[] {
     () =>
       [
         {
-          subheader: 'Administración',
+          subheader: 'Visualización',
           items: [
             {
               title: 'Tablero',

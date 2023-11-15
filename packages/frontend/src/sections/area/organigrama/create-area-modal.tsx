@@ -1,5 +1,6 @@
 'use client'
 
+import { COLORS } from '@adp/shared'
 import type { IArea, IUser } from '@adp/shared'
 import React, { useMemo } from 'react'
 import {
@@ -13,6 +14,7 @@ import {
   Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import ColorPicker from 'src/components/color-picker'
 import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
@@ -52,6 +54,10 @@ type TProps = {
 type TFormikValues = {
   name: string
   description: string
+  color: {
+    color: string
+    label: string
+  }
   responsible: IUser | null
   parent: TAreaTree | null
 }
@@ -72,6 +78,7 @@ const CreateAreaModal = (props: TProps) => {
     initialValues: {
       name: '',
       description: '',
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
       responsible: null as IUser | null,
       parent: selected,
     } as TFormikValues,
@@ -81,6 +88,7 @@ const CreateAreaModal = (props: TProps) => {
           variables: {
             name: values.name,
             description: values.description,
+            color: values.color.color,
             rolename: 'prueba',
             multiple: false,
             responsibleId: values.responsible?.id,
@@ -162,6 +170,18 @@ const CreateAreaModal = (props: TProps) => {
                       helperText={formik.errors.parent}
                     />
                   )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ColorPicker
+                  label='Color'
+                  value={formik.values.color}
+                  onChange={(_, value) => {
+                    formik.setFieldValue('color', value)
+                  }}
+                  error={Boolean(formik.errors.color)}
+                  helperText={String(formik.errors.color || '')}
+                  options={COLORS}
                 />
               </Grid>
               <Grid item xs={12}>

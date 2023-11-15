@@ -50,6 +50,7 @@ export const GET_AREA = gql`
       name
       rolename
       description
+      color
       multiple
       responsible {
         id

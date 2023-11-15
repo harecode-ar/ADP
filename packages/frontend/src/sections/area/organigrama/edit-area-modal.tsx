@@ -1,5 +1,6 @@
 'use client'
 
+import { COLORS } from '@adp/shared'
 import type { IArea, IUser } from '@adp/shared/types'
 import React, { useMemo } from 'react'
 import {
@@ -13,6 +14,7 @@ import {
   Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import ColorPicker from 'src/components/color-picker'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_AREA } from 'src/graphql/queries'
@@ -51,6 +53,10 @@ type TArea = {
   id: number | null
   name: string | null
   description: string | null
+  color: {
+    color: string
+    label: string
+  }
   responsible: IUser | null
   parent: IArea | null
 }
@@ -77,6 +83,7 @@ const EditAreaModal = (props: TProps) => {
       id: null,
       name: '',
       description: '',
+      color: COLORS[0],
       responsible: null,
       parent: null,
     } as TArea,
@@ -88,6 +95,7 @@ const EditAreaModal = (props: TProps) => {
             id: values.id,
             name: values.name,
             description: values.description,
+            color: values.color.color,
             rolename: 'prueba',
             multiple: false,
             responsibleId: values.responsible?.id,
@@ -118,6 +126,7 @@ const EditAreaModal = (props: TProps) => {
           id: area.id,
           name: area.name,
           description: area.description,
+          color: COLORS.find((color) => color.color === area.color) || COLORS[0],
           responsible: area.responsible,
           parent: area.parent,
         })
@@ -189,6 +198,18 @@ const EditAreaModal = (props: TProps) => {
                       helperText={formik.errors.parent}
                     />
                   )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ColorPicker
+                  label='Color'
+                  value={formik.values.color}
+                  onChange={(_, value) => {
+                    formik.setFieldValue('color', value)
+                  }}
+                  error={Boolean(formik.errors.color)}
+                  helperText={String(formik.errors.color || '')}
+                  options={COLORS}
                 />
               </Grid>
               <Grid item xs={12}>
