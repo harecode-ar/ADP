@@ -18,7 +18,7 @@ export default function NotesTab(props: TProps) {
 
   const notes: IProjectNote[] = useMemo(() => {
     if (!data) return []
-    return data.projectNotes
+    return data.projectNotes || []
   }, [data])
 
   return (
