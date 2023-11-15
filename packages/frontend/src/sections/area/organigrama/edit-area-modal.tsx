@@ -202,7 +202,7 @@ const EditAreaModal = (props: TProps) => {
               </Grid>
               <Grid item xs={12}>
                 <ColorPicker
-                  label='Color'
+                  label="Color"
                   value={formik.values.color}
                   onChange={(_, value) => {
                     formik.setFieldValue('color', value)

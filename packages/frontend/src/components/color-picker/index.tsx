@@ -1,11 +1,6 @@
 import React from 'react'
 import Iconify from 'src/components/iconify/iconify'
-import {
-  Box,
-  TextField,
-  Autocomplete,
-  FormControl,
-} from '@mui/material'
+import { Box, TextField, Autocomplete, FormControl } from '@mui/material'
 
 type TValue = {
   label: string
@@ -22,25 +17,22 @@ type TProps = {
 }
 
 const ColorPicker = (props: TProps) => {
-  const {
-    label,
-    value,
-    options,
-    error,
-    helperText,
-    onChange,
-  } = props
+  const { label, value, options, error, helperText, onChange } = props
   return (
     <Autocomplete
       fullWidth
       options={options}
       getOptionLabel={(option) => option.label}
       renderOption={(renderProps, option) => (
-        <Box component="li" {...renderProps} sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-        }}>
+        <Box
+          component="li"
+          {...renderProps}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
           <Iconify icon="mdi:circle" color={option.color} />
           {option.label}
         </Box>
@@ -56,9 +48,7 @@ const ColorPicker = (props: TProps) => {
             helperText={helperText}
             InputProps={{
               ...params.InputProps,
-              startAdornment: (
-                <Iconify icon="mdi:circle" color={value.color} />
-              )
+              startAdornment: <Iconify icon="mdi:circle" color={value.color} />,
             }}
           />
         </FormControl>
