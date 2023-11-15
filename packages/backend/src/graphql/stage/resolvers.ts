@@ -3,6 +3,7 @@ import type { IStage, IUser, IProjectState, IArea } from '@adp/shared/types'
 import { Stage, Project, StageState, Area, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
+import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 
 export default {
@@ -33,9 +34,9 @@ export default {
       return Promise.resolve(null)
     },
     progress: (stage: IStage): number => {
-      if (stage.progress) return Number((stage.progress).toFixed(2))
+      if (stage.progress) return Number(stage.progress.toFixed(2))
       return 0
-    }
+    },
   },
   Query: {
     stages: (
@@ -123,7 +124,7 @@ export default {
         if (start < projectStart || end > projectEnd) throw new Error('Dates out of range')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
-        return await Stage.create({
+        const stageCreated = await Stage.create({
           name,
           description,
           startDate,
@@ -133,6 +134,12 @@ export default {
           projectId,
           parentStageId,
         })
+
+        calculateProjectProgress(projectId).catch((error) => {
+          logger.error(error)
+        })
+
+        return stageCreated
       } catch (error) {
         logger.error(error)
         throw error
@@ -228,6 +235,11 @@ export default {
           areaId,
           parentStageId,
         })
+
+        calculateProjectProgress(projectId).catch((error) => {
+          logger.error(error)
+        })
+
         return stage
       } catch (error) {
         logger.error(error)
@@ -250,7 +262,14 @@ export default {
         if (!stage) {
           throw new Error('Stage not found')
         }
+
+        const { projectId } = stage
         await stage.destroy()
+
+        calculateProjectProgress(projectId).catch((error) => {
+          logger.error(error)
+        })
+
         return stage
       } catch (error) {
         logger.error(error)
