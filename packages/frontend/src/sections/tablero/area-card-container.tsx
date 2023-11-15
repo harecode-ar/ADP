@@ -61,6 +61,7 @@ export default function AreaCardContainer({ areas, searchAreas, onSearchAreas }:
           xs: 'repeat(1, 1fr)',
           sm: 'repeat(2, 1fr)',
           md: 'repeat(3, 1fr)',
+          xl: 'repeat(4, 1fr)',
         }}
       >
         {areas.map((area) => (
@@ -77,7 +78,7 @@ type AreaCardProps = {
 }
 
 function AreaCard({ area }: AreaCardProps) {
-  const { id, name, rolename, responsible } = area
+  const { id, name, color, responsible } = area
   return (
     <Link
       component={NextLink}
@@ -92,6 +93,7 @@ function AreaCard({ area }: AreaCardProps) {
           alignItems: 'center',
           flexDirection: 'column',
           cursor: 'pointer',
+          backgroundColor: color,
         }}
       >
         <Avatar
@@ -100,12 +102,12 @@ function AreaCard({ area }: AreaCardProps) {
           sx={{ width: 64, height: 64, mb: 3 }}
         />
 
-        <Typography variant="subtitle1" color="text.primary">
+        <Typography variant="subtitle1" color="black" fontSize={20}>
           {name}
         </Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1, mt: 0.5 }}>
-          {rolename}
+        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }} fontSize={15}>
+          {responsible?.fullname || 'Sin responsable'}
         </Typography>
       </Card>
     </Link>

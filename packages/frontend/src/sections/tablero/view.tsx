@@ -34,9 +34,7 @@ export default function TableroView() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <UserCard />
-      </Box>
+      <UserCard />
       <AreaCardContainer searchAreas={search} areas={filteredAreas} onSearchAreas={handleSearch} />
     </Container>
   )

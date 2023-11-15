@@ -7,6 +7,7 @@ export const AREAS_FOR_LIST = gql`
       name
       rolename
       description
+      color
       multiple
 
       responsible {
@@ -32,6 +33,7 @@ export const GET_AREAS_FOR_TREE = gql`
     areas {
       id
       name
+      color
       parentId
       responsible {
         id
