@@ -217,18 +217,18 @@ export default function ProjectDetailView(props: TProps) {
                 }}
               >
                 <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
                   <Tab label={ETab.STAGES} value={ETab.STAGES} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
-                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
                 </Tabs>
               </Box>
             </Card>
 
+            {tab === ETab.NOTES && <NotesTab project={project} />}
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
-            {tab === ETab.NOTES && <NotesTab project={project} />}
           </React.Fragment>
         )}
       </Box>
