@@ -44,6 +44,10 @@ export default {
       if (project.notes) return Promise.resolve(project.notes)
       return ProjectNote.findAll({ where: { projectId: project.id } })
     },
+    progress: (project: IProject): number => {
+      if(project.progress) return Number((project.progress).toFixed(2))
+      return 0
+    }
   },
   Query: {
     projects: (
