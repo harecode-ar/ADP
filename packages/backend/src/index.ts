@@ -13,6 +13,7 @@ import './database/models'
 import { getContext } from './graphql/context'
 import { FRONT_PATH } from './constants'
 import logger from './logger'
+import { appRouter } from './routes'
 
 dotenv.config()
 
@@ -25,6 +26,8 @@ const nextApp = next({
 const nextHandler = nextApp.getRequestHandler()
 
 const app = express()
+
+app.use(appRouter)
 
 app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 

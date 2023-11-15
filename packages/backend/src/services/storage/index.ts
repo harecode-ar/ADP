@@ -1,3 +1,4 @@
+import { MIME_TYPE_MAP } from '@adp/shared'
 import type { IBackendEnvironment } from '@adp/shared'
 import axios from 'axios'
 import dotenv from 'dotenv'
@@ -93,4 +94,10 @@ export const getFile = async (filename: string) => {
     logger.error(error)
     throw error
   }
+}
+
+export const determineContentType = (filename: string) => {
+  const undottedExtension = filename.split('.').pop()
+  const extension = `.${undottedExtension}` as keyof typeof MIME_TYPE_MAP
+  return MIME_TYPE_MAP[extension] || 'application/octet-stream'
 }
