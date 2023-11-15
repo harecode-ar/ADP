@@ -1,41 +1,40 @@
 'use client'
 
-import { IArea } from '@adp/shared'
-import React, { useState, useMemo } from 'react'
-import { Container, Box } from '@mui/material'
-import { AREAS_FOR_LIST } from 'src/graphql/queries'
-import { useQuery } from '@apollo/client'
+import React, { useState } from 'react'
+import { Container, Card, Box, Tabs, Tab } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import UserCard from './user-card'
 import AreaCardContainer from './area-card-container'
 
 // ----------------------------------------------------------------------
 
+enum ETab {
+  AREAS = 'Areas',
+}
+
 export default function TableroView() {
   const settings = useSettingsContext()
-  const [search, setSearch] = useState('')
-
-  const handleSearch = (event: any) => {
-    const { value } = event.target
-    setSearch(value)
-  }
-
-  const { data } = useQuery(AREAS_FOR_LIST)
-
-  const areas: IArea[] = useMemo(() => {
-    if (!data) return []
-    return data.areas
-  }, [data])
-
-  const filteredAreas = useMemo(
-    () => areas.filter((area) => area.name.toLowerCase().includes(search.toLowerCase())),
-    [areas, search]
-  )
+  const [tab, setTab] = useState<ETab>(ETab.AREAS)
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <UserCard />
-      <AreaCardContainer searchAreas={search} areas={filteredAreas} onSearchAreas={handleSearch} />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <UserCard />
+        <Card sx={{ p: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+              <Tab label={ETab.AREAS} value={ETab.AREAS} />
+            </Tabs>
+          </Box>
+        </Card>
+        {tab === ETab.AREAS && <AreaCardContainer />}
+      </Box>
     </Container>
   )
 }

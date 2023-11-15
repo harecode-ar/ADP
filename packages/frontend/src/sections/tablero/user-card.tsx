@@ -1,11 +1,8 @@
 'use client'
 
 import * as React from 'react'
-
-import { Container, Avatar, Box, Typography, Button } from '@mui/material'
-import { useSettingsContext } from 'src/components/settings'
+import { Avatar, Box, Typography, Card } from '@mui/material'
 import { useAuthContext } from 'src/auth/hooks'
-import Iconify from 'src/components/iconify'
 import { getStorageFileUrl } from 'src/utils/storage'
 
 // ----------------------------------------------------------------------
@@ -14,16 +11,15 @@ export default function UserCard() {
   const { user, role } = useAuthContext()
 
   return (
-    <Box
+    <Card
       sx={{
-        backgroundColor: 'rgb(255, 255, 255)',
+        backgroundColor: 'background.paper',
         color: 'rgb(33, 43, 54)',
         transition: 'box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0m',
         backgroundImage: 'none',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow:
-          'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px',
+
         borderRadius: '16px',
         zIndex: '0',
         height: '290px',
@@ -57,7 +53,7 @@ export default function UserCard() {
                 'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
               )}
               alt={user.fullname}
-              sx={{ width: 128, height: 128, border: '2px solid rgb(255, 255, 255)' }}
+              sx={(theme) => ({ width: 128, height: 128, border: `2px solid ${theme.palette.background.paper}` })}
             />
           ) : null}
           <Box
@@ -96,7 +92,7 @@ export default function UserCard() {
           bottom: '0px',
           zIndex: '9',
           position: 'absolute',
-          backgroundColor: 'rgb(255, 255, 255)',
+          backgroundColor: 'background.paper',
         }}
       >
         <Box
@@ -109,15 +105,10 @@ export default function UserCard() {
             bottom: '0px',
             zIndex: '9',
             position: 'absolute',
-            backgroundColor: 'rgb(255, 255, 255)',
+            backgroundColor: 'background.paper',
           }}
-        >
-          <Button>
-            <Iconify sx={{ mr: 1 }} icon="ic:baseline-people" />
-            Areas
-          </Button>
-        </Box>
+        />
       </Box>
-    </Box>
+    </Card>
   )
 }
