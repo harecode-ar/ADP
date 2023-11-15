@@ -1,6 +1,7 @@
 'use client'
 
-import * as React from 'react'
+import { IArea } from '@adp/shared'
+import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import {
   Box,
@@ -12,36 +13,48 @@ import {
   InputAdornment,
   Link,
 } from '@mui/material'
+import { AREAS_FOR_LIST } from 'src/graphql/queries'
+import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import SearchNotFound from 'src/components/search-not-found'
-import { IArea } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
 
-// ----------------------------------------------------------------------
-type Props = {
-  areas: IArea[]
-  searchAreas: string
-  onSearchAreas: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+export default function AreaCardContainer() {
 
-export default function AreaCardContainer({ areas, searchAreas, onSearchAreas }: Props) {
-  const notFound = !areas.length
+  const [search, setSearch] = useState('')
+
+  const handleSearch = (event: any) => {
+    const { value } = event.target
+    setSearch(value)
+  }
+
+  const { data } = useQuery(AREAS_FOR_LIST)
+
+  const areas: IArea[] = useMemo(() => {
+    if (!data) return []
+    return data.areas
+  }, [data])
+
+  const filteredAreas = useMemo(
+    () => areas.filter((area) => area.name.toLowerCase().includes(search.toLowerCase())),
+    [areas, search]
+  )
+
+  const notFound = !filteredAreas.length
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Stack
         spacing={2}
-        justifyContent="space-between"
+        justifyContent="end"
         direction={{ xs: 'column', sm: 'row' }}
-        sx={{ my: 5 }}
-      >
-        <Typography variant="h4">Areas</Typography>
 
+      >
         <TextField
-          value={searchAreas}
-          onChange={onSearchAreas}
+          value={search}
+          onChange={handleSearch}
           placeholder="Buscar areas..."
           InputProps={{
             startAdornment: (
@@ -64,11 +77,11 @@ export default function AreaCardContainer({ areas, searchAreas, onSearchAreas }:
           xl: 'repeat(4, 1fr)',
         }}
       >
-        {areas.map((area) => (
+        {filteredAreas.map((area) => (
           <AreaCard key={area.id} area={area} />
         ))}
       </Box>
-      {notFound && <SearchNotFound query={searchAreas} />}
+      {notFound && <SearchNotFound query={search} />}
     </Box>
   )
 }
