@@ -127,6 +127,7 @@ const CreateProject = () => {
               fullWidth
               required
               multiline
+              maxRows={10}
               value={formik.values.cost}
               InputProps={{
                 endAdornment: <InputAdornment position="end">$</InputAdornment>,
@@ -197,6 +198,7 @@ const CreateProject = () => {
               variant="outlined"
               fullWidth
               multiline
+              maxRows={10}
               value={formik.values.description}
               onChange={formik.handleChange}
               error={Boolean(formik.errors.description)}

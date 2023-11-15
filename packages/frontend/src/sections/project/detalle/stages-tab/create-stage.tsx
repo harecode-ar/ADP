@@ -222,6 +222,7 @@ const ModalCreate = (props: TProps) => {
                   fullWidth
                   required
                   multiline
+                  maxRows={10}
                   value={formik.values.description}
                   onChange={formik.handleChange}
                   error={Boolean(formik.errors.description)}

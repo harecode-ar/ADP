@@ -195,6 +195,7 @@ export default function KanbanDetails(props: TProps) {
             <TextField
               fullWidth
               multiline
+              maxRows={10}
               size="small"
               value={stage?.description || 'Sin descripción'}
               InputProps={{ readOnly: true, sx: { typography: 'body2' } }}

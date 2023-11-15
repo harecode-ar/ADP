@@ -217,6 +217,7 @@ const ModalEdit = (props: TProps) => {
                   fullWidth
                   required
                   multiline
+                  maxRows={10}
                   value={formik.values.cost}
                   InputProps={{
                     endAdornment: <InputAdornment position="end">$</InputAdornment>,
@@ -293,6 +294,7 @@ const ModalEdit = (props: TProps) => {
                   variant="outlined"
                   fullWidth
                   multiline
+                  maxRows={10}
                   value={formik.values.description}
                   onChange={formik.handleChange}
                   error={Boolean(formik.errors.description)}

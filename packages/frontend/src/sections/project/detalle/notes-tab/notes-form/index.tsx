@@ -61,6 +61,7 @@ export default function PostCommentForm(props: TProps) {
             name="message"
             placeholder="Escribe algun comentario..."
             multiline
+            maxRows={10}
             rows={4}
           />
 

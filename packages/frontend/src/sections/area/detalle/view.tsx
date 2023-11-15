@@ -98,6 +98,7 @@ export default function AreaDetailView(props: TProps) {
                       readOnly: true,
                     }}
                     multiline
+                    maxRows={10}
                   />
                 </Grid>
               </Grid>

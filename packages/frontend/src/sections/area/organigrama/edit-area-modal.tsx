@@ -199,6 +199,7 @@ const EditAreaModal = (props: TProps) => {
                   variant="outlined"
                   fullWidth
                   multiline
+                  maxRows={10}
                   value={formik.values.description}
                   onChange={formik.handleChange}
                   disabled={loading}
