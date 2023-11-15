@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { Container, Box } from '@mui/material'
+import { Container, Button } from '@mui/material'
+import Iconify from 'src/components/iconify/iconify'
 import { useSettingsContext } from 'src/components/settings'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { TableContextProvider } from 'src/components/table/context'
@@ -17,12 +18,16 @@ export default function UserListView() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <CustomBreadcrumbs
-          heading="Usuarios"
-          links={[{ name: 'Usuarios', href: paths.dashboard.user.root }, { name: 'Listado' }]}
-        />
-      </Box>
+      <CustomBreadcrumbs
+        heading="Usuarios"
+        links={[{ name: 'Usuarios', href: paths.dashboard.user.root }, { name: 'Listado' }]}
+        action={
+          <Button variant="contained" onClick={modalCreate.onTrue}>
+            <Iconify icon="mingcute:add-fill" mr={1} />
+            Nuevo
+          </Button>
+        }
+      />
       <TableContextProvider>
         <Table modalCreate={modalCreate} />
       </TableContextProvider>
