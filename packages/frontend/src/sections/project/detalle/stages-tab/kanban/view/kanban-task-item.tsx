@@ -98,8 +98,8 @@ export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
               }),
               ...(task.progress > 0.3 &&
                 task.progress <= 0.6 && {
-                color: 'warning.main',
-              }),
+                  color: 'warning.main',
+                }),
               ...(task.progress <= 0.3 && {
                 color: 'error.main',
               }),

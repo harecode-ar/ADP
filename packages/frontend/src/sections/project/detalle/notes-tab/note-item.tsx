@@ -33,7 +33,10 @@ export default function NoteItem(props: TProps) {
       avatar={
         user ? (
           <Avatar
-            src={getStorageFileUrl(user.image, "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg")}
+            src={getStorageFileUrl(
+              user.image,
+              'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+            )}
             alt={user.fullname}
           />
         ) : null

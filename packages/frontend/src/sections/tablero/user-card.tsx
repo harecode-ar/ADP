@@ -53,15 +53,16 @@ export default function UserCard() {
               flexDirection: 'row',
             }}
           >
-            {
-              user ? (
-                <Avatar
-                  src={getStorageFileUrl(user.image, "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg")}
-                  alt={user.fullname}
-                  sx={{ width: 128, height: 128, border: '2px solid rgb(255, 255, 255)' }}
-                />
-              ) : null
-            }
+            {user ? (
+              <Avatar
+                src={getStorageFileUrl(
+                  user.image,
+                  'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+                )}
+                alt={user.fullname}
+                sx={{ width: 128, height: 128, border: '2px solid rgb(255, 255, 255)' }}
+              />
+            ) : null}
             <Box
               sx={{
                 margin: '24px',

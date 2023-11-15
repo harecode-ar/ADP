@@ -30,7 +30,10 @@ export default function NavUpgrade() {
           {/* <Avatar src={user?.photoURL} alt={user?.fullname} sx={{ width: 48, height: 48 }} /> */}
           {user && (
             <Avatar
-              src={getStorageFileUrl(user.image, "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg")}
+              src={getStorageFileUrl(
+                user.image,
+                'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+              )}
               alt={user.fullname}
               sx={{ width: 48, height: 48 }}
             />
