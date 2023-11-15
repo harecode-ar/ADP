@@ -64,17 +64,19 @@ export function useNavData(): TNavData[] {
   const data = useMemo(
     () =>
       [
-        // OVERVIEW
-        // ----------------------------------------------------------------------
         {
-          subheader: 'overview v5.5.0',
-          items: [],
+          subheader: 'Administración',
+          items: [
+            {
+              title: 'Tablero',
+              path: paths.dashboard.root,
+              icon: ICONS.user,
+            },
+          ],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
         },
-        // MANAGEMENT
-        // ----------------------------------------------------------------------
         {
-          subheader: 'management',
+          subheader: 'Administración',
           items: [
             {
               title: 'Usuarios',
@@ -96,11 +98,6 @@ export function useNavData(): TNavData[] {
                 { title: 'Nuevo', path: paths.dashboard.project.new },
                 { title: 'Listado', path: paths.dashboard.project.list },
               ],
-            },
-            {
-              title: 'Tablero',
-              path: paths.dashboard.root,
-              icon: ICONS.user,
             },
           ],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
