@@ -1,5 +1,6 @@
 import { IProject, IProjectNote } from '@adp/shared'
 import React, { useMemo } from 'react'
+import { Box } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { GET_PROJECT_NOTES } from 'src/graphql/queries'
 import PostCommentForm from './notes-form'
@@ -24,9 +25,13 @@ export default function NotesTab(props: TProps) {
   return (
     <React.Fragment>
       <PostCommentForm project={project} refetch={refetch} />
-      {notes.map((note) => (
-        <NoteItem key={note.id} note={note} refetch={refetch} />
-      ))}
+      {notes.length === 0 ? (
+        <Box style={{ textAlign: 'center', padding: '20px' }}>
+          <p>No hay notas</p>
+        </Box>
+      ) : (
+        notes.map((note) => <NoteItem key={note.id} note={note} refetch={refetch} />)
+      )}
     </React.Fragment>
   )
 }
