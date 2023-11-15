@@ -131,7 +131,6 @@ const ModalEdit = (props: TProps) => {
           file: null,
           preview: getStorageFileUrl(user.image),
         })
-        console.log(getStorageFileUrl(user.image))
       }
     },
   })
@@ -140,10 +139,7 @@ const ModalEdit = (props: TProps) => {
     (acceptedFiles: (File | null)[]) => {
       const newFile = acceptedFiles[0]
       if (newFile) {
-        formik.setFieldValue(
-          'file',
-          newFile
-        )
+        formik.setFieldValue('file', newFile)
         formik.setFieldValue('preview', URL.createObjectURL(newFile))
       }
     },

@@ -89,7 +89,7 @@ const ModalCreate = (props: TProps) => {
             lastname: values.lastname,
             email: values.email,
             telephone: values.telephone,
-            file: values.file,
+            image: values.file,
             roleId: values.role?.id,
           },
         })
@@ -109,10 +109,7 @@ const ModalCreate = (props: TProps) => {
     (acceptedFiles: (File | null)[]) => {
       const newFile = acceptedFiles[0]
       if (newFile) {
-        formik.setFieldValue(
-          'file',
-          newFile
-        )
+        formik.setFieldValue('file', newFile)
         formik.setFieldValue('preview', URL.createObjectURL(newFile))
       }
     },

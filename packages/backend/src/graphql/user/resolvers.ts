@@ -133,7 +133,6 @@ export default {
           const response = await uploadFile(stream, originalFilename)
           if (!response) throw new Error('Error al subir la imagen')
           const { filename } = response
-          console.log(filename)
           userData.image = filename
         }
 
