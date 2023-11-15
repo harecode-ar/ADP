@@ -8,6 +8,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { CREATE_PROJECT_NOTE } from 'src/graphql/mutations'
 import { IProject } from '@adp/shared'
 import FormProvider, { RHFTextField } from 'src/components/hook-form'
+import { enqueueSnackbar } from 'notistack'
 
 // ----------------------------------------------------------------------
 type TProps = {
@@ -50,6 +51,7 @@ export default function PostCommentForm(props: TProps) {
       refetch()
     } catch (error) {
       console.error(error)
+      enqueueSnackbar(`La nota no pudo ser creada`, { variant: 'error' })
     }
   })
 
