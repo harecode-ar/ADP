@@ -65,7 +65,7 @@ const validationSchema = Yup.object().shape({
         const { projectEndDate } = parent
         return new Date(value) <= new Date(projectEndDate)
       }
-    )
+    ),
 })
 
 type TProps = {

@@ -119,7 +119,11 @@ function AreaCard({ area }: AreaCardProps) {
           {name}
         </Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }} fontSize={15}>
+        <Typography
+          variant="body2"
+          sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }}
+          fontSize={15}
+        >
           {responsible?.fullname || 'Sin responsable'}
         </Typography>
       </Card>
