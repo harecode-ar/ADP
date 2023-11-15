@@ -202,6 +202,7 @@ export default function ProjectDetailView(props: TProps) {
                     variant="outlined"
                     fullWidth
                     multiline
+                    maxRows={10}
                     value={project.description}
                     InputProps={{ readOnly: true }}
                   />

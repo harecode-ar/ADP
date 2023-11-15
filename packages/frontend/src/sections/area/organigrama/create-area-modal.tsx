@@ -172,6 +172,7 @@ const CreateAreaModal = (props: TProps) => {
                   variant="outlined"
                   fullWidth
                   multiline
+                  maxRows={10}
                   value={formik.values.description}
                   onChange={formik.handleChange}
                 />
