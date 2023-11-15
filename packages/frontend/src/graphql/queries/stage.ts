@@ -9,6 +9,33 @@ export const GET_STAGES_BY_PROJECT = gql`
       startDate
       endDate
       description
+      projectId
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+      }
+      state {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const GET_STAGE = gql`
+  query getStage($id: Int!) {
+    stage(id: $id) {
+      id
+      name
+      progress
+      startDate
+      endDate
+      description
+      projectId
       area {
         id
         name

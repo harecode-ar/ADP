@@ -1,4 +1,4 @@
-import { IStage } from '@adp/shared'
+import { IStage, IProject } from '@adp/shared'
 import React from 'react'
 import { Stack, Box, Avatar, LinearProgress, PaperProps, Paper, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -10,6 +10,7 @@ import KanbanDetails from './kanban-details'
 // ----------------------------------------------------------------------
 
 type Props = PaperProps & {
+  project: IProject
   task: IStage
   refetch: () => void
 }
@@ -34,7 +35,7 @@ const getColor = (progress: number) => {
   return ERROR.main
 }
 
-export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
+export default function KanbanTaskItem({ project, task, sx, refetch, ...other }: Props) {
   const theme = useTheme()
 
   const hasUser = Boolean(task.responsible)
@@ -113,12 +114,15 @@ export default function KanbanTaskItem({ task, sx, refetch, ...other }: Props) {
           <Typography variant="subtitle2"> {task.progress * 100}%</Typography>
         </Stack>
       </Paper>
-      <KanbanDetails
+      {openDetails.value && (
+        <KanbanDetails
         refetch={refetch}
-        stage={task}
+        project={project}
+        stageId={task.id}
         openDetails={openDetails.value}
         onCloseDetails={openDetails.onFalse}
       />
+      )}
     </React.Fragment>
   )
 }

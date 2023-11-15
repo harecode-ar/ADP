@@ -1,6 +1,7 @@
 'use client'
 
-import { IStage } from '@adp/shared'
+import { IStage, IProject } from '@adp/shared'
+import React, { useMemo } from 'react'
 import Stack from '@mui/material/Stack'
 import Drawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
@@ -8,14 +9,18 @@ import Scrollbar from 'src/components/scrollbar'
 import { Tooltip, IconButton, Button, Box, Avatar, Typography, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { GET_STAGE } from 'src/graphql/queries'
+import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import ModalDelete from './modal-delete'
+import ModalEdit from './modal-edit'
 
 // ----------------------------------------------------------------------
 
 type TProps = {
-  stage: IStage
+  project: IProject
+  stageId: number
   openDetails: boolean
   onCloseDetails: VoidFunction
   refetch: () => void
@@ -53,9 +58,29 @@ const getColor = (progress: number) => {
 }
 
 export default function KanbanDetails(props: TProps) {
-  const { stage, openDetails, onCloseDetails, refetch } = props
-  const color = getColor(stage.progress)
+  const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
+  const modalEdit = useBoolean()
+  
+  const stageQuery = useQuery(GET_STAGE, {
+    variables: {
+      id: stageId,
+    },
+    skip: !stageId,
+  })
+
+  const refetch = () => {
+    stagesRefetch()
+    stageQuery.refetch()
+  }
+
+  const stage: IStage | null = useMemo(() => {
+    if (!stageQuery.data) return null
+    return stageQuery.data.stage
+  }, [stageQuery.data])
+
+  if (!stage) return null
+  const color = getColor(stage.progress)
 
   return (
     <Drawer
@@ -91,7 +116,9 @@ export default function KanbanDetails(props: TProps) {
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           <Tooltip title="Editar">
-            <IconButton>
+            <IconButton
+              onClick={modalEdit.onTrue}
+            >
               <Iconify icon="mdi:pencil" />
             </IconButton>
           </Tooltip>
@@ -179,7 +206,8 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
         </Stack>
       </Scrollbar>
-      <ModalDelete modal={modalDelete} refetch={refetch} stageId={stage.id} />
+      {modalEdit.value && (<ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />)}
+      <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
     </Drawer>
   )
 }
