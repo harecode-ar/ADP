@@ -23,6 +23,7 @@ import * as Yup from 'yup'
 import { UPDATE_USER } from 'src/graphql/mutations'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
+import { getStorageFileUrl } from 'src/utils/storage'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -59,6 +60,7 @@ type TUser = {
   telephone: string | null
   role: IRole | null
   file: File | null
+  preview: string | null
 }
 
 const ModalEdit = (props: TProps) => {
@@ -80,10 +82,10 @@ const ModalEdit = (props: TProps) => {
       firstname: '',
       lastname: '',
       email: '',
-      password: '123',
       telephone: '',
       role: null as IRole | null,
       file: null,
+      preview: null,
     } as TUser,
     onSubmit: async (values, helpers: FormikHelpers<TUser>) => {
       try {
@@ -94,6 +96,7 @@ const ModalEdit = (props: TProps) => {
             lastname: values.lastname,
             email: values.email,
             telephone: values.telephone,
+            image: values.file,
             roleId: Number(values.role?.id),
           },
         })
@@ -126,7 +129,9 @@ const ModalEdit = (props: TProps) => {
           telephone: user.telephone,
           role: roles.find((role) => role.id === Number(user.roleId)) || null,
           file: null,
+          preview: getStorageFileUrl(user.image),
         })
+        console.log(getStorageFileUrl(user.image))
       }
     },
   })
@@ -137,10 +142,9 @@ const ModalEdit = (props: TProps) => {
       if (newFile) {
         formik.setFieldValue(
           'file',
-          Object.assign(newFile, {
-            preview: URL.createObjectURL(newFile),
-          })
+          newFile
         )
+        formik.setFieldValue('preview', URL.createObjectURL(newFile))
       }
     },
     [formik]
@@ -166,12 +170,13 @@ const ModalEdit = (props: TProps) => {
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <UploadAvatar
             file={formik.values.file}
+            preview={formik.values.preview}
             onDrop={handleDropAvatar}
             validator={(fileData: File) => {
-              if (fileData.size > 1000000) {
+              if (fileData.size > 2000000) {
                 return {
                   code: 'file-too-large',
-                  message: `File is larger than ${fData(1000000)}`,
+                  message: `El archivo es muy grande, el tamaño máximo es de ${fData(2000000)}`,
                 }
               }
               return null
@@ -189,7 +194,7 @@ const ModalEdit = (props: TProps) => {
                 }}
               >
                 Archivos *.jpeg, *.jpg, *.png
-                <br /> Max {fData(3145728)}
+                <br /> Max {fData(2000000)}
               </Typography>
             }
           />

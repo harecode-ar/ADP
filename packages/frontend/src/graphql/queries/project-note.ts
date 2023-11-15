@@ -11,6 +11,7 @@ export const GET_PROJECT_NOTES = gql`
       user {
         id
         fullname
+        image
       }
     }
   }

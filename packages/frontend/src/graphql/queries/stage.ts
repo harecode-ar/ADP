@@ -16,6 +16,7 @@ export const GET_STAGES_BY_PROJECT = gql`
       responsible {
         id
         fullname
+        image
       }
       state {
         id

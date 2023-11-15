@@ -9,7 +9,14 @@ dotenv.config()
 
 const { STORAGE_URL, STORAGE_KEY } = process.env as unknown as IBackendEnvironment
 
-export const uploadFile = async (file: any, filename: string) => {
+export const uploadFile = async (
+  file: any,
+  filename: string
+): Promise<{
+  filename: string
+  extension: string
+  createdAt: string
+}> => {
   try {
     // @ts-ignore
     FormData.prototype[Symbol.toStringTag] = 'FormData'
@@ -25,7 +32,7 @@ export const uploadFile = async (file: any, filename: string) => {
         'Content-Type': 'multipart/form-data',
       },
     })
-    return response
+    return response.data
   } catch (error) {
     logger.error(error)
     throw error

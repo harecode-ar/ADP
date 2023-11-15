@@ -14,6 +14,8 @@ export class User extends Model {
 
   public password!: string
 
+  public image!: string
+
   public roleId!: number
 
   public createdAt!: Date
@@ -50,6 +52,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     roleId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
@@ -67,7 +73,7 @@ User.init(
             },
           })
           if (user) {
-            throw new Error('Ya existe')
+            throw new Error('Ya existe un usuario con este correo electrónico')
           }
         }
       },

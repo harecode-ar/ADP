@@ -12,7 +12,8 @@ export default {
     //     const { createReadStream, filename: originalFilename } = await file
     //     const stream = createReadStream()
     //     const response = await uploadFile(stream, originalFilename)
-    //     const { filename } = response.data
+    //     if (!response) throw new Error('Error al subir archivo')
+    //     const { filename } = response
     //     return { filename }
     //   } catch (error) {
     //     logger.error(error)
@@ -29,7 +30,8 @@ export default {
     //       const stream = createReadStream()
     //       // eslint-disable-next-line no-await-in-loop
     //       const response = await uploadFile(stream, originalFilename)
-    //       const { filename } = response.data
+    //       if (!response) throw new Error('Error al subir archivo')
+    //       const { filename } = response
     //       results.push({ filename })
     //     }
     //     return results

@@ -28,6 +28,7 @@ export const GET_USER = gql`
       lastname
       email
       telephone
+      image
       roleId
     }
   }

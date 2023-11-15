@@ -6,6 +6,7 @@ import { Container, Avatar, Box, Typography, Button } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { useAuthContext } from 'src/auth/hooks'
 import Iconify from 'src/components/iconify'
+import { getStorageFileUrl } from 'src/utils/storage'
 
 // ----------------------------------------------------------------------
 
@@ -52,11 +53,15 @@ export default function UserCard() {
               flexDirection: 'row',
             }}
           >
-            <Avatar
-              alt="Remy Sharp"
-              src="https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg"
-              sx={{ width: 128, height: 128, border: '2px solid rgb(255, 255, 255)' }}
-            />
+            {
+              user ? (
+                <Avatar
+                  src={getStorageFileUrl(user.image, "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg")}
+                  alt={user.fullname}
+                  sx={{ width: 128, height: 128, border: '2px solid rgb(255, 255, 255)' }}
+                />
+              ) : null
+            }
             <Box
               sx={{
                 margin: '24px',
