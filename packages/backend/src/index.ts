@@ -56,6 +56,10 @@ startApolloServer().then(() => {
       // eslint-disable-next-line no-console
       console.log(`🚀 Graphiql is running on http://localhost:${APP_PORT}/graphql`)
       logger.info(`Server is running on port ${APP_PORT}`)
+      if (APP_MODE !== EAppMode.LOCAL) {
+        // eslint-disable-next-line no-console
+        console.log(`🟢 Server is running on http://localhost:${APP_PORT}`)
+      }
     } catch (error: any) {
       // eslint-disable-next-line no-console
       console.log(
