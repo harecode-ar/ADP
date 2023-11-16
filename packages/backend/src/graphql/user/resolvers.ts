@@ -138,7 +138,7 @@ export default {
 
         await user.update(userData)
 
-        deleteFiles([prevImage])
+        if (image) deleteFiles([prevImage])
 
         return user
       } catch (error) {
