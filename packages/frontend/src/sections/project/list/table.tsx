@@ -79,10 +79,10 @@ const columns: TColumn[] = [
   {
     id: 'progress',
     label: 'Avance',
-    type: EColumnType.STRING,
+    type: EColumnType.NUMBER,
     searchable: true,
     renderCell: (row: any) => `${row.progress * 100}%`,
-    searchValue: (row: TRow) => `${row.progress * 100}%`,
+    searchValue: (row: TRow) => row.progress * 100,
   },
   {
     id: 'state',

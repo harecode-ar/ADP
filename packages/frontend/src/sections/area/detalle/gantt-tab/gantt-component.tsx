@@ -17,7 +17,7 @@ type TProps = {
 
 const GanttComponent = (props: TProps) => {
   const { tasks } = props
-  const [view, setView] = useState<ViewMode>(ViewMode.Day)
+  const [view, setView] = useState<ViewMode>(ViewMode.Year)
   const [expanded, setExpanded] = useState<string | null>(null)
   const theme = useTheme()
 

@@ -20,7 +20,7 @@ const viewOptions = [
 ]
 
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ onViewModeChange }) => {
-  const [selectedView, setSelectedView] = useState(viewOptions[0])
+  const [selectedView, setSelectedView] = useState(viewOptions[3])
   const handleViewModeChange = (event: React.ChangeEvent<{}>, value: ViewOption | null) => {
     if (value !== null) {
       setSelectedView(value)

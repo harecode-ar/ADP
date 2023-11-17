@@ -4,6 +4,8 @@ import * as React from 'react'
 import { Avatar, Box, Typography, Card } from '@mui/material'
 import { useAuthContext } from 'src/auth/hooks'
 import { getStorageFileUrl } from 'src/utils/storage'
+import { PRIMARY } from 'src/theme/palette'
+import { alpha } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
@@ -22,15 +24,16 @@ export default function UserCard() {
 
         borderRadius: '16px',
         zIndex: '0',
-        height: '290px',
+        height: '200px',
       }}
     >
       <Box
         sx={{
           height: '100%',
           color: 'rgb(255, 255, 255)',
-          background:
-            'linear-gradient(rgba(0, 75, 80, 0.8), rgba(0, 75, 80, 0.8)) center center / cover no-repeat, url(https://api-prod-minimal-v510.vercel.app/assets/images/cover/cover_4.jpg)',
+          background: alpha(PRIMARY.darker, 0.8),
+          // background:
+          //   'linear-gradient(rgba(0, 75, 80, 0.8), rgba(0, 75, 80, 0.8)) center center / cover no-repeat, url(https://api-prod-minimal-v510.vercel.app/assets/images/cover/cover_4.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
         }}

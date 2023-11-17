@@ -18,7 +18,7 @@ const GanttComponent = (props: TProps) => {
   const { mode } = theme.palette
 
   const { tasks } = props
-  const [view, setView] = useState<ViewMode>(ViewMode.Day)
+  const [view, setView] = useState<ViewMode>(ViewMode.Year)
   let columnWidth = 65
   if (view === ViewMode.Year) {
     columnWidth = 350

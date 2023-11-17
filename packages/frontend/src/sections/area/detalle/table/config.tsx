@@ -6,13 +6,15 @@ import Label from 'src/components/label'
 const getLabelColor = (id: number) => {
   switch (id) {
     case 1:
-      return 'primary'
+      return 'secondary'
     case 2:
       return 'warning'
     case 3:
+      return 'success'
+    case 4:
       return 'error'
     default:
-      return 'primary'
+      return 'warning'
   }
 }
 
@@ -64,10 +66,10 @@ export const columns: TColumn[] = [
   {
     id: 'progress',
     label: 'Avance',
-    type: EColumnType.STRING,
+    type: EColumnType.NUMBER,
     searchable: true,
     renderCell: (row: any) => `${row.progress * 100}%`,
-    searchValue: (row: TRow) => `${row.progress * 100}%`,
+    searchValue: (row: TRow) => row.progress * 100,
   },
   {
     id: 'state',
