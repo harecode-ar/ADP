@@ -2,7 +2,7 @@
 
 import type { IArea, IProject } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
+import { Box, Container, Card, Grid, Divider, Tab, Tabs, CardContent, Typography } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { TableContextProvider } from 'src/components/table/context'
 import { paths } from 'src/routes/paths'
@@ -67,7 +67,7 @@ export default function AreaDetailView(props: TProps) {
         }}
       >
         <CustomBreadcrumbs
-          heading="Detalle de Area"
+          // heading="Detalle de Area"
           links={[{ name: 'Area', href: paths.dashboard.area.root }, { name: 'Detalle' }]}
         />
 
@@ -75,57 +75,34 @@ export default function AreaDetailView(props: TProps) {
 
         {!!area && (
           <React.Fragment>
-            <Card sx={{ p: 2 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Nombre"
-                    value={area.name}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Responsable"
-                    value={area.responsible ? area.responsible.fullname : 'No tiene'}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Descripción"
-                    value={area.description}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    multiline
-                    maxRows={10}
-                  />
-                </Grid>
-              </Grid>
-            </Card>
-            <Card sx={{ p: 2 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
-                  <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
-                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
-                  <Tab label={ETab.GANTT} value={ETab.GANTT} />
-                </Tabs>
-              </Box>
-            </Card>
+
+            <Box>
+              <Typography variant="h4" paragraph>
+                {area?.name} -
+                <span style={{ fontSize: '0.7em', marginLeft: 4 }}>
+                  {area.responsible ? area.responsible.fullname : 'Sin responsable'}
+                </span>
+              </Typography>
+              <Typography variant="body2" sx={{ mt: -2 }}>
+                {area.description}
+              </Typography>                  
+            </Box>
+          <Card>
+            <Box
+              sx={{
+                // mt: -5,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
+                <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
+                <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
+                <Tab label={ETab.GANTT} value={ETab.GANTT} />
+              </Tabs>
+            </Box>
+
 
             {tab === ETab.PROJECTS && (
               <TableContextProvider>
@@ -137,6 +114,7 @@ export default function AreaDetailView(props: TProps) {
               </TableContextProvider>
             )}
             {tab === ETab.GANTT && <GanttTab projects={projects} />}
+            </Card>
           </React.Fragment>
         )}
       </Box>
