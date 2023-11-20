@@ -2,6 +2,8 @@ import React from 'react'
 import { Task } from 'gantt-task-react'
 import { Box, Card } from '@mui/material'
 
+import 'gantt-task-react/dist/index.css'
+
 type TProps = {
   task: Task
 }

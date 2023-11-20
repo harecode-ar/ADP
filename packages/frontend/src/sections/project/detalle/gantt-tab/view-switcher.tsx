@@ -1,30 +1,18 @@
-import React, { useState } from 'react'
-import 'gantt-task-react/dist/index.css'
+import React from 'react'
 import { Autocomplete, TextField, FormControl, Box } from '@mui/material'
-import { ViewMode } from 'gantt-task-react'
+import { VIEW_OPTIONS } from 'src/components/gantt'
+import type { TViewOption } from 'src/components/gantt'
 
 type ViewSwitcherProps = {
-  onViewModeChange: (viewMode: ViewMode) => void
+  viewOption: TViewOption
+  handleChangeView: (viewOption: TViewOption) => void
 }
 
-type ViewOption = {
-  label: string
-  value: ViewMode
-}
+export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewOption, handleChangeView }) => {
 
-const viewOptions = [
-  { label: 'Día', value: ViewMode.Day },
-  { label: 'Semana', value: ViewMode.Week },
-  { label: 'Mes', value: ViewMode.Month },
-  { label: 'Año', value: ViewMode.Year },
-]
-
-export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ onViewModeChange }) => {
-  const [selectedView, setSelectedView] = useState(viewOptions[3])
-  const handleViewModeChange = (event: React.ChangeEvent<{}>, value: ViewOption | null) => {
-    if (value !== null) {
-      setSelectedView(value)
-      onViewModeChange(value.value)
+  const handleViewModeChange = (event: React.ChangeEvent<{}>, option: TViewOption | null) => {
+    if (option !== null) {
+      handleChangeView(option)
     }
   }
 
@@ -33,9 +21,9 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ onViewModeChange }) 
       <FormControl>
         <Autocomplete
           style={{ width: 150, marginBottom: '16px' }}
-          options={viewOptions}
+          options={VIEW_OPTIONS}
           getOptionLabel={(option) => option.label}
-          value={selectedView}
+          value={viewOption}
           onChange={handleViewModeChange}
           renderInput={(params) => <TextField {...params} label="Mostrar por" />}
           clearIcon={null}
