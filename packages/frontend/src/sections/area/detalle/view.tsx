@@ -2,7 +2,7 @@
 
 import type { IArea, IProject } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Grid, Divider, Tab, Tabs, CardContent, Typography } from '@mui/material'
+import { Box, Container, Card, Tab, Tabs, Typography } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { TableContextProvider } from 'src/components/table/context'
 import { paths } from 'src/routes/paths'
@@ -75,7 +75,6 @@ export default function AreaDetailView(props: TProps) {
 
         {!!area && (
           <React.Fragment>
-
             <Box>
               <Typography variant="h4" paragraph>
                 {area?.name} -
@@ -85,35 +84,34 @@ export default function AreaDetailView(props: TProps) {
               </Typography>
               <Typography variant="body2" sx={{ mt: -2 }}>
                 {area.description}
-              </Typography>                  
+              </Typography>
             </Box>
-          <Card>
-            <Box
-              sx={{
-                // mt: -5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
-                <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
-                <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
-                <Tab label={ETab.GANTT} value={ETab.GANTT} />
-              </Tabs>
-            </Box>
+            <Card>
+              <Box
+                sx={{
+                  // mt: -5,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
+                  <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
+                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
+                  <Tab label={ETab.GANTT} value={ETab.GANTT} />
+                </Tabs>
+              </Box>
 
-
-            {tab === ETab.PROJECTS && (
-              <TableContextProvider>
-                <Table
-                  loading={projectQuery.loading}
-                  refetch={projectQuery.refetch}
-                  projects={projects}
-                />
-              </TableContextProvider>
-            )}
-            {tab === ETab.GANTT && <GanttTab projects={projects} />}
+              {tab === ETab.PROJECTS && (
+                <TableContextProvider>
+                  <Table
+                    loading={projectQuery.loading}
+                    refetch={projectQuery.refetch}
+                    projects={projects}
+                  />
+                </TableContextProvider>
+              )}
+              {tab === ETab.GANTT && <GanttTab projects={projects} />}
             </Card>
           </React.Fragment>
         )}

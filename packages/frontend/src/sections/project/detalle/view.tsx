@@ -2,17 +2,7 @@
 
 import React, { useMemo, useState } from 'react'
 import type { IProject, IStage } from '@adp/shared'
-import {
-  Box,
-  Container,
-  Card,
-  CardContent,
-  Tab,
-  Tabs,
-  Grid,
-  Typography,
-  Divider,
-} from '@mui/material'
+import { Box, Container, Card, Tab, Tabs, Grid, Typography, Divider } from '@mui/material'
 import Label from 'src/components/label'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -170,27 +160,27 @@ export default function ProjectDetailView(props: TProps) {
               </Grid>
             </Grid>
 
-          <Card>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                p: 1,
-              }}
-            >
-              <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.STAGES} value={ETab.STAGES} />
-                <Tab label={ETab.GANTT} value={ETab.GANTT} />
-              </Tabs>
-            </Box>
-            
-            {tab === ETab.NOTES && <NotesTab project={project} />}
-            {tab === ETab.STAGES && (
-              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
-            )}
-            {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
+            <Card>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  p: 1,
+                }}
+              >
+                <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
+                  <Tab label={ETab.STAGES} value={ETab.STAGES} />
+                  <Tab label={ETab.GANTT} value={ETab.GANTT} />
+                </Tabs>
+              </Box>
+
+              {tab === ETab.NOTES && <NotesTab project={project} />}
+              {tab === ETab.STAGES && (
+                <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+              )}
+              {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             </Card>
           </React.Fragment>
         )}
