@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8084",
     "start": "next start",
-    "build": "next build",
+    "build": "yarn workspace @adp/scripts next-fix && next build",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
