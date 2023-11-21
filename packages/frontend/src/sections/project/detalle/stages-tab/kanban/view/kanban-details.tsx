@@ -64,16 +64,18 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
 
-  const [notes, setNotes] = React.useState<IStageNote[]>([{
-    id: 1,
-    message: 'Hola',
-    createdAt: '2023-11-21',
-    user: {
+  const [notes, setNotes] = React.useState<IStageNote[]>([
+    {
       id: 1,
-      fullname: 'Lucas Lezano',
-      image: 'db9cdffd-c415-4c50-bafb-484fca9f072b.png',
+      message: 'Hola',
+      createdAt: '2023-11-21',
+      user: {
+        id: 1,
+        fullname: 'Lucas Lezano',
+        image: 'db9cdffd-c415-4c50-bafb-484fca9f072b.png',
+      },
     },
-  }] as IStageNote[])
+  ] as IStageNote[])
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {

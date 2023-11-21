@@ -15,8 +15,7 @@ type TProps = {
 export default function KanbanDetailsCommentList(props: TProps) {
   const { notes } = props
 
-  const slides = notes
-    .map((note) => ({ src: note.message }))
+  const slides = notes.map((note) => ({ src: note.message }))
 
   const lightbox = useLightBox(slides)
 
@@ -36,7 +35,9 @@ export default function KanbanDetailsCommentList(props: TProps) {
             {note.user?.image && <Avatar src={note.user.image} />}
             <Stack spacing={0.5} flexGrow={1}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="subtitle2">{note.user ? note.user.fullname : 'No asignado'}</Typography>
+                <Typography variant="subtitle2">
+                  {note.user ? note.user.fullname : 'No asignado'}
+                </Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                   {fToNow(note.createdAt)}
                 </Typography>

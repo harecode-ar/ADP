@@ -27,11 +27,13 @@ export default function KanbanDetailsCommentInput(props: TProps) {
       id: generateId(),
       message,
       createdAt: new Date().toISOString(),
-      user: user ? {
-        id: user.id,
-        fullname: user.fullname,
-        image: user.image,
-      } : null,
+      user: user
+        ? {
+            id: user.id,
+            fullname: user.fullname,
+            image: user.image,
+          }
+        : null,
     }
     // @ts-ignore
     setNotes((prev) => [...prev, newNote])
@@ -47,12 +49,26 @@ export default function KanbanDetailsCommentInput(props: TProps) {
         px: 2.5,
       }}
     >
-      {
-        !!user && (<Avatar src={getStorageFileUrl(user.image, 'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg')} alt={user.fullname} />)
-      }
+      {!!user && (
+        <Avatar
+          src={getStorageFileUrl(
+            user.image,
+            'https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_25.jpg'
+          )}
+          alt={user.fullname}
+        />
+      )}
 
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1, bgcolor: 'transparent' }}>
-        <InputBase fullWidth multiline rows={2} placeholder="Escribe una nota" sx={{ px: 1 }} value={message} onChange={(e) => setMessage(e.target.value)} />
+        <InputBase
+          fullWidth
+          multiline
+          rows={2}
+          placeholder="Escribe una nota"
+          sx={{ px: 1 }}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
 
         <Stack direction="row" alignItems="center">
           <Stack direction="row" flexGrow={1}>
@@ -61,7 +77,9 @@ export default function KanbanDetailsCommentInput(props: TProps) {
             </IconButton>
           </Stack>
 
-          <Button variant="contained" onClick={handleAddNote}>Comentar</Button>
+          <Button variant="contained" onClick={handleAddNote}>
+            Comentar
+          </Button>
         </Stack>
       </Paper>
     </Stack>

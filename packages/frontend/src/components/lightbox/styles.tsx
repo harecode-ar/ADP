@@ -1,10 +1,10 @@
-import GlobalStyles from '@mui/material/GlobalStyles';
-import { alpha, useTheme } from '@mui/material/styles';
+import GlobalStyles from '@mui/material/GlobalStyles'
+import { alpha, useTheme } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
 export default function StyledLightbox() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const inputGlobalStyles = (
     <GlobalStyles
@@ -46,7 +46,7 @@ export default function StyledLightbox() {
         },
       }}
     />
-  );
+  )
 
-  return inputGlobalStyles;
+  return inputGlobalStyles
 }

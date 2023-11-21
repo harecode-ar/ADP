@@ -1,16 +1,17 @@
-import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import Video from 'yet-another-react-lightbox/plugins/video';
-import Captions from 'yet-another-react-lightbox/plugins/captions';
-import Slideshow from 'yet-another-react-lightbox/plugins/slideshow';
-import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
-import ReactLightbox, { useLightboxState } from 'yet-another-react-lightbox';
+import React from 'react'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import Video from 'yet-another-react-lightbox/plugins/video'
+import Captions from 'yet-another-react-lightbox/plugins/captions'
+import Slideshow from 'yet-another-react-lightbox/plugins/slideshow'
+import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen'
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
+import ReactLightbox, { useLightboxState } from 'yet-another-react-lightbox'
 
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 
-import Iconify from '../iconify';
-import StyledLightbox from './styles';
-import { LightBoxProps } from './types';
+import Iconify from '../iconify'
+import StyledLightbox from './styles'
+import { LightBoxProps } from './types'
 
 // ----------------------------------------------------------------------
 
@@ -26,10 +27,10 @@ export default function Lightbox({
   onGetCurrentIndex,
   ...other
 }: LightBoxProps) {
-  const totalItems = slides ? slides.length : 0;
+  const totalItems = slides ? slides.length : 0
 
   return (
-    <>
+    <React.Fragment>
       <StyledLightbox />
 
       <ReactLightbox
@@ -48,7 +49,7 @@ export default function Lightbox({
         on={{
           view: ({ index }: { index: number }) => {
             if (onGetCurrentIndex) {
-              onGetCurrentIndex(index);
+              onGetCurrentIndex(index)
             }
           },
         }}
@@ -71,8 +72,8 @@ export default function Lightbox({
         }}
         {...other}
       />
-    </>
-  );
+    </React.Fragment>
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -85,42 +86,42 @@ export function getPlugins({
   disabledThumbnails,
   disabledFullscreen,
 }: LightBoxProps) {
-  let plugins = [Captions, Fullscreen, Slideshow, Thumbnails, Video, Zoom];
+  let plugins = [Captions, Fullscreen, Slideshow, Thumbnails, Video, Zoom]
 
   if (disabledThumbnails) {
-    plugins = plugins.filter((plugin) => plugin !== Thumbnails);
+    plugins = plugins.filter((plugin) => plugin !== Thumbnails)
   }
   if (disabledCaptions) {
-    plugins = plugins.filter((plugin) => plugin !== Captions);
+    plugins = plugins.filter((plugin) => plugin !== Captions)
   }
   if (disabledFullscreen) {
-    plugins = plugins.filter((plugin) => plugin !== Fullscreen);
+    plugins = plugins.filter((plugin) => plugin !== Fullscreen)
   }
   if (disabledSlideshow) {
-    plugins = plugins.filter((plugin) => plugin !== Slideshow);
+    plugins = plugins.filter((plugin) => plugin !== Slideshow)
   }
   if (disabledZoom) {
-    plugins = plugins.filter((plugin) => plugin !== Zoom);
+    plugins = plugins.filter((plugin) => plugin !== Zoom)
   }
   if (disabledVideo) {
-    plugins = plugins.filter((plugin) => plugin !== Video);
+    plugins = plugins.filter((plugin) => plugin !== Video)
   }
 
-  return plugins;
+  return plugins
 }
 
 // ----------------------------------------------------------------------
 
 type DisplayTotalProps = {
-  totalItems: number;
-  disabledTotal?: boolean;
-};
+  totalItems: number
+  disabledTotal?: boolean
+}
 
 export function DisplayTotal({ totalItems, disabledTotal }: DisplayTotalProps) {
-  const { currentIndex } = useLightboxState();
+  const { currentIndex } = useLightboxState()
 
   if (disabledTotal) {
-    return null;
+    return null
   }
 
   return (
@@ -136,5 +137,5 @@ export function DisplayTotal({ totalItems, disabledTotal }: DisplayTotalProps) {
     >
       <strong> {currentIndex + 1} </strong> / {totalItems}
     </Box>
-  );
+  )
 }
