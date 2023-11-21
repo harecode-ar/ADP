@@ -9,7 +9,6 @@ type ViewSwitcherProps = {
 }
 
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewOption, handleChangeView }) => {
-
   const handleViewModeChange = (event: React.ChangeEvent<{}>, option: TViewOption | null) => {
     if (option !== null) {
       handleChangeView(option)

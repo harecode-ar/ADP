@@ -56,7 +56,6 @@ const GanttComponent = (props: TProps) => {
       ...task,
       displayOrder: index + 1,
     }))
-
   }, [tasks, stages, expanded])
 
   const handleDoubleClick = (task: Task) => {

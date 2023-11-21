@@ -15,6 +15,8 @@ import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
+import KanbanDetailsCommentInput from './kanban-details-comment-input'
+import KanbanDetailsCommentList from './kanban-details-comment-list'
 
 // ----------------------------------------------------------------------
 
@@ -202,7 +204,10 @@ export default function KanbanDetails(props: TProps) {
             />
           </Stack>
         </Stack>
+
+        {!!stage.notes?.length && <KanbanDetailsCommentList notes={stage.notes} />}
       </Scrollbar>
+      <KanbanDetailsCommentInput stageId={stage.id} refetch={stageQuery.refetch} />
       {modalEdit.value && (
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}

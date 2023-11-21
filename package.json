@@ -32,7 +32,7 @@
     "prettier": "yarn backend:prettier && yarn frontend:prettier && yarn shared:prettier && yarn scripts:prettier",
     "lint": "yarn backend:lint && yarn frontend:lint && yarn shared:lint && yarn scripts:lint",
     "lint:fix": "yarn backend:lint:fix && yarn frontend:lint:fix && yarn shared:lint:fix && yarn scripts:lint:fix",
-    "build": "yarn shared:build && yarn scripts:next-fix && yarn frontend:build && yarn backend:build",
+    "build": "yarn shared:build && yarn frontend:build && yarn backend:build",
     "pull": "git pull && yarn install && yarn shared:build",
     "precommit": "yarn prettier && yarn lint:fix && yarn build"
   },

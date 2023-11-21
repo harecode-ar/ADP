@@ -21,6 +21,7 @@ export default `#graphql
     parentStage: Stage
     childStages: [Stage]
     project: Project
+    notes: [StageNote]
   }
 
   type Query {
