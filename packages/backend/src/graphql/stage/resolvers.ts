@@ -44,7 +44,10 @@ export default {
       __: any,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'>[]
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project' | 'notes'
+      >[]
     > => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
@@ -60,7 +63,7 @@ export default {
       context: IContext
     ): Promise<Omit<
       IStage,
-      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'
+      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project' | 'notes'
     > | null> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
@@ -107,7 +110,10 @@ export default {
       >,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -163,7 +169,10 @@ export default {
       >,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -264,7 +273,10 @@ export default {
       },
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
