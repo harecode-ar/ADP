@@ -96,7 +96,7 @@ export function AuthProvider({ children }: Props) {
 
         const response = await getSession()
 
-        if (!response.data.getSession) throw new Error('No session')
+        if (!response.data.getSession) throw new Error('No hay sesión')
 
         const { user } = response.data.getSession
         const { role } = user
