@@ -34,13 +34,14 @@ export default function KanbanDetailsCommentInput(props: TProps) {
           message: values.message,
           stageId,
         },
-      }).then(() => {
-        refetch()
-        resetForm()
-        enqueueSnackbar('Nota creada correctamente', {
-          variant: 'success',
-        })
       })
+        .then(() => {
+          refetch()
+          resetForm()
+          enqueueSnackbar('Nota creada correctamente', {
+            variant: 'success',
+          })
+        })
         .catch(() => {
           enqueueSnackbar('Error al crear la nota', {
             variant: 'error',

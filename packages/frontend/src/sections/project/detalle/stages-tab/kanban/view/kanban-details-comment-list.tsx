@@ -13,15 +13,19 @@ type TProps = {
 export default function KanbanDetailsCommentList(props: TProps) {
   const { notes } = props
 
-  const sortedNotes = useMemo(() => [...notes].sort((a, b) => {
-    if (a.createdAt > b.createdAt) {
-      return -1
-    }
-    if (a.createdAt < b.createdAt) {
-      return 1
-    }
-    return 0
-  }), [notes])
+  const sortedNotes = useMemo(
+    () =>
+      [...notes].sort((a, b) => {
+        if (a.createdAt > b.createdAt) {
+          return -1
+        }
+        if (a.createdAt < b.createdAt) {
+          return 1
+        }
+        return 0
+      }),
+    [notes]
+  )
 
   return (
     <Stack
