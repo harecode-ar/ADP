@@ -1,6 +1,6 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea } from '@adp/shared/types'
-import { Stage, Project, StageState, Area, User } from '../../database/models'
+import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
@@ -37,6 +37,10 @@ export default {
       if (stage.progress) return Number(stage.progress.toFixed(2))
       return 0
     },
+    notes: (stage: IStage): Promise<IStage['notes']> => {
+      if (stage.notes) return Promise.resolve(stage.notes)
+      return StageNote.findAll({ where: { stageId: stage.id } })
+    },
   },
   Query: {
     stages: (
@@ -67,7 +71,29 @@ export default {
     > | null> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
-        return Stage.findByPk(args.id)
+        return Stage.findByPk(args.id, {
+          include: [
+            {
+              model: Area,
+              as: 'area',
+            },
+            {
+              model: StageState,
+              as: 'state',
+            },
+            {
+              model: StageNote,
+              as: 'notes',
+              include: [
+                {
+                  model: User,
+                  as: 'user',
+                  attributes: ['id', 'firstname', 'lastname', 'image'],
+                },
+              ],
+            },
+          ],
+        })
       } catch (error) {
         logger.error(error)
         throw error

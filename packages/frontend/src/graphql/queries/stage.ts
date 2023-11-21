@@ -50,6 +50,16 @@ export const GET_STAGE = gql`
         id
         name
       }
+      notes {
+        id
+        message
+        createdAt
+        user {
+          id
+          fullname
+          image
+        }
+      }
     }
   }
 `

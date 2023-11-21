@@ -6,39 +6,48 @@ import Avatar from '@mui/material/Avatar'
 import InputBase from '@mui/material/InputBase'
 import IconButton from '@mui/material/IconButton'
 import Iconify from 'src/components/iconify'
+import { useFormik } from 'formik'
+import { useMutation } from '@apollo/client'
 import { useAuthContext } from 'src/auth/hooks'
+import { useSnackbar } from 'src/components/snackbar'
+import { CREATE_STAGE_NOTE } from 'src/graphql/mutations'
 import { getStorageFileUrl } from 'src/utils/storage'
-import { IStageNote } from '@adp/shared'
 
 type TProps = {
-  setNotes: React.Dispatch<React.SetStateAction<IStageNote[]>>
+  stageId: number
+  refetch: VoidFunction
 }
 
-const generateId = () => Math.floor(Math.random() * 1000000)
-
 export default function KanbanDetailsCommentInput(props: TProps) {
-  const { setNotes } = props
+  const { stageId, refetch } = props
   const { user } = useAuthContext()
+  const [createStageNote, { loading }] = useMutation(CREATE_STAGE_NOTE)
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [message, setMessage] = React.useState('')
-
-  const handleAddNote = () => {
-    const newNote = {
-      id: generateId(),
-      message,
-      createdAt: new Date().toISOString(),
-      user: user
-        ? {
-            id: user.id,
-            fullname: user.fullname,
-            image: user.image,
-          }
-        : null,
-    }
-    // @ts-ignore
-    setNotes((prev) => [...prev, newNote])
-    setMessage('')
-  }
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: (values, { resetForm }) => {
+      createStageNote({
+        variables: {
+          message: values.message,
+          stageId,
+        },
+      }).then(() => {
+        refetch()
+        resetForm()
+        enqueueSnackbar('Nota creada correctamente', {
+          variant: 'success',
+        })
+      })
+        .catch(() => {
+          enqueueSnackbar('Error al crear la nota', {
+            variant: 'error',
+          })
+        })
+    },
+  })
 
   return (
     <Stack
@@ -66,8 +75,8 @@ export default function KanbanDetailsCommentInput(props: TProps) {
           rows={2}
           placeholder="Escribe una nota"
           sx={{ px: 1 }}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={formik.values.message}
+          onChange={(e) => formik.setFieldValue('message', e.target.value)}
         />
 
         <Stack direction="row" alignItems="center">
@@ -77,7 +86,7 @@ export default function KanbanDetailsCommentInput(props: TProps) {
             </IconButton>
           </Stack>
 
-          <Button variant="contained" onClick={handleAddNote}>
+          <Button variant="contained" onClick={() => formik.handleSubmit()} disabled={loading}>
             Comentar
           </Button>
         </Stack>

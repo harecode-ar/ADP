@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject, IStageNote } from '@adp/shared'
+import { IStage, IProject } from '@adp/shared'
 import React, { useMemo } from 'react'
 import Stack from '@mui/material/Stack'
 import Drawer from '@mui/material/Drawer'
@@ -64,19 +64,6 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
 
-  const [notes, setNotes] = React.useState<IStageNote[]>([
-    {
-      id: 1,
-      message: 'Hola',
-      createdAt: '2023-11-21',
-      user: {
-        id: 1,
-        fullname: 'Lucas Lezano',
-        image: 'db9cdffd-c415-4c50-bafb-484fca9f072b.png',
-      },
-    },
-  ] as IStageNote[])
-
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
       id: stageId,
@@ -96,8 +83,6 @@ export default function KanbanDetails(props: TProps) {
 
   if (!stage) return null
   const color = getColor(stage.progress)
-
-  const renderNotes = <KanbanDetailsCommentList notes={notes} />
 
   return (
     <Drawer
@@ -220,9 +205,9 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
         </Stack>
 
-        {!!notes.length && renderNotes}
+        {!!stage.notes?.length && <KanbanDetailsCommentList notes={stage.notes} />}
       </Scrollbar>
-      <KanbanDetailsCommentInput setNotes={setNotes} />
+      <KanbanDetailsCommentInput stageId={stage.id} refetch={stageQuery.refetch} />
       {modalEdit.value && (
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}

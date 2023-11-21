@@ -51,6 +51,9 @@ Stage.belongsTo(StageState, { as: 'state', foreignKey: 'stateId' })
 Project.hasMany(ProjectNote, { as: 'notes', foreignKey: 'projectId' })
 ProjectNote.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
 
+Stage.hasMany(StageNote, { as: 'notes', foreignKey: 'stageId' })
+StageNote.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
+
 User.hasMany(ProjectNote, { as: 'projectNotes', foreignKey: 'userId' })
 ProjectNote.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
