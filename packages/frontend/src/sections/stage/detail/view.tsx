@@ -21,13 +21,13 @@ import { useSnackbar } from 'src/components/snackbar'
 import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
-import StagesTab from './stages-tab'
+import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 
 enum ETab {
   NOTES = 'Notas',
-  STAGES = 'Etapas',
+  SUB_STAGES = 'Sub etapas',
   GANTT = 'Gantt',
 }
 
@@ -40,7 +40,7 @@ export default function ProjectDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const [tab, setTab] = useState<ETab>(ETab.STAGES)
+  const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
     variables: { id: Number(projectId) },
@@ -224,13 +224,13 @@ export default function ProjectDetailView(props: TProps) {
             >
               <Tabs value={tab} onChange={(e, v) => setTab(v)}>
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.STAGES} value={ETab.STAGES} />
+                <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
-            {tab === ETab.STAGES && (
-              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+            {tab === ETab.SUB_STAGES && (
+              <SubStagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
           </React.Fragment>

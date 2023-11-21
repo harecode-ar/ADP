@@ -31,3 +31,8 @@ export function fToNow(date: InputValue) {
       })
     : ''
 }
+
+export const formatDate = (date: string) => {
+  const [yyyy, mm, dd] = date.split('-')
+  return `${dd}/${mm}/${yyyy}`
+}
