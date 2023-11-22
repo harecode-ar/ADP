@@ -1,5 +1,5 @@
+import type { IStageNote } from '@adp/shared'
 import React from 'react'
-
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
@@ -7,11 +7,8 @@ import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
-
 import { fDate } from 'src/utils/format-time'
-
 import Iconify from 'src/components/iconify'
-import { IProjectNote } from '@adp/shared'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { getStorageFileUrl } from 'src/utils/storage'
 import ModalDelete from './modal-delete'
@@ -19,7 +16,7 @@ import ModalDelete from './modal-delete'
 // ----------------------------------------------------------------------
 interface TProps {
   refetch: () => void
-  note: IProjectNote
+  note: IStageNote
 }
 
 export default function NoteItem(props: TProps) {

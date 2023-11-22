@@ -23,7 +23,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import { formatDate } from 'src/utils/format-time'
 // import SubStagesTab from './sub-stages-tab'
 // import GanttTab from './gantt-tab'
-// import NotesTab from './notes-tab'
+import NotesTab from './notes-tab'
 
 enum ETab {
   NOTES = 'Notas',
@@ -207,12 +207,12 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
-            {/* {tab === ETab.NOTES && <NotesTab stage={stage} />}
+            {tab === ETab.NOTES && <NotesTab stage={stage} />}
+            {/* 
             {tab === ETab.SUB_STAGES && (
               <SubStagesTab stage={stage} stages={stages} refetch={subStageQuery.refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab stage={stage} stages={stages} />} */}
-            {tab === ETab.NOTES && <div>NotesTab</div>}
             {tab === ETab.SUB_STAGES && <div>SubStagesTab</div>}
             {tab === ETab.GANTT && <div>GanttTab</div>}
           </React.Fragment>
