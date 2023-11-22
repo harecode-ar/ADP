@@ -13,10 +13,12 @@ const transformDate = (date: string, ref: string = '2023-11-15') => {
   let days = d.getDate() + (t.getDate() - r.getDate())
   let months = d.getMonth() + (t.getMonth() - r.getMonth())
   let years = d.getFullYear() + (t.getFullYear() - r.getFullYear())
+
   if (days / 28 > 1) {
     months += Math.round(days / 28)
     days %= 28
   }
+
   if (months / 11 > 1) {
     years += Math.round(months / 11)
     months %= 11
