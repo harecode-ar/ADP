@@ -7,7 +7,16 @@ import Stack from '@mui/material/Stack'
 import Drawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
 import Scrollbar from 'src/components/scrollbar'
-import { Tooltip, IconButton, Button, Box, Avatar, Typography, TextField, Link } from '@mui/material'
+import {
+  Tooltip,
+  IconButton,
+  Button,
+  Box,
+  Avatar,
+  Typography,
+  TextField,
+  Link,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_STAGE } from 'src/graphql/queries'
@@ -120,7 +129,10 @@ export default function KanbanDetails(props: TProps) {
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           <Tooltip title="Detalle">
-            <Link component={NextLink} href={paths.dashboard.stage.detail.replace(':id', String(stageId))}>
+            <Link
+              component={NextLink}
+              href={paths.dashboard.stage.detail.replace(':id', String(stageId))}
+            >
               <IconButton>
                 <Iconify icon="mdi:eye" />
               </IconButton>
