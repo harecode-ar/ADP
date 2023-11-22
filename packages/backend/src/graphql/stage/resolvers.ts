@@ -194,9 +194,12 @@ export default {
           parentStageId,
         })
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        }
+        catch (error) {
           logger.error(error)
-        })
+        }
 
         return stageCreated
       } catch (error) {
@@ -307,9 +310,12 @@ export default {
           parentStageId,
         })
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        }
+        catch (error) {
           logger.error(error)
-        })
+        }
 
         return stage
       } catch (error) {
@@ -340,9 +346,12 @@ export default {
         const { projectId } = stage
         await stage.destroy()
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        }
+        catch (error) {
           logger.error(error)
-        })
+        }
 
         return stage
       } catch (error) {

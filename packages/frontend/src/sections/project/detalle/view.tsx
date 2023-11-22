@@ -69,6 +69,11 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
+  const refetch = () => {
+    projectQuery.refetch()
+    stageQuery.refetch()
+  }
+
   const project: IProject | null = useMemo(() => {
     if (!projectQuery.data) return null
     return projectQuery.data.project
@@ -241,7 +246,7 @@ export default function ProjectDetailView(props: TProps) {
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
             {tab === ETab.STAGES && (
-              <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
+              <StagesTab project={project} stages={stages} refetch={refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {modalEdit.value && (
