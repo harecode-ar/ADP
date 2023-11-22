@@ -13,11 +13,11 @@ export default {
     },
   },
   Query: {
-    stageNotes: (_: any, args: { projectId: number }, context: IContext): Promise<IStageNote[]> => {
+    stageNotes: (_: any, args: { stageId: number }, context: IContext): Promise<IStageNote[]> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_NOTE_READ], context)
         return StageNote.findAll({
-          where: { projectId: args.projectId },
+          where: { stageId: args.stageId },
           include: [
             {
               model: User,

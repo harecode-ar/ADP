@@ -1,3 +1,4 @@
+import type { IStage } from '@adp/shared'
 import React from 'react'
 import * as Yup from 'yup'
 import { Card, Stack } from '@mui/material'
@@ -5,20 +6,19 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@apollo/client'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { CREATE_PROJECT_NOTE } from 'src/graphql/mutations'
-import { IProject } from '@adp/shared'
+import { CREATE_STAGE_NOTE } from 'src/graphql/mutations'
 import FormProvider, { RHFTextField } from 'src/components/hook-form'
 import { enqueueSnackbar } from 'notistack'
 
 // ----------------------------------------------------------------------
 type TProps = {
   refetch: () => void
-  project: IProject
+  stage: IStage
 }
 
 export default function NotesForm(props: TProps) {
-  const { project, refetch } = props
-  const [createProjectNote] = useMutation(CREATE_PROJECT_NOTE)
+  const { stage, refetch } = props
+  const [createStageNote] = useMutation(CREATE_STAGE_NOTE)
 
   const CommentSchema = Yup.object().shape({
     message: Yup.string().required('mensaje requerido'),
@@ -41,10 +41,10 @@ export default function NotesForm(props: TProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createProjectNote({
+      await createStageNote({
         variables: {
           message: data.message,
-          projectId: project.id,
+          stageId: stage.id,
         },
       })
       reset()
