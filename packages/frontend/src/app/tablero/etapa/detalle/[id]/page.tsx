@@ -5,5 +5,5 @@ export const metadata = {
 }
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <StageDetailView projectId={params.id} />
+  return <StageDetailView stageId={params.id} />
 }

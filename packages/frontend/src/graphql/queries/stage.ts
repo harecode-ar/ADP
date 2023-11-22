@@ -27,6 +27,33 @@ export const GET_STAGES_BY_PROJECT = gql`
   }
 `
 
+export const GET_SUB_STAGES_BY_STAGE = gql`
+  query getSubStagesByStage($stageId: Int!) {
+    subsStagesByStage(stageId: $stageId) {
+      id
+      name
+      progress
+      startDate
+      endDate
+      description
+      projectId
+      stateId
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+      }
+      state {
+        id
+        name
+      }
+    }
+  }
+`
+
 export const GET_STAGE = gql`
   query getStage($id: Int!) {
     stage(id: $id) {
