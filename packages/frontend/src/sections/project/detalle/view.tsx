@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
   InputAdornment,
+  Button,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -21,9 +22,12 @@ import { useSnackbar } from 'src/components/snackbar'
 import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
+import Iconify from 'src/components/iconify/iconify'
+import { useBoolean } from 'src/hooks/use-boolean'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
+import ModalEdit from './modal-edit'
 
 enum ETab {
   NOTES = 'Notas',
@@ -40,6 +44,7 @@ export default function ProjectDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
+  const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -86,6 +91,12 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Proyecto"
           links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
+          action={
+            <Button variant="contained" onClick={modalEdit.onTrue}>
+              <Iconify icon="material-symbols:edit" mr={1} />
+              Editar
+            </Button>
+          }
         />
 
         {projectQuery.loading && <p>Cargando...</p>}
@@ -233,6 +244,13 @@ export default function ProjectDetailView(props: TProps) {
               <StagesTab project={project} stages={stages} refetch={stageQuery.refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
+            {modalEdit.value && (
+              <ModalEdit
+                modal={modalEdit}
+                projectId={Number(projectId)}
+                refetch={projectQuery.refetch}
+              />
+            )}
           </React.Fragment>
         )}
       </Box>
