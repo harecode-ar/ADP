@@ -112,18 +112,17 @@ export default {
     ): Promise<IArea | null> => {
       try {
         const { id } = args
-        const area = await Area.findByPk(id)
-        if (!area) {
-          throw new Error('Area not found')
-        }
-        const children = await Area.findAll({
-          where: {
-            parentId: id,
-          },
+        const area = await Area.findByPk(id, {
+          include: [
+            {
+              model: Area,
+              as: 'children',
+            },
+          ],
         })
-        if (children.length > 0) {
-          throw new Error('Area has children')
-        }
+        if (!area) throw new Error('Area no encontrada')
+        const { children = [] } = area as IArea
+        if (children.length > 0) throw new Error('El area tiene subareas')
         await area.destroy()
         return area
       } catch (error) {

@@ -24,7 +24,7 @@ Permission.belongsToMany(Role, { as: 'roles', through: RolePermission, foreignKe
 User.hasMany(Token, { as: 'tokens', foreignKey: 'userId' })
 Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
-Area.hasMany(Area, { as: 'childAreas', foreignKey: 'parentId' })
+Area.hasMany(Area, { as: 'children', foreignKey: 'parentId' })
 Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
 
 User.hasOne(Area, { as: 'areas', foreignKey: 'responsibleId' })
