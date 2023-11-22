@@ -7,6 +7,9 @@ import { GET_SESSION } from 'src/graphql/queries'
 import { LOGIN as LOGIN_MUTATION } from 'src/graphql/mutations'
 import { localStorageSetItem, localStorageGetItem } from 'src/utils/storage-available'
 import { wait } from 'src/utils/wait'
+import { paths } from 'src/routes/paths'
+import { useRouter } from 'src/routes/hooks'
+import { isEqual } from 'lodash'
 import { AuthContext } from './auth-context'
 import { setSession } from './utils'
 import { ActionMapType, AuthStateType } from '../../types'
@@ -81,6 +84,7 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [initialized, setInitialized] = useState(false)
+  const router = useRouter()
 
   // INITIAL
   const [getSession] = useLazyQuery(GET_SESSION)
@@ -96,11 +100,18 @@ export function AuthProvider({ children }: Props) {
 
         const response = await getSession()
 
-        if (!response.data.getSession) throw new Error('No hay sesión')
+        if (!response.data.getSession || !!response.error) throw new Error('No hay sesión')
 
         const { user } = response.data.getSession
         const { role } = user
         const { permissions } = role
+
+
+        const userWithoutAT = { ...state.user }
+        // @ts-ignore
+        delete userWithoutAT.accessToken
+
+        if (isEqual(userWithoutAT, user)) return
 
         dispatch({
           type: Types.INITIAL,
@@ -123,18 +134,13 @@ export function AuthProvider({ children }: Props) {
           },
         })
       }
-    } catch (error) {
-      console.error(error)
-      dispatch({
-        type: Types.INITIAL,
-        payload: {
-          user: null,
-          role: null,
-          permissions: [],
-        },
-      })
+    } catch {
+      setSession(null)
+      localStorage.removeItem(STORAGE_KEY)
+      router.push(paths.auth.login)
+      dispatch({ type: Types.LOGOUT })
     }
-  }, [getSession])
+  }, [getSession, router, state])
 
   useEffect(() => {
     if (!initialized) {
@@ -143,6 +149,14 @@ export function AuthProvider({ children }: Props) {
         setInitialized(true)
       })
     }
+  }, [initialize, initialized])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (initialized) initialize()
+    }, 30000)
+
+    return () => clearInterval(intervalId)
   }, [initialize, initialized])
 
   // LOGIN
