@@ -1,39 +1,39 @@
-import { IProject, IStage, STAGE_STATE } from '@adp/shared'
+import { IStage, STAGE_STATE } from '@adp/shared'
 import React from 'react'
 import { Task } from 'gantt-task-react'
 import GanttComponent from './gantt-component'
 
 type TProps = {
-  project: IProject
-  stages: IStage[]
+  stage: IStage
+  subStages: IStage[]
 }
 
 export default function GanttTab(props: TProps) {
-  const { project, stages } = props
+  const { stage, subStages } = props
 
-  const mappedStages: Task[] = stages
-    .filter((stage) => stage.stateId !== STAGE_STATE.CANCELLED)
-    .map((stage, index) => ({
+  const mappedSubStages: Task[] = subStages
+    .filter((subStage) => subStage.stateId !== STAGE_STATE.CANCELLED)
+    .map((subStage, index) => ({
       displayOrder: index + 2,
-      id: String(stage.id),
-      name: String(stage.name),
-      progress: stage.progress * 100,
-      start: new Date(stage.startDate),
-      end: new Date(stage.endDate),
-      project: String(project.id),
+      id: String(subStage.id),
+      name: String(subStage.name),
+      progress: subStage.progress * 100,
+      start: new Date(subStage.startDate),
+      end: new Date(subStage.endDate),
+      project: String(subStage.id),
       type: 'task',
     }))
 
-  const mappedProject: Task = {
+  const mappedStage: Task = {
     displayOrder: 1,
-    id: String(project.id),
-    name: String(project.name),
-    progress: project.progress * 100,
-    start: new Date(project.startDate),
-    end: new Date(project.endDate),
+    id: String(stage.id),
+    name: String(stage.name),
+    progress: stage.progress * 100,
+    start: new Date(stage.startDate),
+    end: new Date(stage.endDate),
     hideChildren: false,
     type: 'project',
   }
-  const tasks: Task[] = [mappedProject, ...mappedStages]
+  const tasks: Task[] = [mappedStage, ...mappedSubStages]
   return <GanttComponent tasks={tasks} />
 }

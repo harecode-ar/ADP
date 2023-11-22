@@ -18,11 +18,11 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_STAGE /* GET_SUB_STAGES_BY_STAGE */ } from 'src/graphql/queries'
+import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 // import SubStagesTab from './sub-stages-tab'
-// import GanttTab from './gantt-tab'
+import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 
 enum ETab {
@@ -53,20 +53,20 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
-  // const subStageQuery = useQuery(GET_SUB_STAGES_BY_STAGE, {
-  //   variables: { stageId: Number(stageId) },
-  //   skip: !stageId,
-  // })
+  const subStageQuery = useQuery(GET_SUB_STAGES_BY_STAGE, {
+    variables: { stageId: Number(stageId) },
+    skip: !stageId,
+  })
 
   const stage: IStage | null = useMemo(() => {
     if (!stageQuery.data) return null
     return stageQuery.data.stage
   }, [stageQuery.data])
 
-  // const stages: IStage[] = useMemo(() => {
-  //   if (!subStageQuery.data) return []
-  //   return subStageQuery.data.subStagesByStage
-  // }, [subStageQuery.data])
+  const subStages: IStage[] = useMemo(() => {
+    if (!subStageQuery.data) return []
+    return subStageQuery.data.subStagesByStage
+  }, [subStageQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -204,7 +204,7 @@ export default function ProjectDetailView(props: TProps) {
               <Tabs value={tab} onChange={(e, v) => setTab(v)}>
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
                 <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} disabled />
-                <Tab label={ETab.GANTT} value={ETab.GANTT} disabled />
+                <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -212,7 +212,8 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.SUB_STAGES && (
               <SubStagesTab stage={stage} stages={stages} refetch={subStageQuery.refetch} />
             )}
-            {tab === ETab.GANTT && <GanttTab stage={stage} stages={stages} />} */}
+            */}
+            {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
           </React.Fragment>
         )}
       </Box>
