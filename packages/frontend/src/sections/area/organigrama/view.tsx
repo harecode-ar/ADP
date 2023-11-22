@@ -45,6 +45,7 @@ export default function OrganigramaView() {
   }, [tree, savedTree])
 
   const onDelete = (node: TAreaTree) => {
+    if (node.children) return
     setSelected(node)
     deleteAreaModal.onTrue()
   }

@@ -109,17 +109,19 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
             Editar
           </MenuItem>
         )}
-        {onDelete && (
-          <MenuItem
-            onClick={() => {
-              popover.onClose()
-              onDelete()
-            }}
-            sx={{ color: 'error.main' }}
-          >
-            <Iconify icon="mdi:trash" />
-            Eliminar
-          </MenuItem>
+        {!node.children && (
+          onDelete && (
+            <MenuItem
+              onClick={() => {
+                popover.onClose()
+                onDelete()
+              }}
+              sx={{ color: 'error.main' }}
+            >
+              <Iconify icon="mdi:trash" />
+              Eliminar
+            </MenuItem>
+          )
         )}
       </CustomPopover>
     </React.Fragment>
