@@ -116,6 +116,14 @@ export default {
         if (!area) {
           throw new Error('Area not found')
         }
+        const children = await Area.findAll({
+          where: {
+            parentId: id,
+          },
+        })
+        if (children.length > 0) {
+          throw new Error('Area has children')
+        }
         await area.destroy()
         return area
       } catch (error) {
