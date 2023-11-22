@@ -106,7 +106,6 @@ export function AuthProvider({ children }: Props) {
         const { role } = user
         const { permissions } = role
 
-
         const userWithoutAT = { ...state.user }
         // @ts-ignore
         delete userWithoutAT.accessToken
