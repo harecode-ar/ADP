@@ -125,6 +125,32 @@ export default {
         throw error
       }
     },
+    subStagesByStage: (
+      _: any,
+      args: { stageId: number },
+      context: IContext
+    ): Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]> => {
+      try {
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        return Stage.findAll({
+          where: { parentStageId: args.stageId },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+            },
+            {
+              model: StageState,
+              as: 'state',
+            },
+          ],
+          order: [['startDate', 'ASC']],
+        }) as unknown as Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]>
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 
   Mutation: {

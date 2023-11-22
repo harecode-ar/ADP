@@ -28,6 +28,7 @@ export default `#graphql
     stages: [Stage]
     stage(id: Int): Stage
     stagesByProject(projectId: Int): [Stage]
+    subStagesByStage(stageId: Int): [Stage]
   }
 
   type Mutation {
