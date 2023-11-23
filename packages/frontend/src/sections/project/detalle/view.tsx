@@ -248,6 +248,7 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={refetch} />
             )}
+
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {modalEdit.value && (
               <ModalEdit

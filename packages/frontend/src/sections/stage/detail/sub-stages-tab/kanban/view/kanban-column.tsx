@@ -1,4 +1,4 @@
-import { IStage, IProject } from '@adp/shared'
+import { IStage } from '@adp/shared'
 import Paper from '@mui/material/Paper'
 import { Stack, Typography } from '@mui/material'
 import KanbanTaskItem from './kanban-task-item'
@@ -6,13 +6,13 @@ import KanbanTaskItem from './kanban-task-item'
 // ----------------------------------------------------------------------
 
 type Props = {
-  stage: IStage[]
-  project: IProject
+  subStages: IStage[]
+  stage: IStage
   title: string
   refetch: VoidFunction
 }
 
-export default function KanbanColumn({ stage, project, title, refetch }: Props) {
+export default function KanbanColumn({ subStages, stage, title, refetch }: Props) {
   return (
     <Paper
       sx={{
@@ -33,8 +33,13 @@ export default function KanbanColumn({ stage, project, title, refetch }: Props) 
             width: 225,
           }}
         >
-          {stage.map((stageItem, index) => (
-            <KanbanTaskItem key={index} project={project} task={stageItem} refetch={refetch} />
+          {subStages?.map((subStageItem, index) => (
+            <KanbanTaskItem
+              key={index}
+              stage={stage}
+              subStageItem={subStageItem}
+              refetch={refetch}
+            />
           ))}
         </Stack>
       </Stack>

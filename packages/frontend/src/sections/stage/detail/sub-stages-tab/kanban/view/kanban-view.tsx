@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject } from '@adp/shared'
+import { IStage } from '@adp/shared'
 import { Stack, Box } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { DragDropContext } from '@hello-pangea/dnd'
@@ -9,22 +9,22 @@ import KanbanColumn from './kanban-column'
 // ----------------------------------------------------------------------
 
 type TProps = {
-  stages: IStage[]
-  project: IProject
+  subStages: IStage[]
+  stage: IStage
   refetch: VoidFunction
 }
 
 export default function KanbanComponent(props: TProps) {
-  const { stages, project, refetch } = props
+  const { subStages, stage, refetch } = props
 
-  const stagesByState: Record<string, IStage[]> = {
+  const subStagesByState: Record<string, IStage[]> = {
     Nuevo: [],
     'En progreso': [],
     Completado: [],
     Cancelado: [],
   }
 
-  stages.forEach((stage) => stagesByState[stage.state.name].push(stage))
+  subStages?.forEach((subStage) => subStagesByState[subStage.state.name].push(subStage))
 
   return (
     <Box>
@@ -48,8 +48,13 @@ export default function KanbanComponent(props: TProps) {
             }}
           >
             {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
-            {Object.entries(stagesByState).map(([state, stateStages]) => (
-              <KanbanColumn stage={stateStages} project={project} title={state} refetch={refetch} />
+            {Object.entries(subStagesByState).map(([state, stateSubStages]) => (
+              <KanbanColumn
+                subStages={stateSubStages}
+                stage={stage}
+                title={state}
+                refetch={refetch}
+              />
             ))}
           </Stack>
         </Scrollbar>
