@@ -302,9 +302,7 @@ const ModalEdit = (props: TProps) => {
                     disabled={loading}
                   >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    {
-                      loading ? 'Guardando...' : 'Guardar'
-                    }
+                    {loading ? 'Guardando...' : 'Guardar'}
                   </Button>
                 </Box>
               </Grid>

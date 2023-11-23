@@ -269,9 +269,7 @@ const ModalCreate = (props: TProps) => {
                     disabled={loading}
                   >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    {
-                      loading ? 'Creando...' : 'Crear'
-                    }
+                    {loading ? 'Creando...' : 'Crear'}
                   </Button>
                 </Box>
               </Grid>
