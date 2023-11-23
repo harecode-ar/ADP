@@ -61,7 +61,7 @@ type TFormikValues = {
 }
 
 const ModalCreate = (props: TProps) => {
-  const [createUser] = useMutation(CREATE_USER)
+  const [createUser, { loading }] = useMutation(CREATE_USER)
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
 
@@ -257,13 +257,19 @@ const ModalCreate = (props: TProps) => {
                     }}
                     color="primary"
                     variant="outlined"
+                    disabled={loading}
                   >
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => formik.handleSubmit()}
+                    disabled={loading}
+                  >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Enviar
+                    {loading ? 'Creando...' : 'Crear'}
                   </Button>
                 </Box>
               </Grid>

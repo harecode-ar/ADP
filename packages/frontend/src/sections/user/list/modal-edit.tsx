@@ -67,7 +67,7 @@ const ModalEdit = (props: TProps) => {
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
   const { selected, setSelected } = useTable()
-  const [updateUser] = useMutation(UPDATE_USER)
+  const [updateUser, { loading: mutationLoading }] = useMutation(UPDATE_USER)
   const userId = useMemo(() => Number(selected[0]), [selected])
 
   const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
@@ -113,7 +113,7 @@ const ModalEdit = (props: TProps) => {
     validationSchema: userSchema,
   })
 
-  const { loading } = useQuery(GET_USER, {
+  const { loading: queryLoading } = useQuery(GET_USER, {
     variables: {
       id: userId,
     },
@@ -145,6 +145,8 @@ const ModalEdit = (props: TProps) => {
     },
     [formik]
   )
+
+  const loading = queryLoading || mutationLoading
 
   return (
     <Modal
@@ -288,13 +290,19 @@ const ModalEdit = (props: TProps) => {
                     }}
                     color="primary"
                     variant="outlined"
+                    disabled={loading}
                   >
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => formik.handleSubmit()}
+                    disabled={loading}
+                  >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    Enviar
+                    {loading ? 'Guardando...' : 'Guardar'}
                   </Button>
                 </Box>
               </Grid>
