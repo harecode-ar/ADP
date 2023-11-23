@@ -378,14 +378,16 @@ export default {
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
         const end = new Date(endDate).toISOString().slice(0, 10)
-        if (start > end) throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
+        if (start > end)
+          throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
 
         const parentStage = await Stage.findByPk(parentStageId)
         if (!parentStage) throw new Error('Etapa padre no encontrada')
         const parentStageStart = new Date(parentStage.startDate).toISOString().slice(0, 10)
         const parentStageEnd = new Date(parentStage.endDate).toISOString().slice(0, 10)
 
-        if (start < parentStageStart || end > parentStageEnd) throw new Error('Fechas fuera de rango')
+        if (start < parentStageStart || end > parentStageEnd)
+          throw new Error('Fechas fuera de rango')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
         const stageCreated = await Stage.create({

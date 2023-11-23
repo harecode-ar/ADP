@@ -36,23 +36,17 @@ const getColor = (progress: number) => {
   return ERROR.main
 }
 
-export default function KanbansubStageItemItem({
-  stage,
-  subStageItem,
-  sx,
-  refetch,
-  ...other
-}: Props) {
+export default function KanbansubStageItemItem({ subStageItem, sx, refetch, ...other }: Props) {
   const theme = useTheme()
 
   const color = getColor(subStageItem.progress)
 
-  // const openDetails = useBoolean()
+  const openDetails = useBoolean()
 
   return (
     <React.Fragment>
       <Paper
-        // onClick={openDetails.onTrue}
+        onClick={openDetails.onTrue}
         sx={{
           width: 1,
           borderRadius: 1.5,
@@ -64,9 +58,9 @@ export default function KanbansubStageItemItem({
           '&:hover': {
             boxShadow: theme.customShadows.z20,
           },
-          // ...(openDetails.value && {
-          //   boxShadow: theme.customShadows.z20,
-          // }),
+          ...(openDetails.value && {
+            boxShadow: theme.customShadows.z20,
+          }),
           ...sx,
         }}
         {...other}
@@ -120,15 +114,14 @@ export default function KanbansubStageItemItem({
           <Typography variant="subtitle2"> {subStageItem.progress * 100}%</Typography>
         </Stack>
       </Paper>
-      {/* {openDetails.value && (
+      {openDetails.value && (
         <KanbanDetails
           refetch={refetch}
-          stage={stage}
-          subStageId={subStageItem.id}
+          subStageItem={subStageItem}
           openDetails={openDetails.value}
           onCloseDetails={openDetails.onFalse}
         />
-      )} */}
+      )}
     </React.Fragment>
   )
 }
