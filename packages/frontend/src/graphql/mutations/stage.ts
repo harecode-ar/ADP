@@ -24,6 +24,30 @@ export const CREATE_STAGE = gql`
   }
 `
 
+export const CREATE_SUB_STAGE = gql`
+  mutation createSubStage(
+    $name: String!
+    $description: String!
+    $startDate: String!
+    $endDate: String!
+    $areaId: Int!
+    $projectId: Int!
+    $parentStageId: Int
+  ) {
+    createSubStage(
+      name: $name
+      description: $description
+      startDate: $startDate
+      endDate: $endDate
+      areaId: $areaId
+      projectId: $projectId
+      parentStageId: $parentStageId
+    ) {
+      id
+    }
+  }
+`
+
 export const UPDATE_STAGE = gql`
   mutation updateStage(
     $id: Int!

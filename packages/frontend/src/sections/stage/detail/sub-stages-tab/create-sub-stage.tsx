@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import type { IArea, IProject } from '@adp/shared'
+import type { IArea, IStage } from '@adp/shared'
 import {
   Typography,
   Button,
@@ -70,7 +70,7 @@ const validationSchema = Yup.object().shape({
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
-  project: IProject
+  stage: IStage
   refetch: VoidFunction
 }
 
@@ -83,10 +83,11 @@ type TFormikValues = {
 }
 
 const ModalCreate = (props: TProps) => {
-  const { modal, project, refetch } = props
+  const { modal, stage, refetch } = props
   const [createStage] = useMutation(CREATE_STAGE)
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
+  const { projectId } = stage
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (data?.areas) return data.areas
@@ -99,9 +100,9 @@ const ModalCreate = (props: TProps) => {
       area: null,
       startDate: new Date().toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0],
+      projectStartDate: stage.startDate,
+      projectEndDate: stage.endDate,
       description: '',
-      projectStartDate: project.startDate,
-      projectEndDate: project.endDate,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -112,7 +113,8 @@ const ModalCreate = (props: TProps) => {
             startDate: values.startDate,
             endDate: values.endDate,
             description: values.description,
-            projectId: project.id,
+            projectId,
+            parentStageId: stage.id,
           },
         })
         if (errors) throw new Error(errors[0].message)
@@ -143,7 +145,7 @@ const ModalCreate = (props: TProps) => {
     >
       <Box sx={styleModal}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Nueva etapa
+          Nueva sub-etapa
         </Typography>
         <Box id="modal-modal-description" sx={{ mt: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
