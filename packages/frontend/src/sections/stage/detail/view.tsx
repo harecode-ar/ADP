@@ -208,11 +208,11 @@ export default function ProjectDetailView(props: TProps) {
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
-            
+
             {tab === ETab.SUB_STAGES && (
               <SubStagesTab stage={stage} subStages={subStages} refetch={subStageQuery.refetch} />
-            )}  
-           
+            )}
+
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
           </React.Fragment>
         )}

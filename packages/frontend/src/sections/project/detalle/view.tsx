@@ -58,7 +58,7 @@ export default function ProjectDetailView(props: TProps) {
       }
     },
   })
- 
+
   const stageQuery = useQuery(GET_STAGES_BY_PROJECT, {
     variables: { projectId: Number(projectId) },
     skip: !projectId,
@@ -69,7 +69,6 @@ export default function ProjectDetailView(props: TProps) {
       }
     },
   })
-
 
   const refetch = () => {
     projectQuery.refetch()
@@ -85,7 +84,6 @@ export default function ProjectDetailView(props: TProps) {
     if (!stageQuery.data) return []
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
-
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -251,7 +249,7 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={refetch} />
             )}
-      
+
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {modalEdit.value && (
               <ModalEdit

@@ -49,7 +49,12 @@ export default function KanbanComponent(props: TProps) {
           >
             {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
             {Object.entries(subStagesByState).map(([state, stateSubStages]) => (
-              <KanbanColumn subStages={stateSubStages} stage={stage} title={state} refetch={refetch} />
+              <KanbanColumn
+                subStages={stateSubStages}
+                stage={stage}
+                title={state}
+                refetch={refetch}
+              />
             ))}
           </Stack>
         </Scrollbar>

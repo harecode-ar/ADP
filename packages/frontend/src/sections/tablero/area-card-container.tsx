@@ -129,9 +129,6 @@ function AreaCard({ area }: AreaCardProps) {
         >
           {responsible?.fullname || 'Sin responsable'}
         </Typography>
-
-        
-
       </Card>
     </Link>
   )

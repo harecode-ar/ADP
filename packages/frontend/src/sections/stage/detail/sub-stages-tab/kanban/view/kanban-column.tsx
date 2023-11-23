@@ -34,7 +34,12 @@ export default function KanbanColumn({ subStages, stage, title, refetch }: Props
           }}
         >
           {subStages?.map((subStageItem, index) => (
-            <KanbanTaskItem key={index} stage={stage} subStageItem={subStageItem} refetch={refetch} />
+            <KanbanTaskItem
+              key={index}
+              stage={stage}
+              subStageItem={subStageItem}
+              refetch={refetch}
+            />
           ))}
         </Stack>
       </Stack>

@@ -196,8 +196,7 @@ export default {
 
         try {
           await calculateProjectProgress(projectId)
-        }
-        catch (error) {
+        } catch (error) {
           logger.error(error)
         }
 
@@ -312,8 +311,7 @@ export default {
 
         try {
           await calculateProjectProgress(projectId)
-        }
-        catch (error) {
+        } catch (error) {
           logger.error(error)
         }
 
@@ -348,8 +346,7 @@ export default {
 
         try {
           await calculateProjectProgress(projectId)
-        }
-        catch (error) {
+        } catch (error) {
           logger.error(error)
         }
 

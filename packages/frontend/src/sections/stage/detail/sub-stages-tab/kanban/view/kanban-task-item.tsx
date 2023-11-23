@@ -36,7 +36,13 @@ const getColor = (progress: number) => {
   return ERROR.main
 }
 
-export default function KanbansubStageItemItem({ stage, subStageItem, sx, refetch, ...other }: Props) {
+export default function KanbansubStageItemItem({
+  stage,
+  subStageItem,
+  sx,
+  refetch,
+  ...other
+}: Props) {
   const theme = useTheme()
 
   const color = getColor(subStageItem.progress)
