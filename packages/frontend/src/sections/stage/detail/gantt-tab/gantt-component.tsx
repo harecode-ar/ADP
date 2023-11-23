@@ -15,7 +15,7 @@ const GanttComponent = (props: TProps) => {
   const { viewOption, handleChangeView } = useGantt()
 
   const handleClick = (task: Task) => {
-    console.log('etapa seleccionada: ', task.id)
+    console.log('subetapa seleccionada: ', task.id)
   }
 
   return (

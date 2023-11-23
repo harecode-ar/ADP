@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
+import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared/types'
 import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
 import logger from '../../logger'
@@ -90,6 +90,27 @@ export default {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findAll({
           where: { areaId: args.areaId },
+          include: [
+            { model: Area, as: 'area' },
+            { model: Stage, as: 'stages' },
+            { model: ProjectState, as: 'state' },
+          ],
+          order: [['startDate', 'ASC']],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    inProgressProjectsByArea: (
+      _: any,
+      args: Pick<IProject, 'areaId'>,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        return Project.findAll({
+          where: { areaId: args.areaId, stateId: PROJECT_STATE.IN_PROGRESS },
           include: [
             { model: Area, as: 'area' },
             { model: Stage, as: 'stages' },
