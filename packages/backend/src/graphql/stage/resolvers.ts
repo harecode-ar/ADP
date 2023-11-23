@@ -361,7 +361,7 @@ export default {
       _: any,
       args: Pick<
         IStage,
-        'name' | 'description' | 'startDate' | 'endDate' | 'areaId' | 'projectId' | 'parentStageId'
+        'name' | 'description' | 'startDate' | 'endDate' | 'areaId' | 'parentStageId'
       >,
       context: IContext
     ): Promise<
@@ -373,7 +373,7 @@ export default {
       try {
         if (!args.parentStageId) throw new Error('No se encontro etapa padre')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const { name, description, startDate, endDate, areaId, projectId, parentStageId } = args
+        const { name, description, startDate, endDate, areaId, parentStageId } = args
 
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
@@ -395,12 +395,12 @@ export default {
           endDate,
           stateId: state,
           areaId,
-          projectId: parentStage.id,
+          projectId: parentStage.projectId,
           parentStageId,
         })
 
         try {
-          await calculateProjectProgress(projectId)
+          await calculateProjectProgress(parentStage.projectId)
         } catch (error) {
           logger.error(error)
         }
