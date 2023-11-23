@@ -371,7 +371,7 @@ export default {
       >
     > => {
       try {
-        if(!args.parentStageId) throw new Error('Parent stage id is required')
+        if (!args.parentStageId) throw new Error('Parent stage id is required')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { name, description, startDate, endDate, areaId, projectId, parentStageId } = args
 
@@ -384,7 +384,6 @@ export default {
         if (!parentStage) throw new Error('Parent stage not found')
         const parentStageStart = new Date(parentStage.startDate).toISOString().slice(0, 10)
         const parentStageEnd = new Date(parentStage.endDate).toISOString().slice(0, 10)
-
 
         if (start < parentStageStart || end > parentStageEnd) throw new Error('Dates out of range')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
