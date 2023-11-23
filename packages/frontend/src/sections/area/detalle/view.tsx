@@ -4,15 +4,14 @@ import type { IArea, IProject } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
-import { TableContextProvider } from 'src/components/table/context'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_AREA, GET_PROJECTS_BY_AREA } from 'src/graphql/queries'
+import { GET_AREA, GET_IN_PROGRESS_PROJECTS_BY_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
-import Table from './table'
 import GanttTab from './gantt-tab'
+import ProjectTab from './project-tab'
 
 enum ETab {
   PROJECTS = 'Proyectos',
@@ -42,7 +41,7 @@ export default function AreaDetailView(props: TProps) {
     },
   })
 
-  const projectQuery = useQuery(GET_PROJECTS_BY_AREA, {
+  const projectQuery = useQuery(GET_IN_PROGRESS_PROJECTS_BY_AREA, {
     variables: { areaId: Number(areaId) },
     skip: !areaId,
   })
@@ -54,7 +53,7 @@ export default function AreaDetailView(props: TProps) {
 
   const projects: IProject[] = useMemo(() => {
     if (!projectQuery.data) return []
-    return projectQuery.data.projectsByArea
+    return projectQuery.data.inProgressProjectsByArea
   }, [projectQuery.data])
 
   return (
@@ -128,13 +127,7 @@ export default function AreaDetailView(props: TProps) {
             </Card>
 
             {tab === ETab.PROJECTS && (
-              <TableContextProvider>
-                <Table
-                  loading={projectQuery.loading}
-                  refetch={projectQuery.refetch}
-                  projects={projects}
-                />
-              </TableContextProvider>
+              <ProjectTab projects={projects} />
             )}
             {tab === ETab.GANTT && <GanttTab projects={projects} />}
           </React.Fragment>
