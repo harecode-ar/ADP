@@ -32,7 +32,6 @@ import ModalEdit from './modal-edit'
 enum ETab {
   NOTES = 'Notas',
   STAGES = 'Etapas',
-  SUB_STAGES = 'Sub-etapas',
   GANTT = 'Gantt',
 }
 
