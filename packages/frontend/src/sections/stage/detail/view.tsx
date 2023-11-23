@@ -21,7 +21,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
-// import SubStagesTab from './sub-stages-tab'
+import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 
@@ -203,16 +203,16 @@ export default function ProjectDetailView(props: TProps) {
             >
               <Tabs value={tab} onChange={(e, v) => setTab(v)}>
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} disabled />
+                <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
-            {/* 
+            
             {tab === ETab.SUB_STAGES && (
-              <SubStagesTab stage={stage} stages={stages} refetch={subStageQuery.refetch} />
-            )}
-            */}
+              <SubStagesTab stage={stage} subStages={subStages} refetch={subStageQuery.refetch} />
+            )}  
+           
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
           </React.Fragment>
         )}
