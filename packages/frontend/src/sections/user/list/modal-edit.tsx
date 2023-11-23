@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import type { IRole } from '@adp/shared/types'
 import {
   Typography,
@@ -13,7 +13,6 @@ import {
   Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import CircularProgress from '@mui/material/CircularProgress'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_USER, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
@@ -68,9 +67,8 @@ const ModalEdit = (props: TProps) => {
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
   const { selected, setSelected } = useTable()
-  const [updateUser] = useMutation(UPDATE_USER)
+  const [updateUser, { loading: mutationLoading }] = useMutation(UPDATE_USER)
   const userId = useMemo(() => Number(selected[0]), [selected])
-  const [isLoading, setIsLoading] = useState(false)
 
   const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
   const roles: TRole[] = useMemo(() => {
@@ -91,7 +89,6 @@ const ModalEdit = (props: TProps) => {
     } as TUser,
     onSubmit: async (values, helpers: FormikHelpers<TUser>) => {
       try {
-        setIsLoading(true)
         await updateUser({
           variables: {
             id: values.id,
@@ -111,14 +108,12 @@ const ModalEdit = (props: TProps) => {
       } catch (error) {
         console.error(error)
         enqueueSnackbar('El usuario no pudo ser editado.', { variant: 'error' })
-      } finally {
-        setIsLoading(false)
       }
     },
     validationSchema: userSchema,
   })
 
-  const { loading } = useQuery(GET_USER, {
+  const { loading: queryLoading } = useQuery(GET_USER, {
     variables: {
       id: userId,
     },
@@ -151,187 +146,173 @@ const ModalEdit = (props: TProps) => {
     [formik]
   )
 
+  const loading = queryLoading || mutationLoading
+
   return (
-    <Box>
-      {isLoading && (
-        <Box
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999,
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
-      <Modal
-        open={modal.value}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={styleModal}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Editar usuario
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <UploadAvatar
-              file={formik.values.file}
-              preview={formik.values.preview}
-              onDrop={handleDropAvatar}
-              validator={(fileData: File) => {
-                if (fileData.size > 2000000) {
-                  return {
-                    code: 'file-too-large',
-                    message: `El archivo es muy grande, el tamaño máximo es de ${fData(2000000)}`,
-                  }
+    <Modal
+      open={modal.value}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={styleModal}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          Editar usuario
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <UploadAvatar
+            file={formik.values.file}
+            preview={formik.values.preview}
+            onDrop={handleDropAvatar}
+            validator={(fileData: File) => {
+              if (fileData.size > 2000000) {
+                return {
+                  code: 'file-too-large',
+                  message: `El archivo es muy grande, el tamaño máximo es de ${fData(2000000)}`,
                 }
-                return null
-              }}
-              helperText={
-                <Typography
-                  variant="caption"
+              }
+              return null
+            }}
+            helperText={
+              <Typography
+                variant="caption"
+                sx={{
+                  mt: 1,
+                  mx: 'auto',
+                  display: 'block',
+                  textAlign: 'center',
+                  color: 'text.disabled',
+                  marginBottom: 5,
+                }}
+              >
+                Archivos *.jpeg, *.jpg, *.png
+                <br /> Max {fData(2000000)}
+              </Typography>
+            }
+          />
+
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="firstname"
+                  name="firstname"
+                  label="Nombre"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={formik.values.firstname}
+                  error={Boolean(formik.errors.firstname)}
+                  helperText={formik.errors.firstname}
+                  onChange={formik.handleChange}
+                  disabled={loading}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="lastname"
+                  name="lastname"
+                  label="Apellido"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={formik.values.lastname}
+                  error={Boolean(formik.errors.lastname)}
+                  helperText={formik.errors.lastname}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Autocomplete
+                  fullWidth
+                  options={roles}
+                  getOptionLabel={(option) => option.name}
+                  value={formik.values.role}
+                  onChange={(event, value) => {
+                    formik.setFieldValue('role', value)
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Rol"
+                      error={Boolean(formik.errors.role)}
+                      helperText={formik.errors.role}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="telephone"
+                  name="telephone"
+                  label="Telefono"
+                  variant="outlined"
+                  fullWidth
+                  value={formik.values.telephone}
+                  error={Boolean(formik.errors.telephone)}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="email"
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={formik.values.email}
+                  error={Boolean(formik.errors.email)}
+                  helperText={formik.errors.email}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box
                   sx={{
-                    mt: 1,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.disabled',
-                    marginBottom: 5,
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 1,
                   }}
                 >
-                  Archivos *.jpeg, *.jpg, *.png
-                  <br /> Max {fData(2000000)}
-                </Typography>
-              }
-            />
-
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    id="firstname"
-                    name="firstname"
-                    label="Nombre"
+                  <Button
+                    onClick={() => {
+                      modal.onFalse()
+                      formik.resetForm()
+                    }}
+                    color="primary"
                     variant="outlined"
-                    fullWidth
-                    required
-                    value={formik.values.firstname}
-                    error={Boolean(formik.errors.firstname)}
-                    helperText={formik.errors.firstname}
-                    onChange={formik.handleChange}
                     disabled={loading}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    id="lastname"
-                    name="lastname"
-                    label="Apellido"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    value={formik.values.lastname}
-                    error={Boolean(formik.errors.lastname)}
-                    helperText={formik.errors.lastname}
-                    onChange={formik.handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Autocomplete
-                    fullWidth
-                    options={roles}
-                    getOptionLabel={(option) => option.name}
-                    value={formik.values.role}
-                    onChange={(event, value) => {
-                      formik.setFieldValue('role', value)
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Rol"
-                        error={Boolean(formik.errors.role)}
-                        helperText={formik.errors.role}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    id="telephone"
-                    name="telephone"
-                    label="Telefono"
-                    variant="outlined"
-                    fullWidth
-                    value={formik.values.telephone}
-                    error={Boolean(formik.errors.telephone)}
-                    onChange={formik.handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="email"
-                    name="email"
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    required
-                    value={formik.values.email}
-                    error={Boolean(formik.errors.email)}
-                    helperText={formik.errors.email}
-                    onChange={formik.handleChange}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                      gap: 1,
-                    }}
                   >
-                    <Button
-                      onClick={() => {
-                        modal.onFalse()
-                        formik.resetForm()
-                      }}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => formik.handleSubmit()}
-                    >
-                      <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                      Enviar
-                    </Button>
-                  </Box>
-                </Grid>
+                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => formik.handleSubmit()}
+                    disabled={loading}
+                  >
+                    <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                    {
+                      loading ? 'Guardando...' : 'Guardar'
+                    }
+                  </Button>
+                </Box>
               </Grid>
-            </Box>
-          </Typography>
-        </Box>
-      </Modal>
-    </Box>
+            </Grid>
+          </Box>
+        </Typography>
+      </Box>
+    </Modal>
   )
 }
 
