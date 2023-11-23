@@ -29,7 +29,7 @@ export const GET_STAGES_BY_PROJECT = gql`
 
 export const GET_SUB_STAGES_BY_STAGE = gql`
   query getSubStagesByStage($stageId: Int!) {
-    subsStagesByStage(stageId: $stageId) {
+    subStagesByStage(stageId: $stageId) {
       id
       name
       progress

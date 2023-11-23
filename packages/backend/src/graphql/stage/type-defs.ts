@@ -42,6 +42,16 @@ export default `#graphql
       parentStageId: Int
     ): Stage
 
+    createSubStage(
+      name: String!
+      description: String!
+      startDate: String!
+      endDate: String!
+      areaId: Int!
+      projectId: Int!
+      parentStageId: Int
+    ): Stage
+
     updateStage(
       id: Int!
       name: String
