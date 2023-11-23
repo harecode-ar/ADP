@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import type { IProject, IStage } from '@adp/shared'
+import type { IStage } from '@adp/shared'
 import {
   Box,
   Container,
@@ -12,77 +12,61 @@ import {
   Grid,
   TextField,
   InputAdornment,
-  Button,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
+import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
-import Iconify from 'src/components/iconify/iconify'
-import { useBoolean } from 'src/hooks/use-boolean'
-import StagesTab from './stages-tab'
+import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
-import ModalEdit from './modal-edit'
 
 enum ETab {
   NOTES = 'Notas',
-  STAGES = 'Etapas',
+  SUB_STAGES = 'Sub etapas',
   GANTT = 'Gantt',
 }
 
 type TProps = {
-  projectId: string
+  stageId: string
 }
 
 export default function ProjectDetailView(props: TProps) {
-  const { projectId } = props
+  const { stageId } = props
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const modalEdit = useBoolean()
-  const [tab, setTab] = useState<ETab>(ETab.STAGES)
+  const [tab, setTab] = useState<ETab>(ETab.NOTES)
 
-  const projectQuery = useQuery(GET_PROJECT, {
-    variables: { id: Number(projectId) },
-    skip: !projectId,
+  const stageQuery = useQuery(GET_STAGE, {
+    variables: { id: Number(stageId) },
+    skip: !stageId,
     onCompleted: (d) => {
-      if (!d.project) {
-        enqueueSnackbar('Proyecto no encontrado', { variant: 'error' })
-        router.push(paths.dashboard.project.root)
+      if (!d.stage) {
+        enqueueSnackbar('Etapa no encontrada', { variant: 'error' })
+        router.push(paths.dashboard.root)
       }
     },
   })
 
-  const stageQuery = useQuery(GET_STAGES_BY_PROJECT, {
-    variables: { projectId: Number(projectId) },
-    skip: !projectId,
-    onCompleted: (d) => {
-      if (!d.stagesByProject) {
-        enqueueSnackbar('Stage no encontrado', { variant: 'error' })
-        router.push(paths.dashboard.project.root)
-      }
-    },
+  const subStageQuery = useQuery(GET_SUB_STAGES_BY_STAGE, {
+    variables: { stageId: Number(stageId) },
+    skip: !stageId,
   })
 
-  const refetch = () => {
-    projectQuery.refetch()
-    stageQuery.refetch()
-  }
-
-  const project: IProject | null = useMemo(() => {
-    if (!projectQuery.data) return null
-    return projectQuery.data.project
-  }, [projectQuery.data])
-
-  const stages: IStage[] = useMemo(() => {
-    if (!stageQuery.data) return []
-    return stageQuery.data.stagesByProject
+  const stage: IStage | null = useMemo(() => {
+    if (!stageQuery.data) return null
+    return stageQuery.data.stage
   }, [stageQuery.data])
+
+  const subStages: IStage[] = useMemo(() => {
+    if (!subStageQuery.data) return []
+    return subStageQuery.data.subStagesByStage
+  }, [subStageQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -94,19 +78,13 @@ export default function ProjectDetailView(props: TProps) {
         }}
       >
         <CustomBreadcrumbs
-          heading="Detalle de Proyecto"
-          links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
-          action={
-            <Button variant="contained" onClick={modalEdit.onTrue}>
-              <Iconify icon="material-symbols:edit" mr={1} />
-              Editar
-            </Button>
-          }
+          heading="Detalle de Etapa"
+          links={[{ name: 'Etapa', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
         />
 
-        {projectQuery.loading && <p>Cargando...</p>}
+        {stageQuery.loading && <p>Cargando...</p>}
 
-        {!!project && (
+        {!!stage && (
           <React.Fragment>
             <Card>
               <CardContent>
@@ -119,35 +97,20 @@ export default function ProjectDetailView(props: TProps) {
                       label="Nombre"
                       variant="outlined"
                       fullWidth
-                      value={project.name}
+                      value={stage.name}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
                   {/* status */}
-                  <Grid item xs={12} md={3}>
+                  <Grid item xs={12} md={6}>
                     <TextField
                       id="status"
                       name="status"
                       label="Estado"
                       variant="outlined"
                       fullWidth
-                      value={project.state.name}
+                      value={stage.state.name}
                       InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  {/* cost */}
-                  <Grid item xs={12} md={3}>
-                    <TextField
-                      id="cost"
-                      name="cost"
-                      label="Costo proyectado"
-                      variant="outlined"
-                      fullWidth
-                      value={project.cost}
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
-                        readOnly: true,
-                      }}
                     />
                   </Grid>
                   {/* startDate */}
@@ -158,7 +121,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Fecha de inicio"
                       variant="outlined"
                       fullWidth
-                      value={formatDate(project.startDate)}
+                      value={formatDate(stage.startDate)}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -170,7 +133,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Fecha de finalizacion"
                       variant="outlined"
                       fullWidth
-                      value={formatDate(project.endDate)}
+                      value={formatDate(stage.endDate)}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -182,7 +145,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Progreso"
                       variant="outlined"
                       fullWidth
-                      value={`${project.progress * 100}`}
+                      value={`${stage.progress * 100}`}
                       InputProps={{
                         endAdornment: <InputAdornment position="end">%</InputAdornment>,
                         readOnly: true,
@@ -197,7 +160,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Area"
                       variant="outlined"
                       fullWidth
-                      value={project.area ? project.area.name : 'Sin area'}
+                      value={stage.area ? stage.area.name : 'Sin area'}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -209,7 +172,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Responsable"
                       variant="outlined"
                       fullWidth
-                      value={project.responsible ? project.responsible.fullname : 'Sin responsable'}
+                      value={stage.responsible ? stage.responsible.fullname : 'Sin responsable'}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -223,7 +186,7 @@ export default function ProjectDetailView(props: TProps) {
                       fullWidth
                       multiline
                       maxRows={10}
-                      value={project.description}
+                      value={stage.description}
                       InputProps={{ readOnly: true }}
                     />
                   </Grid>
@@ -240,23 +203,17 @@ export default function ProjectDetailView(props: TProps) {
             >
               <Tabs value={tab} onChange={(e, v) => setTab(v)}>
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.STAGES} value={ETab.STAGES} />
+                <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
               </Tabs>
             </Card>
-            {tab === ETab.NOTES && <NotesTab project={project} />}
-            {tab === ETab.STAGES && (
-              <StagesTab project={project} stages={stages} refetch={refetch} />
+            {tab === ETab.NOTES && <NotesTab stage={stage} />}
+
+            {tab === ETab.SUB_STAGES && (
+              <SubStagesTab stage={stage} subStages={subStages} refetch={subStageQuery.refetch} />
             )}
 
-            {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
-            {modalEdit.value && (
-              <ModalEdit
-                modal={modalEdit}
-                projectId={Number(projectId)}
-                refetch={projectQuery.refetch}
-              />
-            )}
+            {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
           </React.Fragment>
         )}
       </Box>

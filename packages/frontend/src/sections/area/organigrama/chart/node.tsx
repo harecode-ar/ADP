@@ -109,7 +109,7 @@ export default function Node({ node, onEdit, onDelete, onAdd, sx }: Props) {
             Editar
           </MenuItem>
         )}
-        {onDelete && (
+        {!node.children && onDelete && (
           <MenuItem
             onClick={() => {
               popover.onClose()

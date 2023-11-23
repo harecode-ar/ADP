@@ -1,6 +1,6 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea } from '@adp/shared/types'
-import { Stage, Project, StageState, Area, User } from '../../database/models'
+import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
@@ -37,6 +37,10 @@ export default {
       if (stage.progress) return Number(stage.progress.toFixed(2))
       return 0
     },
+    notes: (stage: IStage): Promise<IStage['notes']> => {
+      if (stage.notes) return Promise.resolve(stage.notes)
+      return StageNote.findAll({ where: { stageId: stage.id } })
+    },
   },
   Query: {
     stages: (
@@ -44,7 +48,10 @@ export default {
       __: any,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'>[]
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project' | 'notes'
+      >[]
     > => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
@@ -60,11 +67,33 @@ export default {
       context: IContext
     ): Promise<Omit<
       IStage,
-      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project'
+      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project' | 'notes'
     > | null> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
-        return Stage.findByPk(args.id)
+        return Stage.findByPk(args.id, {
+          include: [
+            {
+              model: Area,
+              as: 'area',
+            },
+            {
+              model: StageState,
+              as: 'state',
+            },
+            {
+              model: StageNote,
+              as: 'notes',
+              include: [
+                {
+                  model: User,
+                  as: 'user',
+                  attributes: ['id', 'firstname', 'lastname', 'image'],
+                },
+              ],
+            },
+          ],
+        })
       } catch (error) {
         logger.error(error)
         throw error
@@ -96,6 +125,32 @@ export default {
         throw error
       }
     },
+    subStagesByStage: (
+      _: any,
+      args: { stageId: number },
+      context: IContext
+    ): Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]> => {
+      try {
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        return Stage.findAll({
+          where: { parentStageId: args.stageId },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+            },
+            {
+              model: StageState,
+              as: 'state',
+            },
+          ],
+          order: [['startDate', 'ASC']],
+        }) as unknown as Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]>
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 
   Mutation: {
@@ -107,7 +162,10 @@ export default {
       >,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -136,9 +194,11 @@ export default {
           parentStageId,
         })
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        } catch (error) {
           logger.error(error)
-        })
+        }
 
         return stageCreated
       } catch (error) {
@@ -163,7 +223,10 @@ export default {
       >,
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -246,9 +309,11 @@ export default {
           parentStageId,
         })
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        } catch (error) {
           logger.error(error)
-        })
+        }
 
         return stage
       } catch (error) {
@@ -264,7 +329,10 @@ export default {
       },
       context: IContext
     ): Promise<
-      Omit<IStage, 'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages'>
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
@@ -276,9 +344,11 @@ export default {
         const { projectId } = stage
         await stage.destroy()
 
-        calculateProjectProgress(projectId).catch((error) => {
+        try {
+          await calculateProjectProgress(projectId)
+        } catch (error) {
           logger.error(error)
-        })
+        }
 
         return stage
       } catch (error) {

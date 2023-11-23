@@ -21,12 +21,14 @@ export default `#graphql
     parentStage: Stage
     childStages: [Stage]
     project: Project
+    notes: [StageNote]
   }
 
   type Query {
     stages: [Stage]
     stage(id: Int): Stage
     stagesByProject(projectId: Int): [Stage]
+    subStagesByStage(stageId: Int): [Stage]
   }
 
   type Mutation {

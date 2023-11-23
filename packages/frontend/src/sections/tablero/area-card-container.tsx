@@ -86,6 +86,7 @@ type AreaCardProps = {
 
 function AreaCard({ area }: AreaCardProps) {
   const { id, name, color, responsible } = area
+
   return (
     <Link
       component={NextLink}

@@ -10,6 +10,7 @@ import { ProjectState } from './project-state'
 import { Stage } from './stage'
 import { StageState } from './stage-state'
 import { ProjectNote } from './project-note'
+import { StageNote } from './stage-note'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -23,7 +24,7 @@ Permission.belongsToMany(Role, { as: 'roles', through: RolePermission, foreignKe
 User.hasMany(Token, { as: 'tokens', foreignKey: 'userId' })
 Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
-Area.hasMany(Area, { as: 'childAreas', foreignKey: 'parentId' })
+Area.hasMany(Area, { as: 'children', foreignKey: 'parentId' })
 Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
 
 User.hasOne(Area, { as: 'areas', foreignKey: 'responsibleId' })
@@ -50,8 +51,14 @@ Stage.belongsTo(StageState, { as: 'state', foreignKey: 'stateId' })
 Project.hasMany(ProjectNote, { as: 'notes', foreignKey: 'projectId' })
 ProjectNote.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
 
-User.hasMany(ProjectNote, { as: 'notes', foreignKey: 'userId' })
+Stage.hasMany(StageNote, { as: 'notes', foreignKey: 'stageId' })
+StageNote.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
+
+User.hasMany(ProjectNote, { as: 'projectNotes', foreignKey: 'userId' })
 ProjectNote.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+User.hasMany(StageNote, { as: 'stageNotes', foreignKey: 'userId' })
+StageNote.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
 export {
   Permission,
@@ -66,4 +73,5 @@ export {
   ProjectNote,
   Stage,
   StageState,
+  StageNote,
 }
