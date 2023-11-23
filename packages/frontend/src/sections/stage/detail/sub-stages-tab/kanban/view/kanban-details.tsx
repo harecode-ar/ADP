@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject } from '@adp/shared'
+import { IStage } from '@adp/shared'
 import React, { useMemo } from 'react'
 import Stack from '@mui/material/Stack'
 import Drawer from '@mui/material/Drawer'
@@ -13,16 +13,15 @@ import { GET_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
-import ModalDelete from './modal-delete'
-import ModalEdit from './modal-edit'
+// import ModalDelete from './modal-delete'
+// import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
 
 // ----------------------------------------------------------------------
 
 type TProps = {
-  project: IProject
-  stageId: number
+  subStageItem: IStage
   openDetails: boolean
   onCloseDetails: VoidFunction
   refetch: () => void
@@ -60,15 +59,15 @@ const getColor = (progress: number) => {
 }
 
 export default function KanbanDetails(props: TProps) {
-  const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
+  const { subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
-      id: stageId,
+      id: subStageItem.id,
     },
-    skip: !stageId,
+    skip: !subStageItem.id,
   })
 
   const refetch = () => {
@@ -76,13 +75,13 @@ export default function KanbanDetails(props: TProps) {
     stageQuery.refetch()
   }
 
-  const stage: IStage | null = useMemo(() => {
+  const subStage: IStage | null = useMemo(() => {
     if (!stageQuery.data) return null
     return stageQuery.data.stage
   }, [stageQuery.data])
 
-  if (!stage) return null
-  const color = getColor(stage.progress)
+  if (!subStage) return null
+  const color = getColor(subStage.progress)
 
   return (
     <Drawer
@@ -113,8 +112,8 @@ export default function KanbanDetails(props: TProps) {
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
         </Tooltip>
-        <Button size="small" variant="soft" color={getColorVariant(stage.state.name)}>
-          {stage.state.name}
+        <Button size="small" variant="soft" color={getColorVariant(subStage.state.name)}>
+          {subStage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           <Tooltip title="Editar">
@@ -159,37 +158,37 @@ export default function KanbanDetails(props: TProps) {
               borderColor: 'transparent',
             }}
           >
-            {stage.name}
+            {subStage.name}
           </Box>
           <Stack direction="row" alignItems="center">
             <StyledLabel>Area</StyledLabel>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.area?.name || 'Sin asignar'}
+              {subStage?.area?.name || 'Sin asignar'}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
             <StyledLabel>Responsable</StyledLabel>
-            <Avatar alt={stage?.responsible?.fullname} src="/broken-image.jpg" sx={{ mr: 2 }} />
+            <Avatar alt={subStage?.responsible?.fullname} src="/broken-image.jpg" sx={{ mr: 2 }} />
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.responsible?.fullname || 'Sin asignar'}
+              {subStage?.responsible?.fullname || 'Sin asignar'}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
             <StyledLabel>Fecha de inicio</StyledLabel>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.startDate?.split('T')[0].split('-').reverse().join('/')}
+              {subStage?.startDate?.split('T')[0].split('-').reverse().join('/')}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
             <StyledLabel>Fecha de finalización</StyledLabel>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.endDate?.split('T')[0].split('-').reverse().join('/')}
+              {subStage?.endDate?.split('T')[0].split('-').reverse().join('/')}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
             <StyledLabel>Progreso</StyledLabel>
             <Typography color={color} variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.progress !== null ? stage.progress * 100 : '0'}%
+              {subStage?.progress !== null ? subStage.progress * 100 : '0'}%
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
@@ -199,19 +198,19 @@ export default function KanbanDetails(props: TProps) {
               multiline
               maxRows={10}
               size="small"
-              value={stage?.description || 'Sin descripción'}
+              value={subStage?.description || 'Sin descripción'}
               InputProps={{ readOnly: true, sx: { typography: 'body2' } }}
             />
           </Stack>
         </Stack>
 
-        {!!stage.notes?.length && <KanbanDetailsCommentList notes={stage.notes} />}
+        {!!subStage.notes?.length && <KanbanDetailsCommentList notes={subStage.notes} />}
       </Scrollbar>
-      <KanbanDetailsCommentInput stageId={stage.id} refetch={stageQuery.refetch} />
-      {modalEdit.value && (
+      <KanbanDetailsCommentInput stageId={subStage.id} refetch={refetch} />
+      {/* {modalEdit.value && (
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}
-      <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
+      <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} /> */}
     </Drawer>
   )
 }
