@@ -31,19 +31,21 @@ export default function StageSubLine(props: TProps) {
 
   return (
     <Tooltip title={stage.name}>
-      <Box sx={(theme) => ({
-        width: `${width}%`,
-        height: '100%',
-        backgroundColor: 'transparent',
-        cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: alpha('#000', 0.25),
-        },
-        borderTop: 'none',
-        borderBottom: 'none',
-        borderLeft: first ? 'none' : `1px solid ${theme.palette.background.paper}`,
-        borderRight: last ? 'none' : `1px solid ${theme.palette.background.paper}`,
-      })} />
+      <Box
+        sx={(theme) => ({
+          width: `${width}%`,
+          height: '100%',
+          backgroundColor: 'transparent',
+          cursor: 'pointer',
+          '&:hover': {
+            backgroundColor: alpha('#000', 0.25),
+          },
+          borderTop: 'none',
+          borderBottom: 'none',
+          borderLeft: first ? 'none' : `1px solid ${theme.palette.background.paper}`,
+          borderRight: last ? 'none' : `1px solid ${theme.palette.background.paper}`,
+        })}
+      />
     </Tooltip>
   )
 }
