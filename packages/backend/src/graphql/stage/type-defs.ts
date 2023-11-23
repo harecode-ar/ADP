@@ -48,8 +48,8 @@ export default `#graphql
       startDate: String!
       endDate: String!
       areaId: Int!
-      projectId: Int!
-      parentStageId: Int
+      projectId: Int
+      parentStageId: Int!
     ): Stage
 
     updateStage(

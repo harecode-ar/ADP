@@ -371,21 +371,21 @@ export default {
       >
     > => {
       try {
-        if (!args.parentStageId) throw new Error('Parent stage id is required')
+        if (!args.parentStageId) throw new Error('No se encontro etapa padre')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const { name, description, startDate, endDate, areaId, projectId, parentStageId } = args
 
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
         const end = new Date(endDate).toISOString().slice(0, 10)
-        if (start > end) throw new Error('End date must be greater than start date')
+        if (start > end) throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
 
         const parentStage = await Stage.findByPk(parentStageId)
-        if (!parentStage) throw new Error('Parent stage not found')
+        if (!parentStage) throw new Error('Etapa padre no encontrada')
         const parentStageStart = new Date(parentStage.startDate).toISOString().slice(0, 10)
         const parentStageEnd = new Date(parentStage.endDate).toISOString().slice(0, 10)
 
-        if (start < parentStageStart || end > parentStageEnd) throw new Error('Dates out of range')
+        if (start < parentStageStart || end > parentStageEnd) throw new Error('Fechas fuera de rango')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
         const stageCreated = await Stage.create({
@@ -395,7 +395,7 @@ export default {
           endDate,
           stateId: state,
           areaId,
-          projectId,
+          projectId: parentStage.id,
           parentStageId,
         })
 
