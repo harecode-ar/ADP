@@ -70,7 +70,6 @@ export default function ProjectDetailView(props: TProps) {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      hola
       <Box
         sx={{
           display: 'flex',
