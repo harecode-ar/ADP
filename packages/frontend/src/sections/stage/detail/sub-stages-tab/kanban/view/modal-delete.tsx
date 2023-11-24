@@ -6,7 +6,7 @@ import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { DELETE_STAGE } from 'src/graphql/mutations'
+import { DELETE_SUB_STAGE } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -29,12 +29,12 @@ type TProps = {
 
 const ModalDelete = (props: TProps) => {
   const { modal, refetch, stageId } = props
-  const [deleteStage] = useMutation(DELETE_STAGE)
+  const [deleteSubStage] = useMutation(DELETE_SUB_STAGE)
   const { enqueueSnackbar } = useSnackbar()
 
   const onDelete = async (id: number) => {
     try {
-      await deleteStage({
+      await deleteSubStage({
         variables: {
           id,
         },
