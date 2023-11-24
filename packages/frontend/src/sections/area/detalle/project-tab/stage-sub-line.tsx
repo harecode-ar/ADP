@@ -27,8 +27,6 @@ export default function StageSubLine(props: TProps) {
     return (stageDuration / projectDuration) * 100
   }, [project, stage])
 
-  console.log('width', width)
-
   return (
     <Tooltip title={stage.name}>
       <Box

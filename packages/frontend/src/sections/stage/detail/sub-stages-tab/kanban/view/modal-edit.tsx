@@ -20,7 +20,7 @@ import { PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries/project-state'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
-import { UPDATE_STAGE } from 'src/graphql/mutations'
+import { UPDATE_SUB_STAGE } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -86,7 +86,6 @@ type TFormikValues = {
   endDate: string
   area: IArea | null
   description: string
-  projectId: number | null
 }
 
 const ModalEdit = (props: TProps) => {
@@ -94,7 +93,7 @@ const ModalEdit = (props: TProps) => {
   const { enqueueSnackbar } = useSnackbar()
   const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
   const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
-  const [updateStage] = useMutation(UPDATE_STAGE)
+  const [updateSubStage] = useMutation(UPDATE_SUB_STAGE)
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (dataAreas?.areas) return dataAreas.areas
@@ -114,14 +113,13 @@ const ModalEdit = (props: TProps) => {
       startDate: subStage.startDate,
       endDate: subStage.endDate,
       area: subStage.area,
-      projectId: subStage.projectId,
       description: subStage.description,
       projectStartDate: stage.startDate,
       projectEndDate: stage.endDate,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        const { errors } = await updateStage({
+        const { errors } = await updateSubStage({
           variables: {
             id: subStage.id,
             name: values.name,
@@ -129,7 +127,6 @@ const ModalEdit = (props: TProps) => {
             startDate: values.startDate,
             endDate: values.endDate,
             areaId: values.area?.id,
-            projectId: values.projectId,
             description: values.description,
           },
         })
