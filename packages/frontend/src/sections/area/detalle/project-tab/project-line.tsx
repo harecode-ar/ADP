@@ -1,7 +1,9 @@
 import { IProject } from '@adp/shared'
 import React, { useState } from 'react'
-import { Box, Typography, IconButton } from '@mui/material'
+import NextLink from 'next/link'
+import { Box, Typography, IconButton, Link } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
+import { paths } from 'src/routes/paths'
 import StageSubLine from './stage-sub-line'
 import StageLine from './stage-line'
 
@@ -23,7 +25,19 @@ export default function ProjectLine(props: TProps) {
         gap: 1,
       }}
     >
-      <Typography>{project.name}</Typography>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 1,
+      }}>
+        <Typography>{project.name}</Typography>
+        <Link component={NextLink} href={paths.dashboard.project.detail.replace(':id', String(project.id))}>
+          <IconButton size='small'>
+            <Iconify icon="mdi:eye" width={15} height={15} />
+          </IconButton>
+        </Link>
+      </Box>
       <Box
         sx={{
           width: '100%',
