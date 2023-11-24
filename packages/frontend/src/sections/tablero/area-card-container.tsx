@@ -1,6 +1,6 @@
 'use client'
 
-import { IArea } from '@adp/shared'
+import { IArea, IProjectAreaReport } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import {
@@ -13,13 +13,14 @@ import {
   InputAdornment,
   Link,
 } from '@mui/material'
-import { AREAS_FOR_LIST } from 'src/graphql/queries'
+import { AREAS_FOR_LIST, PROJECT_AREA_REPORT } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import SearchNotFound from 'src/components/search-not-found'
 import { getStorageFileUrl } from 'src/utils/storage'
+import ProyectAreaReportItem from './proyect-area-report-item'
 
 export default function AreaCardContainer() {
   const [search, setSearch] = useState('')
@@ -87,6 +88,18 @@ type AreaCardProps = {
 function AreaCard({ area }: AreaCardProps) {
   const { id, name, color, responsible } = area
 
+  const { data } = useQuery(PROJECT_AREA_REPORT, {
+    variables: {
+      areaId: Number(id),
+    },
+    skip: !id,
+  })
+
+  const report: IProjectAreaReport = useMemo(() => {
+    if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
+    return data.projectAreaReport
+  }, [data])
+
   return (
     <Link
       component={NextLink}
@@ -105,30 +118,64 @@ function AreaCard({ area }: AreaCardProps) {
           height: '100%',
         }}
       >
-        <Avatar
-          alt={responsible?.fullname || 'Sin responsable'}
-          src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
-          sx={{ width: 64, height: 64, mb: 3 }}
-        />
-
-        <Typography
-          variant="subtitle1"
-          color="black"
-          fontSize={20}
+        <Box
           sx={{
-            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '100%',
           }}
         >
-          {name}
-        </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <Avatar
+              alt={responsible?.fullname || 'Sin responsable'}
+              src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
+              sx={{ width: 64, height: 64, mb: 3 }}
+            />
 
-        <Typography
-          variant="body2"
-          sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }}
-          fontSize={15}
-        >
-          {responsible?.fullname || 'Sin responsable'}
-        </Typography>
+            <Typography
+              variant="subtitle1"
+              color="black"
+              fontSize={20}
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              {name}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }}
+              fontSize={15}
+            >
+              {responsible?.fullname || 'Sin responsable'}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+            }}
+          >
+            <ProyectAreaReportItem icon="entypo:new" value={report.new} size={17} />
+            <ProyectAreaReportItem icon="mdi:tools" value={report.inProgress} size={15} />
+            <ProyectAreaReportItem
+              icon="fluent-mdl2:completed-solid"
+              value={report.completed}
+              size={15}
+            />
+            <ProyectAreaReportItem icon="ic:sharp-cancel" value={report.cancelled} size={18} />
+          </Box>
+        </Box>
       </Card>
     </Link>
   )

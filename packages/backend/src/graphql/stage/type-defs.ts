@@ -43,15 +43,6 @@ export default `#graphql
       parentStageId: Int
     ): Stage
 
-    createSubStage(
-      name: String!
-      description: String!
-      startDate: String!
-      endDate: String!
-      areaId: Int!
-      parentStageId: Int!
-    ): Stage
-
     updateStage(
       id: Int!
       name: String
@@ -67,5 +58,28 @@ export default `#graphql
     ): Stage
 
     deleteStage(id: Int!): Stage
+
+    createSubStage(
+      name: String!
+      description: String!
+      startDate: String!
+      endDate: String!
+      areaId: Int!
+      parentStageId: Int!
+    ): Stage
+
+    updateSubStage(
+      id: Int!
+      name: String
+      description: String
+      startDate: String
+      endDate: String
+      stateId: Int
+      progress: Float
+      areaId: Int
+      parentStageId: Int
+    ): Stage
+
+    deleteSubStage(id: Int!): Stage
   }
 `

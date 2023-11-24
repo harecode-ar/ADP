@@ -3,8 +3,9 @@ import type { IStage, IUser, IProjectState, IArea } from '@adp/shared/types'
 import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
-import { calculateProjectProgress, calculateStageProgress } from '../../database/jobs/project'
+import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
+import { calculateStageProgress } from '../../database/jobs'
 
 export default {
   Stage: {
@@ -405,13 +406,169 @@ export default {
 
         try {
           await parentStage.update({ projectId: parentStage.projectId, hasStages: true })
-          await calculateProjectProgress(parentStage.projectId)
           await calculateStageProgress(parentStageId)
         } catch (error) {
           logger.error(error)
         }
 
+        calculateProjectProgress(parentStage.projectId).catch((error) => {
+          logger.error(error)
+        })
+
         return stageCreated
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    updateSubStage: async (
+      _: any,
+      args: Pick<
+        IStage,
+        | 'id'
+        | 'name'
+        | 'description'
+        | 'startDate'
+        | 'endDate'
+        | 'stateId'
+        | 'areaId'
+        | 'parentStageId'
+      >,
+      context: IContext
+    ): Promise<
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
+    > => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const { id, name, description, startDate, endDate, stateId, areaId, parentStageId } = args
+
+        const subStage = await Stage.findByPk(id)
+        if (!subStage) {
+          throw new Error('Etapa no encontrada')
+        }
+
+        if (!subStage.parentStageId) throw new Error('No se encontro etapa padre')
+
+        const stage = await Stage.findByPk(subStage.parentStageId)
+        if (!stage) throw new Error('Etapa padre no encontrada')
+
+        const project = await Project.findByPk(stage.projectId)
+        if (!project) throw new Error('Proyecto no encontrado')
+
+        if (startDate) {
+          const previousStageEnd = subStage.endDate
+          const newStageStart = new Date(startDate).toISOString().slice(0, 10)
+          const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
+          if (newStageStart < projectStart)
+            throw new Error('La fecha de inicio esta fuera del rango del proyecto')
+          if (previousStageEnd < newStageStart) {
+            if (endDate) {
+              const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
+              if (newStageStart > newStageEnd)
+                throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
+            } else {
+              throw new Error(
+                'La fecha de inicio es posterior a la fecha de finalizacion de la etapa anterior, considere cambiar ambas fechas simultaneamente.'
+              )
+            }
+          }
+        }
+
+        if (endDate) {
+          const previousStageStart = subStage.startDate
+          const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
+          const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
+          if (newStageEnd > projectEnd)
+            throw new Error('La fecha de finalizacion esta fuera del rango del proyecto')
+          if (previousStageStart > newStageEnd) {
+            if (startDate) {
+              const newStageStart = new Date(startDate).toISOString().slice(0, 10)
+              if (newStageStart > newStageEnd)
+                throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
+            } else {
+              throw new Error(
+                'La fecha de finalizacion es anterior a la fecha de inicio de la etapa anterior, considere cambiar ambas fechas simultaneamente.'
+              )
+            }
+          }
+        }
+
+        let progress
+        if (stateId === STAGE_STATE.COMPLETED) {
+          progress = 1
+        } else if (
+          subStage.stateId === STAGE_STATE.COMPLETED &&
+          stateId !== STAGE_STATE.COMPLETED &&
+          stateId !== STAGE_STATE.CANCELLED
+        ) {
+          progress = 0
+        }
+
+        await subStage.update({
+          name,
+          description,
+          startDate,
+          endDate,
+          stateId,
+          progress,
+          areaId,
+          parentStageId,
+        })
+
+        try {
+          await calculateStageProgress(stage.id)
+        } catch (error) {
+          logger.error(error)
+        }
+
+        calculateProjectProgress(project.id).catch((error) => {
+          logger.error(error)
+        })
+
+        return subStage
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    deleteSubStage: async (
+      _: any,
+      args: {
+        id: number
+      },
+      context: IContext
+    ): Promise<
+      Omit<
+        IStage,
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+      >
+    > => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const subStage = await Stage.findByPk(args.id)
+        if (!subStage) {
+          throw new Error('Etapa no encontrada')
+        }
+
+        const { projectId } = subStage
+        await subStage.destroy()
+
+        try {
+          await calculateStageProgress(subStage.id)
+        } catch (error) {
+          logger.error(error)
+        }
+
+        calculateProjectProgress(projectId).catch((error) => {
+          logger.error(error)
+        })
+
+        return subStage
       } catch (error) {
         logger.error(error)
         throw error
