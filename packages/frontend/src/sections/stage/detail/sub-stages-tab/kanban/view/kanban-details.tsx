@@ -13,14 +13,15 @@ import { GET_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
-// import ModalDelete from './modal-delete'
-// import ModalEdit from './modal-edit'
+import ModalDelete from './modal-delete'
+import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
 
 // ----------------------------------------------------------------------
 
 type TProps = {
+  stage: IStage
   subStageItem: IStage
   openDetails: boolean
   onCloseDetails: VoidFunction
@@ -59,7 +60,7 @@ const getColor = (progress: number) => {
 }
 
 export default function KanbanDetails(props: TProps) {
-  const { subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
+  const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
 
@@ -207,10 +208,10 @@ export default function KanbanDetails(props: TProps) {
         {!!subStage.notes?.length && <KanbanDetailsCommentList notes={subStage.notes} />}
       </Scrollbar>
       <KanbanDetailsCommentInput stageId={subStage.id} refetch={refetch} />
-      {/* {modalEdit.value && (
-        <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
+      {modalEdit.value && (
+        <ModalEdit modal={modalEdit} stage={stage} subStage={subStage} refetch={refetch} />
       )}
-      <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} /> */}
+      <ModalDelete modal={modalDelete} stageId={subStage.id} refetch={refetch} />
     </Drawer>
   )
 }
