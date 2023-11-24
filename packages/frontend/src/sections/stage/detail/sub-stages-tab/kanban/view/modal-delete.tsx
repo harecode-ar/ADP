@@ -39,11 +39,11 @@ const ModalDelete = (props: TProps) => {
           id,
         },
       })
-      enqueueSnackbar('Etapa borrada correctamente.', { variant: 'success' })
+      enqueueSnackbar('Sub-etapa borrada correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
     } catch {
-      enqueueSnackbar('La etapa no pudo ser borrada.', { variant: 'error' })
+      enqueueSnackbar('La sub-etapa no pudo ser borrada.', { variant: 'error' })
     }
   }
 
@@ -62,10 +62,10 @@ const ModalDelete = (props: TProps) => {
     >
       <Box sx={styleModal}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Eliminar etapa
+          Eliminar sub-etapa
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          ¿Está seguro de eliminar dicha etapa?
+          ¿Está seguro de eliminar dicha sub-etapa?
           <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>

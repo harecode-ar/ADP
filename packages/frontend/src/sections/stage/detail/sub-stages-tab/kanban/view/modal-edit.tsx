@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import type { IArea, IProjectState, IStage, IProject } from '@adp/shared'
+import type { IArea, IProjectState, IStage } from '@adp/shared'
 import {
   Typography,
   Button,
@@ -75,7 +75,7 @@ type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
   stage: IStage
-  project: IProject
+  subStage: IStage
 }
 
 type TFormikValues = {
@@ -90,7 +90,7 @@ type TFormikValues = {
 }
 
 const ModalEdit = (props: TProps) => {
-  const { modal, refetch, stage, project } = props
+  const { modal, refetch, stage, subStage } = props
   const { enqueueSnackbar } = useSnackbar()
   const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
   const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
@@ -109,21 +109,21 @@ const ModalEdit = (props: TProps) => {
   const formik = useFormik({
     initialValues: {
       id: null,
-      name: stage.name,
-      state: stage.state,
-      startDate: stage.startDate,
-      endDate: stage.endDate,
-      area: stage.area,
-      projectId: stage.projectId,
-      description: stage.description,
-      projectStartDate: project.startDate,
-      projectEndDate: project.endDate,
+      name: subStage.name,
+      state: subStage.state,
+      startDate: subStage.startDate,
+      endDate: subStage.endDate,
+      area: subStage.area,
+      projectId: subStage.projectId,
+      description: subStage.description,
+      projectStartDate: stage.startDate,
+      projectEndDate: stage.endDate,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         const { errors } = await updateStage({
           variables: {
-            id: stage.id,
+            id: subStage.id,
             name: values.name,
             stateId: values.state?.id,
             startDate: values.startDate,
@@ -134,13 +134,13 @@ const ModalEdit = (props: TProps) => {
           },
         })
         if (errors) throw new Error(errors[0].message)
-        enqueueSnackbar('Etapa editada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Sub-etapa editada correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch (error) {
         console.error(error)
-        enqueueSnackbar('La etapa no pudo ser editada.', { variant: 'error' })
+        enqueueSnackbar('La sub-etapa no pudo ser editada.', { variant: 'error' })
       }
     },
     validationSchema,
