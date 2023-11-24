@@ -70,6 +70,7 @@ export default function ProjectDetailView(props: TProps) {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+      hola
       <Box
         sx={{
           display: 'flex',
@@ -138,20 +139,23 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* progress */}
-                  <Grid item xs={12} md={2}>
-                    <TextField
-                      id="progress"
-                      name="progress"
-                      label="Progreso"
-                      variant="outlined"
-                      fullWidth
-                      value={`${stage.progress * 100}`}
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                        readOnly: true,
-                      }}
-                    />
-                  </Grid>
+                  {stage.hasStages ? (
+                    <Grid item xs={12} md={2}>
+                      <TextField
+                        id="progress"
+                        name="progress"
+                        label="Progreso"
+                        variant="outlined"
+                        fullWidth
+                        value={`${stage.progress * 100}`}
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                          readOnly: true,
+                        }}
+                      />
+                    </Grid>
+                  ) : <Grid item xs={12} md={2} /> }
+                  
                   {/* area */}
                   <Grid item xs={12} md={3}>
                     <TextField

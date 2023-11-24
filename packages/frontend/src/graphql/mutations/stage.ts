@@ -31,8 +31,7 @@ export const CREATE_SUB_STAGE = gql`
     $startDate: String!
     $endDate: String!
     $areaId: Int!
-    $projectId: Int!
-    $parentStageId: Int
+    $parentStageId: Int!
   ) {
     createSubStage(
       name: $name
@@ -40,7 +39,6 @@ export const CREATE_SUB_STAGE = gql`
       startDate: $startDate
       endDate: $endDate
       areaId: $areaId
-      projectId: $projectId
       parentStageId: $parentStageId
     ) {
       id

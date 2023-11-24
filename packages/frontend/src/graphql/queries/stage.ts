@@ -9,6 +9,7 @@ export const GET_STAGES_BY_PROJECT = gql`
       startDate
       endDate
       description
+      hasStages
       projectId
       stateId
       area {
@@ -36,6 +37,7 @@ export const GET_SUB_STAGES_BY_STAGE = gql`
       startDate
       endDate
       description
+      hasStages
       projectId
       stateId
       area {
@@ -63,6 +65,7 @@ export const GET_STAGE = gql`
       startDate
       endDate
       description
+      hasStages
       projectId
       area {
         id

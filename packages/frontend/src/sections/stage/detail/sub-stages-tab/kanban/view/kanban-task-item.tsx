@@ -112,12 +112,6 @@ export default function KanbansubStageItemItem({
               }),
             }}
           />
-          <LinearProgress
-            variant="determinate"
-            value={subStageItem.progress * 100}
-            color={getColorVariant(subStageItem.progress)}
-          />
-          <Typography variant="subtitle2"> {subStageItem.progress * 100}%</Typography>
         </Stack>
       </Paper>
       {openDetails.value && (

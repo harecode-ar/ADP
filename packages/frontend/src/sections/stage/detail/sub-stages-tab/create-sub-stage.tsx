@@ -17,7 +17,7 @@ import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation, useQuery } from '@apollo/client'
-import { CREATE_STAGE } from 'src/graphql/mutations'
+import { CREATE_SUB_STAGE } from 'src/graphql/mutations'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import * as Yup from 'yup'
 
@@ -84,7 +84,7 @@ type TFormikValues = {
 
 const ModalCreate = (props: TProps) => {
   const { modal, stage, refetch } = props
-  const [createStage] = useMutation(CREATE_STAGE)
+  const [createStage] = useMutation(CREATE_SUB_STAGE)
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
   const { projectId } = stage
@@ -243,6 +243,7 @@ const ModalCreate = (props: TProps) => {
                     onClick={() => {
                       modal.onFalse()
                       formik.resetForm()
+                      
                     }}
                     color="primary"
                     variant="outlined"
