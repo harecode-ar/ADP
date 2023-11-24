@@ -39,8 +39,11 @@ export default function StageLine(props: TProps) {
           }}
         />
         <Typography>{stage.name}</Typography>
-        <Link component={NextLink} href={paths.dashboard.stage.detail.replace(':id', String(stage.id))}>
-          <IconButton size='small'>
+        <Link
+          component={NextLink}
+          href={paths.dashboard.stage.detail.replace(':id', String(stage.id))}
+        >
+          <IconButton size="small">
             <Iconify icon="mdi:eye" width={15} height={15} />
           </IconButton>
         </Link>

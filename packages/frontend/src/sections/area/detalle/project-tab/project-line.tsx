@@ -25,15 +25,20 @@ export default function ProjectLine(props: TProps) {
         gap: 1,
       }}
     >
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 1,
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
         <Typography>{project.name}</Typography>
-        <Link component={NextLink} href={paths.dashboard.project.detail.replace(':id', String(project.id))}>
-          <IconButton size='small'>
+        <Link
+          component={NextLink}
+          href={paths.dashboard.project.detail.replace(':id', String(project.id))}
+        >
+          <IconButton size="small">
             <Iconify icon="mdi:eye" width={15} height={15} />
           </IconButton>
         </Link>
