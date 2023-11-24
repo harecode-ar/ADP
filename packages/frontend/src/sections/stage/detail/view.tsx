@@ -68,6 +68,11 @@ export default function ProjectDetailView(props: TProps) {
     return subStageQuery.data.subStagesByStage
   }, [subStageQuery.data])
 
+  const refetch = () => {
+    stageQuery.refetch()
+    subStageQuery.refetch()
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
       <Box
@@ -213,7 +218,7 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
 
             {tab === ETab.SUB_STAGES && (
-              <SubStagesTab stage={stage} subStages={subStages} refetch={subStageQuery.refetch} />
+              <SubStagesTab stage={stage} subStages={subStages} refetch={refetch} />
             )}
 
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
