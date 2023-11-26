@@ -108,7 +108,7 @@ export default {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
         return Stage.findAll({
-          where: { projectId: args.projectId },
+          where: { projectId: args.projectId, parentStageId: null },
           include: [
             {
               model: Area,
@@ -194,7 +194,6 @@ export default {
           projectId,
           parentStageId,
         })
-
         try {
           await calculateProjectProgress(projectId)
         } catch (error) {
@@ -217,6 +216,7 @@ export default {
         | 'description'
         | 'startDate'
         | 'endDate'
+        | 'hasStages'
         | 'stateId'
         | 'areaId'
         | 'projectId'
@@ -237,6 +237,7 @@ export default {
           description,
           startDate,
           endDate,
+          hasStages,
           stateId,
           areaId,
           projectId,
@@ -304,6 +305,7 @@ export default {
           description,
           startDate,
           endDate,
+          hasStages,
           stateId,
           progress,
           areaId,
@@ -368,7 +370,7 @@ export default {
     ): Promise<
       Omit<
         IStage,
-        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes'
+        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes' | 'hasStages'
       >
     > => {
       try {
@@ -403,6 +405,7 @@ export default {
         })
 
         try {
+          await parentStage.update({ projectId: parentStage.projectId, hasStages: true })
           await calculateStageProgress(parentStageId)
         } catch (error) {
           logger.error(error)

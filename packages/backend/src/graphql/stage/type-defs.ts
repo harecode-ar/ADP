@@ -7,6 +7,7 @@ export default `#graphql
     startDate: String
     endDate: String
     progress: Float
+    hasStages: Boolean
     stateId: Int
     areaId: Int
     projectId: Int
@@ -50,6 +51,7 @@ export default `#graphql
       endDate: String
       stateId: Int
       progress: Float
+      hasStages: Boolean
       areaId: Int
       projectId: Int
       parentStageId: Int

@@ -14,6 +14,8 @@ export class Stage extends Model {
 
   public progress!: number
 
+  public hasStages!: boolean
+
   public stateId!: number
 
   public areaId!: number | null
@@ -53,6 +55,10 @@ Stage.init(
     progress: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
+    },
+    hasStages: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     stateId: {
       type: DataTypes.INTEGER.UNSIGNED,

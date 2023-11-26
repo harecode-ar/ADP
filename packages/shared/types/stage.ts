@@ -11,6 +11,7 @@ export interface IStage {
   startDate: string
   endDate: string
   progress: number
+  hasStages: boolean
   stateId: number
   areaId: number | null
   projectId: number

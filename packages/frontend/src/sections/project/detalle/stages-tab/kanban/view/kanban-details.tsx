@@ -207,12 +207,14 @@ export default function KanbanDetails(props: TProps) {
               {stage?.endDate?.split('T')[0].split('-').reverse().join('/')}
             </Typography>
           </Stack>
-          <Stack direction="row" alignItems="center">
-            <StyledLabel>Progreso</StyledLabel>
-            <Typography color={color} variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {stage?.progress !== null ? stage.progress * 100 : '0'}%
-            </Typography>
-          </Stack>
+          { stage.hasStages ? (
+            <Stack direction="row" alignItems="center">
+              <StyledLabel>Progreso</StyledLabel>
+              <Typography color={color} variant="subtitle2" sx={{ fontWeight: 700 }}>
+                {stage?.progress !== null ? stage.progress * 100 : '0'}%
+              </Typography>
+            </Stack>
+          ) : ''}
           <Stack direction="row" alignItems="center">
             <StyledLabel>Descripción</StyledLabel>
             <TextField

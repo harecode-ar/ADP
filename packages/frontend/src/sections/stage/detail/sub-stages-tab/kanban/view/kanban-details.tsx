@@ -187,12 +187,6 @@ export default function KanbanDetails(props: TProps) {
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
-            <StyledLabel>Progreso</StyledLabel>
-            <Typography color={color} variant="subtitle2" sx={{ fontWeight: 700 }}>
-              {subStage?.progress !== null ? subStage.progress * 100 : '0'}%
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center">
             <StyledLabel>Descripción</StyledLabel>
             <TextField
               fullWidth
