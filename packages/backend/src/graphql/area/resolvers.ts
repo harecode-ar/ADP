@@ -1,6 +1,7 @@
-import type { IArea, IUser } from '@adp/shared/types'
+import { ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
 import { Area, User } from '../../database/models'
 import logger from '../../logger'
+import { createNotification } from '../../database/jobs'
 
 export default {
   Area: {
@@ -86,9 +87,9 @@ export default {
       try {
         const { id, name, rolename, description, color, multiple, parentId, responsibleId } = args
         const area = await Area.findByPk(id)
-        if (!area) {
-          throw new Error('Area not found')
-        }
+        if (!area) throw new Error('Area no encontrada')
+        const differentResponsible = responsibleId && area.responsibleId !== responsibleId
+        const previousResponsibleId = area.responsibleId
         await area.update({
           name,
           rolename,
@@ -98,6 +99,24 @@ export default {
           parentId,
           responsibleId,
         })
+        if (differentResponsible) {
+          if (previousResponsibleId) {
+            await createNotification(
+              {
+                title: `Te han quitado la responsabilidad del area ${area.name}`,
+                category: ENotificationCategory.AREA,
+              },
+              [previousResponsibleId]
+            )
+          }
+          createNotification(
+            {
+              title: `Te han asignado la responsabilidad del area ${area.name}`,
+              category: ENotificationCategory.AREA,
+            },
+            [responsibleId]
+          )
+        }
         return area
       } catch (error) {
         logger.error(error)
