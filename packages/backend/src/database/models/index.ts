@@ -11,6 +11,8 @@ import { Stage } from './stage'
 import { StageState } from './stage-state'
 import { ProjectNote } from './project-note'
 import { StageNote } from './stage-note'
+import { Notification } from './notification'
+import { UserNotification } from './user-notification'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -60,6 +62,23 @@ ProjectNote.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 User.hasMany(StageNote, { as: 'stageNotes', foreignKey: 'userId' })
 StageNote.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
+User.belongsToMany(Notification, {
+  as: 'notifications',
+  through: UserNotification,
+  foreignKey: 'userId',
+})
+Notification.belongsToMany(User, {
+  as: 'users',
+  through: UserNotification,
+  foreignKey: 'notificationId',
+})
+
+User.hasMany(UserNotification, { as: 'userNotifications', foreignKey: 'userId' })
+UserNotification.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+Notification.hasMany(UserNotification, { as: 'userNotifications', foreignKey: 'notificationId' })
+UserNotification.belongsTo(Notification, { as: 'notification', foreignKey: 'notificationId' })
+
 export {
   Permission,
   Role,
@@ -74,4 +93,6 @@ export {
   Stage,
   StageState,
   StageNote,
+  Notification,
+  UserNotification,
 }
