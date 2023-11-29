@@ -9,7 +9,7 @@ type ViewSwitcherProps = {
 }
 
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewOption, handleChangeView }) => {
-  const handleViewModeChange = (event: React.ChangeEvent<{}>, option: TViewOption | null) => {
+  const handleStateChange = (event: React.ChangeEvent<{}>, option: TViewOption | null) => {
     if (option !== null) {
       handleChangeView(option)
     }
@@ -23,7 +23,7 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewOption, handleCh
           options={VIEW_OPTIONS}
           getOptionLabel={(option) => option.label}
           value={viewOption}
-          onChange={handleViewModeChange}
+          onChange={handleStateChange}
           renderInput={(params) => <TextField {...params} label="Mostrar por" />}
           clearIcon={null}
         />

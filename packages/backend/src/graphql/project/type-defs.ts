@@ -25,6 +25,7 @@ export default `#graphql
     project(id: Int!): Project
     projectsByArea(areaId: Int): [Project]
     inProgressProjectsByArea(areaId: Int): [Project]
+    projectsByAreaAndState(areaId: Int!, stateId: Int!): [Project]
   }
 
   type Mutation {

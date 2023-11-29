@@ -126,7 +126,7 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {tab === ETab.PROJECTS && <ProjectTab projects={projects} />}
+            {tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />}
             {tab === ETab.GANTT && <GanttTab projects={projects} />}
           </React.Fragment>
         )}
