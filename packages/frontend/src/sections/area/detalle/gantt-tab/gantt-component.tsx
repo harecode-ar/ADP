@@ -68,7 +68,7 @@ const GanttComponent = (props: TProps) => {
 
   return (
     <Card sx={{ p: 3 }}>
-      <Box sx={{display: "flex", gap: 2}}>
+      <Box sx={{ display: 'flex', gap: 2 }}>
         <Autocomplete
           style={{ width: 170, marginBottom: '16px' }}
           options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
@@ -78,14 +78,16 @@ const GanttComponent = (props: TProps) => {
           renderInput={(params) => <TextField {...params} label="Estado" />}
           clearIcon={null}
         />
-      <ViewSwitcher viewOption={viewOption} handleChangeView={handleChangeView} />
+        <ViewSwitcher viewOption={viewOption} handleChangeView={handleChangeView} />
       </Box>
-      {tasks.length > 0 &&<Gantt
-        tasks={combinedTasks}
-        viewOption={viewOption}
-        onDoubleClick={handleDoubleClick}
-        TooltipContent={TaskTooltip}
-      />}
+      {tasks.length > 0 && (
+        <Gantt
+          tasks={combinedTasks}
+          viewOption={viewOption}
+          onDoubleClick={handleDoubleClick}
+          TooltipContent={TaskTooltip}
+        />
+      )}
     </Card>
   )
 }

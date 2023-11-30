@@ -57,6 +57,10 @@ export default function GanttTab(props: TProps) {
   const tasks: Task[] = mappedProjects
 
   return (
-    <GanttComponent tasks={tasks} handleProjectStateChange={handleProjectStateChange} projectState={projectState}/>
+    <GanttComponent
+      tasks={tasks}
+      handleProjectStateChange={handleProjectStateChange}
+      projectState={projectState}
+    />
   )
 }
