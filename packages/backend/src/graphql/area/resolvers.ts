@@ -1,7 +1,9 @@
-import { ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
-import { Area, User } from '../../database/models'
+import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
+import { getAreaFromTree, getAreaDescendantsIds } from '@adp/shared'
+import { Area, Cache, User } from '../../database/models'
 import logger from '../../logger'
-import { createNotification } from '../../database/jobs'
+import { createNotification, generateAreaTreeCache } from '../../database/jobs'
+import { IContext } from '../types'
 
 export default {
   Area: {
@@ -41,9 +43,51 @@ export default {
         throw error
       }
     },
+    areasForDashboard: async (_: any, __: any, context: IContext): Promise<IArea[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const [userAreas, cachedTree] = await Promise.all([
+          Area.findAll({
+            where: {
+              responsibleId: user.id,
+            },
+            attributes: ['id'],
+          }),
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        const userAreasIds = userAreas.map((area: IArea) => area.id)
+        const ids = Array.from(
+          new Set<number>([
+            ...userAreasIds,
+            ...userAreasIds.flatMap((areaId) => {
+              const areaTree = getAreaFromTree(tree, areaId)
+              if (!areaTree) return []
+              return getAreaDescendantsIds(areaTree)
+            }),
+          ])
+        )
+        const areas = await Area.findAll({
+          where: {
+            id: ids,
+          },
+          order: [['parentId', 'ASC']],
+        })
+        return areas
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
-    createArea: (
+    createArea: async (
       _: any,
       args: {
         name: string
@@ -57,7 +101,7 @@ export default {
     ): Promise<IArea> => {
       try {
         const { name, rolename, description, color, multiple, parentId, responsibleId } = args
-        return Area.create({
+        const area = await Area.create({
           name,
           rolename,
           description,
@@ -66,6 +110,8 @@ export default {
           parentId,
           responsibleId,
         })
+        generateAreaTreeCache()
+        return area
       } catch (error) {
         logger.error(error)
         throw error
@@ -99,9 +145,10 @@ export default {
           parentId,
           responsibleId,
         })
+        generateAreaTreeCache()
         if (differentResponsible) {
           if (previousResponsibleId) {
-            await createNotification(
+            createNotification(
               {
                 title: `Te han quitado la responsabilidad del area ${area.name}`,
                 category: ENotificationCategory.AREA,
@@ -143,6 +190,7 @@ export default {
         const { children = [] } = area as IArea
         if (children.length > 0) throw new Error('El area tiene subareas')
         await area.destroy()
+        generateAreaTreeCache()
         return area
       } catch (error) {
         logger.error(error)

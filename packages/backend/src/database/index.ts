@@ -17,4 +17,5 @@ export const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   dialect: DB_DIALECT,
   host: DB_HOST,
   port: parseInt(DB_PORT, 10),
+  logging: false,
 })
