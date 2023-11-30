@@ -34,18 +34,17 @@ export default function StadisticTab(props: TProps) {
           alignItems: 'center',
         }}
         container
-        spacing={1}
-        gap={1}
+        spacing={2}
       >
-        <Grid xs={12} sm={6} md={2}>
+        <Grid item xs={12} sm={6} md={3}>
           <AnalyticsWidgetSummary title="Nuevo" total={report.new} color="info" icon="entypo:new" />
         </Grid>
 
-        <Grid xs={12} sm={6} md={2}>
+        <Grid item xs={12} sm={6} md={3}>
           <AnalyticsWidgetSummary title="En proceso" total={report.inProgress} icon="mdi:tools" />
         </Grid>
 
-        <Grid xs={12} sm={6} md={2}>
+        <Grid item xs={12} sm={6} md={3}>
           <AnalyticsWidgetSummary
             title="Completado"
             total={report.completed}
@@ -54,7 +53,7 @@ export default function StadisticTab(props: TProps) {
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={2}>
+        <Grid item xs={12} sm={6} md={3}>
           <AnalyticsWidgetSummary
             title="Cancelado"
             total={report.cancelled}
@@ -64,7 +63,12 @@ export default function StadisticTab(props: TProps) {
         </Grid>
       </Grid>
 
-      <AnalyticsPieChart title="Proyectos" subheader="Estado de los proyectos" chart={report} />
+      {report.new === 0 &&
+      report.inProgress === 0 &&
+      report.completed === 0 &&
+      report.cancelled === 0 ? null : (
+        <AnalyticsPieChart title="Proyectos" subheader="Estado de los proyectos" chart={report} />
+      )}
     </React.Fragment>
   )
 }
