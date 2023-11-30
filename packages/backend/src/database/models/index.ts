@@ -13,6 +13,7 @@ import { ProjectNote } from './project-note'
 import { StageNote } from './stage-note'
 import { Notification } from './notification'
 import { UserNotification } from './user-notification'
+import { Cache } from './cache'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -95,4 +96,5 @@ export {
   StageNote,
   Notification,
   UserNotification,
+  Cache,
 }

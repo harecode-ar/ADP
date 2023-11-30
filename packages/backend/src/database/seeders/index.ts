@@ -10,6 +10,7 @@ import { projectStateSeed } from './project-state'
 import { stageStateSeed } from './stage-state'
 import { projectSeed } from './project'
 import { stageSeed } from './stage'
+import { cacheSeed } from './cache'
 import { wait } from '../../utils/wait'
 
 const seed = async () => {
@@ -28,6 +29,7 @@ const seed = async () => {
     await projectSeed({ transaction })
     await stageSeed({ transaction })
 
+    await cacheSeed({ transaction })
     await transaction.commit()
     // eslint-disable-next-line no-console
     console.log(colors.green('Seeding complete'))

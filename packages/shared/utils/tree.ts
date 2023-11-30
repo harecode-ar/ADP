@@ -1,4 +1,4 @@
-import type { IArea } from '@adp/shared/types'
+import type { IArea } from '../types'
 
 function removeEmptyChildren(tree: IArea[]): IArea[] {
   tree.forEach((area) => {
