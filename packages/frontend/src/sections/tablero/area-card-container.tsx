@@ -13,7 +13,7 @@ import {
   InputAdornment,
   Link,
 } from '@mui/material'
-import { AREAS_FOR_LIST, PROJECT_AREA_REPORT } from 'src/graphql/queries'
+import { GET_AREAS_FOR_DASHBOARD, PROJECT_AREA_REPORT } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
@@ -30,11 +30,12 @@ export default function AreaCardContainer() {
     setSearch(value)
   }
 
-  const { data } = useQuery(AREAS_FOR_LIST)
+  // const { data } = useQuery(AREAS_FOR_LIST)
+  const { data } = useQuery(GET_AREAS_FOR_DASHBOARD)
 
   const areas: IArea[] = useMemo(() => {
     if (!data) return []
-    return data.areas
+    return data.areasForDashboard
   }, [data])
 
   const filteredAreas = useMemo(

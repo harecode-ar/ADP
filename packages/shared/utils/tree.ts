@@ -38,3 +38,51 @@ export function buildTree(areas: IArea[]): IArea[] {
   })
   return removeEmptyChildren(tree)
 }
+
+export function getAreaAncestors(area: IArea): IArea[] {
+  const ancestors: IArea[] = []
+  if (area.parentId) {
+    const parent = area.parentId
+    const parentArea = area
+    parentArea.id = parent
+    ancestors.push(parentArea)
+    ancestors.push(...getAreaAncestors(parentArea))
+  }
+  return ancestors
+}
+
+export function getAreaDescendants(area: IArea): IArea[] {
+  const descendants: IArea[] = []
+  if (area.children) {
+    area.children.forEach((child) => {
+      descendants.push(child)
+      descendants.push(...getAreaDescendants(child))
+    })
+  }
+  return descendants
+}
+
+export function getAreaDescendantsIds(area: IArea): number[] {
+  const descendants: number[] = []
+  if (area.children) {
+    area.children.forEach((child) => {
+      descendants.push(child.id)
+      descendants.push(...getAreaDescendantsIds(child))
+    })
+  }
+  return descendants
+}
+
+export function getAreaFromTree(tree: IArea[], id: number): IArea | undefined {
+  let area: IArea | undefined
+  for (let i = 0; i < tree.length; i += 1) {
+    if (area) break
+    const { children = [] } = tree[i]
+    if (tree[i].id === id) {
+      area = tree[i]
+    } else if (children.length > 0) {
+      area = getAreaFromTree(children, id)
+    }
+  }
+  return area
+}

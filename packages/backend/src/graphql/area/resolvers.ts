@@ -1,7 +1,9 @@
-import { ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
-import { Area, User } from '../../database/models'
+import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
+import { getAreaFromTree, getAreaDescendantsIds } from '@adp/shared'
+import { Area, Cache, User } from '../../database/models'
 import logger from '../../logger'
 import { createNotification } from '../../database/jobs'
+import { IContext } from '../types'
 
 export default {
   Area: {
@@ -36,6 +38,55 @@ export default {
         return Area.findAll({
           order: [['parentId', 'ASC']],
         })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    areasForDashboard: async (_: any, __: any, context: IContext): Promise<IArea[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const [userAreas, cachedTree] = await Promise.all([
+          Area.findAll({
+            where: {
+              responsibleId: user.id,
+            },
+            attributes: ['id'],
+          }),
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        console.log('tree', typeof tree)
+        console.log('isArray', Array.isArray(tree))
+        console.log(
+          'userAreas',
+          userAreas.map((x) => x.id)
+        )
+        const userAreasIds = userAreas.map((area: IArea) => area.id)
+        const ids = Array.from(
+          new Set<number>([
+            ...userAreasIds,
+            ...userAreasIds.flatMap((areaId) => {
+              const areaTree = getAreaFromTree(tree, areaId)
+              console.log('areaTree', JSON.stringify(areaTree, null, 2))
+              if (!areaTree) return []
+              return getAreaDescendantsIds(areaTree)
+            }),
+          ])
+        )
+        const areas = await Area.findAll({
+          where: {
+            id: ids,
+          },
+          order: [['parentId', 'ASC']],
+        })
+        return areas
       } catch (error) {
         logger.error(error)
         throw error

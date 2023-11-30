@@ -23,6 +23,7 @@ export default `#graphql
   type Query {
     area(id: Int!): Area
     areas: [Area]
+    areasForDashboard: [Area]
   }
 
   type Mutation {
