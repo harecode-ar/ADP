@@ -133,7 +133,7 @@ export default {
         const where: any = { areaId: args.areaId }
         if (args.stateId) where.stateId = args.stateId
         return Project.findAll({
-          where ,
+          where,
           include: [
             { model: Area, as: 'area' },
             { model: Stage, as: 'stages' },

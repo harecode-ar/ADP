@@ -43,7 +43,7 @@ export default function ProjectTab(props: TProps) {
         <FormControl>
           <Autocomplete
             style={{ width: 170, marginBottom: '16px' }}
-            options={[{id:0, name: 'Todos'},...PROJECT_STATE_ARRAY]}
+            options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
             getOptionLabel={(option) => option.name}
             value={viewOption}
             onChange={handleViewModeChange}

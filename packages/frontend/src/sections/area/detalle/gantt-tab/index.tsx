@@ -1,5 +1,5 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
-import React, { useState, useMemo }  from 'react'
+import React, { useState, useMemo } from 'react'
 import { Task } from 'gantt-task-react'
 import { Box, FormControl, Autocomplete, TextField } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
@@ -22,7 +22,10 @@ export default function GanttTab(props: TProps) {
   }
 
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
-    variables: viewOption.id !== 0 ? { areaId: Number(areaId), stateId: viewOption.id } : { areaId: Number(areaId) },
+    variables:
+      viewOption.id !== 0
+        ? { areaId: Number(areaId), stateId: viewOption.id }
+        : { areaId: Number(areaId) },
     skip: !areaId,
   })
 
@@ -30,7 +33,6 @@ export default function GanttTab(props: TProps) {
     if (!projectsQuery.data) return []
     return projectsQuery?.data?.projectsByAreaAndState
   }, [projectsQuery?.data])
-
 
   // const mappedStages: Task[] = stages.map((stage, index) => ({
   //   displayOrder: index + 2,
@@ -60,7 +62,7 @@ export default function GanttTab(props: TProps) {
       <FormControl>
         <Autocomplete
           style={{ width: 170, marginBottom: '16px' }}
-          options={[{id:0, name: 'Todos'},...PROJECT_STATE_ARRAY]}
+          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
           getOptionLabel={(option) => option.name}
           value={viewOption}
           onChange={handleViewModeChange}
