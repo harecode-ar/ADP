@@ -38,7 +38,6 @@ const getColor = (progress: number) => {
 
 export default function KanbanTaskItem({ project, task, sx, refetch, ...other }: Props) {
   const theme = useTheme()
-  console.log('Task', task)
 
   const color = getColor(task.progress)
 
@@ -100,24 +99,24 @@ export default function KanbanTaskItem({ project, task, sx, refetch, ...other }:
               }),
               ...(task.progress > 0.3 &&
                 task.progress <= 0.6 && {
-                  color: 'warning.main',
-                }),
+                color: 'warning.main',
+              }),
               ...(task.progress <= 0.3 && {
                 color: 'error.main',
               }),
             }}
           />
-          { task.hasStages ? (
+          {task.hasStages ? (
             <Stack>
-            <LinearProgress
-              variant="determinate"
-              value={task.progress * 100}
-              color={getColorVariant(task.progress)}
-            />
-            <Typography variant="subtitle2"> {task.progress * 100}%</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={task.progress * 100}
+                color={getColorVariant(task.progress)}
+              />
+              <Typography variant="subtitle2"> {task.progress * 100}%</Typography>
             </Stack>
           ) : ''}
-          
+
         </Stack>
 
       </Paper>
