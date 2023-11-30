@@ -1,12 +1,12 @@
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText'
+import ListItemButton from '@mui/material/ListItemButton'
 
-import { fToNow } from 'src/utils/format-time';
-import { INotification } from '@adp/shared';
+import { fToNow } from 'src/utils/format-time'
+import { INotification } from '@adp/shared'
 
 // import Label from 'src/components/label';
 // import FileThumbnail from 'src/components/file-thumbnail';
@@ -15,7 +15,7 @@ import { INotification } from '@adp/shared';
 
 type NotificationItemProps = {
   notification: INotification
-};
+}
 
 export default function NotificationItem({ notification }: NotificationItemProps) {
   const renderText = (
@@ -44,7 +44,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
         </Stack>
       }
     />
-  );
+  )
 
   const renderUnReadBadge = !notification.read && (
     <Box
@@ -58,7 +58,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
         position: 'absolute',
       }}
     />
-  );
+  )
 
   // const friendAction = (
   //   <Stack spacing={1} direction="row" sx={{ mt: 1.5 }}>
@@ -191,7 +191,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
         {notification.type === 'payment' && paymentAction} */}
       </Stack>
     </ListItemButton>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -207,5 +207,5 @@ function reader(data: string) {
         '& strong': { typography: 'subtitle2' },
       }}
     />
-  );
+  )
 }

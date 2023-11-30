@@ -1,14 +1,37 @@
-import { IProject } from '@adp/shared'
-import React from 'react'
+import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
+import React, { useState, useMemo } from 'react'
 import { Task } from 'gantt-task-react'
+import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
+import { useQuery } from '@apollo/client'
 import GanttComponent from './gantt-component'
 
 type TProps = {
-  projects: IProject[]
+  areaId: string
 }
 
 export default function GanttTab(props: TProps) {
-  const { projects } = props
+  const { areaId } = props
+
+  const [projectState, setProjectState] = useState(PROJECT_STATE_ARRAY[1]) // IN_PROGRESS
+
+  const handleProjectStateChange = (event: React.ChangeEvent<{}>, option: any | null) => {
+    if (option !== null) {
+      setProjectState(option)
+    }
+  }
+
+  const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
+    variables:
+      projectState.id !== 0
+        ? { areaId: Number(areaId), stateId: projectState.id }
+        : { areaId: Number(areaId) },
+    skip: !areaId,
+  })
+
+  const projects: IProject[] = useMemo(() => {
+    if (!projectsQuery.data) return []
+    return projectsQuery?.data?.projectsByAreaAndState
+  }, [projectsQuery?.data])
 
   // const mappedStages: Task[] = stages.map((stage, index) => ({
   //   displayOrder: index + 2,
@@ -32,5 +55,12 @@ export default function GanttTab(props: TProps) {
     type: 'project',
   }))
   const tasks: Task[] = mappedProjects
-  return <GanttComponent tasks={tasks} />
+
+  return (
+    <GanttComponent
+      tasks={tasks}
+      handleProjectStateChange={handleProjectStateChange}
+      projectState={projectState}
+    />
+  )
 }

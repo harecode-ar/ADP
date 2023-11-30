@@ -1,6 +1,6 @@
 import { IStage } from '@adp/shared'
 import React from 'react'
-import { Stack, Box, Avatar, LinearProgress, PaperProps, Paper, Typography } from '@mui/material'
+import { Stack, Box, Avatar, PaperProps, Paper, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
@@ -14,16 +14,6 @@ type Props = PaperProps & {
   stage: IStage
   subStageItem: IStage
   refetch: () => void
-}
-
-const getColorVariant = (progress: number) => {
-  if (progress >= 0.6) {
-    return 'info'
-  }
-  if (progress > 0.3 && progress <= 0.6) {
-    return 'warning'
-  }
-  return 'error'
 }
 
 const getColor = (progress: number) => {

@@ -1,6 +1,6 @@
 'use client'
 
-import type { IArea, IProject } from '@adp/shared'
+import type { IArea } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
@@ -8,10 +8,11 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_AREA, GET_IN_PROGRESS_PROJECTS_BY_AREA } from 'src/graphql/queries'
+import { GET_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
+import StadisticTab from './stadistic-tab'
 
 enum ETab {
   ORGANIGRAMA = 'Organigrama',
@@ -42,20 +43,10 @@ export default function AreaDetailView(props: TProps) {
     },
   })
 
-  const projectQuery = useQuery(GET_IN_PROGRESS_PROJECTS_BY_AREA, {
-    variables: { areaId: Number(areaId) },
-    skip: !areaId,
-  })
-
   const area: IArea | null = useMemo(() => {
     if (!areaQuery.data) return null
     return areaQuery.data.area
   }, [areaQuery.data])
-
-  const projects: IProject[] = useMemo(() => {
-    if (!projectQuery.data) return []
-    return projectQuery.data.inProgressProjectsByArea
-  }, [projectQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -121,15 +112,15 @@ export default function AreaDetailView(props: TProps) {
               >
                 <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
                   <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
-                  <Tab label={ETab.ORGANIGRAMA} value={ETab.ORGANIGRAMA} />
-                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
+                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
               </Box>
             </Card>
-            {/* {tab === ETab.ORGANIGRAMA && <OrganigramaTab/>} */}
-            {tab === ETab.PROJECTS && <ProjectTab projects={projects} />}
-            {tab === ETab.GANTT && <GanttTab projects={projects} />}
+
+            {tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />}
+            {tab === ETab.GANTT && <GanttTab areaId={areaId} />}
+            {tab === ETab.STATISTICS && <StadisticTab area={area} />}
           </React.Fragment>
         )}
       </Box>

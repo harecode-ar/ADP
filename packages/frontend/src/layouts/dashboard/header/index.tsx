@@ -15,7 +15,7 @@ import Logo from 'src/components/logo'
 import SvgColor from 'src/components/svg-color'
 import { useSettingsContext } from 'src/components/settings'
 //
-import NotificationsPopover from 'src/layouts/_common/notifications-popover';
+import NotificationsPopover from 'src/layouts/_common/notifications-popover'
 import { HEADER, NAV } from '../../config-layout'
 import { Searchbar, AccountPopover, SettingsButton } from '../../_common'
 

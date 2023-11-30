@@ -12,7 +12,6 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
-import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
@@ -49,16 +48,6 @@ const getColorVariant = (name: string) => {
   return 'error'
 }
 
-const getColor = (progress: number) => {
-  if (progress >= 0.6) {
-    return INFO.main
-  }
-  if (progress > 0.3 && progress <= 0.6) {
-    return WARNING.main
-  }
-  return ERROR.main
-}
-
 export default function KanbanDetails(props: TProps) {
   const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
@@ -82,7 +71,6 @@ export default function KanbanDetails(props: TProps) {
   }, [stageQuery.data])
 
   if (!subStage) return null
-  const color = getColor(subStage.progress)
 
   return (
     <Drawer

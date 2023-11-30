@@ -243,7 +243,6 @@ const ModalCreate = (props: TProps) => {
                     onClick={() => {
                       modal.onFalse()
                       formik.resetForm()
-                      
                     }}
                     color="primary"
                     variant="outlined"
