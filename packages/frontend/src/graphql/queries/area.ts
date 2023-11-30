@@ -67,3 +67,20 @@ export const GET_AREA = gql`
     }
   }
 `
+
+export const GET_AREAS_FOR_DASHBOARD = gql`
+  query areasForDashboard {
+    areasForDashboard {
+      id
+      name
+      color
+      description
+      rolename
+      responsible {
+        id
+        fullname
+        image
+      }
+    }
+  }
+`
