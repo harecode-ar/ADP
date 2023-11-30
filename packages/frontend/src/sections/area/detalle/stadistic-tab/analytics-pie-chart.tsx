@@ -1,5 +1,4 @@
 import { IProjectAreaReport } from '@adp/shared'
-import { ApexOptions } from 'apexcharts'
 import CardHeader from '@mui/material/CardHeader'
 import Card, { CardProps } from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
