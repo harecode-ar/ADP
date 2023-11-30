@@ -42,20 +42,10 @@ export default function AreaDetailView(props: TProps) {
     },
   })
 
-  const projectQuery = useQuery(GET_IN_PROGRESS_PROJECTS_BY_AREA, {
-    variables: { areaId: Number(areaId) },
-    skip: !areaId,
-  })
-
   const area: IArea | null = useMemo(() => {
     if (!areaQuery.data) return null
     return areaQuery.data.area
   }, [areaQuery.data])
-
-  const projects: IProject[] = useMemo(() => {
-    if (!projectQuery.data) return []
-    return projectQuery.data.inProgressProjectsByArea
-  }, [projectQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
