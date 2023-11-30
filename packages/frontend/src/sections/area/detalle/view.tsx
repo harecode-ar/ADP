@@ -14,6 +14,7 @@ import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
 
 enum ETab {
+  ORGANIGRAMA = 'Organigrama',
   PROJECTS = 'Proyectos',
   STATISTICS = 'Estadisticas',
   GANTT = 'Gantt',
@@ -120,12 +121,13 @@ export default function AreaDetailView(props: TProps) {
               >
                 <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
                   <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
+                  <Tab label={ETab.ORGANIGRAMA} value={ETab.ORGANIGRAMA} />
                   <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
               </Box>
             </Card>
-
+            {/* {tab === ETab.ORGANIGRAMA && <OrganigramaTab/>} */}
             {tab === ETab.PROJECTS && <ProjectTab projects={projects} />}
             {tab === ETab.GANTT && <GanttTab projects={projects} />}
           </React.Fragment>
