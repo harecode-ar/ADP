@@ -24,45 +24,47 @@ export default function StadisticTab(props: TProps) {
     return data.projectAreaReport
   }, [data])
 
-  console.log(report)
-
   return (
     <React.Fragment>
-    <Grid
-      sx={{
-        mt: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      container
-      spacing={1}
-      gap={1}
-    >
-      <Grid xs={12} sm={6} md={2}>
-        <AnalyticsWidgetSummary title="Nuevo" total={report.new} color="info" icon="entypo:new" />
+      <Grid
+        sx={{
+          mt: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        container
+        spacing={1}
+        gap={1}
+      >
+        <Grid xs={12} sm={6} md={2}>
+          <AnalyticsWidgetSummary title="Nuevo" total={report.new} color="info" icon="entypo:new" />
+        </Grid>
+
+        <Grid xs={12} sm={6} md={2}>
+          <AnalyticsWidgetSummary title="En proceso" total={report.inProgress} icon="mdi:tools" />
+        </Grid>
+
+        <Grid xs={12} sm={6} md={2}>
+          <AnalyticsWidgetSummary
+            title="Completado"
+            total={report.completed}
+            color="success"
+            icon="fluent-mdl2:completed-solid"
+          />
+        </Grid>
+
+        <Grid xs={12} sm={6} md={2}>
+          <AnalyticsWidgetSummary
+            title="Cancelado"
+            total={report.cancelled}
+            color="error"
+            icon="ooui:cancel"
+          />
+        </Grid>
       </Grid>
 
-      <Grid xs={12} sm={6} md={2}>
-        <AnalyticsWidgetSummary title="En proceso" total={report.inProgress} icon="mdi:tools" />
-      </Grid>
-
-      <Grid xs={12} sm={6} md={2}>
-        <AnalyticsWidgetSummary
-          title="Completado"
-          total={report.completed}
-          color="success"
-          icon="fluent-mdl2:completed-solid"
-        />
-      </Grid>
-
-      <Grid xs={12} sm={6} md={2}>
-        <AnalyticsWidgetSummary title="Cancelado" total={report.cancelled} color="error" icon="ooui:cancel" />
-      </Grid>
-
-    </Grid>
-
-     <AnalyticsPieChart  title="Proyectos" subheader="Estado de los proyectos" chart={report}/>
+      <AnalyticsPieChart title="Proyectos" subheader="Estado de los proyectos" chart={report} />
     </React.Fragment>
   )
 }

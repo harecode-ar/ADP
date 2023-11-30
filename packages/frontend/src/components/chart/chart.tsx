@@ -1,13 +1,13 @@
-import { memo } from 'react';
-import dynamic from 'next/dynamic';
+import { memo } from 'react'
+import dynamic from 'next/dynamic'
 
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from 'src/theme/css'
 
 // ----------------------------------------------------------------------
 
-const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const Chart = styled(ApexChart)(({ theme }) => ({
   '& .apexcharts-canvas': {
@@ -64,6 +64,6 @@ const Chart = styled(ApexChart)(({ theme }) => ({
       textTransform: 'capitalize',
     },
   },
-}));
+}))
 
-export default memo(Chart);
+export default memo(Chart)

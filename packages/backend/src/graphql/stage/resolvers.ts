@@ -370,7 +370,14 @@ export default {
     ): Promise<
       Omit<
         IStage,
-        'state' | 'area' | 'responsible' | 'project' | 'parentStage' | 'childStages' | 'notes' | 'hasStages'
+        | 'state'
+        | 'area'
+        | 'responsible'
+        | 'project'
+        | 'parentStage'
+        | 'childStages'
+        | 'notes'
+        | 'hasStages'
       >
     > => {
       try {

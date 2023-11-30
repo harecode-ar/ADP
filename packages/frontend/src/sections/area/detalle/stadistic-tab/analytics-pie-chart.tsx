@@ -36,7 +36,6 @@ interface Props extends CardProps {
 }
 
 export default function AnalyticsPieChart({ title, subheader, chart, ...other }: Props) {
-
   const { new: newProject, inProgress, completed, cancelled } = chart
 
   const options = {

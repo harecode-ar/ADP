@@ -1,16 +1,16 @@
-import merge from 'lodash/merge';
-import { ApexOptions } from 'apexcharts';
+import merge from 'lodash/merge'
+import { ApexOptions } from 'apexcharts'
 
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles'
 
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from 'src/hooks/use-responsive'
 
 // ----------------------------------------------------------------------
 
 export default function useChart(options?: ApexOptions) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const smUp = useResponsive('up', 'sm');
+  const smUp = useResponsive('up', 'sm')
 
   const LABEL_TOTAL = {
     show: true,
@@ -19,7 +19,7 @@ export default function useChart(options?: ApexOptions) {
     fontSize: theme.typography.subtitle2.fontSize,
     fontWeight: theme.typography.subtitle2.fontWeight,
     lineHeight: theme.typography.subtitle2.lineHeight,
-  };
+  }
 
   const LABEL_VALUE = {
     offsetY: 8,
@@ -27,7 +27,7 @@ export default function useChart(options?: ApexOptions) {
     fontSize: theme.typography.h3.fontSize,
     fontWeight: theme.typography.h3.fontWeight,
     lineHeight: theme.typography.h3.lineHeight,
-  };
+  }
 
   const baseOptions = {
     // Colors
@@ -211,7 +211,7 @@ export default function useChart(options?: ApexOptions) {
         },
       },
     ],
-  };
+  }
 
-  return merge(baseOptions, options);
+  return merge(baseOptions, options)
 }

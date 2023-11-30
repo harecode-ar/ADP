@@ -1,30 +1,41 @@
-import type { INotification } from '@adp/shared';
-import { m } from 'framer-motion';
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Tab, Tabs, List, Stack, Badge, Drawer, Divider, Tooltip, IconButton, Typography } from '@mui/material';
-import { useQuery, useMutation } from '@apollo/client';
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
-import { useSnackbar } from 'src/components/snackbar';
-import { usePrevious } from 'src/hooks/use-previous';
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import { varHover } from 'src/components/animate';
-import { GET_NOTIFICATIONS } from 'src/graphql/queries';
-import { READ_ALL_NOTIFICATIONS } from 'src/graphql/mutations';
-import NotificationItem from './notification-item';
+import type { INotification } from '@adp/shared'
+import { m } from 'framer-motion'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import {
+  Tab,
+  Tabs,
+  List,
+  Stack,
+  Badge,
+  Drawer,
+  Divider,
+  Tooltip,
+  IconButton,
+  Typography,
+} from '@mui/material'
+import { useQuery, useMutation } from '@apollo/client'
+import { useBoolean } from 'src/hooks/use-boolean'
+import { useResponsive } from 'src/hooks/use-responsive'
+import { useSnackbar } from 'src/components/snackbar'
+import { usePrevious } from 'src/hooks/use-previous'
+import Label from 'src/components/label'
+import Iconify from 'src/components/iconify'
+import Scrollbar from 'src/components/scrollbar'
+import { varHover } from 'src/components/animate'
+import { GET_NOTIFICATIONS } from 'src/graphql/queries'
+import { READ_ALL_NOTIFICATIONS } from 'src/graphql/mutations'
+import NotificationItem from './notification-item'
 
 // ----------------------------------------------------------------------
 
 type TTab = {
-  value: 'all' | 'unread' | 'read';
-  label: string;
-  count: number;
-};
+  value: 'all' | 'unread' | 'read'
+  label: string
+  count: number
+}
 
 const checkForNewNotifications = (prev: INotification[], next: INotification[]) => {
-  if (prev.length < next.length) return true;
+  if (prev.length < next.length) return true
   return next.every((notification) => {
     const prevNotification = prev.find((p) => p.id === notification.id)
     return !prevNotification
@@ -32,8 +43,7 @@ const checkForNewNotifications = (prev: INotification[], next: INotification[]) 
 }
 
 export default function NotificationsPopover() {
-
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   const notificationQuery = useQuery(GET_NOTIFICATIONS, {
     pollInterval: 30 * 1000,
@@ -42,7 +52,7 @@ export default function NotificationsPopover() {
   const [readAllNotifications] = useMutation(READ_ALL_NOTIFICATIONS, {
     onCompleted: () => {
       notificationQuery.refetch()
-    }
+    },
   })
 
   const notifications: INotification[] = useMemo(() => {
@@ -62,42 +72,48 @@ export default function NotificationsPopover() {
     }
   }, [notifications, prevNotifications, enqueueSnackbar])
 
-  const drawer = useBoolean();
+  const drawer = useBoolean()
 
-  const smUp = useResponsive('up', 'sm');
+  const smUp = useResponsive('up', 'sm')
 
-  const [currentTab, setCurrentTab] = useState('unread');
+  const [currentTab, setCurrentTab] = useState('unread')
 
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  }, []);
+    setCurrentTab(newValue)
+  }, [])
 
   const handleMarkAllAsRead = () => {
     readAllNotifications()
-  };
+  }
 
-  const [readNotifications, unreadNotifications] = useMemo(() => ([
-    notifications.filter((notification) => notification.read),
-    notifications.filter((notification) => !notification.read)
-  ]), [notifications])
+  const [readNotifications, unreadNotifications] = useMemo(
+    () => [
+      notifications.filter((notification) => notification.read),
+      notifications.filter((notification) => !notification.read),
+    ],
+    [notifications]
+  )
 
-  const tabs: TTab[] = useMemo(() => ([
-    {
-      value: 'all',
-      label: 'Todas',
-      count: notifications.length,
-    },
-    {
-      value: 'unread',
-      label: 'No leídas',
-      count: unreadNotifications.length,
-    },
-    {
-      value: 'read',
-      label: 'Leídas',
-      count: readNotifications.length,
-    }
-  ]), [notifications, readNotifications, unreadNotifications])
+  const tabs: TTab[] = useMemo(
+    () => [
+      {
+        value: 'all',
+        label: 'Todas',
+        count: notifications.length,
+      },
+      {
+        value: 'unread',
+        label: 'No leídas',
+        count: unreadNotifications.length,
+      },
+      {
+        value: 'read',
+        label: 'Leídas',
+        count: readNotifications.length,
+      },
+    ],
+    [notifications, readNotifications, unreadNotifications]
+  )
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
@@ -119,7 +135,7 @@ export default function NotificationsPopover() {
         </IconButton>
       )}
     </Stack>
-  );
+  )
 
   const renderTabs = (
     <Tabs value={currentTab} onChange={handleChangeTab}>
@@ -149,7 +165,7 @@ export default function NotificationsPopover() {
         />
       ))}
     </Tabs>
-  );
+  )
 
   const renderList = (
     <Scrollbar>
@@ -163,7 +179,7 @@ export default function NotificationsPopover() {
         ))}
       </List>
     </Scrollbar>
-  );
+  )
 
   return (
     <React.Fragment>
@@ -215,5 +231,5 @@ export default function NotificationsPopover() {
         </Box> */}
       </Drawer>
     </React.Fragment>
-  );
+  )
 }
