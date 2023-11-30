@@ -82,7 +82,6 @@ export default function KanbanDetails(props: TProps) {
   }, [stageQuery.data])
 
   if (!subStage) return null
-  const color = getColor(subStage.progress)
 
   return (
     <Drawer
