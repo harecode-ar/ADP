@@ -77,12 +77,14 @@ export default function AreaCardContainer() {
         ))}
       </Box>
       {notFound && (
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-        }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+        >
           <Typography>No se encontraron resultados</Typography>
         </Box>
       )}
