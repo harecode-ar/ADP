@@ -1,7 +1,6 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import { Task } from 'gantt-task-react'
-import { Box, FormControl, Autocomplete, TextField } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import GanttComponent from './gantt-component'
@@ -13,18 +12,18 @@ type TProps = {
 export default function GanttTab(props: TProps) {
   const { areaId } = props
 
-  const [viewOption, setViewOption] = useState(PROJECT_STATE_ARRAY[1]) // IN_PROGRESS
+  const [projectState, setProjectState] = useState(PROJECT_STATE_ARRAY[1]) // IN_PROGRESS
 
-  const handleViewModeChange = (event: React.ChangeEvent<{}>, option: any | null) => {
+  const handleProjectStateChange = (event: React.ChangeEvent<{}>, option: any | null) => {
     if (option !== null) {
-      setViewOption(option)
+      setProjectState(option)
     }
   }
 
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
     variables:
-      viewOption.id !== 0
-        ? { areaId: Number(areaId), stateId: viewOption.id }
+      projectState.id !== 0
+        ? { areaId: Number(areaId), stateId: projectState.id }
         : { areaId: Number(areaId) },
     skip: !areaId,
   })
@@ -58,19 +57,6 @@ export default function GanttTab(props: TProps) {
   const tasks: Task[] = mappedProjects
 
   return (
-    <Box className="ViewContainer">
-      <FormControl>
-        <Autocomplete
-          style={{ width: 170, marginBottom: '16px' }}
-          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
-          getOptionLabel={(option) => option.name}
-          value={viewOption}
-          onChange={handleViewModeChange}
-          renderInput={(params) => <TextField {...params} label="Estado" />}
-          clearIcon={null}
-        />
-      </FormControl>
-      {projects.length !== 0 && <GanttComponent tasks={tasks} />}
-    </Box>
+    <GanttComponent tasks={tasks} handleProjectStateChange={handleProjectStateChange} projectState={projectState}/>
   )
 }

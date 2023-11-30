@@ -1,7 +1,7 @@
-import { IStage, STAGE_STATE } from '@adp/shared'
+import { IStage, STAGE_STATE, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Task } from 'gantt-task-react'
-import { Card } from '@mui/material'
+import { Card, Box, Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 import Gantt, { useGantt } from 'src/components/gantt'
@@ -10,10 +10,12 @@ import TaskTooltip from './task-tooltip'
 
 type TProps = {
   tasks: Task[]
+  handleProjectStateChange: (a: any, b: any) => void
+  projectState: any
 }
 
 const GanttComponent = (props: TProps) => {
-  const { tasks } = props
+  const { tasks, handleProjectStateChange, projectState } = props
   const { viewOption, handleChangeView } = useGantt()
   const [expanded, setExpanded] = useState<string | null>(null)
 
@@ -66,13 +68,24 @@ const GanttComponent = (props: TProps) => {
 
   return (
     <Card sx={{ p: 3 }}>
+      <Box sx={{display: "flex", gap: 2}}>
+        <Autocomplete
+          style={{ width: 170, marginBottom: '16px' }}
+          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
+          getOptionLabel={(option) => option.name}
+          value={projectState}
+          onChange={handleProjectStateChange}
+          renderInput={(params) => <TextField {...params} label="Estado" />}
+          clearIcon={null}
+        />
       <ViewSwitcher viewOption={viewOption} handleChangeView={handleChangeView} />
-      <Gantt
+      </Box>
+      {tasks.length > 0 &&<Gantt
         tasks={combinedTasks}
         viewOption={viewOption}
         onDoubleClick={handleDoubleClick}
         TooltipContent={TaskTooltip}
-      />
+      />}
     </Card>
   )
 }
