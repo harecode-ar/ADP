@@ -1,6 +1,6 @@
 'use client'
 
-import type { IArea, IProject } from '@adp/shared'
+import type { IArea } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
@@ -8,7 +8,7 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
-import { GET_AREA, GET_IN_PROGRESS_PROJECTS_BY_AREA } from 'src/graphql/queries'
+import { GET_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
@@ -117,8 +117,8 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {tab === ETab.PROJECTS && <ProjectTab projects={projects} />}
-            {tab === ETab.GANTT && <GanttTab projects={projects} />}
+            {tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />}
+            {tab === ETab.GANTT && <GanttTab areaId={areaId} />}
             {tab === ETab.STATISTICS && <StadisticTab area={area} />}
           </React.Fragment>
         )}
