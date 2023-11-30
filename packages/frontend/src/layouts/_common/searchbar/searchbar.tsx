@@ -4,13 +4,8 @@ import React, { useState, memo, useCallback } from 'react'
 import parse from 'autosuggest-highlight/parse'
 import match from 'autosuggest-highlight/match'
 import { useTheme } from '@mui/material/styles'
-import Box from '@mui/material/Box'
-import List from '@mui/material/List'
-import Stack from '@mui/material/Stack'
-import InputBase from '@mui/material/InputBase'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import Dialog, { dialogClasses } from '@mui/material/Dialog'
+import { Box, List, Stack, InputBase, IconButton, Dialog, InputAdornment, Typography } from '@mui/material'
+import { dialogClasses } from '@mui/material/Dialog'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { useEventListener } from 'src/hooks/use-event-listener'
@@ -19,7 +14,6 @@ import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
 import { useRouter } from 'src/routes/hooks'
-import SearchNotFound from 'src/components/search-not-found'
 import { hasRole, hasPermission } from 'src/utils/nav-config'
 import ResultItem from './result-item'
 import { useNavData } from '../../dashboard/config-navigation'
@@ -169,7 +163,16 @@ function Searchbar() {
         </Box>
 
         <Scrollbar sx={{ p: 3, pt: 2, height: 400 }}>
-          {notFound ? <SearchNotFound query={searchQuery} sx={{ py: 10 }} /> : renderItems()}
+          {notFound ? (
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}>
+              <Typography>No se encontraron resultados</Typography>
+            </Box>
+          ) : renderItems()}
         </Scrollbar>
       </Dialog>
     </React.Fragment>

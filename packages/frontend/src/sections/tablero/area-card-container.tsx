@@ -18,7 +18,6 @@ import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
-import SearchNotFound from 'src/components/search-not-found'
 import { getStorageFileUrl } from 'src/utils/storage'
 import ProyectAreaReportItem from './proyect-area-report-item'
 
@@ -77,7 +76,16 @@ export default function AreaCardContainer() {
           <AreaCard key={area.id} area={area} />
         ))}
       </Box>
-      {notFound && <SearchNotFound query={search} />}
+      {notFound && (
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+        }}>
+          <Typography>No se encontraron resultados</Typography>
+        </Box>
+      )}
     </Box>
   )
 }
