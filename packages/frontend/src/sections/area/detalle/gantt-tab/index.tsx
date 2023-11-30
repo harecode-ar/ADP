@@ -22,8 +22,8 @@ export default function GanttTab(props: TProps) {
   }
 
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
-    variables: { areaId: Number(areaId), stateId: viewOption.id },
-    skip: !areaId || !viewOption.id,
+    variables: viewOption.id !== 0 ? { areaId: Number(areaId), stateId: viewOption.id } : { areaId: Number(areaId) },
+    skip: !areaId,
   })
 
   const projects: IProject[] = useMemo(() => {
@@ -60,7 +60,7 @@ export default function GanttTab(props: TProps) {
       <FormControl>
         <Autocomplete
           style={{ width: 170, marginBottom: '16px' }}
-          options={PROJECT_STATE_ARRAY}
+          options={[{id:0, name: 'Todos'},...PROJECT_STATE_ARRAY]}
           getOptionLabel={(option) => option.name}
           value={viewOption}
           onChange={handleViewModeChange}

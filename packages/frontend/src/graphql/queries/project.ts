@@ -72,7 +72,7 @@ export const GET_IN_PROGRESS_PROJECTS_BY_AREA = gql`
 `
 
 export const GET_PROJECTS_BY_AREA_AND_STATE = gql`
-  query projectsByAreaAndState($areaId: Int!, $stateId: Int!) {
+  query projectsByAreaAndState($areaId: Int!, $stateId: Int) {
     projectsByAreaAndState(areaId: $areaId, stateId: $stateId) {
       id
       name

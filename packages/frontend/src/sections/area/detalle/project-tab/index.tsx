@@ -19,10 +19,9 @@ export default function ProjectTab(props: TProps) {
       setViewOption(option)
     }
   }
-
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
-    variables: { areaId: Number(areaId), stateId: viewOption.id },
-    skip: !areaId || !viewOption.id,
+    variables: { areaId: Number(areaId), stateId: viewOption.id !== 0 ? viewOption.id : undefined },
+    skip: !areaId,
   })
 
   const projects: IProject[] = useMemo(() => {
@@ -44,7 +43,7 @@ export default function ProjectTab(props: TProps) {
         <FormControl>
           <Autocomplete
             style={{ width: 170, marginBottom: '16px' }}
-            options={PROJECT_STATE_ARRAY}
+            options={[{id:0, name: 'Todos'},...PROJECT_STATE_ARRAY]}
             getOptionLabel={(option) => option.name}
             value={viewOption}
             onChange={handleViewModeChange}
