@@ -1,14 +1,36 @@
-import { IProject } from '@adp/shared'
-import React from 'react'
+import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
+import React, { useState, useMemo }  from 'react'
 import { Task } from 'gantt-task-react'
+import { Box, FormControl, Autocomplete, TextField } from '@mui/material'
+import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
+import { useQuery } from '@apollo/client'
 import GanttComponent from './gantt-component'
 
 type TProps = {
-  projects: IProject[]
+  areaId: string
 }
 
 export default function GanttTab(props: TProps) {
-  const { projects } = props
+  const { areaId } = props
+
+  const [viewOption, setViewOption] = useState(PROJECT_STATE_ARRAY[1]) // IN_PROGRESS
+
+  const handleViewModeChange = (event: React.ChangeEvent<{}>, option: any | null) => {
+    if (option !== null) {
+      setViewOption(option)
+    }
+  }
+
+  const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
+    variables: { areaId: Number(areaId), stateId: viewOption.id },
+    skip: !areaId || !viewOption.id,
+  })
+
+  const projects: IProject[] = useMemo(() => {
+    if (!projectsQuery.data) return []
+    return projectsQuery?.data?.projectsByAreaAndState
+  }, [projectsQuery?.data])
+
 
   // const mappedStages: Task[] = stages.map((stage, index) => ({
   //   displayOrder: index + 2,
@@ -32,5 +54,21 @@ export default function GanttTab(props: TProps) {
     type: 'project',
   }))
   const tasks: Task[] = mappedProjects
-  return <GanttComponent tasks={tasks} />
+
+  return (
+    <Box className="ViewContainer">
+      <FormControl>
+        <Autocomplete
+          style={{ width: 170, marginBottom: '16px' }}
+          options={PROJECT_STATE_ARRAY}
+          getOptionLabel={(option) => option.name}
+          value={viewOption}
+          onChange={handleViewModeChange}
+          renderInput={(params) => <TextField {...params} label="Estado" />}
+          clearIcon={null}
+        />
+      </FormControl>
+      {projects.length !== 0 && <GanttComponent tasks={tasks} />}
+    </Box>
+  )
 }
