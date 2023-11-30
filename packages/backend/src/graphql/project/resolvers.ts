@@ -123,6 +123,29 @@ export default {
         throw error
       }
     },
+    projectsByAreaAndState: (
+      _: any,
+      args: Pick<IProject, 'areaId' | 'stateId'>,
+      context: IContext
+    ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const where: any = { areaId: args.areaId }
+        if (args.stateId) where.stateId = args.stateId
+        return Project.findAll({
+          where,
+          include: [
+            { model: Area, as: 'area' },
+            { model: Stage, as: 'stages' },
+            { model: ProjectState, as: 'state' },
+          ],
+          order: [['startDate', 'ASC']],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createProject: (
