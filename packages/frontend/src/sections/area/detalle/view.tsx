@@ -12,6 +12,7 @@ import { GET_AREA, GET_IN_PROGRESS_PROJECTS_BY_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
+import StadisticTab from './stadistic-tab'
 
 enum ETab {
   PROJECTS = 'Proyectos',
@@ -120,7 +121,7 @@ export default function AreaDetailView(props: TProps) {
               >
                 <Tabs value={tab} indicatorColor="primary" onChange={(_, v) => setTab(v)}>
                   <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
-                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} disabled />
+                  <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 </Tabs>
               </Box>
@@ -128,6 +129,7 @@ export default function AreaDetailView(props: TProps) {
 
             {tab === ETab.PROJECTS && <ProjectTab projects={projects} />}
             {tab === ETab.GANTT && <GanttTab projects={projects} />}
+            {tab === ETab.STATISTICS && <StadisticTab area={area} />}
           </React.Fragment>
         )}
       </Box>
