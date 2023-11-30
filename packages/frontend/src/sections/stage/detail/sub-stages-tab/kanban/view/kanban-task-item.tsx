@@ -95,8 +95,8 @@ export default function KanbansubStageItemItem({
               }),
               ...(subStageItem.progress > 0.3 &&
                 subStageItem.progress <= 0.6 && {
-                color: 'warning.main',
-              }),
+                  color: 'warning.main',
+                }),
               ...(subStageItem.progress <= 0.3 && {
                 color: 'error.main',
               }),
