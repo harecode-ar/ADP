@@ -64,13 +64,26 @@ export default function NotificationsPopover() {
 
   const prevNotifications = usePrevious(notifications)
 
+  const [readNotifications, unreadNotifications] = useMemo(
+    () => [
+      notifications.filter((notification) => notification.read),
+      notifications.filter((notification) => !notification.read),
+    ],
+    [notifications]
+  )
+
+
   useEffect(() => {
-    if (checkForNewNotifications(prevNotifications || [], notifications)) {
+    if (unreadNotifications.length > 0 && checkForNewNotifications(prevNotifications || [], notifications)) {
       enqueueSnackbar('Tienes nuevas notificaciones', {
         variant: 'info',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center',
+        },
       })
     }
-  }, [notifications, prevNotifications, enqueueSnackbar])
+  }, [notifications, prevNotifications, unreadNotifications.length, enqueueSnackbar])
 
   const drawer = useBoolean()
 
@@ -85,14 +98,6 @@ export default function NotificationsPopover() {
   const handleMarkAllAsRead = () => {
     readAllNotifications()
   }
-
-  const [readNotifications, unreadNotifications] = useMemo(
-    () => [
-      notifications.filter((notification) => notification.read),
-      notifications.filter((notification) => !notification.read),
-    ],
-    [notifications]
-  )
 
   const tabs: TTab[] = useMemo(
     () => [
@@ -147,7 +152,7 @@ export default function NotificationsPopover() {
           label={tab.label}
           icon={
             <Label
-              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
+              variant={((tab.value === currentTab) && 'filled') || 'soft'}
               color={
                 (tab.value === 'unread' && 'info') ||
                 (tab.value === 'read' && 'success') ||
@@ -224,11 +229,6 @@ export default function NotificationsPopover() {
 
         {renderList}
 
-        {/* <Box sx={{ p: 1 }}>
-          <Button fullWidth size="large">
-            View All
-          </Button>
-        </Box> */}
       </Drawer>
     </React.Fragment>
   )

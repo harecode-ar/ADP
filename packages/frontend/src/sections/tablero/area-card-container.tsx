@@ -29,7 +29,6 @@ export default function AreaCardContainer() {
     setSearch(value)
   }
 
-  // const { data } = useQuery(AREAS_FOR_LIST)
   const { data } = useQuery(GET_AREAS_FOR_DASHBOARD)
 
   const areas: IArea[] = useMemo(() => {
