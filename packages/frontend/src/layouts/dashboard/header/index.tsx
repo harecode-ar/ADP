@@ -67,7 +67,7 @@ export default function Header({ onOpenNav }: Props) {
           whileTap="tap"
           whileHover="hover"
           variants={varHover(1.05)}
-          color='default'
+          color="default"
         >
           <Iconify icon="fluent:note-add-16-filled" width={24} />
         </IconButton>

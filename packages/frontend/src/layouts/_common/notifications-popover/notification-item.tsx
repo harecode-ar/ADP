@@ -9,8 +9,11 @@ type NotificationItemProps = {
   setSelected: React.Dispatch<React.SetStateAction<INotification[]>>
 }
 
-export default function NotificationItem({ notification, checked, setSelected }: NotificationItemProps) {
-
+export default function NotificationItem({
+  notification,
+  checked,
+  setSelected,
+}: NotificationItemProps) {
   const renderText = (
     <ListItemText
       disableTypography
@@ -54,9 +57,9 @@ export default function NotificationItem({ notification, checked, setSelected }:
   )
 
   const handleSelect = () => {
-    setSelected(prev => {
-      if (prev.find(n => n.id === notification.id)) {
-        return prev.filter(n => n.id !== notification.id)
+    setSelected((prev) => {
+      if (prev.find((n) => n.id === notification.id)) {
+        return prev.filter((n) => n.id !== notification.id)
       }
       return [...prev, notification]
     })
@@ -81,23 +84,28 @@ export default function NotificationItem({ notification, checked, setSelected }:
       }}
       onClick={handleSelect}
     >
-      <Box sx={{
-        height: '100%',
-        position: 'relative',
-        width: 30,
-      }}>
-
-        <Iconify icon={checked ? "ic:baseline-check-box" : "ic:baseline-check-box-outline-blank"}
-          sx={{ position: 'absolute', top: 3, left: 0, color: (theme) => checked ? theme.palette.primary.main : theme.palette.grey[700] }} />
+      <Box
+        sx={{
+          height: '100%',
+          position: 'relative',
+          width: 30,
+        }}
+      >
+        <Iconify
+          icon={checked ? 'ic:baseline-check-box' : 'ic:baseline-check-box-outline-blank'}
+          sx={{
+            position: 'absolute',
+            top: 3,
+            left: 0,
+            color: (theme) => (checked ? theme.palette.primary.main : theme.palette.grey[700]),
+          }}
+        />
       </Box>
 
       {renderUnReadBadge}
 
-      <Stack sx={{ flexGrow: 1 }}>
-        {renderText}
-      </Stack>
-
-    </ListItemButton >
+      <Stack sx={{ flexGrow: 1 }}>{renderText}</Stack>
+    </ListItemButton>
   )
 }
 

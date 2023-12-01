@@ -23,7 +23,11 @@ import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
 import { varHover } from 'src/components/animate'
 import { GET_NOTIFICATIONS } from 'src/graphql/queries'
-import { READ_NOTIFICATIONS, REMOVE_NOTIFICATIONS, UNREAD_NOTIFICATIONS } from 'src/graphql/mutations'
+import {
+  READ_NOTIFICATIONS,
+  REMOVE_NOTIFICATIONS,
+  UNREAD_NOTIFICATIONS,
+} from 'src/graphql/mutations'
 import NotificationItem from './notification-item'
 import DeleteModal from './delete-modal'
 
@@ -86,9 +90,11 @@ export default function NotificationsPopover() {
     [notifications]
   )
 
-
   useEffect(() => {
-    if (unreadedNotifications.length > 0 && checkForNewNotifications(prevNotifications || [], notifications)) {
+    if (
+      unreadedNotifications.length > 0 &&
+      checkForNewNotifications(prevNotifications || [], notifications)
+    ) {
       enqueueSnackbar('Tienes nuevas notificaciones', {
         variant: 'info',
         anchorOrigin: {
@@ -173,8 +179,14 @@ export default function NotificationsPopover() {
     [notifications, readedNotifications, unreadedNotifications]
   )
 
-  const someSelectedReadedNotification = useMemo(() => selected.some((notification) => notification.read), [selected])
-  const someSelectedUnreadedNotification = useMemo(() => selected.some((notification) => !notification.read), [selected])
+  const someSelectedReadedNotification = useMemo(
+    () => selected.some((notification) => notification.read),
+    [selected]
+  )
+  const someSelectedUnreadedNotification = useMemo(
+    () => selected.some((notification) => !notification.read),
+    [selected]
+  )
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
@@ -240,7 +252,7 @@ export default function NotificationsPopover() {
           label={tab.label}
           icon={
             <Label
-              variant={((tab.value === currentTab) && 'filled') || 'soft'}
+              variant={(tab.value === currentTab && 'filled') || 'soft'}
               color={
                 (tab.value === 'unread' && 'info') ||
                 (tab.value === 'read' && 'success') ||
@@ -268,7 +280,12 @@ export default function NotificationsPopover() {
           (currentTab === 'read' && readedNotifications) ||
           notifications
         ).map((notification) => (
-          <NotificationItem key={notification.id} notification={notification} checked={!!selected.find((n) => n.id === notification.id)} setSelected={setSelected} />
+          <NotificationItem
+            key={notification.id}
+            notification={notification}
+            checked={!!selected.find((n) => n.id === notification.id)}
+            setSelected={setSelected}
+          />
         ))}
       </List>
     </Scrollbar>
@@ -316,13 +333,9 @@ export default function NotificationsPopover() {
         <Divider />
 
         {renderList}
-
       </Drawer>
 
-      <DeleteModal
-        modal={deleteModal}
-        onDelete={handleRemoveSelected}
-      />
+      <DeleteModal modal={deleteModal} onDelete={handleRemoveSelected} />
     </React.Fragment>
   )
 }
