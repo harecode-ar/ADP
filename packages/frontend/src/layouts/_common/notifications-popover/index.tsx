@@ -194,33 +194,27 @@ export default function NotificationsPopover() {
         Notificaciones
       </Typography>
 
-      {someSelectedUnreadedNotification && (
-        <Tooltip title="Marcar seleccionadas como leídas">
-          <IconButton color="primary" onClick={handleMarkSelectedAsRead}>
-            <Iconify icon="eva:done-all-fill" />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Tooltip title="Marcar seleccionadas como leídas">
+        <IconButton color="primary" onClick={handleMarkSelectedAsRead} disabled={!someSelectedUnreadedNotification}>
+          <Iconify icon="eva:done-all-fill" />
+        </IconButton>
+      </Tooltip>
 
-      {someSelectedReadedNotification && (
-        <Tooltip title="Marcar seleccionadas como no leídas">
-          <IconButton color="primary" onClick={handleMarkSelectedAsUnread}>
-            <Iconify icon="eva:close-fill" />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Tooltip title="Marcar seleccionadas como no leídas">
+        <IconButton color="primary" onClick={handleMarkSelectedAsUnread} disabled={!someSelectedReadedNotification}>
+          <Iconify icon="eva:close-fill" />
+        </IconButton>
+      </Tooltip>
 
-      {selected.length > 0 && (
-        <Tooltip title="Eliminar seleccionadas">
-          <IconButton color="error" onClick={deleteModal.onTrue}>
-            <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Tooltip title="Eliminar seleccionadas">
+        <IconButton color="error" onClick={deleteModal.onTrue} disabled={!(selected.length > 0)}>
+          <Iconify icon="eva:trash-2-fill" />
+        </IconButton>
+      </Tooltip>
 
-      {notifications.length > 0 && selected.length === 0 && (
+      {selected.length === 0 && (
         <Tooltip title="Seleccionar todas">
-          <IconButton color="primary" onClick={handleSelectAll}>
+          <IconButton color="primary" onClick={handleSelectAll} disabled={!(notifications.length > 0)}>
             <Iconify icon="material-symbols:select" />
           </IconButton>
         </Tooltip>
