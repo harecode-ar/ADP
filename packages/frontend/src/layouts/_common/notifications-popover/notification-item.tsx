@@ -70,10 +70,9 @@ export default function NotificationItem({
       disableRipple
       sx={{
         p: 2.5,
-        alignItems: 'flex-start',
         display: 'flex',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
-        gap: 2,
         borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
         ...(checked && {
           bgcolor: (theme) => theme.palette.primary.lighter,
@@ -88,7 +87,7 @@ export default function NotificationItem({
         sx={{
           height: '100%',
           position: 'relative',
-          width: 30,
+          width: 50,
         }}
       >
         <Iconify
