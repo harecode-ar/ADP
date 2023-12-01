@@ -1,23 +1,16 @@
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
-import ListItemText from '@mui/material/ListItemText'
-import ListItemButton from '@mui/material/ListItemButton'
-
-import { fToNow } from 'src/utils/format-time'
 import { INotification } from '@adp/shared'
-
-// import Label from 'src/components/label';
-// import FileThumbnail from 'src/components/file-thumbnail';
-
-// ----------------------------------------------------------------------
+import { Box, Stack, ListItemText, ListItemButton } from '@mui/material'
+import Iconify from 'src/components/iconify'
+import { fToNow } from 'src/utils/format-time'
 
 type NotificationItemProps = {
   notification: INotification
+  checked: boolean
+  setSelected: React.Dispatch<React.SetStateAction<INotification[]>>
 }
 
-export default function NotificationItem({ notification }: NotificationItemProps) {
+export default function NotificationItem({ notification, checked, setSelected }: NotificationItemProps) {
+
   const renderText = (
     <ListItemText
       disableTypography
@@ -60,116 +53,14 @@ export default function NotificationItem({ notification }: NotificationItemProps
     />
   )
 
-  // const friendAction = (
-  //   <Stack spacing={1} direction="row" sx={{ mt: 1.5 }}>
-  //     <Button size="small" variant="contained">
-  //       Accept
-  //     </Button>
-  //     <Button size="small" variant="outlined">
-  //       Decline
-  //     </Button>
-  //   </Stack>
-  // );
-
-  // const projectAction = (
-  //   <Stack alignItems="flex-start">
-  //     <Box
-  //       sx={{
-  //         p: 1.5,
-  //         my: 1.5,
-  //         borderRadius: 1.5,
-  //         color: 'text.secondary',
-  //         bgcolor: 'background.neutral',
-  //       }}
-  //     >
-  //       {reader(
-  //         `<p><strong>@Jaydon Frankie</strong> feedback by asking questions or just leave a note of appreciation.</p>`
-  //       )}
-  //     </Box>
-
-  //     <Button size="small" variant="contained">
-  //       Reply
-  //     </Button>
-  //   </Stack>
-  // );
-
-  // const fileAction = (
-  //   <Stack
-  //     spacing={1}
-  //     direction="row"
-  //     sx={{
-  //       pl: 1,
-  //       p: 1.5,
-  //       mt: 1.5,
-  //       borderRadius: 1.5,
-  //       bgcolor: 'background.neutral',
-  //     }}
-  //   >
-  //     <FileThumbnail
-  //       file="http://localhost:8080/httpsdesign-suriname-2015.mp3"
-  //       sx={{ width: 40, height: 40 }}
-  //     />
-
-  //     <Stack spacing={1} direction={{ xs: 'column', sm: 'row' }} flexGrow={1} sx={{ minWidth: 0 }}>
-  //       <ListItemText
-  //         disableTypography
-  //         primary={
-  //           <Typography variant="subtitle2" component="div" sx={{ color: 'text.secondary' }} noWrap>
-  //             design-suriname-2015.mp3
-  //           </Typography>
-  //         }
-  //         secondary={
-  //           <Stack
-  //             direction="row"
-  //             alignItems="center"
-  //             sx={{ typography: 'caption', color: 'text.disabled' }}
-  //             divider={
-  //               <Box
-  //                 sx={{
-  //                   mx: 0.5,
-  //                   width: 2,
-  //                   height: 2,
-  //                   borderRadius: '50%',
-  //                   bgcolor: 'currentColor',
-  //                 }}
-  //               />
-  //             }
-  //           >
-  //             <span>2.3 GB</span>
-  //             <span>30 min ago</span>
-  //           </Stack>
-  //         }
-  //       />
-
-  //       <Button size="small" variant="outlined">
-  //         Download
-  //       </Button>
-  //     </Stack>
-  //   </Stack>
-  // );
-
-  // const tagsAction = (
-  //   <Stack direction="row" spacing={0.75} flexWrap="wrap" sx={{ mt: 1.5 }}>
-  //     <Label variant="outlined" color="info">
-  //       Design
-  //     </Label>
-  //     <Label variant="outlined" color="warning">
-  //       Dashboard
-  //     </Label>
-  //     <Label variant="outlined">Design system</Label>
-  //   </Stack>
-  // );
-
-  // const paymentAction = (
-  //   <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
-  //     <Button size="small" variant="contained">
-  //       Pay
-  //     </Button>
-  //     <Button size="small" variant="outlined">
-  //       Decline
-  //     </Button>
-  //   </Stack>
-  // );
+  const handleSelect = () => {
+    setSelected(prev => {
+      if (prev.find(n => n.id === notification.id)) {
+        return prev.filter(n => n.id !== notification.id)
+      }
+      return [...prev, notification]
+    })
+  }
 
   return (
     <ListItemButton
@@ -177,20 +68,36 @@ export default function NotificationItem({ notification }: NotificationItemProps
       sx={{
         p: 2.5,
         alignItems: 'flex-start',
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 2,
         borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
+        ...(checked && {
+          bgcolor: (theme) => theme.palette.primary.lighter,
+          '&:hover': {
+            bgcolor: (theme) => theme.palette.primary.lighter,
+          },
+        }),
       }}
+      onClick={handleSelect}
     >
+      <Box sx={{
+        height: '100%',
+        position: 'relative',
+        width: 30,
+      }}>
+
+        <Iconify icon={checked ? "ic:baseline-check-box" : "ic:baseline-check-box-outline-blank"}
+          sx={{ position: 'absolute', top: 3, left: 0, color: (theme) => checked ? theme.palette.primary.main : theme.palette.grey[700] }} />
+      </Box>
+
       {renderUnReadBadge}
 
       <Stack sx={{ flexGrow: 1 }}>
         {renderText}
-        {/* {notification.type === 'friend' && friendAction}
-        {notification.type === 'project' && projectAction}
-        {notification.type === 'file' && fileAction}
-        {notification.type === 'tags' && tagsAction}
-        {notification.type === 'payment' && paymentAction} */}
       </Stack>
-    </ListItemButton>
+
+    </ListItemButton >
   )
 }
 

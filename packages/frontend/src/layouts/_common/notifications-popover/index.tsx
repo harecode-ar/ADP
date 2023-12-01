@@ -23,8 +23,9 @@ import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
 import { varHover } from 'src/components/animate'
 import { GET_NOTIFICATIONS } from 'src/graphql/queries'
-import { READ_ALL_NOTIFICATIONS } from 'src/graphql/mutations'
+import { READ_NOTIFICATIONS, REMOVE_NOTIFICATIONS, UNREAD_NOTIFICATIONS } from 'src/graphql/mutations'
 import NotificationItem from './notification-item'
+import DeleteModal from './delete-modal'
 
 // ----------------------------------------------------------------------
 
@@ -44,12 +45,25 @@ const checkForNewNotifications = (prev: INotification[], next: INotification[]) 
 
 export default function NotificationsPopover() {
   const { enqueueSnackbar } = useSnackbar()
+  const deleteModal = useBoolean()
 
   const notificationQuery = useQuery(GET_NOTIFICATIONS, {
     pollInterval: 30 * 1000,
   })
 
-  const [readAllNotifications] = useMutation(READ_ALL_NOTIFICATIONS, {
+  const [readNotifications] = useMutation(READ_NOTIFICATIONS, {
+    onCompleted: () => {
+      notificationQuery.refetch()
+    },
+  })
+
+  const [unreadNotifications] = useMutation(UNREAD_NOTIFICATIONS, {
+    onCompleted: () => {
+      notificationQuery.refetch()
+    },
+  })
+
+  const [removeNotifications] = useMutation(REMOVE_NOTIFICATIONS, {
     onCompleted: () => {
       notificationQuery.refetch()
     },
@@ -64,7 +78,7 @@ export default function NotificationsPopover() {
 
   const prevNotifications = usePrevious(notifications)
 
-  const [readNotifications, unreadNotifications] = useMemo(
+  const [readedNotifications, unreadedNotifications] = useMemo(
     () => [
       notifications.filter((notification) => notification.read),
       notifications.filter((notification) => !notification.read),
@@ -74,7 +88,7 @@ export default function NotificationsPopover() {
 
 
   useEffect(() => {
-    if (unreadNotifications.length > 0 && checkForNewNotifications(prevNotifications || [], notifications)) {
+    if (unreadedNotifications.length > 0 && checkForNewNotifications(prevNotifications || [], notifications)) {
       enqueueSnackbar('Tienes nuevas notificaciones', {
         variant: 'info',
         anchorOrigin: {
@@ -83,20 +97,59 @@ export default function NotificationsPopover() {
         },
       })
     }
-  }, [notifications, prevNotifications, unreadNotifications.length, enqueueSnackbar])
+  }, [notifications, prevNotifications, unreadedNotifications.length, enqueueSnackbar])
 
   const drawer = useBoolean()
 
   const smUp = useResponsive('up', 'sm')
 
   const [currentTab, setCurrentTab] = useState('unread')
+  const [selected, setSelected] = useState<INotification[]>([])
 
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue)
   }, [])
 
-  const handleMarkAllAsRead = () => {
-    readAllNotifications()
+  const handleMarkSelectedAsRead = () => {
+    readNotifications({
+      variables: {
+        ids: selected.map((notification) => notification.id),
+      },
+    })
+    setSelected([])
+  }
+
+  const handleMarkSelectedAsUnread = () => {
+    unreadNotifications({
+      variables: {
+        ids: selected.map((notification) => notification.id),
+      },
+    })
+    setSelected([])
+  }
+
+  const handleRemoveSelected = () => {
+    removeNotifications({
+      variables: {
+        ids: selected.map((notification) => notification.id),
+      },
+    })
+    setSelected([])
+    deleteModal.onFalse()
+  }
+
+  const handleSelectAll = () => {
+    if (currentTab === 'all') {
+      setSelected(notifications)
+    } else if (currentTab === 'unread') {
+      setSelected(unreadedNotifications)
+    } else if (currentTab === 'read') {
+      setSelected(readedNotifications)
+    }
+  }
+
+  const handleDesselect = () => {
+    setSelected([])
   }
 
   const tabs: TTab[] = useMemo(
@@ -109,16 +162,19 @@ export default function NotificationsPopover() {
       {
         value: 'unread',
         label: 'No leídas',
-        count: unreadNotifications.length,
+        count: unreadedNotifications.length,
       },
       {
         value: 'read',
         label: 'Leídas',
-        count: readNotifications.length,
+        count: readedNotifications.length,
       },
     ],
-    [notifications, readNotifications, unreadNotifications]
+    [notifications, readedNotifications, unreadedNotifications]
   )
+
+  const someSelectedReadedNotification = useMemo(() => selected.some((notification) => notification.read), [selected])
+  const someSelectedUnreadedNotification = useMemo(() => selected.some((notification) => !notification.read), [selected])
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
@@ -126,10 +182,42 @@ export default function NotificationsPopover() {
         Notificaciones
       </Typography>
 
-      {unreadNotifications.length > 0 && (
-        <Tooltip title="Marcar todo como leído">
-          <IconButton color="primary" onClick={handleMarkAllAsRead}>
+      {someSelectedUnreadedNotification && (
+        <Tooltip title="Marcar seleccionadas como leídas">
+          <IconButton color="primary" onClick={handleMarkSelectedAsRead}>
             <Iconify icon="eva:done-all-fill" />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {someSelectedReadedNotification && (
+        <Tooltip title="Marcar seleccionadas como no leídas">
+          <IconButton color="primary" onClick={handleMarkSelectedAsUnread}>
+            <Iconify icon="eva:close-fill" />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {selected.length > 0 && (
+        <Tooltip title="Eliminar seleccionadas">
+          <IconButton color="error" onClick={deleteModal.onTrue}>
+            <Iconify icon="eva:trash-2-fill" />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {notifications.length > 0 && selected.length === 0 && (
+        <Tooltip title="Seleccionar todas">
+          <IconButton color="primary" onClick={handleSelectAll}>
+            <Iconify icon="material-symbols:select" />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {selected.length > 0 && (
+        <Tooltip title="Desmarcar todas">
+          <IconButton color="primary" onClick={handleDesselect}>
+            <Iconify icon="mdi:select-remove" />
           </IconButton>
         </Tooltip>
       )}
@@ -176,11 +264,11 @@ export default function NotificationsPopover() {
     <Scrollbar>
       <List disablePadding>
         {(
-          (currentTab === 'unread' && unreadNotifications) ||
-          (currentTab === 'read' && readNotifications) ||
+          (currentTab === 'unread' && unreadedNotifications) ||
+          (currentTab === 'read' && readedNotifications) ||
           notifications
         ).map((notification) => (
-          <NotificationItem key={notification.id} notification={notification} />
+          <NotificationItem key={notification.id} notification={notification} checked={!!selected.find((n) => n.id === notification.id)} setSelected={setSelected} />
         ))}
       </List>
     </Scrollbar>
@@ -196,7 +284,7 @@ export default function NotificationsPopover() {
         color={drawer.value ? 'primary' : 'default'}
         onClick={drawer.onTrue}
       >
-        <Badge badgeContent={unreadNotifications.length} color="error">
+        <Badge badgeContent={unreadedNotifications.length} color="error">
           <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
         </Badge>
       </IconButton>
@@ -230,6 +318,11 @@ export default function NotificationsPopover() {
         {renderList}
 
       </Drawer>
+
+      <DeleteModal
+        modal={deleteModal}
+        onDelete={handleRemoveSelected}
+      />
     </React.Fragment>
   )
 }

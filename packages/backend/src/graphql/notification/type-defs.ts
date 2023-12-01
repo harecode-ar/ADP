@@ -15,8 +15,8 @@ export default `#graphql
   }
 
   type Mutation {
-    readNotification(id: Int): Boolean
-    unreadNotification(id: Int): Boolean
-    readAllNotifications: Boolean
+    readNotifications(ids: [Int]): Boolean
+    unreadNotifications(ids: [Int]): Boolean
+    removeNotifications(ids: [Int]): Boolean
   }
 `
