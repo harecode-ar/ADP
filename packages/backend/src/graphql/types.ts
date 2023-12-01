@@ -1,4 +1,4 @@
-import type { IUser, IRole, IPermission, ISession } from '@adp/shared/types'
+import type { IUser, IRole, IPermission, ISession } from '@adp/shared'
 
 export type TResolverFunction = (parent?: any, args?: any, context?: IContext) => any
 

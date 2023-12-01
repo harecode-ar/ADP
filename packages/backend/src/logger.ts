@@ -1,4 +1,4 @@
-import type { IBackendEnvironment } from '@adp/shared/types'
+import type { IBackendEnvironment } from '@adp/shared'
 import log4js from 'log4js'
 import dotenv from 'dotenv'
 

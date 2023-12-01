@@ -1,5 +1,5 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IStageNote, IUser } from '@adp/shared/types'
+import type { IStageNote, IUser } from '@adp/shared'
 import { StageNote, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'

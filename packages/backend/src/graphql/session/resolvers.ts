@@ -1,5 +1,5 @@
 import cluster from 'cluster'
-import type { IUser, ISession, IBackendEnvironment } from '@adp/shared/types'
+import type { IUser, ISession, IBackendEnvironment } from '@adp/shared'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import { User, Session } from '../../database/models'

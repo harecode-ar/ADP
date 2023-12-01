@@ -1,4 +1,4 @@
-import type { INotification, IUserNotification } from '@adp/shared/types'
+import type { INotification, IUserNotification } from '@adp/shared'
 import { Notification, UserNotification } from '../../database/models'
 import logger from '../../logger'
 import { IContext } from '../types'

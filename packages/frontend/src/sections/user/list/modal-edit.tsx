@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useCallback, useMemo } from 'react'
-import type { IRole } from '@adp/shared/types'
+import type { IRole } from '@adp/shared'
 import {
   Typography,
   Button,

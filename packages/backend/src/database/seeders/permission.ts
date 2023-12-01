@@ -1,5 +1,5 @@
 import { PERMISSION_ARRAY } from '@adp/shared'
-import type { IPermission } from '@adp/shared/types'
+import type { IPermission } from '@adp/shared'
 import { Permission } from '../models'
 
 export const permissionSeed = (context: { transaction: any }): Promise<IPermission[]> => {

@@ -1,4 +1,4 @@
-import type { IProject } from '@adp/shared/types'
+import type { IProject } from '@adp/shared'
 import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import Label from 'src/components/label'

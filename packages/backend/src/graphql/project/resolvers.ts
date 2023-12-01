@@ -1,5 +1,5 @@
 import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
-import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared/types'
+import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'

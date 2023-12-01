@@ -1,4 +1,4 @@
-import type { IProjectAreaReport } from '@adp/shared/types'
+import type { IProjectAreaReport } from '@adp/shared'
 import { QueryTypes } from 'sequelize'
 import logger from '../../logger'
 import { sequelize } from '../../database'

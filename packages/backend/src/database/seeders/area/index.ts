@@ -1,4 +1,4 @@
-import type { IArea } from '@adp/shared/types'
+import type { IArea } from '@adp/shared'
 import { Area } from '../../models'
 import areas from './data'
 

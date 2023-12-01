@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import type { IArea } from '@adp/shared/types'
+import type { IArea } from '@adp/shared'
 import { useRouter } from 'src/routes/hooks'
 import { Button, Box, TextField, Grid, Autocomplete, Card, InputAdornment } from '@mui/material'
 

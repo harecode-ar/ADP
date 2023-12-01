@@ -1,4 +1,4 @@
-import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
+import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared'
 import { getAreaFromTree, getAreaDescendantsIds } from '@adp/shared'
 import { Area, Cache, User } from '../../database/models'
 import logger from '../../logger'

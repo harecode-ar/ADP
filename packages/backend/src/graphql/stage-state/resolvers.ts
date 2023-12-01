@@ -1,5 +1,5 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IStageState } from '@adp/shared/types'
+import type { IStageState } from '@adp/shared'
 import { StageState } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'

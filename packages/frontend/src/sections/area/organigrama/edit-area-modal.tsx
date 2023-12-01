@@ -1,7 +1,7 @@
 'use client'
 
 import { COLORS } from '@adp/shared'
-import type { IArea, IUser } from '@adp/shared/types'
+import type { IArea, IUser } from '@adp/shared'
 import React, { useMemo } from 'react'
 import {
   Typography,
