@@ -22,12 +22,14 @@ import { GET_USER_CONTACTS } from 'src/graphql/queries'
 import { getStorageFileUrl } from 'src/utils/storage'
 import ModalCreate from './modal-create'
 import ModalUpdate from './modal-update'
+import ModalDelete from './modal-delete'
 
 export default function ContactPopover() {
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   const modalCreate = useBoolean()
   const modalUpdate = useBoolean()
+  const modalDelete = useBoolean()
 
   const [selected, setSelected] = useState<IContact | null>(null)
 
@@ -47,6 +49,11 @@ export default function ContactPopover() {
   const handleUpdate = (contact: IContact) => {
     setSelected(contact)
     modalUpdate.onTrue()
+  }
+
+  const handleDelete = (contact: IContact) => {
+    setSelected(contact)
+    modalDelete.onTrue()
   }
 
   if (loading) return null
@@ -117,7 +124,7 @@ export default function ContactPopover() {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Eliminar contacto">
-                    <IconButton>
+                    <IconButton onClick={() => handleDelete(contact)}>
                       <Iconify icon="mdi:trash-can-outline" />
                     </IconButton>
                   </Tooltip>
@@ -136,9 +143,12 @@ export default function ContactPopover() {
       </Drawer>
 
       <ModalCreate modal={modalCreate} refetch={refetch} />
-      {
-        modalUpdate.value && !!selected && <ModalUpdate modal={modalUpdate} refetch={refetch} contact={selected} />
-      }
+      {modalUpdate.value && !!selected && (
+        <ModalUpdate modal={modalUpdate} refetch={refetch} contact={selected} />
+      )}
+      {modalDelete.value && !!selected && (
+        <ModalDelete modal={modalDelete} refetch={refetch} contact={selected} />
+      )}
     </React.Fragment>
   )
 }
