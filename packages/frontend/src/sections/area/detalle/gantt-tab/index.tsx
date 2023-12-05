@@ -59,25 +59,25 @@ export default function GanttTab(props: TProps) {
 
   return (
     <Box>
-    {tasks.length === 0 ? (
-      <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        marginTop: '16px',
-      }}
-    >
-      <Typography>No hay proyectos asignados en esta area.</Typography>
-    </Box>
-    ) : (
-      <GanttComponent
-      tasks={tasks}
-      handleProjectStateChange={handleProjectStateChange}
-      projectState={projectState}
-    />
-    )}
+      {tasks.length === 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            marginTop: '16px',
+          }}
+        >
+          <Typography>No hay proyectos asignados en esta area.</Typography>
+        </Box>
+      ) : (
+        <GanttComponent
+          tasks={tasks}
+          handleProjectStateChange={handleProjectStateChange}
+          projectState={projectState}
+        />
+      )}
     </Box>
   )
 }

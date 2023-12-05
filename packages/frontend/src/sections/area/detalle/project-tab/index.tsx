@@ -61,7 +61,8 @@ export default function ProjectTab(props: TProps) {
               value={viewOption}
               onChange={handleViewModeChange}
               renderInput={(params) => <TextField {...params} label="Estado" />}
-              clearIcon={null} />
+              clearIcon={null}
+            />
           </Box>
           {projects.map((project) => (
             <ProjectLine key={project.id} project={project} />
