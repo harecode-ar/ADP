@@ -39,6 +39,17 @@ export default function ProjectTab(props: TProps) {
         gap: 2,
       }}
     >
+      <Box className="ViewContainer">
+        <Autocomplete
+          style={{ width: 170, marginBottom: '16px' }}
+          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
+          getOptionLabel={(option) => option.name}
+          value={viewOption}
+          onChange={handleViewModeChange}
+          renderInput={(params) => <TextField {...params} label="Estado" />}
+          clearIcon={null}
+        />
+      </Box>
       {projects.length === 0 ? (
         <Box
           sx={{
@@ -53,17 +64,6 @@ export default function ProjectTab(props: TProps) {
         </Box>
       ) : (
         <React.Fragment>
-          <Box className="ViewContainer">
-            <Autocomplete
-              style={{ width: 170, marginBottom: '16px' }}
-              options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
-              getOptionLabel={(option) => option.name}
-              value={viewOption}
-              onChange={handleViewModeChange}
-              renderInput={(params) => <TextField {...params} label="Estado" />}
-              clearIcon={null}
-            />
-          </Box>
           {projects.map((project) => (
             <ProjectLine key={project.id} project={project} />
           ))}
