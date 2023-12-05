@@ -7,7 +7,7 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { IContact } from '@adp/shared'
 import { useMutation } from '@apollo/client'
-import { DELETE_CONTACT } from 'src/graphql/mutations'
+import { DELETE_USER_CONTACT } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -33,7 +33,7 @@ export default function ModalDelete(props: TProps) {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const [deleteContact] = useMutation(DELETE_CONTACT)
+  const [deleteContact] = useMutation(DELETE_USER_CONTACT)
 
   const handleDelete = async () => {
     try {
