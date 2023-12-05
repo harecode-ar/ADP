@@ -1,16 +1,19 @@
 import { m } from 'framer-motion'
 import React from 'react'
-import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
+import CreateChecklistModal from './checklist-create-modal'
 
 export default function ChecklistPopover() {
+  const createChecklistModal = useBoolean()
+  const refetch = () => null
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (
-    <React.Fragment>
+    <Box>
       <IconButton
         component={m.button}
         whileTap="tap"
@@ -39,7 +42,7 @@ export default function ChecklistPopover() {
           </Typography>
 
           <Tooltip title="Crear nuevo checklist">
-            <IconButton onClick={() => null}>
+            <IconButton onClick= {createChecklistModal.onTrue}>
               <Iconify icon="mdi:plus" />
             </IconButton>
           </Tooltip>
@@ -52,6 +55,8 @@ export default function ChecklistPopover() {
         </Stack>
         <Divider />
       </Drawer>
-    </React.Fragment>
+      <CreateChecklistModal modal={createChecklistModal} refetch={refetch}/>
+    </Box>
+
   )
 }
