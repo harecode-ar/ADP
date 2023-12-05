@@ -20,8 +20,7 @@ import { ApolloWrapper } from 'src/lib/apollo-provider'
 
 export const metadata = {
   title: 'Administrador de Proyectos',
-  description:
-    'Administrador de Proyectos',
+  description: 'Administrador de Proyectos',
   keywords: 'Administrador de Proyectos',
   themeColor: '#000000',
   manifest: '/manifest.json',

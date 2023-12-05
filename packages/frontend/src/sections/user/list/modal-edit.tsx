@@ -22,7 +22,7 @@ import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
 import { UPDATE_USER } from 'src/graphql/mutations'
 import { fData } from 'src/utils/format-number'
-import { UploadAvatar } from 'src/components/upload'
+import UploadAvatar from 'src/components/upload/upload-avatar'
 import { getStorageFileUrl } from 'src/utils/storage'
 
 const styleModal = {

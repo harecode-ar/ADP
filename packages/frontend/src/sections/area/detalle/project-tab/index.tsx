@@ -1,5 +1,5 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
-import { Box, Autocomplete, TextField } from '@mui/material'
+import { Box, Autocomplete, TextField, Typography } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import React, { useState, useMemo } from 'react'
@@ -50,9 +50,25 @@ export default function ProjectTab(props: TProps) {
           clearIcon={null}
         />
       </Box>
-      {projects.map((project) => (
-        <ProjectLine key={project.id} project={project} />
-      ))}
+      {projects.length === 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            marginTop: '16px',
+          }}
+        >
+          <Typography>No hay proyectos asignados en esta area.</Typography>
+        </Box>
+      ) : (
+        <React.Fragment>
+          {projects.map((project) => (
+            <ProjectLine key={project.id} project={project} />
+          ))}
+        </React.Fragment>
+      )}
     </Box>
   )
 }
