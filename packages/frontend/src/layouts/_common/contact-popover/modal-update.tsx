@@ -221,6 +221,6 @@ export default function ModalUpdate(props: TProps) {
           </Box>
         </Box>
       </Box>
-    </Modal >
+    </Modal>
   )
 }

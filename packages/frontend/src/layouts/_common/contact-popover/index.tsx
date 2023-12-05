@@ -143,12 +143,12 @@ export default function ContactPopover() {
       </Drawer>
 
       <ModalCreate modal={modalCreate} refetch={refetch} />
-      {
-        modalUpdate.value && !!selected && <ModalUpdate modal={modalUpdate} refetch={refetch} contact={selected} />
-      }
-      {
-        modalDelete.value && !!selected && <ModalDelete modal={modalDelete} refetch={refetch} contact={selected} />
-      }
+      {modalUpdate.value && !!selected && (
+        <ModalUpdate modal={modalUpdate} refetch={refetch} contact={selected} />
+      )}
+      {modalDelete.value && !!selected && (
+        <ModalDelete modal={modalDelete} refetch={refetch} contact={selected} />
+      )}
     </React.Fragment>
   )
 }
