@@ -1,3 +1,4 @@
+import type { IContact } from './contact'
 import type { IRole } from './role'
 
 export interface IUser {
@@ -16,6 +17,8 @@ export interface IUser {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
+
+  contacts: IContact[]
 }
 
 export type TChangePasswordInput = {
