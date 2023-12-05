@@ -1,13 +1,13 @@
 import { memo } from 'react'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 
 import { alpha, styled } from '@mui/material/styles'
 
 import { bgBlur } from 'src/theme/css'
 
-// ----------------------------------------------------------------------
+import ApexChart from 'react-apexcharts'
 
-const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
+// ----------------------------------------------------------------------
 
 const Chart = styled(ApexChart)(({ theme }) => ({
   '& .apexcharts-canvas': {

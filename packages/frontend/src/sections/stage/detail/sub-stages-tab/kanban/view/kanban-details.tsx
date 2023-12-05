@@ -9,7 +9,7 @@ import Scrollbar from 'src/components/scrollbar'
 import { Tooltip, IconButton, Button, Box, Avatar, Typography, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_STAGE } from 'src/graphql/queries'
+import { GET_SUB_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import ModalDelete from './modal-delete'
@@ -53,7 +53,7 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
 
-  const stageQuery = useQuery(GET_STAGE, {
+  const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
       id: subStageItem.id,
     },
@@ -67,7 +67,7 @@ export default function KanbanDetails(props: TProps) {
 
   const subStage: IStage | null = useMemo(() => {
     if (!stageQuery.data) return null
-    return stageQuery.data.stage
+    return stageQuery.data.subStage
   }, [stageQuery.data])
 
   if (!subStage) return null

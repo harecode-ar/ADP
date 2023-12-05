@@ -195,13 +195,21 @@ export default function NotificationsPopover() {
       </Typography>
 
       <Tooltip title="Marcar seleccionadas como leídas">
-        <IconButton color="primary" onClick={handleMarkSelectedAsRead} disabled={!someSelectedUnreadedNotification}>
+        <IconButton
+          color="primary"
+          onClick={handleMarkSelectedAsRead}
+          disabled={!someSelectedUnreadedNotification}
+        >
           <Iconify icon="eva:done-all-fill" />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Marcar seleccionadas como no leídas">
-        <IconButton color="primary" onClick={handleMarkSelectedAsUnread} disabled={!someSelectedReadedNotification}>
+        <IconButton
+          color="primary"
+          onClick={handleMarkSelectedAsUnread}
+          disabled={!someSelectedReadedNotification}
+        >
           <Iconify icon="eva:close-fill" />
         </IconButton>
       </Tooltip>
@@ -214,7 +222,11 @@ export default function NotificationsPopover() {
 
       {selected.length === 0 && (
         <Tooltip title="Seleccionar todas">
-          <IconButton color="primary" onClick={handleSelectAll} disabled={!(notifications.length > 0)}>
+          <IconButton
+            color="primary"
+            onClick={handleSelectAll}
+            disabled={!(notifications.length > 0)}
+          >
             <Iconify icon="material-symbols:select" />
           </IconButton>
         </Tooltip>
