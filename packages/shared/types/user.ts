@@ -18,7 +18,7 @@ export interface IUser {
   updatedAt: Date
   deletedAt: Date | null
 
-  contacts: IContact[]
+  contacts?: IContact[]
 }
 
 export type TChangePasswordInput = {

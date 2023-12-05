@@ -17,6 +17,7 @@ import { useSettingsContext } from 'src/components/settings'
 //
 import NotificationsPopover from 'src/layouts/_common/notifications-popover'
 import ChecklistPopover from 'src/layouts/_common/checklist-popover'
+import ContactPopover from 'src/layouts/_common/contact-popover'
 import { HEADER, NAV } from '../../config-layout'
 import { Searchbar, AccountPopover, SettingsButton } from '../../_common'
 
@@ -61,6 +62,7 @@ export default function Header({ onOpenNav }: Props) {
         spacing={{ xs: 0.5, sm: 1 }}
       >
         <ChecklistPopover />
+        <ContactPopover />
         <NotificationsPopover />
         <SettingsButton />
         <AccountPopover />
