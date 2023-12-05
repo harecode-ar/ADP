@@ -1,6 +1,6 @@
 import { PERMISSION_MAP } from '@adp/shared'
 import type { IContact, IUser, IStage, IProject, IUpload } from '@adp/shared'
-import { Contact, User, Stage, Project } from '../../database/models'
+import { Contact, User, Stage, Project, ContactUser } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
@@ -100,7 +100,9 @@ export default {
       args: Pick<IContact, 'name' | 'phone'> & { image: IUpload | null },
       context: IContext
     ): Promise<Contact> => {
+      const { user } = context
       try {
+        if (!user) throw new Error('No autorizado')
         needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
         const { name, phone, image } = args
 
@@ -124,6 +126,10 @@ export default {
         }
 
         const contact = await Contact.create(contactData)
+        await ContactUser.create({
+          userId: user.id,
+          contactId: contact.id,
+        })
         return contact
       } catch (error) {
         logger.error(error)
