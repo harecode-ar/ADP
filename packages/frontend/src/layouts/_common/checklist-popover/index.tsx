@@ -5,10 +5,11 @@ import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
-import ChecklistComponent from './checklist-component'
+import { ChecklistItem } from './checklist-item'
 import CHECKLIST_MOCK from '../../../mocks/checklist'
 
 export default function ChecklistPopover() {
+  const checklists = CHECKLIST_MOCK
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (
@@ -54,7 +55,24 @@ export default function ChecklistPopover() {
         </Stack>
         <Divider />
 
-        <ChecklistComponent checklists={CHECKLIST_MOCK} />
+        <Stack
+          sx={{
+            p: 2.5,
+          }}
+          spacing={1}
+        >
+          {checklists.map((checklist: any) => {
+            const totalChecks = checklist.checks.length
+            const completedChecks = checklist.checks.filter((check: any) => check.checked).length
+            return (
+              <ChecklistItem
+                checklist={checklist}
+                totalChecks={totalChecks}
+                completedChecks={completedChecks}
+              />
+            )
+          })}
+        </Stack>
       </Drawer>
     </React.Fragment>
   )
