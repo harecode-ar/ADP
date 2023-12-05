@@ -5,10 +5,15 @@ import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
+import ModalCreate from './modal-create'
 
 export default function ContactPopover() {
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
+  const modalCreate = useBoolean()
+
+  const refetch = () => null
+
   return (
     <React.Fragment>
       <IconButton
@@ -39,7 +44,7 @@ export default function ContactPopover() {
           </Typography>
 
           <Tooltip title="Crear nuevo contacto">
-            <IconButton onClick={() => null}>
+            <IconButton onClick={modalCreate.onTrue}>
               <Iconify icon="mdi:plus" />
             </IconButton>
           </Tooltip>
@@ -52,6 +57,9 @@ export default function ContactPopover() {
         </Stack>
         <Divider />
       </Drawer>
+
+      <ModalCreate modal={modalCreate} refetch={refetch} />
+
     </React.Fragment>
   )
 }
