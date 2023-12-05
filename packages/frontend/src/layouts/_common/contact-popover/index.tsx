@@ -1,6 +1,6 @@
 import { IContact } from '@adp/shared'
 import { m } from 'framer-motion'
-import React, { useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   Avatar,
   IconButton,
@@ -21,11 +21,15 @@ import { useResponsive } from 'src/hooks/use-responsive'
 import { GET_USER_CONTACTS } from 'src/graphql/queries'
 import { getStorageFileUrl } from 'src/utils/storage'
 import ModalCreate from './modal-create'
+import ModalUpdate from './modal-update'
 
 export default function ContactPopover() {
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   const modalCreate = useBoolean()
+  const modalUpdate = useBoolean()
+
+  const [selected, setSelected] = useState<IContact | null>(null)
 
   const { data, loading, refetch } = useQuery(GET_USER_CONTACTS)
 
@@ -38,6 +42,11 @@ export default function ContactPopover() {
 
   const call = (phone: string) => {
     window.open(`tel:${phone}`, '_blank')
+  }
+
+  const handleUpdate = (contact: IContact) => {
+    setSelected(contact)
+    modalUpdate.onTrue()
   }
 
   if (loading) return null
@@ -103,7 +112,7 @@ export default function ContactPopover() {
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Tooltip title="Editar contacto">
-                    <IconButton>
+                    <IconButton onClick={() => handleUpdate(contact)}>
                       <Iconify icon="mdi:pencil" />
                     </IconButton>
                   </Tooltip>
@@ -127,6 +136,9 @@ export default function ContactPopover() {
       </Drawer>
 
       <ModalCreate modal={modalCreate} refetch={refetch} />
+      {
+        modalUpdate.value && !!selected && <ModalUpdate modal={modalUpdate} refetch={refetch} contact={selected} />
+      }
     </React.Fragment>
   )
 }

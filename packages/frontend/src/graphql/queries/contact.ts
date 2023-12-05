@@ -10,3 +10,14 @@ export const GET_USER_CONTACTS = gql`
     }
   }
 `
+
+export const GET_CONTACT = gql`
+  query contact($id: ID) {
+    contact(id: $id) {
+      id
+      name
+      phone
+      image
+    }
+  }
+`

@@ -7,3 +7,11 @@ export const CREATE_CONTACT = gql`
     }
   }
 `
+
+export const UPDATE_CONTACT = gql`
+  mutation updateContact($id: ID!, $name: String, $phone: String, $image: Upload) {
+    updateContact(id: $id, name: $name, phone: $phone, image: $image) {
+      id
+    }
+  }
+`
