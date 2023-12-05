@@ -1,6 +1,6 @@
 import { m } from 'framer-motion'
 import React from 'react'
-import { IconButton, Stack, Typography, Divider, Drawer } from '@mui/material'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -37,6 +37,12 @@ export default function ChecklistPopover() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Checklist
           </Typography>
+
+          <Tooltip title="Crear nuevo checklist">
+            <IconButton onClick={() => null}>
+              <Iconify icon="mdi:plus" />
+            </IconButton>
+          </Tooltip>
 
           {!smUp && (
             <IconButton onClick={drawer.onFalse}>
