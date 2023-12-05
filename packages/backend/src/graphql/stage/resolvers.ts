@@ -1,5 +1,6 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea } from '@adp/shared'
+import { Op } from 'sequelize'
 import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
@@ -72,7 +73,47 @@ export default {
     > | null> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_READ], context)
-        return Stage.findByPk(args.id, {
+        return Stage.findOne({
+          where: { id: args.id, parentStageId: null },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+            },
+            {
+              model: StageState,
+              as: 'state',
+            },
+            {
+              model: StageNote,
+              as: 'notes',
+              include: [
+                {
+                  model: User,
+                  as: 'user',
+                  attributes: ['id', 'firstname', 'lastname', 'image'],
+                },
+              ],
+            },
+          ],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    subStage: (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<Omit<
+      IStage,
+      'state' | 'area' | 'responsible' | 'parentStage' | 'childStages' | 'project' | 'notes'
+    > | null> => {
+      try {
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        return Stage.findOne({
+          where: { id: args.id, parentStageId: { [Op.ne]: null } },
           include: [
             {
               model: Area,
