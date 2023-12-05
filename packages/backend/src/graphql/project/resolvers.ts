@@ -136,7 +136,13 @@ export default {
           where,
           include: [
             { model: Area, as: 'area' },
-            { model: Stage, as: 'stages' },
+            {
+              model: Stage,
+              as: 'stages',
+              where: {
+                parentStageId: null,
+              },
+            },
             { model: ProjectState, as: 'state' },
           ],
           order: [['startDate', 'ASC']],

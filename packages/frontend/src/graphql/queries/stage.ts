@@ -93,3 +93,41 @@ export const GET_STAGE = gql`
     }
   }
 `
+
+export const GET_SUB_STAGE = gql`
+  query getSubStage($id: Int!) {
+    subStage(id: $id) {
+      id
+      name
+      progress
+      startDate
+      endDate
+      description
+      hasStages
+      projectId
+      area {
+        id
+        name
+      }
+      responsible {
+        id
+        fullname
+        image
+      }
+      state {
+        id
+        name
+      }
+      notes {
+        id
+        message
+        createdAt
+        user {
+          id
+          fullname
+          image
+        }
+      }
+    }
+  }
+`

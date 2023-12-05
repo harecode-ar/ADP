@@ -14,6 +14,7 @@ import stageState from './stage-state'
 import stageNote from './stage-note'
 import report from './report'
 import notification from './notification'
+import contact from './contact'
 
 export const typeDefs = mergeTypeDefs([
   upload.typeDefs,
@@ -30,6 +31,7 @@ export const typeDefs = mergeTypeDefs([
   stageNote.typeDefs,
   report.typeDefs,
   notification.typeDefs,
+  contact.typeDefs,
 ])
 
 export const resolvers = mergeResolvers([
@@ -47,6 +49,7 @@ export const resolvers = mergeResolvers([
   stageNote.resolvers,
   report.resolvers,
   notification.resolvers,
+  contact.resolvers,
 ])
 
 export default makeExecutableSchema({
