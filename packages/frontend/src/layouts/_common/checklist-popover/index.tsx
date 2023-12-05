@@ -5,6 +5,8 @@ import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
+import ChecklistComponent from './checklist-component'
+import CHECKLIST_MOCK from '../../../mocks/checklist'
 
 export default function ChecklistPopover() {
   const drawer = useBoolean()
@@ -51,6 +53,8 @@ export default function ChecklistPopover() {
           )}
         </Stack>
         <Divider />
+
+        <ChecklistComponent checklists={CHECKLIST_MOCK} />
       </Drawer>
     </React.Fragment>
   )
