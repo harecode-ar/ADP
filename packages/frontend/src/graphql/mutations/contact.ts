@@ -15,3 +15,11 @@ export const UPDATE_CONTACT = gql`
     }
   }
 `
+
+export const DELETE_CONTACT = gql`
+  mutation deleteContact($id: ID!) {
+    deleteContact(id: $id) {
+      id
+    }
+  }
+`
