@@ -1,9 +1,10 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IContact, IUser, IStage, IProject } from '@adp/shared'
+import type { IContact, IUser, IStage, IProject, IUpload } from '@adp/shared'
 import { Contact, User, Stage, Project } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
+import { deleteFiles, uploadFile } from '../../services/storage'
 
 export default {
   Contact: {
@@ -87,6 +88,100 @@ export default {
       try {
         needPermission([PERMISSION_MAP.CONTACT_READ], context)
         return Contact.findByPk(args.id)
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+  },
+  Mutation: {
+    createContact: async (
+      _: any,
+      args: Pick<IContact, 'name' | 'phone'> & { image: IUpload | null },
+      context: IContext
+    ): Promise<Contact> => {
+      try {
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { name, phone, image } = args
+
+        const contactData: {
+          name: string
+          phone: string
+          image: string | null
+        } = {
+          name,
+          phone,
+          image: null,
+        }
+
+        if (image) {
+          const { createReadStream, filename: originalFilename } = await image
+          const stream = createReadStream()
+          const response = await uploadFile(stream, originalFilename)
+          if (!response) throw new Error('Error al subir la imagen')
+          const { filename } = response
+          contactData.image = filename
+        }
+
+        const contact = await Contact.create(contactData)
+        return contact
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    updateContact: async (
+      _: any,
+      args: Pick<IContact, 'id'> &
+        Partial<Pick<IContact, 'name' | 'phone'>> & {
+          image: IUpload | null
+        },
+      context: IContext
+    ): Promise<Contact> => {
+      try {
+        needPermission([PERMISSION_MAP.CONTACT_UPDATE], context)
+        const { id, name, phone, image } = args
+        const contact = await Contact.findByPk(id)
+        if (!contact) throw new Error('No autorizado')
+
+        const prevImage = contact.image
+
+        const contactData: {
+          name?: string
+          phone?: string
+          image?: string | null
+        } = {}
+
+        if (name) contactData.name = name
+        if (phone) contactData.phone = phone
+        if (image) {
+          const { createReadStream, filename: originalFilename } = await image
+          const stream = createReadStream()
+          const response = await uploadFile(stream, originalFilename)
+          if (!response) throw new Error('Error al subir la imagen')
+          const { filename } = response
+          contactData.image = filename
+        }
+        await contact.update(contactData)
+        if (image && prevImage) deleteFiles([prevImage])
+        return contact
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    deleteContact: async (
+      _: any,
+      args: Pick<IContact, 'id'>,
+      context: IContext
+    ): Promise<Contact> => {
+      try {
+        needPermission([PERMISSION_MAP.CONTACT_DELETE], context)
+        const { id } = args
+        const contact = await Contact.findByPk(id)
+        if (!contact) throw new Error('No autorizado')
+        await contact.destroy()
+        return contact
       } catch (error) {
         logger.error(error)
         throw error

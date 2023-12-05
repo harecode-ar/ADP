@@ -17,4 +17,10 @@ export default `#graphql
     userContacts: [Contact]
     contact(id: ID): Contact
   }
+
+  type Mutation {
+    createContact(name: String!, phone: String!, image: Upload): Contact
+    updateContact(id: ID!, name: String, phone: String, image: Upload): Contact
+    deleteContact(id: ID!): Contact
+  }
 `
