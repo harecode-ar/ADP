@@ -21,6 +21,6 @@ export default `#graphql
   type Mutation {
     createContact(name: String!, phone: String!, image: Upload): Contact
     updateContact(id: ID!, name: String, phone: String, image: Upload): Contact
-    deleteUserContact(id: ID!)
+    deleteUserContact(id: ID!): Boolean
   }
 `

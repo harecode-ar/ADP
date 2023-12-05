@@ -14,6 +14,7 @@ import { getContext } from './graphql/context'
 import { FRONT_PATH } from './constants'
 import logger from './logger'
 import { appRouter } from './routes'
+import './cron'
 
 dotenv.config()
 
