@@ -6,7 +6,7 @@ import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 
-export default function ChecklistPopover() {
+export default function ContactPopover() {
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (
@@ -19,7 +19,7 @@ export default function ChecklistPopover() {
         color="default"
         onClick={drawer.onTrue}
       >
-        <Iconify icon="fluent:note-add-16-filled" width={24} />
+        <Iconify icon="solar:users-group-rounded-bold-duotone" width={24} />
       </IconButton>
 
       <Drawer
@@ -35,10 +35,10 @@ export default function ChecklistPopover() {
       >
         <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Checklist
+            Contactos
           </Typography>
 
-          <Tooltip title="Crear nuevo checklist">
+          <Tooltip title="Crear nuevo contacto">
             <IconButton onClick={() => null}>
               <Iconify icon="mdi:plus" />
             </IconButton>
