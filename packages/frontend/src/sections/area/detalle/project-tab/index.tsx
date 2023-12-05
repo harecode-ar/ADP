@@ -1,5 +1,5 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
-import { Box, Autocomplete, TextField } from '@mui/material'
+import { Box, Autocomplete, TextField, Typography } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import React, { useState, useMemo } from 'react'
@@ -39,20 +39,35 @@ export default function ProjectTab(props: TProps) {
         gap: 2,
       }}
     >
-      <Box className="ViewContainer">
-        <Autocomplete
-          style={{ width: 170, marginBottom: '16px' }}
-          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
-          getOptionLabel={(option) => option.name}
-          value={viewOption}
-          onChange={handleViewModeChange}
-          renderInput={(params) => <TextField {...params} label="Estado" />}
-          clearIcon={null}
-        />
-      </Box>
-      {projects.map((project) => (
-        <ProjectLine key={project.id} project={project} />
-      ))}
+      {projects.length === 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            marginTop: '16px',
+          }}
+        >
+          <Typography>No hay proyectos asignados en esta area.</Typography>
+        </Box>
+      ) : (
+        <React.Fragment>
+          <Box className="ViewContainer">
+            <Autocomplete
+              style={{ width: 170, marginBottom: '16px' }}
+              options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
+              getOptionLabel={(option) => option.name}
+              value={viewOption}
+              onChange={handleViewModeChange}
+              renderInput={(params) => <TextField {...params} label="Estado" />}
+              clearIcon={null} />
+          </Box>
+          {projects.map((project) => (
+            <ProjectLine key={project.id} project={project} />
+          ))}
+        </React.Fragment>
+      )}
     </Box>
   )
 }

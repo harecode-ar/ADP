@@ -1,5 +1,6 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
+import { Box, Typography } from '@mui/material'
 import { Task } from 'gantt-task-react'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
@@ -57,10 +58,26 @@ export default function GanttTab(props: TProps) {
   const tasks: Task[] = mappedProjects
 
   return (
-    <GanttComponent
+    <Box>
+    {tasks.length === 0 ? (
+      <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        marginTop: '16px',
+      }}
+    >
+      <Typography>No hay proyectos asignados en esta area.</Typography>
+    </Box>
+    ) : (
+      <GanttComponent
       tasks={tasks}
       handleProjectStateChange={handleProjectStateChange}
       projectState={projectState}
     />
+    )}
+    </Box>
   )
 }
