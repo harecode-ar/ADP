@@ -1,3 +1,4 @@
+import { IChecklist } from '@adp/shared'
 import { m } from 'framer-motion'
 import React from 'react'
 import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
@@ -9,7 +10,7 @@ import { ChecklistItem } from './checklist-item'
 import CHECKLIST_MOCK from '../../../mocks/checklist'
 
 export default function ChecklistPopover() {
-  const checklists = CHECKLIST_MOCK as unknown as IChecklist[]
+  const checklists = CHECKLIST_MOCK as unknown as IChecklist[]	
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (

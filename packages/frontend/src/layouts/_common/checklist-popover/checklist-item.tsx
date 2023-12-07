@@ -1,7 +1,7 @@
+import { IChecklist } from '@adp/shared'
 import React from 'react'
 import { Typography, Box, IconButton, Stack, MenuItem } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import { IChecklist } from '@adp/shared'
 
 type TProps = {
   checklist: IChecklist
