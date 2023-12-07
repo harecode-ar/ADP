@@ -59,7 +59,6 @@ export default function ContactPopover() {
       </Drawer>
 
       <ModalCreate modal={modalCreate} refetch={refetch} />
-
     </React.Fragment>
   )
 }
