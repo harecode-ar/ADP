@@ -10,32 +10,17 @@ export default {
     user: (checklist: IChecklist): Promise<IUser | null> => {
       if (checklist.user) return Promise.resolve(checklist.user)
       if (!checklist.userId) return Promise.resolve(null)
-      return User.findByPk(checklist.userId)
-        .then((result) => (result ? result.get() : null))
-        .catch((error) => {
-          console.error('Error fetching user:', error)
-          throw error
-        })
+      return User.findByPk(checklist.userId) as Promise<IUser | null>
     },
     stage: (checklist: IChecklist): Promise<IStage | null> => {
       if (checklist.stage) return Promise.resolve(checklist.stage)
       if (!checklist.stageId) return Promise.resolve(null)
-      return Stage.findByPk(checklist.stageId)
-        .then((result) => (result ? result.get() : null))
-        .catch((error) => {
-          console.error('Error fetching stage:', error)
-          throw error
-        })
+      return Stage.findByPk(checklist.stageId) as Promise<IStage | null>
     },
     project: (checklist: IChecklist): Promise<IProject | null> => {
       if (checklist.project) return Promise.resolve(checklist.project)
       if (!checklist.projectId) return Promise.resolve(null)
-      return Project.findByPk(checklist.projectId)
-        .then((result) => (result ? result.get() : null))
-        .catch((error) => {
-          console.error('Error fetching project:', error)
-          throw error
-        })
+      return Project.findByPk(checklist.projectId) as Promise<IProject | null>
     },
     checks: (checklist: IChecklist): Promise<Omit<ICheck, 'checklist'>[]> => {
       if (checklist.checks) return Promise.resolve(checklist.checks)
@@ -89,7 +74,7 @@ export default {
         throw error
       }
     },
-    checklistByProject: (
+    projectChecklists: (
       _: any,
       args: Pick<IChecklist, 'projectId'>,
       context: IContext
@@ -110,7 +95,7 @@ export default {
         throw error
       }
     },
-    checklistByStage: (
+    stageChecklists: (
       _: any,
       args: Pick<IChecklist, 'stageId'>,
       context: IContext
@@ -133,7 +118,7 @@ export default {
     },
   },
   Mutation: {
-    createChecklist: async(
+    createChecklist: async (
       _: any,
       args: Pick<IChecklist, 'title' | 'stageId' | 'projectId'> & {
         checks: Pick<ICheck, 'title' | 'checked'>[]
@@ -151,7 +136,9 @@ export default {
           stageId,
           projectId,
         })
-        await Promise.all(checks.map(check => Check.create({...check, checklistId: checklist.id})))
+        await Promise.all(
+          checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
+        )
         return checklist
       } catch (error) {
         logger.error(error)
@@ -160,12 +147,14 @@ export default {
     },
     updateChecklist: async (
       _: any,
-      args: Pick<IChecklist, 'id' | 'title' | 'stageId' | 'projectId'>,
+      args: Pick<IChecklist, 'id' | 'title' | 'stageId' | 'projectId'> & {
+        checks: Pick<ICheck, 'title' | 'checked'>[]
+      },
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_UPDATE], context)
-        const { id, title, stageId, projectId } = args
+        const { id, title, stageId, projectId, checks } = args
         const { user } = context
         if (!user) throw new Error('No autorizado')
         const checklist = await Checklist.findOne({
@@ -174,14 +163,20 @@ export default {
             userId: user.id,
           },
         })
-        if (!checklist) {
-          throw new Error('Checklist not found')
-        }
+        if (!checklist) throw new Error('Checklist no encontrado')
         await checklist.update({
           title,
           stageId,
           projectId,
         })
+        await Check.destroy({
+          where: {
+            checklistId: checklist.id,
+          },
+        })
+        await Promise.all(
+          checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
+        )
         return checklist
       } catch (error) {
         logger.error(error)
@@ -206,7 +201,7 @@ export default {
           include: [{ model: Check, as: 'checks' }],
         })
         if (!checklist) {
-          throw new Error('Checklist not found')
+          throw new Error('Checklist no encontrado')
         }
         // @ts-ignore
         const { checks } = checklist

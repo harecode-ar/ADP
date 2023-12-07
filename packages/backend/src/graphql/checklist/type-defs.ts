@@ -23,8 +23,8 @@ export default `#graphql
   type Query {
     checklist(id: Int!): Checklist
     userChecklists: [Checklist]
-    checklistByProject(projectId: Int!): [Checklist]
-    checklistByStage(stageId: Int!): [Checklist]
+    projectChecklists(projectId: Int!): [Checklist]
+    stageChecklists(stageId: Int!): [Checklist]
   }
 
   type Mutation {
@@ -40,6 +40,7 @@ export default `#graphql
       title: String
       stageId: Int
       projectId: Int
+      checks: [CheckInput]
     ): Checklist
 
     deleteChecklist(id: Int!): Checklist
