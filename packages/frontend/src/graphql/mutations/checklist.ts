@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_CHECKLIST = gql`
-  mutation createChecklist($title: String!, $stageId: Int, $projectId: Int) {
-    createChecklist(title: $title, stageId: $stageId, projectId: $projectId) {
+  mutation createChecklist($title: String!, $stageId: Int, $projectId: Int, $checks: [CheckInput]) {
+    createChecklist(title: $title, stageId: $stageId, projectId: $projectId, checks: $checks) {
       id
     }
   }

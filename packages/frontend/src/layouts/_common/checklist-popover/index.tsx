@@ -1,7 +1,9 @@
+'use client'
+
 import { IChecklist } from '@adp/shared'
 import { m } from 'framer-motion'
 import React, { useMemo } from 'react'
-import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useQuery } from '@apollo/client'
@@ -12,8 +14,10 @@ import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { ChecklistItem } from './checklist-item'
+import CreateChecklistModal from './checklist-create-modal'
 
 export default function ChecklistPopover() {
+  const createChecklistModal = useBoolean()
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   const { enqueueSnackbar } = useSnackbar()
@@ -34,7 +38,7 @@ export default function ChecklistPopover() {
   }, [checklistQuery.data])
 
   return (
-    <React.Fragment>
+    <Box>
       <IconButton
         component={m.button}
         whileTap="tap"
@@ -63,7 +67,7 @@ export default function ChecklistPopover() {
           </Typography>
 
           <Tooltip title="Crear nuevo checklist">
-            <IconButton onClick={() => null}>
+            <IconButton onClick={createChecklistModal.onTrue}>
               <Iconify icon="mdi:plus" />
             </IconButton>
           </Tooltip>
@@ -91,6 +95,7 @@ export default function ChecklistPopover() {
           ))}
         </Stack>
       </Drawer>
-    </React.Fragment>
+      <CreateChecklistModal modal={createChecklistModal} refetch={checklistQuery.refetch} />
+    </Box>
   )
 }

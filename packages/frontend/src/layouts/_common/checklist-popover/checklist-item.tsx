@@ -1,3 +1,5 @@
+'use client'
+
 import { IChecklist } from '@adp/shared'
 import React from 'react'
 import { Typography, Box, IconButton, Stack, MenuItem } from '@mui/material'
@@ -26,6 +28,7 @@ export function ChecklistItem(props: TProps) {
           alignItems: 'center',
           width: '100%',
         }}
+
       >
         <Box>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>

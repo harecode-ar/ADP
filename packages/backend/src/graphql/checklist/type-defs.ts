@@ -15,6 +15,11 @@ export default `#graphql
     project: Project
   }
 
+  input CheckInput {
+    title: String!
+    checked: Boolean!
+  }
+
   type Query {
     checklist(id: Int!): Checklist
     userChecklists: [Checklist]
@@ -27,6 +32,7 @@ export default `#graphql
       title: String!
       stageId: Int
       projectId: Int
+      checks: [CheckInput]
     ): Checklist
 
     updateChecklist(
