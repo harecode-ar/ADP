@@ -21,7 +21,7 @@ import { paths } from 'src/routes/paths'
 import { getStorageFileUrl } from 'src/utils/storage'
 import ProyectAreaReportItem from './proyect-area-report-item'
 
-export default function AreaCardContainer() {
+export default function AreaTab() {
   const [search, setSearch] = useState('')
 
   const handleSearch = (event: any) => {
@@ -49,7 +49,7 @@ export default function AreaCardContainer() {
         <TextField
           value={search}
           onChange={handleSearch}
-          placeholder="Buscar areas..."
+          placeholder="Buscar..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

@@ -36,7 +36,7 @@ Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Area.hasMany(Area, { as: 'children', foreignKey: 'parentId' })
 Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
 
-User.hasOne(Area, { as: 'areas', foreignKey: 'responsibleId' })
+User.hasMany(Area, { as: 'areas', foreignKey: 'responsibleId' })
 Area.belongsTo(User, { as: 'responsible', foreignKey: 'responsibleId' })
 
 Area.hasMany(Project, { as: 'projects', foreignKey: 'areaId' })
@@ -101,11 +101,11 @@ Check.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
 User.hasMany(Checklist, { as: 'checklists', foreignKey: 'userId' })
 Checklist.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
-Checklist.hasOne(Stage, { as: 'stage', foreignKey: 'checklistId' })
-Stage.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+Stage.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
+Checklist.belongsTo(Stage, { as: 'stage', foreignKey: 'checklistId' })
 
-Checklist.hasOne(Project, { as: 'project', foreignKey: 'checklistId' })
-Project.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+Project.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
+Checklist.belongsTo(Project, { as: 'project', foreignKey: 'checklistId' })
 
 export {
   Permission,
