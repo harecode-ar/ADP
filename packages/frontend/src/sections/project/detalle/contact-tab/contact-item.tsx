@@ -1,4 +1,4 @@
-import { IContact, IStage } from '@adp/shared';
+import { IContact, IProject } from '@adp/shared';
 import React from 'react';
 import { Avatar, Card, IconButton, ListItemText, MenuItem, Stack, Divider } from '@mui/material';
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
@@ -9,12 +9,12 @@ import ModalDelete from './modal-delete';
 
 type TProps = {
   contact: IContact
-  stage: IStage
+  project: IProject
   refetch: VoidFunction
 }
 
 export default function ContactItem(props: TProps) {
-  const { contact, stage, refetch } = props
+  const { contact, project, refetch } = props
   const popover = usePopover()
   const modalDelete = useBoolean()
 
@@ -108,7 +108,7 @@ export default function ContactItem(props: TProps) {
         </MenuItem>
       </CustomPopover>
 
-      <ModalDelete stage={stage} contact={contact} refetch={refetch} modal={modalDelete} />
+      <ModalDelete project={project} contact={contact} refetch={refetch} modal={modalDelete} />
     </Stack>
   );
 }

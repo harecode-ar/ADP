@@ -1,32 +1,32 @@
-import { IStage, IContact } from '@adp/shared'
+import { IContact, IProject } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Card, Box, TextField, Button } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_STAGE_CONTACTS } from 'src/graphql/queries'
+import { GET_PROJECT_CONTACTS } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import ContactItem from './contact-item'
 import ModalAddContact from './modal-add-contact'
 
 type TProps = {
-  stage: IStage
+  project: IProject
 }
 
 export default function ContactTab(props: TProps) {
-  const { stage } = props
+  const { project } = props
 
   const [search, setSearch] = useState('')
   const modalAddContact = useBoolean()
 
-  const { data, refetch } = useQuery(GET_STAGE_CONTACTS, {
+  const { data, refetch } = useQuery(GET_PROJECT_CONTACTS, {
     variables: {
-      id: stage.id,
+      id: project.id,
     },
   })
 
   const contacts: IContact[] = useMemo(() => {
     if (!data) return []
-    return data.stageContacts
+    return data.projectContacts
   }, [data])
 
   const filteredContacts = useMemo(() => {
@@ -82,10 +82,10 @@ export default function ContactTab(props: TProps) {
         }}
       >
         {filteredContacts.map((contact) => (
-          <ContactItem key={contact.id} contact={contact} stage={stage} refetch={refetch} />
+          <ContactItem key={contact.id} contact={contact} project={project} refetch={refetch} />
         ))}
       </Box>
-      <ModalAddContact modal={modalAddContact} refetch={refetch} stage={stage} />
+      <ModalAddContact modal={modalAddContact} refetch={refetch} project={project} />
     </React.Fragment>
   )
 }

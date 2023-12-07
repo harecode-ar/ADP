@@ -1,6 +1,14 @@
 import { PERMISSION_MAP } from '@adp/shared'
 import type { IContact, IUser, IStage, IProject, IUpload } from '@adp/shared'
-import { Contact, User, Stage, Project, ContactUser, ContactStage } from '../../database/models'
+import {
+  Contact,
+  User,
+  Stage,
+  Project,
+  ContactUser,
+  ContactStage,
+  ContactProject,
+} from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
@@ -225,6 +233,52 @@ export default {
         throw error
       }
     },
+    createProjectContact: async (
+      _: any,
+      args: Pick<IContact, 'name' | 'phone' | 'email'> & {
+        projectId: number
+        image: IUpload | null
+      },
+      context: IContext
+    ): Promise<Contact> => {
+      const { user } = context
+      try {
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { projectId, name, phone, email, image } = args
+
+        const contactData: {
+          name: string
+          phone: string
+          email: string | null
+          image: string | null
+        } = {
+          name,
+          phone,
+          email,
+          image: null,
+        }
+
+        if (image) {
+          const { createReadStream, filename: originalFilename } = await image
+          const stream = createReadStream()
+          const response = await uploadFile(stream, originalFilename)
+          if (!response) throw new Error('Error al subir la imagen')
+          const { filename } = response
+          contactData.image = filename
+        }
+
+        const contact = await Contact.create(contactData)
+        await ContactProject.create({
+          projectId,
+          contactId: contact.id,
+        })
+        return contact
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
     updateContact: async (
       _: any,
       args: Pick<IContact, 'id'> &
@@ -309,6 +363,30 @@ export default {
         })
         if (!contactStage) throw new Error('No autorizado')
         await contactStage.destroy()
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    deleteProjectContact: async (
+      _: any,
+      args: Pick<IContact, 'id'> & { projectId: number },
+      context: IContext
+    ): Promise<boolean> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_DELETE], context)
+        const { id, projectId } = args
+        const contactProject = await ContactProject.findOne({
+          where: {
+            projectId,
+            contactId: id,
+          },
+        })
+        if (!contactProject) throw new Error('No autorizado')
+        await contactProject.destroy()
         return true
       } catch (error) {
         logger.error(error)

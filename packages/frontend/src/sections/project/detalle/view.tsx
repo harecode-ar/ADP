@@ -27,12 +27,14 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
+import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 
 enum ETab {
   NOTES = 'Notas',
   STAGES = 'Etapas',
   GANTT = 'Gantt',
+  CONTACTS = 'Contactos',
 }
 
 type TProps = {
@@ -242,14 +244,15 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
                 <Tab label={ETab.STAGES} value={ETab.STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
+                <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
             {tab === ETab.STAGES && (
               <StagesTab project={project} stages={stages} refetch={refetch} />
             )}
-
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
+            {tab === ETab.CONTACTS && <ContactTab project={project} />}
             {modalEdit.value && (
               <ModalEdit
                 modal={modalEdit}

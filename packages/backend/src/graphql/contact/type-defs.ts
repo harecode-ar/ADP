@@ -24,8 +24,10 @@ export default `#graphql
   type Mutation {
     createContact(name: String!, phone: String!, email: String, image: Upload): Contact
     createStageContact(stageId: Int!, name: String!, phone: String!, email: String, image: Upload): Contact
+    createProjectContact(projectId: Int!, name: String!, phone: String!, email: String, image: Upload): Contact
     updateContact(id: ID!, name: String, phone: String, email: String, image: Upload): Contact
     deleteUserContact(id: ID!): Boolean
     deleteStageContact(id: Int!, stageId: Int!): Boolean
+    deleteProjectContact(id: Int!, projectId: Int!): Boolean
   }
 `
