@@ -9,7 +9,7 @@ import { ChecklistItem } from './checklist-item'
 import CHECKLIST_MOCK from '../../../mocks/checklist'
 
 export default function ChecklistPopover() {
-  const checklists = CHECKLIST_MOCK
+  const checklists = CHECKLIST_MOCK as unknown as IChecklist[]
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (
@@ -61,17 +61,7 @@ export default function ChecklistPopover() {
           }}
           spacing={1}
         >
-          {checklists.map((checklist: any) => {
-            const totalChecks = checklist.checks.length
-            const completedChecks = checklist.checks.filter((check: any) => check.checked).length
-            return (
-              <ChecklistItem
-                checklist={checklist}
-                totalChecks={totalChecks}
-                completedChecks={completedChecks}
-              />
-            )
-          })}
+          {checklists.map((checklist) => <ChecklistItem key={checklist.id} checklist={checklist} />)}
         </Stack>
       </Drawer>
     </React.Fragment>

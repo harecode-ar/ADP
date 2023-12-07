@@ -1,16 +1,18 @@
 import React from 'react'
 import { Typography, Box, IconButton, Stack, MenuItem } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import { IChecklist } from '@adp/shared'
 
 type TProps = {
-  checklist: any
-  totalChecks: number
-  completedChecks: number
+  checklist: IChecklist
 }
 
 export function ChecklistItem(props: TProps) {
-  const { checklist, totalChecks, completedChecks } = props
-
+  const { checklist } = props
+  const { checks = [] } = checklist
+  
+  const totalChecks = checks.length
+  const completedChecks = checks.filter((check) => check.checked).length
   return (
     <MenuItem>
       <Box
