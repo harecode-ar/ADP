@@ -15,6 +15,8 @@ import stageNote from './stage-note'
 import report from './report'
 import notification from './notification'
 import contact from './contact'
+import checklist from './checklist'
+import check from './check'
 
 export const typeDefs = mergeTypeDefs([
   upload.typeDefs,
@@ -32,6 +34,8 @@ export const typeDefs = mergeTypeDefs([
   report.typeDefs,
   notification.typeDefs,
   contact.typeDefs,
+  checklist.typeDefs,
+  check.typeDefs,
 ])
 
 export const resolvers = mergeResolvers([
@@ -50,6 +54,8 @@ export const resolvers = mergeResolvers([
   report.resolvers,
   notification.resolvers,
   contact.resolvers,
+  checklist.resolvers,
+  check.resolvers,
 ])
 
 export default makeExecutableSchema({
