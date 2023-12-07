@@ -28,9 +28,10 @@ const styleModal = {
   p: 4,
 }
 
-const userSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   phone: Yup.string().required('Telefono requerido'),
+  email: Yup.string().email('Correo electronico no valido'),
 })
 
 type TProps = {
@@ -42,6 +43,7 @@ type TProps = {
 type TFormikValues = {
   name: string
   phone: string
+  email: string | null
   file: File | null
   preview: string | null
 }
@@ -58,6 +60,7 @@ export default function ModalUpdate(props: TProps) {
       const values = {} as TFormikValues
       values.name = data.contact.name
       values.phone = data.contact.phone
+      values.email = data.contact.email
       if (data.contact.image) values.preview = getStorageFileUrl(data.contact.image)
       formik.setValues(values)
     },
@@ -71,6 +74,7 @@ export default function ModalUpdate(props: TProps) {
     initialValues: {
       name: '',
       phone: '',
+      email: null,
       file: null,
       preview: null,
     } as TFormikValues,
@@ -81,6 +85,7 @@ export default function ModalUpdate(props: TProps) {
             id: contact.id,
             name: values.name,
             phone: values.phone,
+            email: values.email || undefined,
             image: values.file,
           },
         })
@@ -93,7 +98,7 @@ export default function ModalUpdate(props: TProps) {
         enqueueSnackbar('El contacto no pudo ser editado.', { variant: 'error' })
       }
     },
-    validationSchema: userSchema,
+    validationSchema,
   })
 
   const handleDropAvatar = useCallback(
@@ -182,6 +187,19 @@ export default function ModalUpdate(props: TProps) {
                   value={formik.values.phone}
                   error={Boolean(formik.errors.phone)}
                   helperText={formik.errors.phone}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="email"
+                  name="email"
+                  label="Correo electronico"
+                  variant="outlined"
+                  fullWidth
+                  value={formik.values.email}
+                  error={Boolean(formik.errors.email)}
+                  helperText={formik.errors.email}
                   onChange={formik.handleChange}
                 />
               </Grid>

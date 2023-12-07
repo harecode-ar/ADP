@@ -6,6 +6,7 @@ export interface IContact {
   id: number
   name: string
   phone: string
+  email: string | null
   image: string | null
 
   createdAt: String

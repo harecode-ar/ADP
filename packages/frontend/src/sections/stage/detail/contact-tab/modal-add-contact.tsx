@@ -1,5 +1,6 @@
 'use client'
 
+import { IStage } from '@adp/shared'
 import React, { useCallback } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -7,7 +8,7 @@ import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation } from '@apollo/client'
-import { CREATE_CONTACT } from 'src/graphql/mutations'
+import { CREATE_STAGE_CONTACT } from 'src/graphql/mutations'
 import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
@@ -34,6 +35,7 @@ const validationSchema = Yup.object().shape({
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
+  stage: IStage
 }
 
 type TFormikValues = {
@@ -44,9 +46,9 @@ type TFormikValues = {
   preview: string | null
 }
 
-export default function ModalCreate(props: TProps) {
-  const [createContact, { loading }] = useMutation(CREATE_CONTACT)
-  const { modal, refetch } = props
+export default function ModalAddContact(props: TProps) {
+  const { modal, refetch, stage } = props
+  const [createContact, { loading }] = useMutation(CREATE_STAGE_CONTACT)
   const { enqueueSnackbar } = useSnackbar()
 
   const formik = useFormik({
@@ -61,6 +63,7 @@ export default function ModalCreate(props: TProps) {
       try {
         await createContact({
           variables: {
+            stageId: stage.id,
             name: values.name,
             phone: values.phone,
             email: values.email || undefined,

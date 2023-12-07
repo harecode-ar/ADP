@@ -3,6 +3,7 @@ export default `#graphql
     id: Int
     name: String
     phone: String
+    email: String
     image: String
 
     createdAt: String
@@ -16,11 +17,15 @@ export default `#graphql
   type Query {
     userContacts: [Contact]
     contact(id: ID): Contact
+    stageContacts(id: ID): [Contact]
+    projectContacts(id: ID): [Contact]
   }
 
   type Mutation {
-    createContact(name: String!, phone: String!, image: Upload): Contact
-    updateContact(id: ID!, name: String, phone: String, image: Upload): Contact
+    createContact(name: String!, phone: String!, email: String, image: Upload): Contact
+    createStageContact(stageId: Int!, name: String!, phone: String!, email: String, image: Upload): Contact
+    updateContact(id: ID!, name: String, phone: String, email: String, image: Upload): Contact
     deleteUserContact(id: ID!): Boolean
+    deleteStageContact(id: Int!, stageId: Int!): Boolean
   }
 `
