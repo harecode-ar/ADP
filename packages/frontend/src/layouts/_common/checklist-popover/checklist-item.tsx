@@ -28,6 +28,7 @@ export function ChecklistItem(props: TProps) {
           alignItems: 'center',
           width: '100%',
         }}
+
       >
         <Box>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
