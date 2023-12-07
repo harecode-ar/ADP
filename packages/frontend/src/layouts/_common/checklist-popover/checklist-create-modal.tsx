@@ -13,7 +13,7 @@ import {
   Backdrop,
   Checkbox,
   Stack,
-  Tooltip,
+  Tooltip
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
@@ -69,14 +69,14 @@ const CreateChecklistModal = (props: TProps) => {
   const formik = useFormik({
     initialValues: {
       title: '',
-      checks: [],
+      checks: []
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         await createChecklist({
           variables: {
             title: values.title,
-            checks: values.checks,
+            checks: values.checks
           },
         })
         enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })
@@ -95,9 +95,9 @@ const CreateChecklistModal = (props: TProps) => {
       id: uuidv4(),
       title: '',
       checked: false,
-    }
+    };
     formik.setFieldValue('checks', [...formik.values.checks, newCheck])
-  }
+  };
 
   const handleCheckedChange = (check: TCheck) => {
     const findIndex = formik.values.checks.findIndex((c) => c.id === check.id)
@@ -137,16 +137,16 @@ const CreateChecklistModal = (props: TProps) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              id="title"
-              name="title"
-              label="Titulo"
-              variant="standard"
-              fullWidth
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              error={!!formik.errors.title}
-              helperText={formik.errors.title}
-            />
+                id="title"
+                name="title"
+                label="Titulo"
+                variant='standard'
+                fullWidth
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                error={!!formik.errors.title}
+                helperText={formik.errors.title}
+              />
           </Grid>
           <Grid item xs={12}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -162,11 +162,14 @@ const CreateChecklistModal = (props: TProps) => {
             <Stack spacing={1}>
               {formik.values.checks.map((check) => (
                 <Box key={check.id} display="flex" alignItems="center">
-                  <Checkbox checked={check.checked} onChange={() => handleCheckedChange(check)} />
+                  <Checkbox
+                    checked={check.checked}
+                    onChange={() => handleCheckedChange(check)}
+                  />
                   <TextField
-                    placeholder="Escriba un titulo para la tarea"
-                    variant="standard"
-                    size="small"
+                    placeholder='Escriba un titulo para la tarea'
+                    variant='standard'
+                    size='small'
                     fullWidth
                     value={check.title || ''}
                     onChange={(e) => handleTitleChange(check, e.target.value)}
@@ -174,17 +177,17 @@ const CreateChecklistModal = (props: TProps) => {
                   />
                   <Tooltip title="Eliminar tarea">
                     <IconButton onClick={() => handleDeleteCheck(check)}>
-                      <Iconify icon="mdi:delete" />
+                      <Iconify icon="mdi:delete"/>
                     </IconButton>
                   </Tooltip>
                 </Box>
               ))}
             </Stack>
-            {!!formik.errors.checks && (
-              <Typography color="error" variant="caption">
-                No puede haber tareas vacias
-              </Typography>
-            )}
+            {
+              !!formik.errors.checks && (
+                <Typography color='error' variant='caption'>No puede haber tareas vacias</Typography>
+              )
+            }
           </Grid>
           <Grid item xs={12}>
             <Box
