@@ -8,6 +8,8 @@ export class Contact extends Model {
 
   public phone!: string
 
+  public email!: string | null
+
   public image!: string | null
 
   public createdAt!: string
@@ -31,6 +33,10 @@ Contact.init(
     phone: {
       type: DataTypes.STRING(128),
       allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(128),
+      allowNull: true,
     },
     image: {
       type: DataTypes.STRING,

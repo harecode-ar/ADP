@@ -1,19 +1,17 @@
 'use client'
 
+import { IStage } from '@adp/shared'
 import React, { useCallback } from 'react'
 import { Typography, Button, Modal, Box, TextField, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { useMutation, useQuery } from '@apollo/client'
-import { GET_CONTACT } from 'src/graphql/queries'
-import { UPDATE_CONTACT } from 'src/graphql/mutations'
+import { useMutation } from '@apollo/client'
+import { CREATE_STAGE_CONTACT } from 'src/graphql/mutations'
 import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
-import { IContact } from '@adp/shared'
-import { getStorageFileUrl } from 'src/utils/storage'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -37,7 +35,7 @@ const validationSchema = Yup.object().shape({
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
-  contact: IContact
+  stage: IStage
 }
 
 type TFormikValues = {
@@ -48,54 +46,37 @@ type TFormikValues = {
   preview: string | null
 }
 
-export default function ModalUpdate(props: TProps) {
-  const { modal, refetch, contact } = props
-
-  const { loading: getContactLoading } = useQuery(GET_CONTACT, {
-    variables: {
-      id: contact.id,
-    },
-    onCompleted: (data: any) => {
-      if (!data?.contact) return
-      const values = {} as TFormikValues
-      values.name = data.contact.name
-      values.phone = data.contact.phone
-      values.email = data.contact.email
-      if (data.contact.image) values.preview = getStorageFileUrl(data.contact.image)
-      formik.setValues(values)
-    },
-  })
-  const [updateContact, { loading: updateContactLoading }] = useMutation(UPDATE_CONTACT)
+export default function ModalAddContact(props: TProps) {
+  const { modal, refetch, stage } = props
+  const [createContact, { loading }] = useMutation(CREATE_STAGE_CONTACT)
   const { enqueueSnackbar } = useSnackbar()
-
-  const loading = getContactLoading || updateContactLoading
 
   const formik = useFormik({
     initialValues: {
       name: '',
       phone: '',
-      email: '',
+      email: null,
       file: null,
       preview: null,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        await updateContact({
+        await createContact({
           variables: {
-            id: contact.id,
+            stageId: stage.id,
             name: values.name,
             phone: values.phone,
             email: values.email || '',
             image: values.file,
           },
         })
-        enqueueSnackbar('Contacto editado correctamente.', { variant: 'success' })
+        enqueueSnackbar('Contacto creado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch (error) {
         console.error(error)
-        enqueueSnackbar('El contacto no pudo ser editado.', { variant: 'error' })
+        enqueueSnackbar('El contacto no pudo ser creado.', { variant: 'error' })
       }
     },
     validationSchema,
@@ -122,10 +103,12 @@ export default function ModalUpdate(props: TProps) {
           timeout: 500,
         },
       }}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
     >
       <Box sx={styleModal}>
         <Typography id="modal-title" variant="h6" component="h2">
-          Editar contacto
+          Crear contacto
         </Typography>
         <Box id="modal-description" sx={{ mt: 2 }}>
           <UploadAvatar
@@ -228,10 +211,10 @@ export default function ModalUpdate(props: TProps) {
                     variant="contained"
                     color="primary"
                     onClick={() => formik.handleSubmit()}
-                    disabled={updateContactLoading}
+                    disabled={loading}
                   >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                    {updateContactLoading ? 'Guardando...' : 'Guardar'}
+                    {loading ? 'Creando...' : 'Crear'}
                   </Button>
                 </Box>
               </Grid>

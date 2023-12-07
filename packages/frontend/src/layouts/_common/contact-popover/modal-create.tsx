@@ -25,9 +25,10 @@ const styleModal = {
   p: 4,
 }
 
-const userSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   phone: Yup.string().required('Telefono requerido'),
+  email: Yup.string().email('Correo electronico no valido').nullable(),
 })
 
 type TProps = {
@@ -38,6 +39,7 @@ type TProps = {
 type TFormikValues = {
   name: string
   phone: string
+  email: string | null
   file: File | null
   preview: string | null
 }
@@ -51,6 +53,7 @@ export default function ModalCreate(props: TProps) {
     initialValues: {
       name: '',
       phone: '',
+      email: null,
       file: null,
       preview: null,
     } as TFormikValues,
@@ -60,6 +63,7 @@ export default function ModalCreate(props: TProps) {
           variables: {
             name: values.name,
             phone: values.phone,
+            email: values.email || '',
             image: values.file,
           },
         })
@@ -72,7 +76,7 @@ export default function ModalCreate(props: TProps) {
         enqueueSnackbar('El contacto no pudo ser creado.', { variant: 'error' })
       }
     },
-    validationSchema: userSchema,
+    validationSchema,
   })
 
   const handleDropAvatar = useCallback(
@@ -163,6 +167,19 @@ export default function ModalCreate(props: TProps) {
                   value={formik.values.phone}
                   error={Boolean(formik.errors.phone)}
                   helperText={formik.errors.phone}
+                  onChange={formik.handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="email"
+                  name="email"
+                  label="Correo electronico"
+                  variant="outlined"
+                  fullWidth
+                  value={formik.values.email}
+                  error={Boolean(formik.errors.email)}
+                  helperText={formik.errors.email}
                   onChange={formik.handleChange}
                 />
               </Grid>

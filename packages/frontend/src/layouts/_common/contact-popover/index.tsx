@@ -1,28 +1,17 @@
 import { IContact } from '@adp/shared'
 import { m } from 'framer-motion'
 import React, { useState, useMemo } from 'react'
-import {
-  Avatar,
-  IconButton,
-  Stack,
-  Typography,
-  Divider,
-  Drawer,
-  Tooltip,
-  MenuItem,
-  ListItemText,
-  Box,
-} from '@mui/material'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { GET_USER_CONTACTS } from 'src/graphql/queries'
-import { getStorageFileUrl } from 'src/utils/storage'
 import ModalCreate from './modal-create'
 import ModalUpdate from './modal-update'
 import ModalDelete from './modal-delete'
+import ContactItem from './contact-item'
 
 export default function ContactPopover() {
   const drawer = useBoolean()
@@ -40,10 +29,13 @@ export default function ContactPopover() {
     return data.userContacts
   }, [data])
 
-  const isPhone = useResponsive('down', 'sm')
+  const handleCall = (contact: IContact) => {
+    window.open(`tel:${contact.phone}`, '_blank')
+  }
 
-  const call = (phone: string) => {
-    window.open(`tel:${phone}`, '_blank')
+  const handleSendEmail = (contact: IContact) => {
+    if (!contact.email) return
+    window.open(`mailto:${contact.email}`)
   }
 
   const handleUpdate = (contact: IContact) => {
@@ -103,41 +95,14 @@ export default function ContactPopover() {
 
         <Stack sx={{ p: 2.5 }} spacing={1}>
           {contacts.map((contact) => (
-            <MenuItem key={contact.id} sx={{ p: 1 }}>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Avatar alt={contact.name} src={getStorageFileUrl(contact.image)} />
-                  <ListItemText
-                    primary={contact.name}
-                    secondary={contact.phone}
-                    primaryTypographyProps={{ typography: 'subtitle2' }}
-                    secondaryTypographyProps={{
-                      typography: 'caption',
-                      color: 'text.disabled',
-                    }}
-                  />
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Tooltip title="Editar contacto">
-                    <IconButton onClick={() => handleUpdate(contact)}>
-                      <Iconify icon="mdi:pencil" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Eliminar contacto">
-                    <IconButton onClick={() => handleDelete(contact)}>
-                      <Iconify icon="mdi:trash-can-outline" />
-                    </IconButton>
-                  </Tooltip>
-                  {isPhone && (
-                    <Tooltip title="Llamar">
-                      <IconButton onClick={() => call(contact.phone)}>
-                        <Iconify icon="mdi:phone" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Box>
-              </Box>
-            </MenuItem>
+            <ContactItem
+              key={contact.id}
+              contact={contact}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+              handleCall={handleCall}
+              handleSendEmail={handleSendEmail}
+            />
           ))}
         </Stack>
       </Drawer>
