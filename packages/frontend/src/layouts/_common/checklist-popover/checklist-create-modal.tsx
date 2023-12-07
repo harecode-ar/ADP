@@ -76,7 +76,10 @@ const CreateChecklistModal = (props: TProps) => {
         await createChecklist({
           variables: {
             title: values.title,
-            checks: values.checks
+            checks: values.checks.map(check => ({
+              title: check.title,
+              checked: check.checked
+            }))
           },
         })
         enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })

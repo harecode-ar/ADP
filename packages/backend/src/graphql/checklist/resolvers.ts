@@ -133,22 +133,26 @@ export default {
     },
   },
   Mutation: {
-    createChecklist: (
+    createChecklist: async(
       _: any,
-      args: Pick<IChecklist, 'title' | 'stageId' | 'projectId'>,
+      args: Pick<IChecklist, 'title' | 'stageId' | 'projectId'> & {
+        checks: Pick<ICheck, 'title' | 'checked'>[]
+      },
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_CREATE], context)
-        const { title, stageId, projectId } = args
+        const { title, stageId, projectId, checks } = args
         const { user } = context
         if (!user) throw new Error('No autorizado')
-        return Checklist.create({
+        const checklist = await Checklist.create({
           title,
           userId: user.id,
           stageId,
           projectId,
         })
+        await Promise.all(checks.map(check => Check.create({...check, checklistId: checklist.id})))
+        return checklist
       } catch (error) {
         logger.error(error)
         throw error
