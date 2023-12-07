@@ -193,6 +193,92 @@ export default {
         throw error
       }
     },
+    userStages: async (_: any, __: any, context: IContext) => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const foundUser = await User.findByPk(user.id, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+              include: [
+                {
+                  model: Stage,
+                  as: 'stages',
+                  order: [['startDate', 'ASC']],
+                  where: { parentStageId: null },
+                  attributes: [
+                    'id',
+                    'name',
+                    'description',
+                    'startDate',
+                    'endDate',
+                    'progress',
+                    'stateId',
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        const { areas = [] } = foundUser
+        // @ts-ignore
+        const stages: Stage[] = areas.flatMap((area: Area) => area.stages)
+        return stages
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    userSubStages: async (_: any, __: any, context: IContext) => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const foundUser = await User.findByPk(user.id, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+              include: [
+                {
+                  model: Stage,
+                  as: 'stages',
+                  order: [['startDate', 'ASC']],
+                  where: { parentStageId: { [Op.ne]: null } },
+                  attributes: [
+                    'id',
+                    'name',
+                    'description',
+                    'startDate',
+                    'endDate',
+                    'progress',
+                    'stateId',
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        const { areas = [] } = foundUser
+        // @ts-ignore
+        const subStages: Stage[] = areas.flatMap((area: Area) => area.stages)
+        return subStages
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
 
   Mutation: {
