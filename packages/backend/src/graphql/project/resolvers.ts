@@ -152,6 +152,25 @@ export default {
         throw error
       }
     },
+    userProjects: (
+      _: any,
+      __: any,
+      context: IContext
+    ) => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        return Project.findAll({
+          where: { responsibleId: user.id },
+          order: [['startDate', 'ASC']],
+          attributes: ['id', 'name', 'description' ,'startDate', 'endDate', 'progress', 'stateId'],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
   Mutation: {
     createProject: (
