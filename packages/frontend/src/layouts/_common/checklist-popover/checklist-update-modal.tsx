@@ -1,6 +1,6 @@
 'use client'
 
-import type { ICheck } from '@adp/shared'
+import type { ICheck, IChecklist } from '@adp/shared'
 import React from 'react'
 import {
   IconButton,
@@ -22,8 +22,9 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
-import { useMutation } from '@apollo/client'
-import { CREATE_CHECKLIST } from 'src/graphql/mutations'
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_CHECKLIST } from 'src/graphql/queries'
+import { UPDATE_CHECKLIST } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -51,6 +52,7 @@ const checklistSchema = Yup.object().shape({
 type TProps = {
   modal: ReturnType<typeof useBoolean>
   refetch: () => void
+  checklist: IChecklist
 }
 
 type TFormikValues = {
@@ -63,9 +65,9 @@ type TCheck = Pick<ICheck, 'title' | 'checked'> & {
 }
 
 export default function CreateChecklistModal(props: TProps) {
-  const { modal, refetch } = props
+  const { modal, refetch, checklist } = props
   const { enqueueSnackbar } = useSnackbar()
-  const [createChecklist, { loading }] = useMutation(CREATE_CHECKLIST)
+  const [createChecklist, { loading }] = useMutation(UPDATE_CHECKLIST)
 
   const formik = useFormik({
     initialValues: {
@@ -76,6 +78,7 @@ export default function CreateChecklistModal(props: TProps) {
       try {
         await createChecklist({
           variables: {
+            id: checklist.id,
             title: values.title,
             checks: values.checks.map(check => ({
               title: check.title,
@@ -83,16 +86,33 @@ export default function CreateChecklistModal(props: TProps) {
             }))
           },
         })
-        enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Listado de tareas editado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch {
-        enqueueSnackbar('El listado de tareas no pudo ser creado.', { variant: 'error' })
+        enqueueSnackbar('El listado de tareas no pudo ser editado.', { variant: 'error' })
       }
     },
     validationSchema: checklistSchema,
   })
+
+  useQuery(GET_CHECKLIST, {
+    variables: {
+      id: checklist.id
+    },
+    onCompleted: (d) => {
+      if (!d.checklist) {
+        enqueueSnackbar('Checklist no encontrado', { variant: 'error' })
+        modal.onFalse()
+      }
+      formik.setValues({
+        title: d.checklist.title,
+        checks: d.checklist.checks || []
+      })
+    },
+  })
+
   const handleAddCheck = () => {
     const newCheck: TCheck = {
       id: uuidv4(),
@@ -210,7 +230,7 @@ export default function CreateChecklistModal(props: TProps) {
               <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()} disabled={loading}>
                 <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
                 {
-                  loading ? 'Creando...' : 'Crear'
+                  loading ? 'Guardando...' : 'Guardar'
                 }
               </Button>
             </Box>

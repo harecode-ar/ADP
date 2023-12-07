@@ -34,7 +34,7 @@ export default function ChecklistPopover() {
 
   const checklists: IChecklist[] = useMemo(() => {
     if (!checklistQuery.data) return []
-    return checklistQuery.data.userChecklists
+    return checklistQuery.data.userChecklists || []
   }, [checklistQuery.data])
 
   return (
@@ -86,13 +86,15 @@ export default function ChecklistPopover() {
           }}
           spacing={1}
         >
-          {checklists?.map((checklist) => (
-            <ChecklistItem
-              key={checklist.id}
-              checklist={checklist}
-              refetch={checklistQuery.refetch}
-            />
-          ))}
+          {
+            checklists.map((checklist) => (
+              <ChecklistItem
+                key={checklist.id}
+                checklist={checklist}
+                refetch={checklistQuery.refetch}
+              />
+            ))
+          }
         </Stack>
       </Drawer>
       <CreateChecklistModal modal={createChecklistModal} refetch={checklistQuery.refetch} />

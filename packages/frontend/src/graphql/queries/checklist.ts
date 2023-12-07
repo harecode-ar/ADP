@@ -26,8 +26,8 @@ export const GET_USER_CHECKLISTS = gql`
   }
 `
 export const GET_CHECKLIST_BY_PROJECT = gql`
-  query checklistByProject($projectId: Int!) {
-    checklistByProject(projectId: $projectId) {
+  query projectChecklists($projectId: Int!) {
+    projectChecklists(projectId: $projectId) {
       id
       title
       createdAt
@@ -44,8 +44,8 @@ export const GET_CHECKLIST_BY_PROJECT = gql`
 `
 
 export const GET_CHECKLIST_BY_STAGE = gql`
-  query checklistByStage($stageId: Int!) {
-    checklistByStage(stageId: $stageId) {
+  query stageChecklists($stageId: Int!) {
+    stageChecklists(stageId: $stageId) {
       id
       title
       createdAt
