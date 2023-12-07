@@ -41,7 +41,7 @@ export default function ModalDelete(props: TProps) {
       await deleteStageContact({
         variables: {
           id: contact.id,
-          stageId: stage.id
+          stageId: stage.id,
         },
       })
       refetch()

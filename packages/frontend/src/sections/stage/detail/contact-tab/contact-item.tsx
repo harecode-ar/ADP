@@ -1,11 +1,11 @@
-import { IContact, IStage } from '@adp/shared';
-import React from 'react';
-import { Avatar, Card, IconButton, ListItemText, MenuItem, Stack, Divider } from '@mui/material';
+import { IContact, IStage } from '@adp/shared'
+import React from 'react'
+import { Avatar, Card, IconButton, ListItemText, MenuItem, Stack, Divider } from '@mui/material'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
-import Iconify from 'src/components/iconify';
-import { getStorageFileUrl } from 'src/utils/storage';
-import { useBoolean } from 'src/hooks/use-boolean';
-import ModalDelete from './modal-delete';
+import Iconify from 'src/components/iconify'
+import { getStorageFileUrl } from 'src/utils/storage'
+import { useBoolean } from 'src/hooks/use-boolean'
+import ModalDelete from './modal-delete'
 
 type TProps = {
   contact: IContact
@@ -29,7 +29,11 @@ export default function ContactItem(props: TProps) {
 
   return (
     <Stack component={Card} direction="row" spacing={2} key={contact.id} sx={{ p: 3 }}>
-      <Avatar alt={contact.name} src={getStorageFileUrl(contact.image)} sx={{ width: 48, height: 48 }} />
+      <Avatar
+        alt={contact.name}
+        src={getStorageFileUrl(contact.image)}
+        sx={{ width: 48, height: 48 }}
+      />
 
       <Stack spacing={2} flexGrow={1}>
         <ListItemText
@@ -40,14 +44,12 @@ export default function ContactItem(props: TProps) {
                 <Iconify icon="solar:phone-bold" width={16} />
                 {contact.phone}
               </Stack>
-              {
-                !!contact.email && (
-                  <Stack direction="row" alignItems="center" spacing={0.5}>
-                    <Iconify icon="fluent:mail-24-filled" width={16} />
-                    {contact.email}
-                  </Stack>
-                )
-              }
+              {!!contact.email && (
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <Iconify icon="fluent:mail-24-filled" width={16} />
+                  {contact.email}
+                </Stack>
+              )}
             </React.Fragment>
           }
           secondaryTypographyProps={{
@@ -82,19 +84,17 @@ export default function ContactItem(props: TProps) {
           <Iconify icon="solar:phone-bold" />
           Llamar
         </MenuItem>
-        {
-          !!contact.email && (
-            <MenuItem
-              onClick={() => {
-                popover.onClose()
-                handleSendEmail()
-              }}
-            >
-              <Iconify icon="fluent:mail-24-filled" />
-              Enviar correo
-            </MenuItem>
-          )
-        }
+        {!!contact.email && (
+          <MenuItem
+            onClick={() => {
+              popover.onClose()
+              handleSendEmail()
+            }}
+          >
+            <Iconify icon="fluent:mail-24-filled" />
+            Enviar correo
+          </MenuItem>
+        )}
         <Divider />
         <MenuItem
           onClick={() => {
@@ -110,5 +110,5 @@ export default function ContactItem(props: TProps) {
 
       <ModalDelete stage={stage} contact={contact} refetch={refetch} modal={modalDelete} />
     </Stack>
-  );
+  )
 }

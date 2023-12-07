@@ -1,14 +1,7 @@
 import { IContact } from '@adp/shared'
 import { m } from 'framer-motion'
 import React, { useState, useMemo } from 'react'
-import {
-  IconButton,
-  Stack,
-  Typography,
-  Divider,
-  Drawer,
-  Tooltip,
-} from '@mui/material'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useQuery } from '@apollo/client'

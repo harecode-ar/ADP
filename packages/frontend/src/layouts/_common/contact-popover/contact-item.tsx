@@ -1,14 +1,6 @@
 import { IContact } from '@adp/shared'
 import React from 'react'
-import {
-  Avatar,
-  IconButton,
-  Stack,
-  Divider,
-  MenuItem,
-  ListItemText,
-  Box,
-} from '@mui/material'
+import { Avatar, IconButton, Stack, Divider, MenuItem, ListItemText, Box } from '@mui/material'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
 import Iconify from 'src/components/iconify'
 import { getStorageFileUrl } from 'src/utils/storage'
@@ -37,14 +29,12 @@ export default function ContactItem(props: TProps) {
                   <Iconify icon="solar:phone-bold" width={16} />
                   {contact.phone}
                 </Stack>
-                {
-                  !!contact.email && (
-                    <Stack direction="row" alignItems="center" spacing={0.5}>
-                      <Iconify icon="fluent:mail-24-filled" width={16} />
-                      {contact.email}
-                    </Stack>
-                  )
-                }
+                {!!contact.email && (
+                  <Stack direction="row" alignItems="center" spacing={0.5}>
+                    <Iconify icon="fluent:mail-24-filled" width={16} />
+                    {contact.email}
+                  </Stack>
+                )}
               </React.Fragment>
             }
             primaryTypographyProps={{ typography: 'subtitle2' }}
@@ -54,23 +44,18 @@ export default function ContactItem(props: TProps) {
             }}
           />
         </Box>
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-          <IconButton
-            color={popover.open ? 'inherit' : 'default'}
-            onClick={popover.onOpen}
-          >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
             <Iconify icon="eva:more-horizontal-fill" />
           </IconButton>
         </Box>
 
-        <CustomPopover
-          open={popover.open}
-          onClose={popover.onClose}
-          sx={{ width: 160 }}
-        >
+        <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 160 }}>
           <MenuItem
             onClick={() => {
               popover.onClose()
@@ -80,19 +65,17 @@ export default function ContactItem(props: TProps) {
             <Iconify icon="solar:phone-bold" />
             Llamar
           </MenuItem>
-          {
-            !!contact.email && (
-              <MenuItem
-                onClick={() => {
-                  popover.onClose()
-                  handleSendEmail(contact)
-                }}
-              >
-                <Iconify icon="fluent:mail-24-filled" />
-                Enviar correo
-              </MenuItem>
-            )
-          }
+          {!!contact.email && (
+            <MenuItem
+              onClick={() => {
+                popover.onClose()
+                handleSendEmail(contact)
+              }}
+            >
+              <Iconify icon="fluent:mail-24-filled" />
+              Enviar correo
+            </MenuItem>
+          )}
           <Divider />
           <MenuItem
             onClick={() => {

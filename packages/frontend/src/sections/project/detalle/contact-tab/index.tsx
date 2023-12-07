@@ -36,22 +36,24 @@ export default function ContactTab(props: TProps) {
 
   return (
     <React.Fragment>
-      <Card sx={{
-        p: 2
-      }}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+      <Card
+        sx={{
+          p: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <TextField
-            size='small'
+            size="small"
             variant="outlined"
             placeholder="Buscar contacto"
             InputProps={{
-              startAdornment: (
-                <Iconify icon="material-symbols:search" width={18} mr={1} />
-              ),
+              startAdornment: <Iconify icon="material-symbols:search" width={18} mr={1} />,
             }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -62,16 +64,16 @@ export default function ContactTab(props: TProps) {
           </Button>
         </Box>
       </Card>
-      {
-        filteredContacts.length === 0 && (
-          <Box sx={{
+      {filteredContacts.length === 0 && (
+        <Box
+          sx={{
             textAlign: 'center',
-            color: 'text.disabled'
-          }}>
-            No hay contactos
-          </Box>
-        )
-      }
+            color: 'text.disabled',
+          }}
+        >
+          No hay contactos
+        </Box>
+      )}
       <Box
         gap={3}
         display="grid"

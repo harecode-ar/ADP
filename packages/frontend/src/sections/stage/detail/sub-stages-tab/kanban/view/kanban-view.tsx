@@ -38,11 +38,7 @@ export default function KanbanComponent(props: TProps) {
             },
           }}
         >
-          <Box
-            gap={3}
-            display="grid"
-            gridTemplateColumns='repeat(4, 1fr)'
-          >
+          <Box gap={3} display="grid" gridTemplateColumns="repeat(4, 1fr)">
             {Object.entries(subStagesByState).map(([state, stateSubStages]) => (
               <KanbanColumn
                 subStages={stateSubStages}
