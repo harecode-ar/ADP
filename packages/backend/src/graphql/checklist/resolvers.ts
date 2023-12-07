@@ -41,10 +41,10 @@ export default {
       if (checklist.checks) return Promise.resolve(checklist.checks)
       return Check.findAll({
         where: {
-          checklistId: checklist.id
-        }
+          checklistId: checklist.id,
+        },
       })
-    }
+    },
   },
   Query: {
     checklist: (
@@ -57,7 +57,7 @@ export default {
         const { user } = context
         if (!user) throw new Error('No autorizado')
         return Checklist.findOne({
-          where: { id: args.id, userId: user.id }
+          where: { id: args.id, userId: user.id },
         })
       } catch (error) {
         logger.error(error)
@@ -101,7 +101,7 @@ export default {
         return Checklist.findAll({
           where: {
             userId: user.id,
-            projectId: args.projectId
+            projectId: args.projectId,
           },
           order: [['createdAt', 'ASC']],
         })
@@ -122,7 +122,7 @@ export default {
         return Checklist.findAll({
           where: {
             userId: user.id,
-            stageId: args.stageId
+            stageId: args.stageId,
           },
           order: [['createdAt', 'ASC']],
         })
@@ -130,7 +130,7 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
   Mutation: {
     createChecklist: (
@@ -200,14 +200,14 @@ export default {
             userId: user.id,
           },
           include: [{ model: Check, as: 'checks' }],
-        });
+        })
         if (!checklist) {
           throw new Error('Checklist not found')
         }
         // @ts-ignore
         const { checks } = checklist
         if (checks && checks.length > 0) {
-          await Promise.all(checks.map((check: Check) => check.destroy()));
+          await Promise.all(checks.map((check: Check) => check.destroy()))
         }
 
         await checklist.destroy()

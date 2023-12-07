@@ -1,5 +1,5 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { ICheck, IChecklist} from '@adp/shared'
+import type { ICheck, IChecklist } from '@adp/shared'
 import { Check } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
@@ -16,14 +16,10 @@ export default {
           console.error('Error fetching checklist:', error)
           throw error
         })
-    }
+    },
   },
   Query: {
-    checks: (
-      _: any,
-      __: any,
-      context: IContext
-    ): Promise<Omit<ICheck, 'checklist'>[] | null> => {
+    checks: (_: any, __: any, context: IContext): Promise<Omit<ICheck, 'checklist'>[] | null> => {
       try {
         needPermission([PERMISSION_MAP.CHECK_READ], context)
         return Check.findAll({
@@ -59,7 +55,7 @@ export default {
         const { title, checklistId } = args
         return Check.create({
           title,
-          checklistId
+          checklistId,
         })
       } catch (error) {
         logger.error(error)
@@ -81,7 +77,7 @@ export default {
         await check.update({
           title,
           checked,
-          checklistId
+          checklistId,
         })
         return check
       } catch (error) {
