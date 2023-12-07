@@ -250,7 +250,7 @@ export default {
 
         if (name) contactData.name = name
         if (phone) contactData.phone = phone
-        if (email) contactData.email = email
+        if (typeof email !== undefined) contactData.email = email
         if (image) {
           const { createReadStream, filename: originalFilename } = await image
           const stream = createReadStream()

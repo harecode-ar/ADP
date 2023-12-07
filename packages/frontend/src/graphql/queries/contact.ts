@@ -30,6 +30,7 @@ export const GET_PROJECT_CONTACTS = gql`
       id
       name
       phone
+      email
       image
     }
   }
@@ -41,6 +42,7 @@ export const GET_CONTACT = gql`
       id
       name
       phone
+      email
       image
     }
   }

@@ -28,7 +28,7 @@ const styleModal = {
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   phone: Yup.string().required('Telefono requerido'),
-  email: Yup.string().email('Correo electronico no valido'),
+  email: Yup.string().email('Correo electronico no valido').nullable(),
 })
 
 type TProps = {
@@ -63,7 +63,7 @@ export default function ModalCreate(props: TProps) {
           variables: {
             name: values.name,
             phone: values.phone,
-            email: values.email || undefined,
+            email: values.email || '',
             image: values.file,
           },
         })
