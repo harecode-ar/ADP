@@ -83,6 +83,7 @@ export function useNavData(): TNavData[] {
               path: paths.dashboard.user.root,
               icon: ICONS.user,
               children: [{ title: 'Listado', path: paths.dashboard.user.list }],
+              roles: [ROLE_MAP.ADMIN],
             },
             {
               title: 'Area',
