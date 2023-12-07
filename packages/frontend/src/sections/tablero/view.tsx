@@ -34,12 +34,14 @@ export default function TableroView() {
               <Tab label={ETab.AREAS} value={ETab.AREAS} />
             </Tabs>
             <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-              <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} sx={{ pl: 1 }}/>
+              <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} sx={{ pl: 1 }} />
             </Tabs>
           </Box>
         </Card>
-        <Card sx={{ p: 2 }}>{tab === ETab.AREAS && <AreaTab />}</Card>
-        <Card sx={{ p: 2 }}>{tab === ETab.ASSIGNMENT && <AssignmentTab />}</Card>
+        <Card sx={{ p: 2 }}>
+          {tab === ETab.AREAS && <AreaTab />}
+          {tab === ETab.ASSIGNMENT && <AssignmentTab />}
+        </Card>
       </Box>
     </Container>
   )

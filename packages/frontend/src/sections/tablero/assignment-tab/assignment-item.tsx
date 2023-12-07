@@ -1,11 +1,9 @@
 import { IProject, IStage } from '@adp/shared'
 import React, { useMemo } from 'react';
 import NextLink from 'next/link';
-import {Box, Tooltip, Link, IconButton, Stack, Card } from '@mui/material';
+import { Tooltip, Link, IconButton, Stack, Card } from '@mui/material';
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
 import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
@@ -78,7 +76,7 @@ export default function AssignmentItem(props: TProps) {
           <Tooltip title='Ver detalle'>
             <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
               <IconButton>
-                <Iconify icon="eva:more-horizontal-fill" />
+                <Iconify icon="mdi:eye" />
               </IconButton>
             </Link>
           </Tooltip>
@@ -89,12 +87,20 @@ export default function AssignmentItem(props: TProps) {
             {name}
           </TextMaxLine>
 
-          <TextMaxLine variant="body2" sx={{ color: 'text.secondary' }}>
-            {description}
-          </TextMaxLine>
+          <Tooltip title={description}>
+            <TextMaxLine variant="body2" sx={{ color: 'text.secondary' }}>
+              {description}
+            </TextMaxLine>
+          </Tooltip>
         </Stack>
 
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mt={1}>
+          <Stack direction="row" alignItems="center" sx={{
+            typography: 'caption',
+            color: 'text.disabled',
+          }}>
+            {progress * 100}%
+          </Stack>
           <Stack
             spacing={1.5}
             flexGrow={1}
@@ -106,20 +112,14 @@ export default function AssignmentItem(props: TProps) {
               color: 'text.disabled',
             }}
           >
-            
             <Stack direction="row" alignItems="center">
-              <Iconify icon="material-symbols:percent" width={16} sx={{ mr: 0.5 }} />
-              {progress * 100}%
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-            <Iconify icon="clarity:date-line" width={16} sx={{ mr: 0.5 }} />
-              {fDate(new Date(Number(startDate)))}
+              <Iconify icon="clarity:date-line" width={16} sx={{ mr: 0.5 }} />
+              {fDate(new Date(startDate))}
             </Stack>
 
             <Stack direction="row" alignItems="center">
               <Iconify icon="clarity:date-line" width={16} sx={{ mr: 0.5 }} />
-              {fDate(new Date(Number(endDate)))}
+              {fDate(new Date(endDate))}
             </Stack>
           </Stack>
         </Stack>

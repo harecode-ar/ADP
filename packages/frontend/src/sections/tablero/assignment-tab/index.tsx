@@ -2,23 +2,17 @@
 
 import { IProject } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
-import NextLink from 'next/link'
 import {
   Box,
-  Card,
   Stack,
-  Avatar,
   TextField,
   Typography,
   InputAdornment,
-  Link,
 } from '@mui/material'
 import { GET_USER_PROJECTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
-import { paths } from 'src/routes/paths'
-import { getStorageFileUrl } from 'src/utils/storage'
 import AssignmentItem from './assignment-item';
 
 export default function AssignmentTab() {
@@ -75,7 +69,7 @@ export default function AssignmentTab() {
             xl: 'repeat(4, 1fr)',
           }}
         >
-          
+
 
           {filteredProjects.map((project) => (
             <AssignmentItem key={project.id} project={project} />
@@ -97,103 +91,3 @@ export default function AssignmentTab() {
     </Box>
   )
 }
-
-// type AreaCardProps = {
-//   area: IArea
-// }
-
-// function AreaCard({ area }: AreaCardProps) {
-//   const { id, name, color, responsible } = area
-
-//   const { data } = useQuery(PROJECT_AREA_REPORT, {
-//     variables: {
-//       areaId: Number(id),
-//     },
-//     skip: !id,
-//   })
-
-//   const report: IProjectAreaReport = useMemo(() => {
-//     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
-//     return data.projectAreaReport
-//   }, [data])
-
-//   return (
-//     <Link
-//       component={NextLink}
-//       href={paths.dashboard.area.detail.replace(':id', String(id))}
-//       underline="none"
-//     >
-//       <Card
-//         sx={{
-//           py: 5,
-//           display: 'flex',
-//           position: 'relative',
-//           alignItems: 'center',
-//           flexDirection: 'column',
-//           cursor: 'pointer',
-//           backgroundColor: color,
-//           height: '100%',
-//         }}
-//       >
-//         <Box
-//           sx={{
-//             display: 'flex',
-//             flexDirection: 'column',
-//             alignItems: 'center',
-//             justifyContent: 'space-between',
-//             height: '100%',
-//           }}
-//         >
-//           <Box
-//             sx={{
-//               display: 'flex',
-//               alignItems: 'center',
-//               flexDirection: 'column',
-//             }}
-//           >
-//             <Avatar
-//               alt={responsible?.fullname || 'Sin responsable'}
-//               src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
-//               sx={{ width: 64, height: 64, mb: 3 }}
-//             />
-
-//             <Typography
-//               variant="subtitle1"
-//               color="black"
-//               fontSize={20}
-//               sx={{
-//                 textAlign: 'center',
-//               }}
-//             >
-//               {name}
-//             </Typography>
-
-//             <Typography
-//               variant="body2"
-//               sx={{ color: 'text.secondary', mb: 0.5, mt: 0.5 }}
-//               fontSize={15}
-//             >
-//               {responsible?.fullname || 'Sin responsable'}
-//             </Typography>
-//           </Box>
-
-//           <Box
-//             sx={{
-//               display: 'flex',
-//               gap: 2,
-//             }}
-//           >
-//             <ProyectAreaReportItem icon="entypo:new" value={report.new} size={17} />
-//             <ProyectAreaReportItem icon="mdi:tools" value={report.inProgress} size={15} />
-//             <ProyectAreaReportItem
-//               icon="fluent-mdl2:completed-solid"
-//               value={report.completed}
-//               size={15}
-//             />
-//             <ProyectAreaReportItem icon="ic:sharp-cancel" value={report.cancelled} size={18} />
-//           </Box>
-//         </Box>
-//       </Card>
-//     </Link>
-//   )
-// }

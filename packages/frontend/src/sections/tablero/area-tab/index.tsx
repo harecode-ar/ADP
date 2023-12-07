@@ -49,7 +49,7 @@ export default function AreaTab() {
         <TextField
           value={search}
           onChange={handleSearch}
-          placeholder="Buscar areas..."
+          placeholder="Buscar..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
