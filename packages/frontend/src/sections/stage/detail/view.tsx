@@ -24,11 +24,13 @@ import { formatDate } from 'src/utils/format-time'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
+import ContactTab from './contact-tab'
 
 enum ETab {
   NOTES = 'Notas',
   SUB_STAGES = 'Sub etapas',
   GANTT = 'Gantt',
+  CONTACTS = 'Contactos',
 }
 
 type TProps = {
@@ -215,6 +217,7 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.NOTES} value={ETab.NOTES} />
                 <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
+                <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -224,6 +227,8 @@ export default function ProjectDetailView(props: TProps) {
             )}
 
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
+
+            {tab === ETab.CONTACTS && <ContactTab stage={stage} />}
           </React.Fragment>
         )}
       </Box>

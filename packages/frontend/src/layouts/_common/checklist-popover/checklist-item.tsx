@@ -1,16 +1,22 @@
+'use client'
+
 import { IChecklist } from '@adp/shared'
 import React from 'react'
 import { Typography, Box, IconButton, Stack, MenuItem } from '@mui/material'
+import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
+import ModalDelete from './modal-delete'
 
 type TProps = {
   checklist: IChecklist
+  refetch: () => void
 }
 
 export function ChecklistItem(props: TProps) {
-  const { checklist } = props
+  const { checklist, refetch } = props
   const { checks = [] } = checklist
-  
+  const modalDelete = useBoolean()
+
   const totalChecks = checks.length
   const completedChecks = checks.filter((check) => check.checked).length
   return (
@@ -46,16 +52,20 @@ export function ChecklistItem(props: TProps) {
             {`${completedChecks.toString().padStart(2, '0')}/${totalChecks
               .toString()
               .padStart(2, '0')}`}
-            {checklist.createdAt.split('T')[0].split('-').reverse().join('/')}
+            {new Date(Number(checklist.createdAt)).toLocaleDateString()}
             {checklist?.project?.name || 'Sin asignar'}
           </Stack>
         </Box>
 
         <Box>
-          <IconButton color="error" onClick={() => null}>
+          <IconButton color="error" onClick={modalDelete.onTrue}>
             <Iconify icon="material-symbols:delete" />
           </IconButton>
         </Box>
+
+        {modalDelete.value && (
+          <ModalDelete modal={modalDelete} checklistId={Number(checklist.id)} refetch={refetch} />
+        )}
       </Box>
     </MenuItem>
   )

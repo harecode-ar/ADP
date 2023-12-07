@@ -18,7 +18,7 @@ export default function SubStagesTab(props: TProps) {
   const modalCreate = useBoolean()
 
   return (
-    <Card sx={{ p: 3 }}>
+    <Card sx={{ p: 2 }}>
       <Box
         sx={{
           display: 'flex',

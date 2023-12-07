@@ -1,21 +1,42 @@
+'use client'
+
 import { IChecklist } from '@adp/shared'
 import { m } from 'framer-motion'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
+import { useQuery } from '@apollo/client'
+import { useRouter } from 'src/routes/hooks'
+import { paths } from 'src/routes/paths'
+import { GET_USER_CHECKLISTS } from 'src/graphql/queries'
+import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { ChecklistItem } from './checklist-item'
-import CHECKLIST_MOCK from '../../../mocks/checklist'
 import CreateChecklistModal from './checklist-create-modal'
 
 export default function ChecklistPopover() {
   const createChecklistModal = useBoolean()
-  const refetch = () => null
-  const checklists = CHECKLIST_MOCK as unknown as IChecklist[]
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
+
+  const checklistQuery = useQuery(GET_USER_CHECKLISTS, {
+    onCompleted: (d) => {
+      if (!d.userChecklists) {
+        enqueueSnackbar('Checklist no encontrado', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    },
+  })
+
+  const checklists: IChecklist[] = useMemo(() => {
+    if (!checklistQuery.data) return []
+    return checklistQuery.data.userChecklists
+  }, [checklistQuery.data])
+
   return (
     <Box>
       <IconButton
@@ -46,7 +67,7 @@ export default function ChecklistPopover() {
           </Typography>
 
           <Tooltip title="Crear nuevo checklist">
-            <IconButton onClick= {createChecklistModal.onTrue}>
+            <IconButton onClick={createChecklistModal.onTrue}>
               <Iconify icon="mdi:plus" />
             </IconButton>
           </Tooltip>
@@ -65,11 +86,16 @@ export default function ChecklistPopover() {
           }}
           spacing={1}
         >
-          {checklists.map((checklist) => <ChecklistItem key={checklist.id} checklist={checklist} />)}
+          {checklists?.map((checklist) => (
+            <ChecklistItem
+              key={checklist.id}
+              checklist={checklist}
+              refetch={checklistQuery.refetch}
+            />
+          ))}
         </Stack>
       </Drawer>
-      <CreateChecklistModal modal={createChecklistModal} refetch={refetch}/>
+      <CreateChecklistModal modal={createChecklistModal} refetch={checklistQuery.refetch} />
     </Box>
-
   )
 }
