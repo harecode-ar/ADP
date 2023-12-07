@@ -61,6 +61,6 @@ export default [
     telephone: '1234567',
     password: '123456789',
     image: '6d467dba-31c0-4d56-b4e7-b65fdce8b523.png',
-    role: ROLE_MAP.ADMIN,
+    role: ROLE_MAP.USER,
   },
 ]
