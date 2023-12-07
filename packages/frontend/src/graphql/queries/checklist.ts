@@ -1,17 +1,12 @@
 import { gql } from '@apollo/client'
 
-export const CHECKLISTS = gql`
-  query checklists ($userId: Int, $projectId: Int, $stageId: Int) {
-    checklists (userId: $userId, projectId: $projectId, stageId: $stageId) {
+export const GET_USER_CHECKLISTS = gql`
+  query userChecklists {
+    userChecklists {
       id
       title
       createdAt
       updatedAt
-
-      user {
-        id
-        fullname
-      }
       stage {
         id
         name
@@ -30,15 +25,56 @@ export const CHECKLISTS = gql`
     }
   }
 `
-
-export const CHECKS = gql`
-  query checks ($checklistId: Int!) {
-    checks (checklistId: $checklistId) {
+export const GET_CHECKLIST_BY_PROJECT = gql`
+  query checklistByProject ($projectId: Int!) {
+    checklistByProject (projectId: $projectId) {
       id
       title
-      checked
       createdAt
       updatedAt
+      checks {
+        id
+        title
+        checked
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+export const GET_CHECKLIST_BY_STAGE = gql`
+  query checklistByStage ($stageId: Int!) {
+    checklistByStage (stageId: $stageId) {
+      id
+      title
+      createdAt
+      updatedAt
+      checks {
+        id
+        title
+        checked
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+export const GET_CHECKLIST = gql`
+  query checklist ($id: Int!) {
+    checklist (id: $id) {
+      id
+      title
+      createdAt
+      updatedAt
+      checks {
+        id
+        title
+        checked
+        createdAt
+        updatedAt
+      }
     }
   }
 `

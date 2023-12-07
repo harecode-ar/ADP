@@ -9,7 +9,13 @@ export default {
   Checklist: {
     user: (checklist: IChecklist): Promise<IUser | null> => {
       if (checklist.user) return Promise.resolve(checklist.user)
+      if (!checklist.userId) return Promise.resolve(null)
       return User.findByPk(checklist.userId)
+        .then((result) => (result ? result.get() : null))
+        .catch((error) => {
+          console.error('Error fetching user:', error)
+          throw error
+        })
     },
     stage: (checklist: IChecklist): Promise<IStage | null> => {
       if (checklist.stage) return Promise.resolve(checklist.stage)
@@ -48,56 +54,98 @@ export default {
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'> | null> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_READ], context)
-        return Checklist.findByPk(args.id)
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        return Checklist.findOne({
+          where: { id: args.id, userId: user.id }
+        })
       } catch (error) {
         logger.error(error)
         throw error
       }
     },
-    checklists: async (
+    userChecklists: async (
       _: any,
-      args: { userId?: number; projectId?: number; stageId?: number },
+      __: any,
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>[] | null> => {
       try {
-        needPermission([PERMISSION_MAP.CHECKLIST_READ], context);
-
-        const where: Record<string, any> = {};
-
-        if (args.userId) {
-          where.userId = args.userId;
-        }
-        if (args.projectId) {
-          where.projectId = args.projectId;
-        }
-        if (args.stageId) {
-          where.stageId = args.stageId;
-        }
-
-        const checklists = await Checklist.findAll({
-          where,
-          order: [['createdAt', 'ASC']],
-        });
-
-        return checklists.map(checklist => checklist.get());
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CHECKLIST_READ], context)
+        const foundUser = (await User.findByPk(user.id, {
+          include: [
+            {
+              model: Checklist,
+              as: 'checklists',
+            },
+          ],
+        })) as IUser | null
+        if (!foundUser) throw new Error('No autorizado')
+        // @ts-ignore
+        return foundUser.checklists || []
       } catch (error) {
-        logger.error(error);
-        throw error;
+        logger.error(error)
+        throw error
       }
     },
+    checklistByProject: (
+      _: any,
+      args: Pick<IChecklist, 'projectId'>,
+      context: IContext
+    ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>[] | null> => {
+      try {
+        needPermission([PERMISSION_MAP.CHECKLIST_READ], context)
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        return Checklist.findAll({
+          where: {
+            userId: user.id,
+            projectId: args.projectId
+          },
+          order: [['createdAt', 'ASC']],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    checklistByStage: (
+      _: any,
+      args: Pick<IChecklist, 'stageId'>,
+      context: IContext
+    ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>[] | null> => {
+      try {
+        needPermission([PERMISSION_MAP.CHECKLIST_READ], context)
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        return Checklist.findAll({
+          where: {
+            userId: user.id,
+            stageId: args.stageId
+          },
+          order: [['createdAt', 'ASC']],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
   Mutation: {
     createChecklist: (
       _: any,
-      args: Pick<IChecklist, 'title' | 'userId' | 'stageId' | 'projectId'>,
+      args: Pick<IChecklist, 'title' | 'stageId' | 'projectId'>,
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_CREATE], context)
-        const { title, userId, stageId, projectId } = args
+        const { title, stageId, projectId } = args
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
         return Checklist.create({
           title,
-          userId,
+          userId: user.id,
           stageId,
           projectId,
         })
@@ -108,19 +156,25 @@ export default {
     },
     updateChecklist: async (
       _: any,
-      args: Pick<IChecklist, 'id' | 'title' | 'userId' | 'stageId' | 'projectId'>,
+      args: Pick<IChecklist, 'id' | 'title' | 'stageId' | 'projectId'>,
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_UPDATE], context)
-        const { id, title, userId, stageId, projectId } = args
-        const checklist = await Checklist.findByPk(id)
+        const { id, title, stageId, projectId } = args
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        const checklist = await Checklist.findOne({
+          where: {
+            id,
+            userId: user.id,
+          },
+        })
         if (!checklist) {
           throw new Error('Checklist not found')
         }
         await checklist.update({
           title,
-          userId,
           stageId,
           projectId,
         })
@@ -138,7 +192,13 @@ export default {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_DELETE], context)
         const { id } = args
-        const checklist = await Checklist.findByPk(id, {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        const checklist = await Checklist.findOne({
+          where: {
+            id,
+            userId: user.id,
+          },
           include: [{ model: Check, as: 'checks' }],
         });
         if (!checklist) {
@@ -157,6 +217,5 @@ export default {
         throw error
       }
     },
-    
   },
 }

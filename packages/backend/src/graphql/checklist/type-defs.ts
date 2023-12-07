@@ -16,14 +16,15 @@ export default `#graphql
   }
 
   type Query {
-    checklists(userId: Int, projectId: Int, stageId: Int): [Checklist]
     checklist(id: Int!): Checklist
+    userChecklists: [Checklist]
+    checklistByProject(projectId: Int!): [Checklist]
+    checklistByStage(stageId: Int!): [Checklist]
   }
 
   type Mutation {
     createChecklist(
       title: String!
-      userId: Int!
       stageId: Int
       projectId: Int
     ): Checklist
@@ -31,7 +32,6 @@ export default `#graphql
     updateChecklist(
       id: Int!
       title: String
-      userId: Int
       stageId: Int
       projectId: Int
     ): Checklist
