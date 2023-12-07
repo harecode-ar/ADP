@@ -21,6 +21,8 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
+import { useMutation } from '@apollo/client'
+import { CREATE_CHECKLIST } from 'src/graphql/mutations'
 
 const styleModal = {
   position: 'absolute' as 'absolute',
@@ -62,6 +64,7 @@ type TCheck = Pick<ICheck, 'title' | 'checked'> & {
 const CreateChecklistModal = (props: TProps) => {
   const { modal, refetch} = props
   const { enqueueSnackbar } = useSnackbar()
+  const [createChecklist] = useMutation(CREATE_CHECKLIST)
 
   const formik = useFormik({
     initialValues: {
@@ -70,14 +73,19 @@ const CreateChecklistModal = (props: TProps) => {
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        console.log('Checklist creado', values)
-        enqueueSnackbar('Checklist creado correctamente.', { variant: 'success' })
+        await createChecklist({
+          variables: {
+            title: values.title,
+            checks: values.checks
+          },
+        })
+        enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch (error) {
         console.error(error)
-        enqueueSnackbar('El checklist no pudo ser creado.', { variant: 'error' })
+        enqueueSnackbar('El listado de tareas no pudo ser creado.', { variant: 'error' })
       }
     },
     validationSchema: checklistSchema,
