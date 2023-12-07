@@ -176,18 +176,25 @@ export default {
         throw error
       }
     },
-    deleteContact: async (
+    deleteUserContact: async (
       _: any,
       args: Pick<IContact, 'id'>,
       context: IContext
-    ): Promise<Contact> => {
+    ): Promise<boolean> => {
       try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
         needPermission([PERMISSION_MAP.CONTACT_DELETE], context)
         const { id } = args
-        const contact = await Contact.findByPk(id)
-        if (!contact) throw new Error('No autorizado')
-        await contact.destroy()
-        return contact
+        const contactUser = await ContactUser.findOne({
+          where: {
+            userId: user.id,
+            contactId: id,
+          },
+        })
+        if (!contactUser) throw new Error('No autorizado')
+        await contactUser.destroy()
+        return true
       } catch (error) {
         logger.error(error)
         throw error

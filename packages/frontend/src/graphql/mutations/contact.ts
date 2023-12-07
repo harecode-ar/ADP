@@ -16,10 +16,8 @@ export const UPDATE_CONTACT = gql`
   }
 `
 
-export const DELETE_CONTACT = gql`
-  mutation deleteContact($id: ID!) {
-    deleteContact(id: $id) {
-      id
-    }
+export const DELETE_USER_CONTACT = gql`
+  mutation deleteUserContact($id: ID!) {
+    deleteUserContact(id: $id)
   }
 `
