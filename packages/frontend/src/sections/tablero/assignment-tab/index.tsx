@@ -28,7 +28,7 @@ export default function AssignmentTab() {
 
   const projects: IProject[] = useMemo(() => {
     if (!projectQuery.data) return []
-    return projectQuery.data.userProjects
+    return [...(projectQuery.data.userProjects || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
   }, [projectQuery.data])
 
   const filteredProjects = useMemo(
@@ -43,8 +43,9 @@ export default function AssignmentTab() {
 
   const stages: IStage[] = useMemo(() => {
     if (!stageQuery.data) return []
-    return stageQuery.data.userStages
+    return [...(stageQuery.data.userStages || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
   }, [stageQuery.data])
+
 
   const filteredStages = useMemo(
     () => stages.filter((stage) => stage.name.toLowerCase().includes(search.toLowerCase())),
@@ -58,7 +59,7 @@ export default function AssignmentTab() {
 
   const subStages: IStage[] = useMemo(() => {
     if (!subStageQuery.data) return []
-    return subStageQuery.data.userSubStages
+    return [...(subStageQuery.data.userSubStages || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
   }, [subStageQuery.data])
 
   const filteredSubStages = useMemo(

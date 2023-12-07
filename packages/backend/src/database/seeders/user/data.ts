@@ -51,6 +51,7 @@ export default [
     email: 'dpalacios@adp.com',
     telephone: '1234567',
     password: '123',
+    image: 'bcfafdb8-8df0-4aaa-8722-0cd5dcdb5355.png',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -59,6 +60,7 @@ export default [
     email: 'elreparaz31@gmail.com',
     telephone: '1234567',
     password: '123456789',
+    image: '6d467dba-31c0-4d56-b4e7-b65fdce8b523.png',
     role: ROLE_MAP.ADMIN,
   },
 ]

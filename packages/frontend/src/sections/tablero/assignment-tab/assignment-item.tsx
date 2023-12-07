@@ -66,6 +66,7 @@ export default function AssignmentItem(props: TProps) {
       <Stack
         sx={{
           p: (theme) => theme.spacing(3, 3, 2, 3),
+          width: 1,
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
@@ -114,12 +115,7 @@ export default function AssignmentItem(props: TProps) {
           >
             <Stack direction="row" alignItems="center">
               <Iconify icon="clarity:date-line" width={16} sx={{ mr: 0.5 }} />
-              {fDate(new Date(startDate))}
-            </Stack>
-
-            <Stack direction="row" alignItems="center">
-              <Iconify icon="clarity:date-line" width={16} sx={{ mr: 0.5 }} />
-              {fDate(new Date(endDate))}
+              {fDate(new Date(startDate))} - {fDate(new Date(endDate))}
             </Stack>
           </Stack>
         </Stack>
