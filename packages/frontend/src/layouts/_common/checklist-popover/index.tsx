@@ -1,3 +1,4 @@
+import { IChecklist } from '@adp/shared'
 import { m } from 'framer-motion'
 import React from 'react'
 import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box } from '@mui/material'
@@ -5,11 +6,14 @@ import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
+import { ChecklistItem } from './checklist-item'
+import CHECKLIST_MOCK from '../../../mocks/checklist'
 import CreateChecklistModal from './checklist-create-modal'
 
 export default function ChecklistPopover() {
   const createChecklistModal = useBoolean()
   const refetch = () => null
+  const checklists = CHECKLIST_MOCK as unknown as IChecklist[]
   const drawer = useBoolean()
   const smUp = useResponsive('up', 'sm')
   return (
@@ -54,6 +58,15 @@ export default function ChecklistPopover() {
           )}
         </Stack>
         <Divider />
+
+        <Stack
+          sx={{
+            p: 2.5,
+          }}
+          spacing={1}
+        >
+          {checklists.map((checklist) => <ChecklistItem key={checklist.id} checklist={checklist} />)}
+        </Stack>
       </Drawer>
       <CreateChecklistModal modal={createChecklistModal} refetch={refetch}/>
     </Box>

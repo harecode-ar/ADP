@@ -18,6 +18,8 @@ import { Contact } from './contact'
 import { ContactProject } from './contact-project'
 import { ContactStage } from './contact-stage'
 import { ContactUser } from './contact-user'
+import { Checklist } from './checklist'
+import { Check } from './check'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -93,6 +95,18 @@ Stage.belongsToMany(Contact, { as: 'contacts', through: ContactStage, foreignKey
 Contact.belongsToMany(User, { as: 'users', through: ContactUser, foreignKey: 'contactId' })
 User.belongsToMany(Contact, { as: 'contacts', through: ContactUser, foreignKey: 'userId' })
 
+Checklist.hasMany(Check, { as: 'checks', foreignKey: 'checklistId' })
+Check.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+
+User.hasMany(Checklist, { as: 'checklists', foreignKey: 'userId' })
+Checklist.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+Checklist.hasOne(Stage, { as: 'stage', foreignKey: 'checklistId' })
+Stage.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+
+Checklist.hasOne(Project, { as: 'project', foreignKey: 'checklistId' })
+Project.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+
 export {
   Permission,
   Role,
@@ -114,4 +128,6 @@ export {
   ContactProject,
   ContactStage,
   ContactUser,
+  Checklist,
+  Check,
 }
