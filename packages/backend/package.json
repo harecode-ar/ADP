@@ -16,6 +16,7 @@
     "@adp/shared": "1.0.0",
     "@graphql-tools/merge": "9.0.0",
     "@graphql-tools/schema": "10.0.0",
+    "@types/node-cron": "3.0.11",
     "apollo-server-express": "3.12.1",
     "axios": "1.5.0",
     "bcrypt": "5.1.1",
@@ -31,6 +32,7 @@
     "log4js": "6.9.1",
     "mysql2": "3.6.1",
     "next": "13.4.10",
+    "node-cron": "3.0.3",
     "nodemailer": "6.9.7",
     "sequelize": "6.33.0"
   },
