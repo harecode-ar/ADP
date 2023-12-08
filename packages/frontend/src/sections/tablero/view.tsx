@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Container, Card, Box, Tabs, Tab } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
+import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
 import UserCard from './user-card'
 import AreaTab from './area-tab'
 import AssignmentTab from './assignment-tab'
@@ -42,7 +43,11 @@ export default function TableroView() {
         <Card sx={{ p: 2 }}>
           {tab === ETab.AREAS && <AreaTab />}
           {tab === ETab.ASSIGNMENT && <AssignmentTab />}
-          {tab === ETab.REPORT && <ReportTab />}
+          {tab === ETab.REPORT && (
+            <DashboardReportProvider>
+              <ReportTab />
+            </DashboardReportProvider>
+          )}
         </Card>
       </Box>
     </Container>
