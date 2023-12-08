@@ -6,7 +6,7 @@ export const PROJECT = {
     'Este proyecto tiene como objetivo la sustitución de las luces halógenas existentes por luces LED en un edificio para mejorar la eficiencia energética y reducir los costos de operación.',
   startDate: '2023-03-01',
   endDate: '2023-06-30',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000,
   progress: 1,
   areaId: 1,
   stateId: PROJECT_STATE.COMPLETED,
