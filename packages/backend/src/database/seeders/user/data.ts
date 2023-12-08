@@ -38,14 +38,6 @@ export default [
     role: ROLE_MAP.ADMIN,
   },
   {
-    firstname: 'Matias',
-    lastname: 'Facciuto',
-    email: 'tute@adp.com',
-    telephone: '1234567',
-    password: '123',
-    role: ROLE_MAP.ADMIN,
-  },
-  {
     firstname: 'Daniel',
     lastname: 'Palacios',
     email: 'dpalacios@adp.com',
