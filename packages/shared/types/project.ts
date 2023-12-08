@@ -9,7 +9,7 @@ export interface IProject {
   id: number
   name: string
   description: string
-  cost: string
+  cost: number
   startDate: string
   endDate: string
   progress: number

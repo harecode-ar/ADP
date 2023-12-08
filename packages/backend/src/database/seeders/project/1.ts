@@ -6,7 +6,7 @@ export const PROJECT = {
   endDate: '2024-11-30',
   description:
     'El proyecto "Construcción de 10km de calle" implica el desarrollo y mejora de infraestructura vial en una área específica. Comienza con una fase de planificación y diseño, seguida de la obtención de los permisos necesarios. Luego, se realiza la preparación del terreno, que incluye el desbroce y nivelación del área. La fase central del proyecto es la construcción de la base de la calle y su pavimentación, utilizando materiales como asfalto o concreto. Posteriormente, se lleva a cabo la señalización y los acabados necesarios para garantizar la seguridad y funcionalidad de la calle. Finalmente, el proyecto concluye con una revisión exhaustiva y la entrega oficial de la obra. Este proyecto no solo mejorará la conectividad y accesibilidad de la zona, sino que también potenciará el desarrollo económico y social en la región.',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000 + 0.94,
   progress: 0,
   areaId: 1,
   stateId: PROJECT_STATE.NEW,

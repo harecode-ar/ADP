@@ -6,7 +6,7 @@ export const PROJECT = {
     'Este proyecto tiene como objetivo promover el uso de energías renovables en la comunidad, fomentando la adopción de tecnologías como paneles solares, turbinas eólicas y sistemas de calefacción solar.',
   startDate: '2023-01-01',
   endDate: '2023-12-31',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
   stateId: PROJECT_STATE.IN_PROGRESS,

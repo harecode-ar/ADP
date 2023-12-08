@@ -6,7 +6,7 @@ export const PROJECT = {
     'Este proyecto tiene como objetivo la reparación y mejora de las veredas en un área urbana específica para garantizar la seguridad y accesibilidad peatonal.',
   startDate: '2023-09-01',
   endDate: '2024-02-29',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
   stateId: PROJECT_STATE.IN_PROGRESS,
