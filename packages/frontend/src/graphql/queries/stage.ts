@@ -131,32 +131,3 @@ export const GET_SUB_STAGE = gql`
     }
   }
 `
-
-export const GET_USER_STAGES = gql`
-  query userStages {
-    userStages {
-      id
-      name
-      description
-      startDate
-      endDate
-      progress
-      stateId
-      hasStages
-    }
-  }
-`
-
-export const GET_USER_SUB_STAGES = gql`
-  query userSubStages {
-    userSubStages {
-      id
-      name
-      description
-      startDate
-      endDate
-      progress
-      stateId
-    }
-  }
-`

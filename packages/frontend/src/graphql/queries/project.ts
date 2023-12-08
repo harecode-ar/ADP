@@ -163,17 +163,3 @@ export const GET_PROJECT = gql`
     }
   }
 `
-
-export const GET_USER_PROJECTS = gql`
-  query userProjects {
-    userProjects {
-      id
-      name
-      description
-      startDate
-      endDate
-      progress
-      stateId
-    }
-  }
-`

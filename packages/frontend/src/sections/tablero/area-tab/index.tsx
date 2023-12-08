@@ -15,7 +15,6 @@ import {
 } from '@mui/material'
 import { GET_AREAS_FOR_DASHBOARD, PROJECT_AREA_REPORT } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
-import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import { getStorageFileUrl } from 'src/utils/storage'
