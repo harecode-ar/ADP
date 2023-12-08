@@ -6,12 +6,14 @@ import { useSettingsContext } from 'src/components/settings'
 import UserCard from './user-card'
 import AreaTab from './area-tab'
 import AssignmentTab from './assignment-tab'
+import ReportTab from './report-tab'
 
 // ----------------------------------------------------------------------
 
 enum ETab {
   AREAS = 'Areas',
   ASSIGNMENT = 'Asignaciones',
+  REPORT = 'Estadísticas',
 }
 
 export default function TableroView() {
@@ -32,15 +34,15 @@ export default function TableroView() {
           >
             <Tabs value={tab} onChange={(e, v) => setTab(v)}>
               <Tab label={ETab.AREAS} value={ETab.AREAS} />
-            </Tabs>
-            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
               <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} sx={{ pl: 1 }} />
+              <Tab label={ETab.REPORT} value={ETab.REPORT} sx={{ pl: 1 }} />
             </Tabs>
           </Box>
         </Card>
         <Card sx={{ p: 2 }}>
           {tab === ETab.AREAS && <AreaTab />}
           {tab === ETab.ASSIGNMENT && <AssignmentTab />}
+          {tab === ETab.REPORT && <ReportTab />}
         </Card>
       </Box>
     </Container>
