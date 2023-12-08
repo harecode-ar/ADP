@@ -2,16 +2,27 @@
 
 import { IStage } from '@adp/shared'
 import React, { useMemo } from 'react'
-import Stack from '@mui/material/Stack'
-import Drawer from '@mui/material/Drawer'
-import Divider from '@mui/material/Divider'
+import NextLink from 'next/link'
 import Scrollbar from 'src/components/scrollbar'
-import { Tooltip, IconButton, Button, Box, Avatar, Typography, TextField } from '@mui/material'
+import {
+  Tooltip,
+  IconButton,
+  Button,
+  Box,
+  Avatar,
+  Typography,
+  TextField,
+  Stack,
+  Divider,
+  Drawer,
+  Link,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
+import { paths } from 'src/routes/paths'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
@@ -105,6 +116,16 @@ export default function KanbanDetails(props: TProps) {
           {subStage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          <Tooltip title="Detalle">
+            <Link
+              component={NextLink}
+              href={paths.dashboard.subStage.detail.replace(':id', String(subStage.id))}
+            >
+              <IconButton>
+                <Iconify icon="mdi:eye" />
+              </IconButton>
+            </Link>
+          </Tooltip>
           <Tooltip title="Editar">
             <IconButton onClick={modalEdit.onTrue}>
               <Iconify icon="mdi:pencil" />
