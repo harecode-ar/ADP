@@ -2,18 +2,12 @@
 
 import { IProject, IStage } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
-import {
-  Box,
-  Stack,
-  TextField,
-  Typography,
-  InputAdornment,
-} from '@mui/material'
+import { Box, Stack, TextField, Typography, InputAdornment } from '@mui/material'
 import { GET_USER_PROJECTS, GET_USER_STAGES, GET_USER_SUB_STAGES } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import { _socials } from 'src/_mock'
 import Iconify from 'src/components/iconify'
-import AssignmentItem from './assignment-item';
+import AssignmentItem from './assignment-item'
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
@@ -28,7 +22,9 @@ export default function AssignmentTab() {
 
   const projects: IProject[] = useMemo(() => {
     if (!projectQuery.data) return []
-    return [...(projectQuery.data.userProjects || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
+    return [...(projectQuery.data.userProjects || [])].sort((a, b) =>
+      a.startDate > b.startDate ? 1 : -1
+    )
   }, [projectQuery.data])
 
   const filteredProjects = useMemo(
@@ -43,9 +39,10 @@ export default function AssignmentTab() {
 
   const stages: IStage[] = useMemo(() => {
     if (!stageQuery.data) return []
-    return [...(stageQuery.data.userStages || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
+    return [...(stageQuery.data.userStages || [])].sort((a, b) =>
+      a.startDate > b.startDate ? 1 : -1
+    )
   }, [stageQuery.data])
-
 
   const filteredStages = useMemo(
     () => stages.filter((stage) => stage.name.toLowerCase().includes(search.toLowerCase())),
@@ -59,16 +56,18 @@ export default function AssignmentTab() {
 
   const subStages: IStage[] = useMemo(() => {
     if (!subStageQuery.data) return []
-    return [...(subStageQuery.data.userSubStages || [])].sort((a, b) => a.startDate > b.startDate ? 1 : -1)
+    return [...(subStageQuery.data.userSubStages || [])].sort((a, b) =>
+      a.startDate > b.startDate ? 1 : -1
+    )
   }, [subStageQuery.data])
 
   const filteredSubStages = useMemo(
-    () => subStages.filter((subStage) => subStage.name.toLowerCase().includes(search.toLowerCase())),
+    () =>
+      subStages.filter((subStage) => subStage.name.toLowerCase().includes(search.toLowerCase())),
     [subStages, search]
   )
 
   const notSubStagesFound = !filteredSubStages.length
-
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

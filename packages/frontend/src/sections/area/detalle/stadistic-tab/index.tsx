@@ -1,4 +1,4 @@
-import { IArea, IProjectAreaReport } from '@adp/shared'
+import { IArea, IProjectCountByState } from '@adp/shared'
 import { Grid } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
@@ -19,7 +19,7 @@ export default function StadisticTab(props: TProps) {
     skip: !area.id,
   })
 
-  const report: IProjectAreaReport = useMemo(() => {
+  const report: IProjectCountByState = useMemo(() => {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectAreaReport
   }, [data])

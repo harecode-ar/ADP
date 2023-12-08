@@ -1,6 +1,6 @@
 'use client'
 
-import { IArea, IProjectAreaReport } from '@adp/shared'
+import { IArea, IProjectCountByState } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import {
@@ -105,7 +105,7 @@ function AreaCard({ area }: AreaCardProps) {
     skip: !id,
   })
 
-  const report: IProjectAreaReport = useMemo(() => {
+  const report: IProjectCountByState = useMemo(() => {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectAreaReport
   }, [data])

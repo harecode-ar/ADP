@@ -13,7 +13,7 @@ import {
   Backdrop,
   Checkbox,
   Stack,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -72,7 +72,7 @@ export default function CreateChecklistModal(props: TProps) {
   const formik = useFormik({
     initialValues: {
       title: '',
-      checks: []
+      checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -80,10 +80,10 @@ export default function CreateChecklistModal(props: TProps) {
           variables: {
             id: checklist.id,
             title: values.title,
-            checks: values.checks.map(check => ({
+            checks: values.checks.map((check) => ({
               title: check.title,
-              checked: check.checked
-            }))
+              checked: check.checked,
+            })),
           },
         })
         enqueueSnackbar('Listado de tareas editado correctamente.', { variant: 'success' })
@@ -99,7 +99,7 @@ export default function CreateChecklistModal(props: TProps) {
 
   useQuery(GET_CHECKLIST, {
     variables: {
-      id: checklist.id
+      id: checklist.id,
     },
     onCompleted: (d) => {
       if (!d.checklist) {
@@ -108,7 +108,7 @@ export default function CreateChecklistModal(props: TProps) {
       }
       formik.setValues({
         title: d.checklist.title,
-        checks: d.checklist.checks || []
+        checks: d.checklist.checks || [],
       })
     },
   })
@@ -118,9 +118,9 @@ export default function CreateChecklistModal(props: TProps) {
       id: uuidv4(),
       title: '',
       checked: false,
-    };
+    }
     formik.setFieldValue('checks', [...formik.values.checks, newCheck])
-  };
+  }
 
   const handleCheckedChange = (check: TCheck) => {
     const findIndex = formik.values.checks.findIndex((c) => c.id === check.id)
@@ -163,7 +163,7 @@ export default function CreateChecklistModal(props: TProps) {
               id="title"
               name="title"
               label="Titulo"
-              variant='standard'
+              variant="standard"
               fullWidth
               value={formik.values.title}
               onChange={formik.handleChange}
@@ -186,14 +186,11 @@ export default function CreateChecklistModal(props: TProps) {
               <Stack spacing={1}>
                 {formik.values.checks.map((check) => (
                   <Box key={check.id} display="flex" alignItems="center">
-                    <Checkbox
-                      checked={check.checked}
-                      onChange={() => handleCheckedChange(check)}
-                    />
+                    <Checkbox checked={check.checked} onChange={() => handleCheckedChange(check)} />
                     <TextField
-                      placeholder='Escriba un titulo para la tarea'
-                      variant='standard'
-                      size='small'
+                      placeholder="Escriba un titulo para la tarea"
+                      variant="standard"
+                      size="small"
                       fullWidth
                       value={check.title || ''}
                       onChange={(e) => handleTitleChange(check, e.target.value)}
@@ -208,11 +205,11 @@ export default function CreateChecklistModal(props: TProps) {
                 ))}
               </Stack>
             </Scrollbar>
-            {
-              !!formik.errors.checks && (
-                <Typography color='error' variant='caption'>No puede haber tareas vacias</Typography>
-              )
-            }
+            {!!formik.errors.checks && (
+              <Typography color="error" variant="caption">
+                No puede haber tareas vacias
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Box
@@ -227,11 +224,14 @@ export default function CreateChecklistModal(props: TProps) {
                 <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                 Cancelar
               </Button>
-              <Button variant="contained" color="primary" onClick={() => formik.handleSubmit()} disabled={loading}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => formik.handleSubmit()}
+                disabled={loading}
+              >
                 <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                {
-                  loading ? 'Guardando...' : 'Guardar'
-                }
+                {loading ? 'Guardando...' : 'Guardar'}
               </Button>
             </Box>
           </Grid>

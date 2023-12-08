@@ -1,12 +1,12 @@
 import { IProject, IStage } from '@adp/shared'
-import React, { useMemo } from 'react';
-import NextLink from 'next/link';
-import { Tooltip, Link, IconButton, Stack, Card } from '@mui/material';
-import { paths } from 'src/routes/paths';
-import { fDate } from 'src/utils/format-time';
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import TextMaxLine from 'src/components/text-max-line';
+import React, { useMemo } from 'react'
+import NextLink from 'next/link'
+import { Tooltip, Link, IconButton, Stack, Card } from '@mui/material'
+import { paths } from 'src/routes/paths'
+import { fDate } from 'src/utils/format-time'
+import Label from 'src/components/label'
+import Iconify from 'src/components/iconify'
+import TextMaxLine from 'src/components/text-max-line'
 
 // ----------------------------------------------------------------------
 
@@ -14,48 +14,46 @@ type TProps = {
   project?: IProject
   stage?: IStage
   subStage?: IStage
-};
+}
 
 export default function AssignmentItem(props: TProps) {
+  const { project, stage, subStage } = props
 
-  const {
-    project,
-    stage,
-    subStage,
-  } = props
-
-  const {
-    id, name, description, startDate, endDate, progress
-  } = project || stage || subStage || {
-    id: 0,
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    progress: 0,
-    stateId: 0
-  }
+  const { id, name, description, startDate, endDate, progress } = project ||
+    stage ||
+    subStage || {
+      id: 0,
+      name: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      progress: 0,
+      stateId: 0,
+    }
 
   const assignment = useMemo(() => {
-    if (project) return {
-      title: 'Proyecto',
-      color: 'info',
-      path: paths.dashboard.project.detail
-    }
-    if (stage) return {
-      title: 'Etapa',
-      color: 'warning',
-      path: paths.dashboard.stage.detail
-    }
-    if (subStage) return {
-      title: 'Sub Etapa',
-      color: 'success',
-      path: paths.dashboard.stage.detail
-    }
+    if (project)
+      return {
+        title: 'Proyecto',
+        color: 'info',
+        path: paths.dashboard.project.detail,
+      }
+    if (stage)
+      return {
+        title: 'Etapa',
+        color: 'warning',
+        path: paths.dashboard.stage.detail,
+      }
+    if (subStage)
+      return {
+        title: 'Sub Etapa',
+        color: 'success',
+        path: paths.dashboard.stage.detail,
+      }
     return {
       title: '',
       color: 'default',
-      path: ''
+      path: '',
     }
   }, [project, stage, subStage])
 
@@ -74,7 +72,7 @@ export default function AssignmentItem(props: TProps) {
             {assignment.title}
           </Label>
 
-          <Tooltip title='Ver detalle'>
+          <Tooltip title="Ver detalle">
             <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
               <IconButton>
                 <Iconify icon="mdi:eye" />
@@ -96,10 +94,14 @@ export default function AssignmentItem(props: TProps) {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" mt={1}>
-          <Stack direction="row" alignItems="center" sx={{
-            typography: 'caption',
-            color: 'text.disabled',
-          }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              typography: 'caption',
+              color: 'text.disabled',
+            }}
+          >
             {progress * 100}%
           </Stack>
           <Stack

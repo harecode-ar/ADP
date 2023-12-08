@@ -31,7 +31,6 @@ export function ChecklistItem(props: TProps) {
             alignItems: 'center',
             width: '100%',
           }}
-
         >
           <Box>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -62,10 +61,13 @@ export function ChecklistItem(props: TProps) {
           </Box>
 
           <Box>
-            <IconButton color="error" onClick={(event) => {
-              event.stopPropagation()
-              modalDelete.onTrue()
-            }}>
+            <IconButton
+              color="error"
+              onClick={(event) => {
+                event.stopPropagation()
+                modalDelete.onTrue()
+              }}
+            >
               <Iconify icon="material-symbols:delete" />
             </IconButton>
           </Box>
@@ -74,11 +76,9 @@ export function ChecklistItem(props: TProps) {
       {modalDelete.value && (
         <ModalDelete modal={modalDelete} checklistId={Number(checklist.id)} refetch={refetch} />
       )}
-      {
-        modalUpdate.value && (
-          <UpdateChecklistModal modal={modalUpdate} refetch={refetch} checklist={checklist} />
-        )
-      }
+      {modalUpdate.value && (
+        <UpdateChecklistModal modal={modalUpdate} refetch={refetch} checklist={checklist} />
+      )}
     </React.Fragment>
   )
 }
