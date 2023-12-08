@@ -63,4 +63,20 @@ export default [
     image: '6d467dba-31c0-4d56-b4e7-b65fdce8b523.png',
     role: ROLE_MAP.USER,
   },
+  {
+    firstname: 'Ale',
+    lastname: 'Acosta',
+    email: 'aleacosta0520@gmail.com',
+    telephone: '1234567',
+    password: '123456789',
+    role: ROLE_MAP.ADMIN,
+  },
+  {
+    firstname: 'Jime',
+    lastname: 'Medina',
+    email: 'medina.jime@gmail.com',
+    telephone: '1234567',
+    password: '123456789',
+    role: ROLE_MAP.ADMIN,
+  },
 ]
