@@ -38,10 +38,15 @@ export default {
       _: any,
       args: {
         areas: number[]
+        startDate?: string
+        endDate?: string
       }
     ): Promise<IProjectCountByState> => {
       try {
-        const { areas } = args
+        const { areas, startDate, endDate } = args
+
+        const startDateFilter = startDate ? `AND startDate >= '${startDate}'` : ''
+        const endDateFilter = endDate ? `AND endDate <= '${endDate}'` : ''
 
         const query = `
           SELECT
@@ -50,7 +55,7 @@ export default {
             COUNT(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN 1 END) AS completed,
             COUNT(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN 1 END) AS cancelled
           FROM projects
-          WHERE areaId IN (${areas.join(', ')})
+          WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `
 
         const result = await sequelize.query(query, {
