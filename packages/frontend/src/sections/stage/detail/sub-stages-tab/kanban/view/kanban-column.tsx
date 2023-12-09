@@ -30,7 +30,7 @@ export default function KanbanColumn({ subStages, stage, title, refetch }: Props
           spacing={2}
           sx={{
             py: 3,
-            width: 225,
+            minWidth: 225,
           }}
         >
           {subStages?.map((subStageItem, index) => (

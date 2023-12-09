@@ -32,8 +32,13 @@ export default function NotesTab(props: TProps) {
     >
       <PostCommentForm project={project} refetch={refetch} />
       {notes.length === 0 ? (
-        <Box style={{ textAlign: 'center', padding: '20px' }}>
-          <p>No hay notas</p>
+        <Box
+          sx={{
+            textAlign: 'center',
+            color: 'text.disabled',
+          }}
+        >
+          No hay notas
         </Box>
       ) : (
         notes.map((note) => <NoteItem key={note.id} note={note} refetch={refetch} />)
