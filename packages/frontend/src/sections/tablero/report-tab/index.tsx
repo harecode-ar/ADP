@@ -34,6 +34,7 @@ export default function ReportTab() {
         inProgressProjects={inProgressProjects}
         finishedProjects={finishedProjects}
         canceledProjects={canceledProjects}
+        totalProjects={totalProjects}
       />
     </Box>
   )
