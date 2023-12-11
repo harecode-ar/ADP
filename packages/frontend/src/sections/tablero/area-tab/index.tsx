@@ -43,50 +43,52 @@ export default function AreaTab() {
   const notFound = !filteredAreas.length
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Stack spacing={2} justifyContent="end" direction={{ xs: 'column', sm: 'row' }}>
-        <TextField
-          value={search}
-          onChange={handleSearch}
-          placeholder="Buscar..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{ width: { xs: 1, sm: 260 } }}
-        />
-      </Stack>
+    <Card sx={{ p: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Stack spacing={2} justifyContent="end" direction={{ xs: 'column', sm: 'row' }}>
+          <TextField
+            value={search}
+            onChange={handleSearch}
+            placeholder="Buscar..."
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ width: { xs: 1, sm: 260 } }}
+          />
+        </Stack>
 
-      <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-          xl: 'repeat(4, 1fr)',
-        }}
-      >
-        {filteredAreas.map((area) => (
-          <AreaCard key={area.id} area={area} />
-        ))}
-      </Box>
-      {notFound && (
         <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
+          gap={3}
+          display="grid"
+          gridTemplateColumns={{
+            xs: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            xl: 'repeat(4, 1fr)',
           }}
         >
-          <Typography>No se encontraron resultados</Typography>
+          {filteredAreas.map((area) => (
+            <AreaCard key={area.id} area={area} />
+          ))}
         </Box>
-      )}
-    </Box>
+        {notFound && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            <Typography>No se encontraron resultados</Typography>
+          </Box>
+        )}
+      </Box>
+    </Card>
   )
 }
 

@@ -2,7 +2,7 @@ import { IArea } from '@adp/shared'
 import React, { useMemo } from 'react'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { useDashboardReportContext } from 'src/contexts/dashboard-report-context'
-import { Box, Autocomplete, TextField, Button, Grid } from '@mui/material'
+import { Box, Autocomplete, TextField, Button, Grid, Card } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 
 type TArea = Pick<IArea, 'id' | 'name'>
@@ -38,62 +38,66 @@ export default function FilterComponent(props: TProps) {
   const smDown = useResponsive('down', 'sm')
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Autocomplete
-            multiple
-            options={options}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => <TextField {...params} label="Areas" />}
-            noOptionsText="No hay areas"
-            disableClearable
-            value={selectedAreas}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <TextField
-            fullWidth
-            label="Fecha inicial"
-            type="month"
-            InputLabelProps={{ shrink: true }}
-            value={selectedInitialDate}
-            onChange={(event) => setSelectedInitialDate(event.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <TextField
-            fullWidth
-            label="Fecha final"
-            type="month"
-            InputLabelProps={{ shrink: true }}
-            value={selectedFinalDate}
-            onChange={(event) => setSelectedFinalDate(event.target.value)}
-          />
-        </Grid>
-      </Grid>
+    <Card sx={{
+      p: 2
+    }}>
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          flexDirection: 'column',
+          gap: 2,
         }}
       >
-        <Button
-          fullWidth={smDown}
-          variant="contained"
-          color="primary"
-          startIcon={<Iconify icon="fa-solid:search" />}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Autocomplete
+              multiple
+              options={options}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => <TextField {...params} label="Areas" />}
+              noOptionsText="No hay areas"
+              disableClearable
+              value={selectedAreas}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              fullWidth
+              label="Fecha inicial"
+              type="month"
+              InputLabelProps={{ shrink: true }}
+              value={selectedInitialDate}
+              onChange={(event) => setSelectedInitialDate(event.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              fullWidth
+              label="Fecha final"
+              type="month"
+              InputLabelProps={{ shrink: true }}
+              value={selectedFinalDate}
+              onChange={(event) => setSelectedFinalDate(event.target.value)}
+            />
+          </Grid>
+        </Grid>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
         >
-          Buscar
-        </Button>
+          <Button
+            fullWidth={smDown}
+            variant="contained"
+            color="primary"
+            startIcon={<Iconify icon="fa-solid:search" />}
+          >
+            Buscar
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </Card>
   )
 }

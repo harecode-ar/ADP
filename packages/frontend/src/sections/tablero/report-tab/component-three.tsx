@@ -52,7 +52,10 @@ export default function ComponentTree(props: TProps) {
     props
 
   return (
-    <Card>
+    <Card sx={{
+      width: '100%',
+      height: '100%',
+    }}>
       <TableContainer>
         <Table>
           <TableHead>

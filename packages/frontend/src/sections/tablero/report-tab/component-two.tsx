@@ -1,6 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
-import CardHeader from '@mui/material/CardHeader'
 import Card from '@mui/material/Card'
 import Chart, { useChart } from 'src/components/chart'
 import { useTheme } from '@mui/material/styles'
@@ -20,7 +18,7 @@ export default function ComponentTwo(props: TProps) {
   const chartOptions = useChart({
     stroke: {
       show: true,
-      width: 1,
+      width: 0,
       colors: ['transparent'],
     },
     xaxis: {
@@ -37,10 +35,10 @@ export default function ComponentTwo(props: TProps) {
       },
     },
     plotOptions: {
-      bar: { barHeight: '100%', columnWidth: '36%', horizontal: true },
+      bar: { horizontal: true },
     },
     colors: [
-      theme.palette.info.main,
+      theme.palette.info.dark,
       theme.palette.warning.main,
       theme.palette.success.main,
       theme.palette.text.secondary,
@@ -48,29 +46,26 @@ export default function ComponentTwo(props: TProps) {
   })
 
   return (
-    <Card
-      sx={{
-        mt: 2,
-        mb: { xs: 3, md: 5 },
-      }}
-    >
-      <Card>
-        <CardHeader title="Proyectos generales" />
-        <Box sx={{ mx: 3 }}>
-          <Chart
-            dir="ltr"
-            type="bar"
-            series={[
-              { name: 'Nuevos', data: [newProjects, 0, 0, 0] },
-              { name: 'En proceso', data: [0, inProgressProjects, 0, 0] },
-              { name: 'Finalizados', data: [0, 0, finishedProjects, 0] },
-              { name: 'Cancelados', data: [0, 0, 0, canceledProjects] },
-            ]}
-            options={chartOptions}
-            width="100%"
-            height={320}
-          />
-        </Box>
+    <Card sx={{
+      width: '100%',
+    }}>
+      <Card sx={{
+        p: 2,
+        pl: 0
+      }}>
+        <Chart
+          dir="ltr"
+          type="bar"
+          series={[
+            { name: 'Nuevos', data: [newProjects, 0, 0, 0] },
+            { name: 'En proceso', data: [0, inProgressProjects, 0, 0] },
+            { name: 'Finalizados', data: [0, 0, finishedProjects, 0] },
+            { name: 'Cancelados', data: [0, 0, 0, canceledProjects] },
+          ]}
+          options={chartOptions}
+          width="100%"
+          height={320}
+        />
       </Card>
     </Card>
   )

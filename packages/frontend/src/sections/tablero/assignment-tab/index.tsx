@@ -2,7 +2,7 @@
 
 import { IProject, IStage } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
-import { Box, Stack, TextField, InputAdornment } from '@mui/material'
+import { Box, Stack, TextField, InputAdornment, Card } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
@@ -68,26 +68,28 @@ export default function AssignmentTab() {
   )
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Stack spacing={2} justifyContent="end" direction={{ xs: 'column', sm: 'row' }}>
-        <TextField
-          value={search}
-          onChange={handleSearch}
-          placeholder="Buscar..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{ width: { xs: 1, sm: 260 } }}
-        />
-      </Stack>
+    <Card sx={{ p: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Stack spacing={2} justifyContent="end" direction={{ xs: 'column', sm: 'row' }}>
+          <TextField
+            value={search}
+            onChange={handleSearch}
+            placeholder="Buscar..."
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ width: { xs: 1, sm: 260 } }}
+          />
+        </Stack>
 
-      <ProjectSection projects={filteredProjects} />
-      <StageSection stages={filteredStages} />
-      <SubStageSection subStages={filteredSubStages} />
-    </Box>
+        <ProjectSection projects={filteredProjects} />
+        <StageSection stages={filteredStages} />
+        <SubStageSection subStages={filteredSubStages} />
+      </Box>
+    </Card>
   )
 }
