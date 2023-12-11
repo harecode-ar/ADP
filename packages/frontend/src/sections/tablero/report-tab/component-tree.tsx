@@ -1,130 +1,122 @@
-import React, { useEffect } from 'react'
-import type { IProject } from '@adp/shared'
-import NextLink from 'next/link'
-import CustomTable from 'src/components/table/custom-table'
-import CustomTableSearch from 'src/components/table/custom-table-search'
-import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
-import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
-import { EColumnType, useTable } from 'src/components/table'
-import { useBoolean } from 'src/hooks/use-boolean'
-import type { TColumn } from 'src/components/table'
-import { useQuery } from '@apollo/client'
-import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
-import { Box, IconButton, Link } from '@mui/material'
-import Label from 'src/components/label'
-import { paths } from 'src/routes/paths'
-import Iconify from 'src/components/iconify'
+import React from 'react'
 
-const getLabelColor = (id: number) => {
-  switch (id) {
-    case 1:
-      return 'secondary'
-    case 2:
-      return 'warning'
-    case 3:
-      return 'success'
-    case 4:
-      return 'error'
-    default:
-      return 'warning'
-  }
+import {
+  Card,
+  Typography,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import Label from 'src/components/label'
+
+type TProps = {
+  newProjects: number
+  inProgressProjects: number
+  finishedProjects: number
+  canceledProjects: number
+  totalProjects: number
 }
 
-type TRow = Pick<
-  IProject,
-  | 'id'
-  | 'name'
-  | 'description'
-  | 'cost'
-  | 'startDate'
-  | 'endDate'
-  | 'progress'
-  | 'stateId'
-  | 'areaId'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'state'
-  | 'area'
-  | 'stages'
-  | 'responsible'
->
-
-const columns: TColumn[] = [
-
-  {
-    id: 'state',
-    label: 'Estado',
-    type: EColumnType.STRING,
-    searchable: true,
-    renderCell: (row: any) => {
-      const result = row.state?.name
-      return (
-        <Label variant="soft" sx={{ ml: 1 }} color={getLabelColor(row.state.id)}>
-          {result}
-        </Label>
-      )
-    },
-    searchValue: (row: any) => row.state?.name || 'No tiene',
-  },
-  {
-    id: 'progress',
-    label: 'Cantidad de proyectos',
-    type: EColumnType.NUMBER,
-    searchable: true,
-    renderCell: (row: any) => `${row.progress * 100}%`,
-    searchValue: (row: TRow) => row.progress * 100,
-  },
-]
-
-const Table = () => {
-  const { data, loading, refetch } = useQuery(PROJECTS_FOR_LIST)
-  const { hideColumns, selected, setMultiple } = useTable()
-
-  useEffect(() => {
-    hideColumns(columns)
-  }, [hideColumns])
-
-  useEffect(() => {
-    setMultiple(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+export default function ComponentTree(props: TProps) {
+  const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
+    props
+  const theme = useTheme()
 
   return (
-    <Box>
-      {loading ? (
-        <CustomTableSkeleton columns={columns.length} search />
-      ) : (
-        <React.Fragment>
-          <CustomTableToolbar
-            id="project-list-table"
-            columns={columns}
-            download
-            refetch={refetch}
-          />
-          <CustomTableSearch />
-          <CustomTable
-            id="project-list-table"
-            columns={columns}
-            data={data.projects}
-            action={
-              <React.Fragment>
-                {selected.length === 1 && (
-                  <Link
-                    component={NextLink}
-                    href={paths.dashboard.project.detail.replace(':id', selected[0])}
-                  >
-                    <IconButton>
-                      <Iconify icon="mdi:eye" />
-                    </IconButton>
-                  </Link>
-                )}
-              </React.Fragment>
-            }
-          />
-        </React.Fragment>
-      )}
-    </Box>
+    <Card
+      sx={{
+        width: 300,
+        mt: 2,
+        mb: { xs: 3, md: 5 },
+      }}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Estado</TableCell>
+              <TableCell align="center">Cantidad de Proyectos</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <Label color="info" variant="soft">
+                  Nuevos
+                </Label>
+              </TableCell>
+              <TableCell align="right">
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <Typography variant="body1">{newProjects}</Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Label color="warning" variant="soft">
+                  En proceso
+                </Label>
+              </TableCell>
+              <TableCell align="right">
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <Typography variant="body1">{inProgressProjects}</Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ color: theme.palette.error.main }}>
+                <Label color="error" variant="soft">
+                  Cancelados
+                </Label>
+              </TableCell>
+              <TableCell align="right">
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <Typography variant="body1">{canceledProjects}</Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ color: theme.palette.success.main }}>
+                <Label color="primary" variant="soft">
+                  Finalizados
+                </Label>
+              </TableCell>
+              <TableCell align="right">
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <Typography variant="body1">{finishedProjects}</Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ color: theme.palette.success.main }}>
+                <Label color="secondary" variant="soft">
+                  Totales
+                </Label>
+              </TableCell>
+              <TableCell align="right">
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <Typography variant="body1">{totalProjects}</Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Card>
   )
 }
-
-export default Table

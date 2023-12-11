@@ -4,6 +4,7 @@ import { TableContextProvider } from 'src/components/table/context'
 import FilterComponent from './filter-component'
 import ComponentOne from './component-one'
 import { PROJECT_COUNT_BY_STATE } from '../../../mocks/report'
+import ComponentTree from './component-tree'
 
 export default function ReportTab() {
   const newProjects = PROJECT_COUNT_BY_STATE.new
@@ -25,7 +26,12 @@ export default function ReportTab() {
       />
     </Box>
       <TableContextProvider>
-        <Table />
+        <ComponentTree
+         newProjects={newProjects}
+         inProgressProjects={inProgressProjects}
+         finishedProjects={finishedProjects}
+         canceledProjects={canceledProjects}
+         totalProjects={totalProjects}/>
       </TableContextProvider>
       </React.Fragment>
   )
