@@ -12,17 +12,9 @@ type TProps = {
   canceledProjects: number
 }
 
-type TSerie = {
-  name: string
-  data: number[]
-}
+export default function ComponentTwo(props: TProps) {
+  const { newProjects, inProgressProjects, finishedProjects, canceledProjects } = props
 
-type CMProps = {
-  series: TSerie[]
-  categories: string[]
-}
-
-function ChartColumnMultiple({ series, categories }: CMProps) {
   const theme = useTheme()
 
   const chartOptions = useChart({
@@ -32,7 +24,7 @@ function ChartColumnMultiple({ series, categories }: CMProps) {
       colors: ['transparent'],
     },
     xaxis: {
-      categories,
+      categories: ['Nuevos', 'En proceso', 'Finalizados', 'Cancelados'],
     },
     yaxis: {
       labels: {
@@ -56,14 +48,6 @@ function ChartColumnMultiple({ series, categories }: CMProps) {
   })
 
   return (
-    <Chart dir="ltr" type="bar" series={series} options={chartOptions} width="100%" height={320} />
-  )
-}
-
-export default function ComponentTwo(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects } = props
-
-  return (
     <Card
       sx={{
         mt: 2,
@@ -72,16 +56,19 @@ export default function ComponentTwo(props: TProps) {
     >
       <Card>
         <CardHeader title="Proyectos generales" />
-
         <Box sx={{ mx: 3 }}>
-          <ChartColumnMultiple
+          <Chart
+            dir="ltr"
+            type="bar"
             series={[
               { name: 'Nuevos', data: [newProjects, 0, 0, 0] },
               { name: 'En proceso', data: [0, inProgressProjects, 0, 0] },
               { name: 'Finalizados', data: [0, 0, finishedProjects, 0] },
               { name: 'Cancelados', data: [0, 0, 0, canceledProjects] },
             ]}
-            categories={['Nuevos', 'En proceso', 'Finalizados', 'Cancelados']}
+            options={chartOptions}
+            width="100%"
+            height={320}
           />
         </Box>
       </Card>
