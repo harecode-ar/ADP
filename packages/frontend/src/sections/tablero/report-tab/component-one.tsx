@@ -18,12 +18,7 @@ export default function ComponentOne(props: TProps) {
   const theme = useTheme()
 
   return (
-    <Card
-      sx={{
-        mt: 2,
-        mb: { xs: 3, md: 5 },
-      }}
-    >
+    <Card>
       <Scrollbar>
         <Stack
           direction="row"

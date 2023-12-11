@@ -2,8 +2,9 @@ import React from 'react'
 import { Box } from '@mui/material'
 import FilterComponent from './filter-component'
 import ComponentOne from './component-one'
-import { PROJECT_COUNT_BY_STATE } from '../../../mocks/report'
 import ComponentTwo from './component-two'
+import ComponentThree from './component-three'
+import { PROJECT_COUNT_BY_STATE } from '../../../mocks/report'
 
 export default function ReportTab() {
   const newProjects = PROJECT_COUNT_BY_STATE.new
@@ -27,6 +28,13 @@ export default function ReportTab() {
         inProgressProjects={inProgressProjects}
         finishedProjects={finishedProjects}
         canceledProjects={canceledProjects}
+      />
+      <ComponentThree
+        newProjects={newProjects}
+        inProgressProjects={inProgressProjects}
+        finishedProjects={finishedProjects}
+        canceledProjects={canceledProjects}
+        totalProjects={totalProjects}
       />
     </Box>
   )
