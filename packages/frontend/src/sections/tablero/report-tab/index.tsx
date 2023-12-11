@@ -6,6 +6,7 @@ import ComponentTwo from './component-two'
 import ComponentThree from './component-three'
 import ComponentFour from './component-four'
 import ComponentFive from './component-five'
+import ComponentSix from './component-six'
 import { PROJECT_COUNT_BY_STATE, PROJECT_COST_BY_STATE } from '../../../mocks/report'
 
 export default function ReportTab() {
@@ -54,6 +55,13 @@ export default function ReportTab() {
           />
         </Grid>
       </Grid>
+      <ComponentSix
+        newProjects={newProjectsCost}
+        inProgressProjects={inProgressProjectsCost}
+        finishedProjects={finishedProjectsCost}
+        canceledProjects={canceledProjectsCost}
+        totalProjects={totalProjectsCost}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentFive

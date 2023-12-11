@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Stack, Divider, Typography, Box, CircularProgress } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { alpha, useTheme } from '@mui/material/styles'
+import { fCurrency } from 'src/utils/format-number'
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +50,9 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
       </Stack>
 
       <Stack spacing={0.5}>
-        <Typography variant="subtitle1">{amount}</Typography>
+        <Typography variant="subtitle1">
+          {fCurrency(amount).replace('.', ';').replace(/,/g, '.').replace(';', ',')}
+        </Typography>
 
         <Box component="span" sx={{ color: 'text.disabled', typography: 'body2' }}>
           {subtitle}
@@ -67,7 +70,7 @@ type TProps = {
   totalProjects: number
 }
 
-export default function ComponentOne(props: TProps) {
+export default function ComponentSix(props: TProps) {
   const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
     props
   const theme = useTheme()
