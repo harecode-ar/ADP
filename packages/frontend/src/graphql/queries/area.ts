@@ -84,3 +84,12 @@ export const GET_AREAS_FOR_DASHBOARD = gql`
     }
   }
 `
+
+export const GET_USER_AREAS_FOR_SELECT = gql`
+  query userAreasForSelect {
+    userAreasForSelect {
+      id
+      name
+    }
+  }
+`
