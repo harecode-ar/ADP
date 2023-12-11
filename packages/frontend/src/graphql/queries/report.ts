@@ -10,3 +10,14 @@ export const GET_PROJECT_COUNT_BY_STATE = gql`
     }
   }
 `
+
+export const GET_PROJECT_COST_BY_STATE = gql`
+  query projectCostByState($areas: [Int!]!) {
+    projectCostByState(areas: $areas) {
+      new
+      inProgress
+      completed
+      cancelled
+    }
+  }
+`
