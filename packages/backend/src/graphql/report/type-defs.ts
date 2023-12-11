@@ -7,7 +7,6 @@ export default `#graphql
   }
 
   type Query {
-    projectAreaReport(areaId: Int!): ProjectAreaReport
     projectCountByState(areas: [Int!]!, startDate: String, endDate: String): ProjectAreaReport
   }
 

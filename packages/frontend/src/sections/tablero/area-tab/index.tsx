@@ -13,7 +13,7 @@ import {
   InputAdornment,
   Link,
 } from '@mui/material'
-import { GET_AREAS_FOR_DASHBOARD, PROJECT_AREA_REPORT } from 'src/graphql/queries'
+import { GET_AREAS_FOR_DASHBOARD, GET_PROJECT_COUNT_BY_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
@@ -97,16 +97,16 @@ type AreaCardProps = {
 function AreaCard({ area }: AreaCardProps) {
   const { id, name, color, responsible } = area
 
-  const { data } = useQuery(PROJECT_AREA_REPORT, {
+  const { data } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
     variables: {
-      areaId: Number(id),
+      areas: [Number(id)],
     },
     skip: !id,
   })
 
   const report: IProjectCountByState = useMemo(() => {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
-    return data.projectAreaReport
+    return data.projectCountByState
   }, [data])
 
   return (
