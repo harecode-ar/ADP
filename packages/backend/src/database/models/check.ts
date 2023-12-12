@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Check extends Model {
   public id!: number
@@ -38,7 +39,7 @@ Check.init(
   {
     sequelize,
     modelName: 'Check',
-    tableName: 'checks',
+    tableName: TABLES.CHECK,
     timestamps: true,
   }
 )

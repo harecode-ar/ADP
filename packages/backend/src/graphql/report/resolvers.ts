@@ -3,6 +3,7 @@ import { PROJECT_STATE } from '@adp/shared'
 import { QueryTypes } from 'sequelize'
 import logger from '../../logger'
 import { sequelize } from '../../database'
+import { TABLES } from '../../constants'
 
 export default {
   Query: {
@@ -26,7 +27,7 @@ export default {
             COUNT(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN 1 END) AS inProgress,
             COUNT(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN 1 END) AS completed,
             COUNT(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN 1 END) AS cancelled
-          FROM projects
+          FROM ${TABLES.PROJECT}
           WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `
 
@@ -60,7 +61,7 @@ export default {
             SUM(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN cost END) AS inProgress,
             SUM(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN cost END) AS completed,
             SUM(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN cost END) AS cancelled
-          FROM projects
+          FROM ${TABLES.PROJECT}
           WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `
 
@@ -73,6 +74,6 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
 }

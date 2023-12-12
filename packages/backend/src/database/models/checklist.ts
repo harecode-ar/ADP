@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Checklist extends Model {
   public id!: number
@@ -44,7 +45,7 @@ Checklist.init(
   {
     sequelize,
     modelName: 'Checklist',
-    tableName: 'checklists',
+    tableName: TABLES.CHECKLIST,
     timestamps: true,
   }
 )

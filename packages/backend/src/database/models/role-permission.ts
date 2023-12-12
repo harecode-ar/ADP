@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class RolePermission extends Model {
   public id!: number
@@ -28,6 +29,6 @@ RolePermission.init(
   {
     sequelize,
     modelName: 'RolePermission',
-    tableName: 'roles_permissions',
+    tableName: TABLES.ROLE_PERMISSION,
   }
 )

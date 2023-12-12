@@ -1,5 +1,6 @@
 import { Model, DataTypes, Op } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class User extends Model {
   public id!: number
@@ -79,7 +80,7 @@ User.init(
       },
     },
     modelName: 'User',
-    tableName: 'users',
+    tableName: TABLES.USER,
     timestamps: true,
     paranoid: true,
   }
