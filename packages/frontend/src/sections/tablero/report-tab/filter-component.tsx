@@ -28,11 +28,11 @@ export default function FilterComponent(props: TProps) {
   const options = useMemo(() => [DEFAULT_AREA, ...areas], [areas])
 
   const handleChange = (_: any, newValue: TArea[]) => {
-    if (newValue.length === 0 || newValue.find((area) => area.id === 0)) {
+    if (newValue.length === 0 || newValue[newValue.length - 1].id === 0) {
       setSelectedAreas([options[0]])
       return
     }
-    setSelectedAreas(newValue)
+    setSelectedAreas(newValue.filter((area) => area.id !== 0))
   }
 
   const smDown = useResponsive('down', 'sm')
