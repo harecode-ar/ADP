@@ -4,10 +4,12 @@ import React, { useState } from 'react'
 import { Container, Card, Box, Tabs, Tab } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
+import { IArea } from '@adp/shared'
 import UserCard from './user-card'
 import AreaTab from './area-tab'
 import AssignmentTab from './assignment-tab'
 import ReportTab from './report-tab'
+
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +19,12 @@ enum ETab {
   REPORT = 'Estadísticas',
 }
 
-export default function TableroView() {
+type TProps = {
+  areas: IArea[]
+}
+
+export default function TableroView(props: TProps) {
+  const { areas } = props
   const settings = useSettingsContext()
   const [tab, setTab] = useState<ETab>(ETab.AREAS)
 
@@ -44,7 +51,7 @@ export default function TableroView() {
         {tab === ETab.ASSIGNMENT && <AssignmentTab />}
         {tab === ETab.REPORT && (
           <DashboardReportProvider>
-            <ReportTab />
+            <ReportTab areas={areas}/>
           </DashboardReportProvider>
         )}
       </Box>

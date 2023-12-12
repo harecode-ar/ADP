@@ -1,5 +1,8 @@
 import React from 'react'
 import { Box, Grid } from '@mui/material'
+import { IArea } from '@adp/shared'
+import { useQuery } from '@apollo/client'
+import { GET_PROJECT_COUNT_BY_STATE, GET_PROJECT_COST_BY_STATE } from 'src/graphql/queries'
 import FilterComponent from './filter-component'
 import ComponentOne from './component-one'
 import ComponentTwo from './component-two'
@@ -7,20 +10,31 @@ import ComponentThree from './component-three'
 import ComponentFour from './component-four'
 import ComponentFive from './component-five'
 import ComponentSix from './component-six'
-import { PROJECT_COUNT_BY_STATE, PROJECT_COST_BY_STATE } from '../../../mocks/report'
 
-export default function ReportTab() {
-  const newProjects = PROJECT_COUNT_BY_STATE.new
-  const inProgressProjects = PROJECT_COUNT_BY_STATE.inProgress
-  const finishedProjects = PROJECT_COUNT_BY_STATE.completed
-  const canceledProjects = PROJECT_COUNT_BY_STATE.cancelled
-  const totalProjects = PROJECT_COUNT_BY_STATE.count
 
-  const newProjectsCost = PROJECT_COST_BY_STATE.new
-  const inProgressProjectsCost = PROJECT_COST_BY_STATE.inProgress
-  const finishedProjectsCost = PROJECT_COST_BY_STATE.completed
-  const canceledProjectsCost = PROJECT_COST_BY_STATE.cancelled
-  const totalProjectsCost = PROJECT_COST_BY_STATE.count
+
+type TProps = {
+  areas: IArea[];
+};
+
+export default function ReportTab(props: TProps) {
+  const { areas } = props;
+  const { data: projectCountData } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
+    variables: { areas: areas?.map(({ id }) => id) || [] },
+  });
+  const { data: projectCostData } = useQuery(GET_PROJECT_COST_BY_STATE);
+
+  const newProjects = projectCountData?.GET_PROJECT_COUNT_BY_STATE?.new ?? null;
+  const inProgressProjects = projectCountData?.GET_PROJECT_COUNT_BY_STATE?.inProgress ?? null;
+  const finishedProjects = projectCountData?.GET_PROJECT_COUNT_BY_STATE?.completed ?? null;
+  const canceledProjects = projectCountData?.GET_PROJECT_COUNT_BY_STATE?.cancelled ?? null;
+  const totalProjects = projectCountData?.GET_PROJECT_COUNT_BY_STATE?.count ?? null;
+
+  const newProjectsCost = projectCostData?.GET_PROJECT_COST_BY_STATE?.new ?? null;
+  const inProgressProjectsCost = projectCostData?.GET_PROJECT_COST_BY_STATE?.inProgress ?? null;
+  const finishedProjectsCost = projectCostData?.GET_PROJECT_COST_BY_STATE?.completed ?? null;
+  const canceledProjectsCost = projectCostData?.GET_PROJECT_COST_BY_STATE?.cancelled ?? null;
+  const totalProjectsCost = projectCostData?.GET_PROJECT_COST_BY_STATE?.count ?? null;
 
   return (
     <Box sx={{
