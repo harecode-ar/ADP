@@ -60,16 +60,15 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 }
 
 type TProps = {
-  newProjects: number
-  inProgressProjects: number
-  finishedProjects: number
-  canceledProjects: number
-  totalProjects: number
+  news: number
+  inProgress: number
+  completed: number
+  cancelled: number
+  total: number
 }
 
 export default function ComponentOne(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
-    props
+  const { news, inProgress, completed, cancelled, total } = props
   const theme = useTheme()
 
   return (
@@ -81,37 +80,37 @@ export default function ComponentOne(props: TProps) {
           sx={{ py: 2 }}
         >
           <InvoiceAnalytic
-            amount={newProjects}
+            amount={news}
             subtitle="Nuevos"
-            percent={(newProjects / totalProjects || 1) * 100}
+            percent={total !== 0 ? (news / total) * 100 : 0}
             color={theme.palette.info.main}
           />
 
           <InvoiceAnalytic
-            amount={inProgressProjects}
+            amount={inProgress}
             subtitle="En proceso"
-            percent={(inProgressProjects / totalProjects || 1) * 100}
+            percent={total !== 0 ? (inProgress / total) * 100 : 0}
             color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
-            amount={finishedProjects}
+            amount={completed}
             subtitle="Finalizados"
-            percent={(finishedProjects / totalProjects || 1) * 100}
+            percent={total !== 0 ? (completed / total) * 100 : 0}
             color={theme.palette.success.main}
           />
 
           <InvoiceAnalytic
-            amount={canceledProjects}
+            amount={cancelled}
             subtitle="Cancelados"
-            percent={(canceledProjects / totalProjects || 1) * 100}
+            percent={total !== 0 ? (cancelled / total) * 100 : 0}
             color={theme.palette.text.secondary}
           />
 
           <InvoiceAnalytic
-            amount={totalProjects}
+            amount={total}
             subtitle="Totales"
-            percent={100}
+            percent={total !== 0 ? 100 : 0}
             color={theme.palette.secondary.main}
           />
         </Stack>

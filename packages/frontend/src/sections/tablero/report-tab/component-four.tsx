@@ -5,14 +5,14 @@ import { useTheme } from '@mui/material/styles'
 import { fCurrency } from 'src/utils/format-number'
 
 type TProps = {
-  newProjects: number
-  inProgressProjects: number
-  finishedProjects: number
-  canceledProjects: number
+  news: number
+  inProgress: number
+  completed: number
+  cancelled: number
 }
 
 export default function ComponentTwo(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects } = props
+  const { news, inProgress, completed, cancelled } = props
 
   const theme = useTheme()
 
@@ -63,10 +63,10 @@ export default function ComponentTwo(props: TProps) {
           dir="ltr"
           type="bar"
           series={[
-            { name: 'Nuevos', data: [newProjects, 0, 0, 0] },
-            { name: 'En proceso', data: [0, inProgressProjects, 0, 0] },
-            { name: 'Finalizados', data: [0, 0, finishedProjects, 0] },
-            { name: 'Cancelados', data: [0, 0, 0, canceledProjects] },
+            { name: 'Nuevos', data: [news, 0, 0, 0] },
+            { name: 'En proceso', data: [0, inProgress, 0, 0] },
+            { name: 'Finalizados', data: [0, 0, completed, 0] },
+            { name: 'Cancelados', data: [0, 0, 0, cancelled] },
           ]}
           options={chartOptions}
           width="100%"

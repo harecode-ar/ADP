@@ -63,16 +63,15 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 }
 
 type TProps = {
-  newProjects: number
-  inProgressProjects: number
-  finishedProjects: number
-  canceledProjects: number
-  totalProjects: number
+  news: number
+  inProgress: number
+  completed: number
+  cancelled: number
+  total: number
 }
 
 export default function ComponentSix(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
-    props
+  const { news, inProgress, completed, cancelled, total } = props
   const theme = useTheme()
 
   return (
@@ -84,35 +83,35 @@ export default function ComponentSix(props: TProps) {
           sx={{ py: 2 }}
         >
           <InvoiceAnalytic
-            amount={newProjects}
+            amount={news}
             subtitle="Nuevos"
-            percent={(newProjects / totalProjects || 1) * 100}
+            percent={(news / total || 1) * 100}
             color={theme.palette.info.main}
           />
 
           <InvoiceAnalytic
-            amount={inProgressProjects}
+            amount={inProgress}
             subtitle="En proceso"
-            percent={(inProgressProjects / totalProjects || 1) * 100}
+            percent={(inProgress / total || 1) * 100}
             color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
-            amount={finishedProjects}
+            amount={completed}
             subtitle="Finalizados"
-            percent={(finishedProjects / totalProjects || 1) * 100}
+            percent={(completed / total || 1) * 100}
             color={theme.palette.success.main}
           />
 
           <InvoiceAnalytic
-            amount={canceledProjects}
+            amount={cancelled}
             subtitle="Cancelados"
-            percent={(canceledProjects / totalProjects || 1) * 100}
+            percent={(cancelled / total || 1) * 100}
             color={theme.palette.text.secondary}
           />
 
           <InvoiceAnalytic
-            amount={totalProjects}
+            amount={total}
             subtitle="Totales"
             percent={100}
             color={theme.palette.secondary.main}
