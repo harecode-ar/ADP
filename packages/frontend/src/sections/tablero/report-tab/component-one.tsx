@@ -61,14 +61,14 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 
 type TProps = {
   newProjects: number
-  inProgressProjects: number
-  finishedProjects: number
-  canceledProjects: number
-  totalProjects: number
+  inProgress: number
+  completed: number
+  cancelled: number
+  total: number
 }
 
 export default function ComponentOne(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
+  const { newProjects, inProgress, completed, cancelled, total } =
     props
   const theme = useTheme()
 
@@ -83,33 +83,33 @@ export default function ComponentOne(props: TProps) {
           <InvoiceAnalytic
             amount={newProjects}
             subtitle="Nuevos"
-            percent={(newProjects / totalProjects || 1) * 100}
+            percent={(newProjects / total || 1) * 100}
             color={theme.palette.info.main}
           />
 
           <InvoiceAnalytic
-            amount={inProgressProjects}
+            amount={inProgress}
             subtitle="En proceso"
-            percent={(inProgressProjects / totalProjects || 1) * 100}
+            percent={(inProgress / total || 1) * 100}
             color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
-            amount={finishedProjects}
+            amount={completed}
             subtitle="Finalizados"
-            percent={(finishedProjects / totalProjects || 1) * 100}
+            percent={(completed / total || 1) * 100}
             color={theme.palette.success.main}
           />
 
           <InvoiceAnalytic
-            amount={canceledProjects}
+            amount={cancelled}
             subtitle="Cancelados"
-            percent={(canceledProjects / totalProjects || 1) * 100}
+            percent={(cancelled / total || 1) * 100}
             color={theme.palette.text.secondary}
           />
 
           <InvoiceAnalytic
-            amount={totalProjects}
+            amount={total}
             subtitle="Totales"
             percent={100}
             color={theme.palette.secondary.main}

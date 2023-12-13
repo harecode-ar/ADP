@@ -15,10 +15,10 @@ import Label, { LabelColor } from 'src/components/label'
 
 type TProps = {
   newProjects: number
-  inProgressProjects: number
-  finishedProjects: number
-  canceledProjects: number
-  totalProjects: number
+  inProgress: number
+  completed: number
+  cancelled: number
+  total: number
 }
 
 type TRowProps = {
@@ -48,7 +48,7 @@ function Row(props: TRowProps) {
 }
 
 export default function ComponentTree(props: TProps) {
-  const { newProjects, inProgressProjects, finishedProjects, canceledProjects, totalProjects } =
+  const { newProjects, inProgress, completed, cancelled, total } =
     props
 
   return (
@@ -68,10 +68,10 @@ export default function ComponentTree(props: TProps) {
           </TableHead>
           <TableBody>
             <Row label="Nuevos" value={newProjects} color="info" />
-            <Row label="En proceso" value={inProgressProjects} color="warning" />
-            <Row label="Finalizados" value={finishedProjects} color="success" />
-            <Row label="Cancelados" value={canceledProjects} color="default" />
-            <Row label="Totales" value={totalProjects} color="secondary" />
+            <Row label="En proceso" value={inProgress} color="warning" />
+            <Row label="Finalizados" value={completed} color="success" />
+            <Row label="Cancelados" value={cancelled} color="default" />
+            <Row label="Totales" value={total} color="secondary" />
           </TableBody>
         </Table>
       </TableContainer>

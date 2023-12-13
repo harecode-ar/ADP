@@ -49,15 +49,15 @@ export default function ReportTab() {
 
   const {
     new: newProjects,
-    inProgress: inProgressProjects,
-    completed: completedProjects,
-    cancelled: cancelledProjects,
+    inProgress,
+    completed,
+    cancelled,
   } = useMemo(() => {
     if (!projectCountData) return DEFAULT_VALUE
     return projectCountData.projectCountByState || DEFAULT_VALUE
   }, [projectCountData])
 
-  const totalProjects = newProjects + inProgressProjects + completedProjects + cancelledProjects
+  const totalProjects = newProjects + inProgress + completed + cancelled
 
   const {
     new: newCost,
@@ -82,53 +82,53 @@ export default function ReportTab() {
       <FilterComponent areas={areas} />
       <ComponentOne
         newProjects={newProjects}
-        inProgressProjects={inProgressProjects}
-        finishedProjects={completedProjects}
-        canceledProjects={cancelledProjects}
-        totalProjects={totalProjects}
+        inProgress={inProgress}
+        completed={completed}
+        cancelled={cancelled}
+        total={totalProjects}
       />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentThree
             newProjects={newProjects}
-            inProgressProjects={inProgressProjects}
-            finishedProjects={completedProjects}
-            canceledProjects={cancelledProjects}
-            totalProjects={totalProjects}
+            inProgress={inProgress}
+            completed={completed}
+           cancelled={cancelled}
+            total={totalProjects}
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <ComponentTwo
             newProjects={newProjects}
-            inProgressProjects={inProgressProjects}
-            finishedProjects={completedProjects}
-            canceledProjects={cancelledProjects}
+            inProgress={inProgress}
+            completed={completed}
+            cancelled={cancelled}
           />
         </Grid>
       </Grid>
       <ComponentSix
         newProjects={newCost}
-        inProgressProjects={inProgressCost}
-        finishedProjects={completedCost}
-        canceledProjects={cancelledCost}
+        inProgress={inProgressCost}
+        completed={completedCost}
+        cancelled={cancelledCost}
         totalProjects={totalCost}
       />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentFive
             newProjects={newCost}
-            inProgressProjects={inProgressCost}
-            finishedProjects={completedCost}
-            canceledProjects={cancelledCost}
+            inProgress={inProgressCost}
+            completed={completedCost}
+            cancelled={cancelledCost}
             totalProjects={totalCost}
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <ComponentFour
             newProjects={newCost}
-            inProgressProjects={inProgressCost}
-            finishedProjects={completedCost}
-            canceledProjects={cancelledCost}
+            inProgress={inProgressCost}
+            completed={completedCost}
+            cancelled={cancelledCost}
           />
         </Grid>
       </Grid>
