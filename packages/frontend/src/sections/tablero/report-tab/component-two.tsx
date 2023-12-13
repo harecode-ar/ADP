@@ -46,13 +46,17 @@ export default function ComponentTwo(props: TProps) {
   })
 
   return (
-    <Card sx={{
-      width: '100%',
-    }}>
-      <Card sx={{
-        p: 2,
-        pl: 0
-      }}>
+    <Card
+      sx={{
+        width: '100%',
+      }}
+    >
+      <Card
+        sx={{
+          p: 2,
+          pl: 0,
+        }}
+      >
         <Chart
           dir="ltr"
           type="bar"

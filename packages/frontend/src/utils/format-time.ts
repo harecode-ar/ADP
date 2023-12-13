@@ -36,3 +36,16 @@ export const formatDate = (date: string) => {
   const [yyyy, mm, dd] = date.split('-')
   return `${dd}/${mm}/${yyyy}`
 }
+
+export function getLastDayOfMonth(dateString: string): string {
+  const [year, month] = dateString.split('-').map(Number)
+  const firstDayNextMonth = new Date(year, month, 1)
+  firstDayNextMonth.setDate(firstDayNextMonth.getDate() - 1)
+  const lastDay = firstDayNextMonth.getDate()
+  const lastMonth = firstDayNextMonth.getMonth() + 1 // +1 porque los meses están indexados desde 0
+  const lastYear = firstDayNextMonth.getFullYear()
+  const formattedDate = `${lastYear}-${lastMonth.toString().padStart(2, '0')}-${lastDay
+    .toString()
+    .padStart(2, '0')}`
+  return formattedDate
+}
