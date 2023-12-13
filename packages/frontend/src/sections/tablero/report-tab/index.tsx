@@ -48,7 +48,7 @@ export default function ReportTab() {
   })
 
   const {
-    new: newProjects,
+    new: news,
     inProgress,
     completed,
     cancelled,
@@ -57,7 +57,7 @@ export default function ReportTab() {
     return projectCountData.projectCountByState || DEFAULT_VALUE
   }, [projectCountData])
 
-  const totalProjects = newProjects + inProgress + completed + cancelled
+  const totalProjects = news + inProgress + completed + cancelled
 
   const {
     new: newCost,
@@ -81,7 +81,7 @@ export default function ReportTab() {
     >
       <FilterComponent areas={areas} />
       <ComponentOne
-        newProjects={newProjects}
+        news={news}
         inProgress={inProgress}
         completed={completed}
         cancelled={cancelled}
@@ -90,7 +90,7 @@ export default function ReportTab() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentThree
-            newProjects={newProjects}
+            news={news}
             inProgress={inProgress}
             completed={completed}
            cancelled={cancelled}
@@ -99,7 +99,7 @@ export default function ReportTab() {
         </Grid>
         <Grid item xs={12} md={8}>
           <ComponentTwo
-            newProjects={newProjects}
+            news={news}
             inProgress={inProgress}
             completed={completed}
             cancelled={cancelled}
@@ -107,7 +107,7 @@ export default function ReportTab() {
         </Grid>
       </Grid>
       <ComponentSix
-        newProjects={newCost}
+        news={newCost}
         inProgress={inProgressCost}
         completed={completedCost}
         cancelled={cancelledCost}
@@ -116,7 +116,7 @@ export default function ReportTab() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentFive
-            newProjects={newCost}
+            news={newCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}
@@ -125,7 +125,7 @@ export default function ReportTab() {
         </Grid>
         <Grid item xs={12} md={8}>
           <ComponentFour
-            newProjects={newCost}
+            news={newCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}

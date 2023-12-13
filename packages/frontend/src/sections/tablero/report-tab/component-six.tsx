@@ -63,7 +63,7 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 }
 
 type TProps = {
-  newProjects: number
+  news: number
   inProgress: number
   completed: number
   cancelled: number
@@ -71,7 +71,7 @@ type TProps = {
 }
 
 export default function ComponentSix(props: TProps) {
-  const { newProjects, inProgress, completed, cancelled, totalProjects } =
+  const { news, inProgress, completed, cancelled, totalProjects } =
     props
   const theme = useTheme()
 
@@ -84,9 +84,9 @@ export default function ComponentSix(props: TProps) {
           sx={{ py: 2 }}
         >
           <InvoiceAnalytic
-            amount={newProjects}
+            amount={news}
             subtitle="Nuevos"
-            percent={(newProjects / totalProjects || 1) * 100}
+            percent={(news / totalProjects || 1) * 100}
             color={theme.palette.info.main}
           />
 

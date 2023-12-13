@@ -60,7 +60,7 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 }
 
 type TProps = {
-  newProjects: number
+  news: number
   inProgress: number
   completed: number
   cancelled: number
@@ -68,7 +68,7 @@ type TProps = {
 }
 
 export default function ComponentOne(props: TProps) {
-  const { newProjects, inProgress, completed, cancelled, total } =
+  const { news, inProgress, completed, cancelled, total } =
     props
   const theme = useTheme()
 
@@ -81,37 +81,37 @@ export default function ComponentOne(props: TProps) {
           sx={{ py: 2 }}
         >
           <InvoiceAnalytic
-            amount={newProjects}
+            amount={news}
             subtitle="Nuevos"
-            percent={(newProjects / total || 1) * 100}
+            percent={total !== 0 ? (news / total) * 100 : 0}
             color={theme.palette.info.main}
           />
 
           <InvoiceAnalytic
             amount={inProgress}
             subtitle="En proceso"
-            percent={(inProgress / total || 1) * 100}
+            percent={total !== 0 ? (inProgress / total) * 100 : 0}
             color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
             amount={completed}
             subtitle="Finalizados"
-            percent={(completed / total || 1) * 100}
+            percent={total !== 0 ? (completed / total) * 100 : 0}
             color={theme.palette.success.main}
           />
 
           <InvoiceAnalytic
             amount={cancelled}
             subtitle="Cancelados"
-            percent={(cancelled / total || 1) * 100}
+            percent={total !== 0 ? (cancelled / total) * 100 : 0}
             color={theme.palette.text.secondary}
           />
 
           <InvoiceAnalytic
             amount={total}
             subtitle="Totales"
-            percent={100}
+            percent={total !== 0 ? 100 : 0}
             color={theme.palette.secondary.main}
           />
         </Stack>

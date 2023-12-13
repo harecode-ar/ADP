@@ -14,7 +14,7 @@ import Label, { LabelColor } from 'src/components/label'
 import { fCurrency } from 'src/utils/format-number'
 
 type TProps = {
-  newProjects: number
+  news: number
   inProgress: number
   completed: number
   cancelled: number
@@ -50,7 +50,7 @@ function Row(props: TRowProps) {
 }
 
 export default function ComponentFive(props: TProps) {
-  const { newProjects, inProgress, completed, cancelled, totalProjects } =
+  const { news, inProgress, completed, cancelled, totalProjects } =
     props
 
   return (
@@ -69,7 +69,7 @@ export default function ComponentFive(props: TProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Row label="Nuevos" value={newProjects} color="info" />
+            <Row label="Nuevos" value={news} color="info" />
             <Row label="En proceso" value={inProgress} color="warning" />
             <Row label="Finalizados" value={completed} color="success" />
             <Row label="Cancelados" value={cancelled} color="default" />
