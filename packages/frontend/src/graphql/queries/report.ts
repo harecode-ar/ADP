@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_PROJECT_COUNT_BY_STATE = gql`
-  query projectCountByState($areas: [Int!]!) {
-    projectCountByState(areas: $areas) {
+  query projectCountByState($areas: [Int!]!, $startDate: String, $endDate: String) {
+    projectCountByState(areas: $areas, startDate: $startDate, endDate: $endDate) {
       new
       inProgress
       completed
@@ -12,8 +12,8 @@ export const GET_PROJECT_COUNT_BY_STATE = gql`
 `
 
 export const GET_PROJECT_COST_BY_STATE = gql`
-  query projectCostByState($areas: [Int!]!) {
-    projectCostByState(areas: $areas) {
+  query projectCostByState($areas: [Int!]!, $startDate: String, $endDate: String) {
+    projectCostByState(areas: $areas, startDate: $startDate, endDate: $endDate) {
       new
       inProgress
       completed

@@ -38,9 +38,11 @@ export default function FilterComponent(props: TProps) {
   const smDown = useResponsive('down', 'sm')
 
   return (
-    <Card sx={{
-      p: 2
-    }}>
+    <Card
+      sx={{
+        p: 2,
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
