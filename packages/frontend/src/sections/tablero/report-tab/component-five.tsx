@@ -18,7 +18,7 @@ type TProps = {
   inProgress: number
   completed: number
   cancelled: number
-  totalProjects: number
+  total: number
 }
 
 type TRowProps = {
@@ -50,8 +50,7 @@ function Row(props: TRowProps) {
 }
 
 export default function ComponentFive(props: TProps) {
-  const { news, inProgress, completed, cancelled, totalProjects } =
-    props
+  const { news, inProgress, completed, cancelled, total } = props
 
   return (
     <Card
@@ -73,7 +72,7 @@ export default function ComponentFive(props: TProps) {
             <Row label="En proceso" value={inProgress} color="warning" />
             <Row label="Finalizados" value={completed} color="success" />
             <Row label="Cancelados" value={cancelled} color="default" />
-            <Row label="Totales" value={totalProjects} color="secondary" />
+            <Row label="Totales" value={total} color="secondary" />
           </TableBody>
         </Table>
       </TableContainer>

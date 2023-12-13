@@ -48,8 +48,7 @@ function Row(props: TRowProps) {
 }
 
 export default function ComponentTree(props: TProps) {
-  const { news, inProgress, completed, cancelled, total } =
-    props
+  const { news, inProgress, completed, cancelled, total } = props
 
   return (
     <Card

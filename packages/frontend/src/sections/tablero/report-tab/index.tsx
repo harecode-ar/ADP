@@ -48,16 +48,16 @@ export default function ReportTab() {
   })
 
   const {
-    new: news,
-    inProgress,
-    completed,
-    cancelled,
+    new: newCount,
+    inProgress: inProgressCount,
+    completed: completedCount,
+    cancelled: cancelledCount,
   } = useMemo(() => {
     if (!projectCountData) return DEFAULT_VALUE
     return projectCountData.projectCountByState || DEFAULT_VALUE
   }, [projectCountData])
 
-  const totalProjects = news + inProgress + completed + cancelled
+  const totalProjects = newCount + inProgressCount + completedCount + cancelledCount
 
   const {
     new: newCost,
@@ -81,28 +81,28 @@ export default function ReportTab() {
     >
       <FilterComponent areas={areas} />
       <ComponentOne
-        news={news}
-        inProgress={inProgress}
-        completed={completed}
-        cancelled={cancelled}
+        news={newCount}
+        inProgress={inProgressCount}
+        completed={completedCount}
+        cancelled={cancelledCount}
         total={totalProjects}
       />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <ComponentThree
-            news={news}
-            inProgress={inProgress}
-            completed={completed}
-           cancelled={cancelled}
+            news={newCount}
+            inProgress={inProgressCount}
+            completed={completedCount}
+            cancelled={cancelledCount}
             total={totalProjects}
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <ComponentTwo
-            news={news}
-            inProgress={inProgress}
-            completed={completed}
-            cancelled={cancelled}
+            news={newCount}
+            inProgress={inProgressCount}
+            completed={completedCount}
+            cancelled={cancelledCount}
           />
         </Grid>
       </Grid>
@@ -111,7 +111,7 @@ export default function ReportTab() {
         inProgress={inProgressCost}
         completed={completedCost}
         cancelled={cancelledCost}
-        totalProjects={totalCost}
+        total={totalCost}
       />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
@@ -120,7 +120,7 @@ export default function ReportTab() {
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}
-            totalProjects={totalCost}
+            total={totalCost}
           />
         </Grid>
         <Grid item xs={12} md={8}>

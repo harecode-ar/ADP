@@ -68,8 +68,7 @@ type TProps = {
 }
 
 export default function ComponentOne(props: TProps) {
-  const { news, inProgress, completed, cancelled, total } =
-    props
+  const { news, inProgress, completed, cancelled, total } = props
   const theme = useTheme()
 
   return (
