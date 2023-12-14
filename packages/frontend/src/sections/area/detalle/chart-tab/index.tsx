@@ -23,7 +23,8 @@ export default function OrganigramaView(props: TProps) {
   const { data, loading } = useQuery(GET_AREAS_TREE, {
     variables: {
       areaId: Number(areaId),
-    }})
+    },
+  })
 
   const areas = useMemo(() => {
     if (!data) return []
@@ -34,7 +35,6 @@ export default function OrganigramaView(props: TProps) {
     const trees = buildTree(cloneDeep(areas))
     return trees[0]
   }, [areas])
-
 
   useEffect(() => {
     if (tree && !isEqual(tree, savedTree)) {
@@ -52,14 +52,13 @@ export default function OrganigramaView(props: TProps) {
           gap: 2,
         }}
       >
-
         {!!tree && (
           <Scrollbar
             sx={{
               maxHeight: 'calc(70vh)',
             }}
           >
-            <Chart lineHeight="40px"  />
+            <Chart lineHeight="40px" />
           </Scrollbar>
         )}
         {!tree && !loading && (
@@ -77,7 +76,6 @@ export default function OrganigramaView(props: TProps) {
           </Box>
         )}
       </Box>
-      
     </Container>
   )
 }

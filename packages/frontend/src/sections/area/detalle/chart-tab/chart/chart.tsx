@@ -5,7 +5,7 @@ import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import Node from './node'
 import { ListProps, SubListProps, ChartProps } from './types'
 
-export default function Chart({ sx,...other }: ChartProps) {
+export default function Chart({ sx, ...other }: ChartProps) {
   const theme = useTheme()
   const { tree } = useAreaTreeContext()
 
@@ -18,43 +18,24 @@ export default function Chart({ sx,...other }: ChartProps) {
       label={<Node sx={sx} node={tree} />}
       {...other}
     >
-      {tree?.children?.map((list) => (
-        <List
-          key={list.name}
-          depth={1}
-          data={list}
-          sx={sx}
-        />
-      ))}
+      {tree?.children?.map((list) => <List key={list.name} depth={1} data={list} sx={sx} />)}
     </Tree>
   )
 }
 
 export function List({ data, depth, sx }: ListProps) {
-
   return (
     <TreeNode label={<Node sx={sx} node={data} />}>
-      {data.children && !!data.children && (
-        <SubList
-          data={data.children}
-          depth={depth}
-          sx={sx}
-        />
-      )}
+      {data.children && !!data.children && <SubList data={data.children} depth={depth} sx={sx} />}
     </TreeNode>
   )
 }
 
-function SubList({ data, depth, sx}: SubListProps) {
+function SubList({ data, depth, sx }: SubListProps) {
   return (
     <React.Fragment>
       {data.map((list) => (
-        <List
-          key={list.name}
-          data={list}
-          depth={depth + 1}
-          sx={sx}
-        />
+        <List key={list.name} data={list} depth={depth + 1} sx={sx} />
       ))}
     </React.Fragment>
   )

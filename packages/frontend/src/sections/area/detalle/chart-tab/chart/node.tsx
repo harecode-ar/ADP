@@ -31,9 +31,7 @@ export default function Node({ node, sx }: Props) {
       <Avatar
         alt={responsible}
         src={
-          node?.responsible?.image
-            ? getStorageFileUrl(node.responsible.image)
-            : '/broken-image.jpg'
+          node?.responsible?.image ? getStorageFileUrl(node.responsible.image) : '/broken-image.jpg'
         }
         sx={{ mr: 2, mb: 1, width: 48, height: 48 }}
       />

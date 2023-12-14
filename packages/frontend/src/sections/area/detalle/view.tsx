@@ -127,7 +127,7 @@ export default function AreaDetailView(props: TProps) {
             {tab === ETab.CHART && (
               <AreaTreeProvider>
                 <ChartTab areaId={areaId} />
-            </ AreaTreeProvider>
+              </AreaTreeProvider>
             )}
           </React.Fragment>
         )}

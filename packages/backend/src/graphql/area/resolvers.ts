@@ -1,6 +1,6 @@
 import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared'
 import { getAreaFromTree, getAreaDescendantsIds } from '@adp/shared'
- import { Area, Cache, Project, User } from '../../database/models'
+import { Area, Cache, Project, User } from '../../database/models'
 import logger from '../../logger'
 import { createNotification, generateAreaTreeCache } from '../../database/jobs'
 import { IContext } from '../types'
@@ -128,11 +128,7 @@ export default {
         throw error
       }
     },
-    areaTree: async (
-      _: any,
-      args: { areaId: number },
-      context: IContext
-    ): Promise<IArea[]> => {
+    areaTree: async (_: any, args: { areaId: number }, context: IContext): Promise<IArea[]> => {
       try {
         const { areaId } = args
         const { user } = context
@@ -176,7 +172,7 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
   Mutation: {
     createArea: async (
