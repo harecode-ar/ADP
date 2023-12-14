@@ -1,7 +1,7 @@
 import React from 'react'
 import { IArea } from '@adp/shared'
 import Chart, { useChart } from 'src/components/chart'
-import { Box, Card, CardContent } from '@mui/material'
+import { Card, CardContent } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
@@ -17,7 +17,13 @@ export default function PieChart(props: TProps) {
     labels: areas.map((area) => area.name),
     colors: areas.map((area) => area.color),
     legend: {
-      show: false,
+      show: true,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        floating: false,
+        labels: {
+          colors: theme.palette.text.primary,
+        },
     },
     dataLabels: {
       enabled: true,
@@ -54,7 +60,6 @@ export default function PieChart(props: TProps) {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-          
           justifyContent: 'center',
         }}
       >
@@ -63,33 +68,10 @@ export default function PieChart(props: TProps) {
           type="pie"
           series={areas.map((area) => area.projects?.length || 0)}
           options={chartOptions}
-          width={400}
+          width={600}
           height="auto"
         />
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(4, 1fr)`,
-            columnGap: 2,
-            rowGap: 1,
-            mt: 2,
-          }}
-        >
-          {areas.map((area) => (
-            <Box key={area.id} sx={{ display: 'flex', alignItems: 'center', mb: 1, whiteSpace: 'nowrap'}}>
-              <Box
-                sx={{
-                  width: 15,
-                  height: 15,
-                  borderRadius: '50%',
-                  mr: 1,
-                  backgroundColor: area.color,
-                }}
-              />
-              <Box sx={{ fontSize: 13 }}>{area.name}</Box>
-            </Box>
-          ))}
-        </Box>
+        
       </CardContent>
     </Card>
   )

@@ -12,7 +12,8 @@ type TProps = {
 
 export default function ProjectsByArea(props: TProps) {
   const { areas } = props
-  const [checked, setChecked] = React.useState(false)
+
+  const [checked, setChecked] = React.useState(true)
 
   return (
     <Card>
@@ -49,11 +50,7 @@ export default function ProjectsByArea(props: TProps) {
           justifyContent: 'center',
         }}
       >
-        {checked ? (
-          <PieChart areas={areas} />
-        ) : (
-          <BarChart areas={areas} />
-        )}
+        {checked ? <PieChart areas={areas} /> : <BarChart areas={areas} />}
       </CardContent>
     </Card>
   )

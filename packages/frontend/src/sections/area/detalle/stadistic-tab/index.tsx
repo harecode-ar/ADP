@@ -82,14 +82,6 @@ export default function StadisticTab(props: TProps) {
         </Grid>
       </Grid>
 
-      {/* {report.new === 0 &&
-      report.inProgress === 0 &&
-      report.completed === 0 &&
-      report.cancelled === 0 ? null : (
-        <AnalyticsPieChart title="Proyectos" subheader="Estado de los proyectos" chart={report} />
-      )} */}
-
-      
 
       {!!filteredDescendantAreas.length && <ProjectsByArea areas={filteredDescendantAreas} />}
     </React.Fragment>

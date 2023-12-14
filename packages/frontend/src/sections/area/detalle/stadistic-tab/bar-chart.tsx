@@ -12,8 +12,6 @@ export default function BarChart(props: TProps) {
 
   const colors = areas.map((area) => area.color)
 
-  console.log(colors)
-
   const chartOptions = useChart({
     stroke: {
       show: true,
