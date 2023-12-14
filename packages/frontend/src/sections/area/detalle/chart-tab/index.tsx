@@ -8,18 +8,26 @@ import { _mock } from 'src/_mock'
 import Scrollbar from 'src/components/scrollbar'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import { useQuery } from '@apollo/client'
-import { GET_AREAS_FOR_TREE } from 'src/graphql/queries'
+import { GET_AREAS_TREE } from 'src/graphql/queries'
 import { isEqual, cloneDeep } from 'lodash'
 import Chart from './chart/chart'
 
-export default function OrganigramaView() {
+type TProps = {
+  areaId: string
+}
+
+export default function OrganigramaView(props: TProps) {
+  const { areaId } = props
   const settings = useSettingsContext()
   const { tree: savedTree, setTree } = useAreaTreeContext()
-  const { data, loading } = useQuery(GET_AREAS_FOR_TREE)
+  const { data, loading } = useQuery(GET_AREAS_TREE, {
+    variables: {
+      areaId: Number(areaId),
+    }})
 
   const areas = useMemo(() => {
     if (!data) return []
-    return data.areas
+    return data.areaTree
   }, [data])
 
   const tree = useMemo(() => {
