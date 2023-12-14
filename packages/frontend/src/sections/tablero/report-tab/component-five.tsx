@@ -40,7 +40,9 @@ function Row(props: TRowProps) {
         <Grid container direction="column" alignItems="center">
           <Grid item>
             <Typography variant="body1">
-              {fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')}
+              {value
+                ? fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')
+                : '$0'}
             </Typography>
           </Grid>
         </Grid>

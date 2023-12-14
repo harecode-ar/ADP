@@ -21,3 +21,12 @@ export const GET_PROJECT_COST_BY_STATE = gql`
     }
   }
 `
+
+export const GET_PROJECT_MIN_MAX_DATE = gql`
+  query projectMinMaxDate {
+    projectMinMaxDate {
+      minDate
+      maxDate
+    }
+  }
+`

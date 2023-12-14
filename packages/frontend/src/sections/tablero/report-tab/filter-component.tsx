@@ -1,9 +1,8 @@
 import { IArea } from '@adp/shared'
 import React, { useMemo } from 'react'
-import { useResponsive } from 'src/hooks/use-responsive'
 import { useDashboardReportContext } from 'src/contexts/dashboard-report-context'
-import { Box, Autocomplete, TextField, Button, Grid, Card } from '@mui/material'
-import Iconify from 'src/components/iconify/iconify'
+import { Box, Autocomplete, TextField, Grid, Card } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 type TArea = Pick<IArea, 'id' | 'name'>
 
@@ -20,6 +19,8 @@ export default function FilterComponent(props: TProps) {
     selectedAreas,
     selectedInitialDate,
     selectedFinalDate,
+    minDate,
+    maxDate,
     setSelectedAreas,
     setSelectedInitialDate,
     setSelectedFinalDate,
@@ -34,8 +35,6 @@ export default function FilterComponent(props: TProps) {
     }
     setSelectedAreas(newValue.filter((area) => area.id !== 0))
   }
-
-  const smDown = useResponsive('down', 'sm')
 
   return (
     <Card
@@ -52,6 +51,42 @@ export default function FilterComponent(props: TProps) {
       >
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
+            <DatePicker
+              views={['year', 'month']}
+              label="Fecha inicial"
+              minDate={minDate ? new Date(minDate) : null}
+              maxDate={maxDate ? new Date(maxDate) : null}
+              value={selectedInitialDate ? new Date(selectedInitialDate) : null}
+              onChange={(newValue) =>
+                setSelectedInitialDate(newValue ? newValue.toISOString().split('T')[0] : null)
+              }
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: '0',
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <DatePicker
+              views={['year', 'month']}
+              label="Fecha final"
+              minDate={minDate ? new Date(minDate) : null}
+              maxDate={maxDate ? new Date(maxDate) : null}
+              value={selectedFinalDate ? new Date(selectedFinalDate) : null}
+              onChange={(newValue) =>
+                setSelectedFinalDate(newValue ? newValue.toISOString().split('T')[0] : null)
+              }
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: '0',
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Autocomplete
               multiple
               options={options}
@@ -63,42 +98,7 @@ export default function FilterComponent(props: TProps) {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
-            <TextField
-              fullWidth
-              label="Fecha inicial"
-              type="month"
-              InputLabelProps={{ shrink: true }}
-              value={selectedInitialDate}
-              onChange={(event) => setSelectedInitialDate(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <TextField
-              fullWidth
-              label="Fecha final"
-              type="month"
-              InputLabelProps={{ shrink: true }}
-              value={selectedFinalDate}
-              onChange={(event) => setSelectedFinalDate(event.target.value)}
-            />
-          </Grid>
         </Grid>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Button
-            fullWidth={smDown}
-            variant="contained"
-            color="primary"
-            startIcon={<Iconify icon="fa-solid:search" />}
-          >
-            Buscar
-          </Button>
-        </Box>
       </Box>
     </Card>
   )

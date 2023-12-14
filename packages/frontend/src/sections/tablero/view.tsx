@@ -40,13 +40,17 @@ export default function TableroView() {
             </Tabs>
           </Box>
         </Card>
-        {tab === ETab.AREAS && <AreaTab />}
-        {tab === ETab.ASSIGNMENT && <AssignmentTab />}
-        {tab === ETab.REPORT && (
+        <Box sx={{ display: tab === ETab.AREAS ? 'block' : 'none' }}>
+          <AreaTab />
+        </Box>
+        <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
+          <AssignmentTab />
+        </Box>
+        <Box sx={{ display: tab === ETab.REPORT ? 'block' : 'none' }}>
           <DashboardReportProvider>
             <ReportTab />
           </DashboardReportProvider>
-        )}
+        </Box>
       </Box>
     </Container>
   )
