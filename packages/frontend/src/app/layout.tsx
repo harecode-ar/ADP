@@ -15,7 +15,7 @@ import { MotionLazy } from 'src/components/animate/motion-lazy'
 import { SettingsProvider, SettingsDrawer } from 'src/components/settings'
 import { AuthProvider, AuthConsumer } from 'src/auth/context/jwt'
 import { ApolloWrapper } from 'src/lib/apollo-provider'
-
+import { LocalizationProvider } from 'src/locales'
 // ----------------------------------------------------------------------
 
 export const metadata = {
@@ -66,26 +66,28 @@ export default function RootLayout({ children }: Props) {
       <body>
         <ApolloWrapper>
           <AuthProvider>
-            <SettingsProvider
-              defaultSettings={{
-                themeMode: 'light', // 'light' | 'dark'
-                themeDirection: 'ltr', //  'rtl' | 'ltr'
-                themeContrast: 'default', // 'default' | 'bold'
-                themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-                themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-                themeStretch: false,
-              }}
-            >
-              <ThemeProvider>
-                <MotionLazy>
-                  <SnackbarProvider>
-                    <SettingsDrawer />
-                    <ProgressBar />
-                    <AuthConsumer>{children}</AuthConsumer>
-                  </SnackbarProvider>
-                </MotionLazy>
-              </ThemeProvider>
-            </SettingsProvider>
+            <LocalizationProvider>
+              <SettingsProvider
+                defaultSettings={{
+                  themeMode: 'light', // 'light' | 'dark'
+                  themeDirection: 'ltr', //  'rtl' | 'ltr'
+                  themeContrast: 'default', // 'default' | 'bold'
+                  themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+                  themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+                  themeStretch: false,
+                }}
+              >
+                <ThemeProvider>
+                  <MotionLazy>
+                    <SnackbarProvider>
+                      <SettingsDrawer />
+                      <ProgressBar />
+                      <AuthConsumer>{children}</AuthConsumer>
+                    </SnackbarProvider>
+                  </MotionLazy>
+                </ThemeProvider>
+              </SettingsProvider>
+            </LocalizationProvider>
           </AuthProvider>
         </ApolloWrapper>
       </body>
