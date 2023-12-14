@@ -109,3 +109,16 @@ export const GET_AREAS_TREE = gql`
     }
   }
 `
+
+export const GET_DIRECT_AREA_DESCENDANTS = gql`
+  query directAreaDescendants($areaId: Int!) {
+    directAreaDescendants(areaId: $areaId) {
+      id
+      name
+      color
+      projects {
+        id
+      }
+    }
+  }
+`
