@@ -73,6 +73,16 @@ export function getAreaDescendantsIds(area: IArea): number[] {
   return descendants
 }
 
+export function getDirectAreaDescendantsIds(area: IArea): number[] {
+  const descendants: number[] = []
+  if (area.children) {
+    area.children.forEach((child) => {
+      descendants.push(child.id)
+    })
+  }
+  return descendants
+}
+
 export function getAreaFromTree(tree: IArea[], id: number): IArea | undefined {
   let area: IArea | undefined
   for (let i = 0; i < tree.length; i += 1) {
