@@ -4,7 +4,6 @@ import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_PROJECT_COUNT_BY_STATE, GET_DIRECT_AREA_DESCENDANTS } from 'src/graphql/queries'
 import AnalyticsWidgetSummary from './analytics-widget-summary'
-import AnalyticsPieChart from './analytics-pie-chart'
 import ProjectsByArea from './projects-by-area'
 
 type TProps = {
@@ -81,7 +80,6 @@ export default function StadisticTab(props: TProps) {
           />
         </Grid>
       </Grid>
-
 
       {!!filteredDescendantAreas.length && <ProjectsByArea areas={filteredDescendantAreas} />}
     </React.Fragment>

@@ -18,12 +18,12 @@ export default function PieChart(props: TProps) {
     colors: areas.map((area) => area.color),
     legend: {
       show: true,
-        position: 'bottom',
-        horizontalAlign: 'center',
-        floating: false,
-        labels: {
-          colors: theme.palette.text.primary,
-        },
+      position: 'bottom',
+      horizontalAlign: 'center',
+      floating: false,
+      labels: {
+        colors: theme.palette.text.primary,
+      },
     },
     dataLabels: {
       enabled: true,
@@ -71,7 +71,6 @@ export default function PieChart(props: TProps) {
           width={600}
           height="auto"
         />
-        
       </CardContent>
     </Card>
   )
