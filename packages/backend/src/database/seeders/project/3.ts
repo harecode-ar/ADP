@@ -6,7 +6,7 @@ export const PROJECT = {
     'Este proyecto tiene como objetivo la construcción de un hospital moderno y completamente equipado para brindar servicios médicos de alta calidad a la comunidad.',
   startDate: '2023-01-01',
   endDate: '2024-12-31',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
   stateId: PROJECT_STATE.IN_PROGRESS,

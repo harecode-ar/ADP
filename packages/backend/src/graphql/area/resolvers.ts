@@ -1,4 +1,4 @@
-import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared/types'
+import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared'
 import { getAreaFromTree, getAreaDescendantsIds } from '@adp/shared'
 import { Area, Cache, User } from '../../database/models'
 import logger from '../../logger'
@@ -78,6 +78,49 @@ export default {
             id: ids,
           },
           order: [['parentId', 'ASC']],
+        })
+        return areas
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    userAreasForSelect: async (_: any, __: any, context: IContext): Promise<IArea[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const [userAreas, cachedTree] = await Promise.all([
+          Area.findAll({
+            where: {
+              responsibleId: user.id,
+            },
+            attributes: ['id'],
+          }),
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        const userAreasIds = userAreas.map((area: IArea) => area.id)
+        const ids = Array.from(
+          new Set<number>([
+            ...userAreasIds,
+            ...userAreasIds.flatMap((areaId) => {
+              const areaTree = getAreaFromTree(tree, areaId)
+              if (!areaTree) return []
+              return getAreaDescendantsIds(areaTree)
+            }),
+          ])
+        )
+        const areas = await Area.findAll({
+          where: {
+            id: ids,
+          },
+          order: [['parentId', 'ASC']],
+          attributes: ['id', 'name'],
         })
         return areas
       } catch (error) {

@@ -1,8 +1,8 @@
-import { IArea, IProjectAreaReport } from '@adp/shared'
+import { IArea, IProjectCountByState } from '@adp/shared'
 import { Grid } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
-import { PROJECT_AREA_REPORT } from 'src/graphql/queries'
+import { GET_PROJECT_COUNT_BY_STATE } from 'src/graphql/queries'
 import AnalyticsWidgetSummary from './analytics-widget-summary'
 import AnalyticsPieChart from './analytics-pie-chart'
 
@@ -12,16 +12,16 @@ type TProps = {
 
 export default function StadisticTab(props: TProps) {
   const { area } = props
-  const { data } = useQuery(PROJECT_AREA_REPORT, {
+  const { data } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
     variables: {
-      areaId: area.id,
+      areas: [area.id],
     },
     skip: !area.id,
   })
 
-  const report: IProjectAreaReport = useMemo(() => {
+  const report: IProjectCountByState = useMemo(() => {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
-    return data.projectAreaReport
+    return data.projectCountByState
   }, [data])
 
   return (

@@ -1,4 +1,4 @@
-import { IProjectAreaReport } from '@adp/shared'
+import { IProjectCountByState } from '@adp/shared'
 import CardHeader from '@mui/material/CardHeader'
 import Card, { CardProps } from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
@@ -31,7 +31,7 @@ const StyledChart = styled(Chart)(({ theme }) => ({
 interface Props extends CardProps {
   title?: string
   subheader?: string
-  chart: IProjectAreaReport
+  chart: IProjectCountByState
 }
 
 export default function AnalyticsPieChart({ title, subheader, chart, ...other }: Props) {

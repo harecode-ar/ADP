@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Project extends Model {
   public id!: number
@@ -8,7 +9,7 @@ export class Project extends Model {
 
   public description!: string
 
-  public cost!: string
+  public cost!: number
 
   public startDate!: string
 
@@ -41,7 +42,8 @@ Project.init(
       allowNull: true,
     },
     cost: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: false,
     },
     startDate: {
       type: DataTypes.DATEONLY,
@@ -67,7 +69,7 @@ Project.init(
   {
     sequelize,
     modelName: 'Project',
-    tableName: 'projects',
+    tableName: TABLES.PROJECT,
     timestamps: true,
   }
 )

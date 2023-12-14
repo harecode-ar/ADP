@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class StageState extends Model {
   public id!: number
@@ -25,6 +26,6 @@ StageState.init(
   {
     sequelize,
     modelName: 'StageState',
-    tableName: 'stage_states',
+    tableName: TABLES.STAGE_STATE,
   }
 )

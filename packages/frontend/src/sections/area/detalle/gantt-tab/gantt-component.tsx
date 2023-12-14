@@ -1,7 +1,7 @@
 import { IStage, STAGE_STATE, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Task } from 'gantt-task-react'
-import { Card, Box, Autocomplete, TextField } from '@mui/material'
+import { Card, Box, Autocomplete, TextField, Typography } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
 import Gantt, { useGantt } from 'src/components/gantt'
@@ -80,7 +80,19 @@ const GanttComponent = (props: TProps) => {
         />
         <ViewSwitcher viewOption={viewOption} handleChangeView={handleChangeView} />
       </Box>
-      {tasks.length > 0 && (
+      {tasks.length === 0 ? (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            marginTop: '16px',
+          }}
+        >
+          <Typography>No hay proyectos asignados en esta area.</Typography>
+        </Box>
+      ) : (
         <Gantt
           tasks={combinedTasks}
           viewOption={viewOption}

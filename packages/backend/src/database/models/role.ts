@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Role extends Model {
   public id!: number
@@ -22,6 +23,6 @@ Role.init(
   {
     sequelize,
     modelName: 'Role',
-    tableName: 'roles',
+    tableName: TABLES.ROLE,
   }
 )

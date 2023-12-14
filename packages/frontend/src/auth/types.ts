@@ -1,4 +1,4 @@
-import type { IUser, IRole, IPermission } from '@adp/shared/types'
+import type { IUser, IRole, IPermission } from '@adp/shared'
 import { LogoutOptions, RedirectLoginOptions, PopupLoginOptions } from '@auth0/auth0-react'
 
 export type ActionMapType<M extends { [index: string]: any }> = {

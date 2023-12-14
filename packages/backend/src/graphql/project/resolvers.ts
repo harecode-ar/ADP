@@ -1,5 +1,5 @@
 import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
-import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared/types'
+import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
@@ -136,11 +136,59 @@ export default {
           where,
           include: [
             { model: Area, as: 'area' },
-            { model: Stage, as: 'stages' },
+            {
+              model: Stage,
+              as: 'stages',
+              where: {
+                parentStageId: null,
+              },
+            },
             { model: ProjectState, as: 'state' },
           ],
           order: [['startDate', 'ASC']],
         })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    userProjects: async (_: any, __: any, context: IContext) => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const foundUser = await User.findByPk(user.id, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+              include: [
+                {
+                  model: Project,
+                  as: 'projects',
+                  order: [['startDate', 'ASC']],
+                  attributes: [
+                    'id',
+                    'name',
+                    'description',
+                    'startDate',
+                    'endDate',
+                    'progress',
+                    'stateId',
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        const { areas = [] } = foundUser
+        // @ts-ignore
+        const projects: Project[] = areas.flatMap((area: Area) => area.projects)
+        return projects
       } catch (error) {
         logger.error(error)
         throw error

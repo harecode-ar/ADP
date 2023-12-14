@@ -1,5 +1,5 @@
 import { PERMISSION_MAP as P } from '@adp/shared'
-import type { IRole, IPermission } from '@adp/shared/types'
+import type { IRole, IPermission } from '@adp/shared'
 import { Role, Permission } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'

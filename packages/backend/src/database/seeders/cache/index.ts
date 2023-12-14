@@ -1,4 +1,4 @@
-import type { ICache } from '@adp/shared/types'
+import type { ICache } from '@adp/shared'
 import { areaTreeCacheSeed } from './area'
 
 export const cacheSeed = async (context: { transaction: any }): Promise<ICache[]> => {

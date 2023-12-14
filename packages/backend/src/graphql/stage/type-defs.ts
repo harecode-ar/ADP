@@ -28,8 +28,11 @@ export default `#graphql
   type Query {
     stages: [Stage]
     stage(id: Int): Stage
+    subStage(id: Int): Stage
     stagesByProject(projectId: Int): [Stage]
     subStagesByStage(stageId: Int): [Stage]
+    userStages: [Stage]
+    userSubStages: [Stage]
   }
 
   type Mutation {

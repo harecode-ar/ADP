@@ -29,6 +29,18 @@ export const PERMISSION_MAP = {
   STAGE_NOTE_CREATE: 'stageNote:create',
   STAGE_NOTE_READ: 'stageNote:read',
   STAGE_NOTE_DELETE: 'stageNote:delete',
+  CONTACT_READ: 'contact:read',
+  CONTACT_CREATE: 'contact:create',
+  CONTACT_UPDATE: 'contact:update',
+  CONTACT_DELETE: 'contact:delete',
+  CHECKLIST_READ: 'checklist:read',
+  CHECKLIST_CREATE: 'checklist:create',
+  CHECKLIST_UPDATE: 'checklist:update',
+  CHECKLIST_DELETE: 'checklist:delete',
+  CHECK_READ: 'check:read',
+  CHECK_CREATE: 'check:create',
+  CHECK_UPDATE: 'check:update',
+  CHECK_DELETE: 'check:delete',
 }
 
 export const PERMISSION_ARRAY = Object.values(PERMISSION_MAP)

@@ -1,4 +1,4 @@
-import type { IRole, IPermission } from '@adp/shared/types'
+import type { IRole, IPermission } from '@adp/shared'
 
 export const hasRole = (requiredRoles: string[], role: IRole | null) => {
   if (requiredRoles.length === 0 || requiredRoles.includes(role?.name || '')) {

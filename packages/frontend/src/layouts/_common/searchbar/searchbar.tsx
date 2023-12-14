@@ -4,7 +4,16 @@ import React, { useState, memo, useCallback } from 'react'
 import parse from 'autosuggest-highlight/parse'
 import match from 'autosuggest-highlight/match'
 import { useTheme } from '@mui/material/styles'
-import { Box, List, Stack, InputBase, IconButton, Dialog, InputAdornment, Typography } from '@mui/material'
+import {
+  Box,
+  List,
+  Stack,
+  InputBase,
+  IconButton,
+  Dialog,
+  InputAdornment,
+  Typography,
+} from '@mui/material'
 import { dialogClasses } from '@mui/material/Dialog'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
@@ -164,15 +173,19 @@ function Searchbar() {
 
         <Scrollbar sx={{ p: 3, pt: 2, height: 400 }}>
           {notFound ? (
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-            }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+              }}
+            >
               <Typography>No se encontraron resultados</Typography>
             </Box>
-          ) : renderItems()}
+          ) : (
+            renderItems()
+          )}
         </Scrollbar>
       </Dialog>
     </React.Fragment>

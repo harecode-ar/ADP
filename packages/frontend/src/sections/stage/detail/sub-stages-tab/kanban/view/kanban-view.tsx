@@ -1,7 +1,7 @@
 'use client'
 
 import { IStage } from '@adp/shared'
-import { Stack, Box } from '@mui/material'
+import { Box } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { DragDropContext } from '@hello-pangea/dnd'
 import KanbanColumn from './kanban-column'
@@ -38,16 +38,7 @@ export default function KanbanComponent(props: TProps) {
             },
           }}
         >
-          <Stack
-            spacing={3}
-            direction="row"
-            alignItems="flex-start"
-            sx={{
-              p: 0.25,
-              height: 1,
-            }}
-          >
-            {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
+          <Box gap={3} display="grid" gridTemplateColumns="repeat(4, 1fr)">
             {Object.entries(subStagesByState).map(([state, stateSubStages]) => (
               <KanbanColumn
                 subStages={stateSubStages}
@@ -56,7 +47,7 @@ export default function KanbanComponent(props: TProps) {
                 refetch={refetch}
               />
             ))}
-          </Stack>
+          </Box>
         </Scrollbar>
       </DragDropContext>
     </Box>

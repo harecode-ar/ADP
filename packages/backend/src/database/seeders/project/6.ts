@@ -6,7 +6,7 @@ export const PROJECT = {
     'Este proyecto tiene como objetivo mejorar la seguridad vial en una ruta al instalar radares de velocidad para controlar el exceso de velocidad de los conductores.',
   startDate: '2023-04-01',
   endDate: '2023-07-31',
-  cost: String(3000000 * 1000),
+  cost: 3000000 * 1000,
   progress: 1,
   areaId: 1,
   stateId: PROJECT_STATE.COMPLETED,

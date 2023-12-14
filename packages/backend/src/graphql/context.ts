@@ -1,4 +1,4 @@
-import type { ISession, IBackendEnvironment } from '@adp/shared/types'
+import type { ISession, IBackendEnvironment } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'

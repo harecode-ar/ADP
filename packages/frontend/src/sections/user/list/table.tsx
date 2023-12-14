@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import type { IRole, IUser } from '@adp/shared/types'
+import type { IRole, IUser } from '@adp/shared'
 import CustomTable from 'src/components/table/custom-table'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'

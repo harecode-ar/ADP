@@ -1,5 +1,5 @@
 import { ROLE_ARRAY, ROLE_PERMISSION_MAP } from '@adp/shared'
-import type { IPermission, IRole, IRolePermission } from '@adp/shared/types'
+import type { IPermission, IRole, IRolePermission } from '@adp/shared'
 import { RolePermission } from '../models'
 
 export const rolePermissionSeed = async (context: {

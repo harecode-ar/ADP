@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Notification extends Model {
   public id!: number
@@ -32,6 +33,6 @@ Notification.init(
   {
     sequelize,
     modelName: 'Notification',
-    tableName: 'notifications',
+    tableName: TABLES.NOTIFICATION,
   }
 )

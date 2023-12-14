@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import type { IArea } from '@adp/shared/types'
+import type { IArea } from '@adp/shared'
 import { useRouter } from 'src/routes/hooks'
 import { Button, Box, TextField, Grid, Autocomplete, Card, InputAdornment } from '@mui/material'
 
@@ -15,7 +15,7 @@ import { paths } from 'src/routes/paths'
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   area: Yup.object().required('Area requerida'),
-  cost: Yup.string().required('Costo requerido'),
+  cost: Yup.number().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
   endDate: Yup.string()
     .required('Fecha de finalización requerida')
@@ -33,7 +33,7 @@ type TFormikValues = {
   name: string
   description: string
   area: IArea | null
-  cost: string
+  cost: number
   startDate: string
   endDate: string
 }
@@ -55,7 +55,7 @@ const CreateProject = () => {
       name: '',
       description: '',
       area: null,
-      cost: '',
+      cost: 0,
       startDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
       endDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
     } as TFormikValues,
@@ -66,7 +66,7 @@ const CreateProject = () => {
             name: values.name,
             description: values.description,
             areaId: values.area?.id,
-            cost: values.cost,
+            cost: parseFloat(values.cost.toString()),
             startDate: values.startDate,
             endDate: values.endDate,
           },
@@ -124,6 +124,7 @@ const CreateProject = () => {
               name="cost"
               label="Costo proyectado"
               variant="outlined"
+              type="number"
               fullWidth
               required
               multiline

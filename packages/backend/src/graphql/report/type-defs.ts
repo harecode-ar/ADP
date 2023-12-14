@@ -6,8 +6,22 @@ export default `#graphql
     cancelled: Int
   }
 
+  type ProjectCostAreaReport {
+    new: Float
+    inProgress: Float
+    completed: Float
+    cancelled: Float
+  }
+
+  type ProjectMinMaxDate {
+    minDate: String
+    maxDate: String
+  }
+
   type Query {
-    projectAreaReport(areaId: Int!): ProjectAreaReport
+    projectCountByState(areas: [Int!]!, startDate: String, endDate: String): ProjectAreaReport
+    projectCostByState(areas: [Int!]!, startDate: String, endDate: String): ProjectCostAreaReport
+    projectMinMaxDate: ProjectMinMaxDate
   }
 
 `

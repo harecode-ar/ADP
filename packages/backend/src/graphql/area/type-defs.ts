@@ -24,6 +24,7 @@ export default `#graphql
     area(id: Int!): Area
     areas: [Area]
     areasForDashboard: [Area]
+    userAreasForSelect: [Area]
   }
 
   type Mutation {

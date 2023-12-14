@@ -1,5 +1,5 @@
-import { ETokenType } from '@adp/shared/types'
-import type { IUpload, IUser } from '@adp/shared/types'
+import { ETokenType } from '@adp/shared'
+import type { IUpload, IUser } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Role, User, Token } from '../../database/models'
 import logger from '../../logger'

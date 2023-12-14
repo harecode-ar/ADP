@@ -41,7 +41,7 @@ const styleModal = {
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
   state: Yup.object().required('Estado requerido'),
-  cost: Yup.string().required('Costo requerido'),
+  cost: Yup.number().required('Costo requerido'),
   startDate: Yup.string().required('Fecha de inicio requerida'),
   endDate: Yup.string()
     .required('Fecha de finalizacion requerida')
@@ -65,7 +65,7 @@ type TFormikValues = {
   id: number | null
   name: string
   state: IProjectState | null
-  cost: string
+  cost: number
   startDate: string
   endDate: string
   area: IArea | null
@@ -96,7 +96,7 @@ const ModalEdit = (props: TProps) => {
       id: null,
       name: '',
       state: null,
-      cost: '',
+      cost: 0,
       startDate: '',
       endDate: '',
       area: null,
@@ -109,7 +109,7 @@ const ModalEdit = (props: TProps) => {
             id: projectId,
             name: values.name,
             stateId: values.state?.id,
-            cost: values.cost,
+            cost: parseFloat(values.cost.toString()),
             startDate: values.startDate,
             endDate: values.endDate,
             areaId: values.area?.id,
@@ -214,6 +214,7 @@ const ModalEdit = (props: TProps) => {
                   name="cost"
                   label="Costo proyectado"
                   variant="outlined"
+                  type="number"
                   fullWidth
                   required
                   multiline

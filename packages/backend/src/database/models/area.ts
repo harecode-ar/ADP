@@ -1,6 +1,7 @@
 import { COLORS } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Area extends Model {
   public id!: number
@@ -66,7 +67,7 @@ Area.init(
   {
     sequelize,
     modelName: 'Area',
-    tableName: 'areas',
+    tableName: TABLES.AREA,
     timestamps: true,
     paranoid: true,
   }

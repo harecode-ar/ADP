@@ -1,4 +1,4 @@
-import type { INotification, IUserNotification } from '@adp/shared/types'
+import type { INotification, IUserNotification } from '@adp/shared'
 import { Notification, UserNotification } from '../../database/models'
 import logger from '../../logger'
 import { IContext } from '../types'
@@ -41,51 +41,44 @@ export default {
     },
   },
   Mutation: {
-    readNotification: async (_: any, { id }: { id: number }, context: IContext) => {
-      try {
-        if (!context.user) throw new Error('No autorizado')
-        const userNotification = await UserNotification.findOne({
-          where: { userId: context.user.id, notificationId: id },
-        })
-
-        if (!userNotification) throw new Error('Notificacion no encontrada')
-
-        userNotification.read = true
-        await userNotification.save()
-
-        return true
-      } catch (error) {
-        logger.error(error)
-        throw error
-      }
-    },
-    unreadNotification: async (_: any, { id }: { id: number }, context: IContext) => {
-      try {
-        if (!context.user) throw new Error('No autorizado')
-        const userNotification = await UserNotification.findOne({
-          where: { userId: context.user.id, notificationId: id },
-        })
-
-        if (!userNotification) throw new Error('Notificacion no encontrada')
-
-        userNotification.read = false
-        await userNotification.save()
-
-        return true
-      } catch (error) {
-        logger.error(error)
-        throw error
-      }
-    },
-    readAllNotifications: async (_: any, __: any, context: IContext) => {
+    readNotifications: async (_: any, { ids }: { ids: number[] }, context: IContext) => {
       try {
         if (!context.user) throw new Error('No autorizado')
         await UserNotification.update(
           { read: true },
           {
-            where: { userId: context.user.id },
+            where: { userId: context.user.id, notificationId: ids },
           }
         )
+
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    unreadNotifications: async (_: any, { ids }: { ids: number[] }, context: IContext) => {
+      try {
+        if (!context.user) throw new Error('No autorizado')
+        await UserNotification.update(
+          { read: false },
+          {
+            where: { userId: context.user.id, notificationId: ids },
+          }
+        )
+
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    removeNotifications: async (_: any, { ids }: { ids: number[] }, context: IContext) => {
+      try {
+        if (!context.user) throw new Error('No autorizado')
+        await UserNotification.destroy({
+          where: { userId: context.user.id, notificationId: ids },
+        })
 
         return true
       } catch (error) {

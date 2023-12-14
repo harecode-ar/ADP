@@ -14,6 +14,12 @@ import { StageNote } from './stage-note'
 import { Notification } from './notification'
 import { UserNotification } from './user-notification'
 import { Cache } from './cache'
+import { Contact } from './contact'
+import { ContactProject } from './contact-project'
+import { ContactStage } from './contact-stage'
+import { ContactUser } from './contact-user'
+import { Checklist } from './checklist'
+import { Check } from './check'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -30,7 +36,7 @@ Token.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Area.hasMany(Area, { as: 'children', foreignKey: 'parentId' })
 Area.belongsTo(Area, { as: 'parent', foreignKey: 'parentId' })
 
-User.hasOne(Area, { as: 'areas', foreignKey: 'responsibleId' })
+User.hasMany(Area, { as: 'areas', foreignKey: 'responsibleId' })
 Area.belongsTo(User, { as: 'responsible', foreignKey: 'responsibleId' })
 
 Area.hasMany(Project, { as: 'projects', foreignKey: 'areaId' })
@@ -80,6 +86,27 @@ UserNotification.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Notification.hasMany(UserNotification, { as: 'userNotifications', foreignKey: 'notificationId' })
 UserNotification.belongsTo(Notification, { as: 'notification', foreignKey: 'notificationId' })
 
+Contact.belongsToMany(Project, { as: 'projects', through: ContactProject, foreignKey: 'contactId' })
+Project.belongsToMany(Contact, { as: 'contacts', through: ContactProject, foreignKey: 'projectId' })
+
+Contact.belongsToMany(Stage, { as: 'stages', through: ContactStage, foreignKey: 'contactId' })
+Stage.belongsToMany(Contact, { as: 'contacts', through: ContactStage, foreignKey: 'stageId' })
+
+Contact.belongsToMany(User, { as: 'users', through: ContactUser, foreignKey: 'contactId' })
+User.belongsToMany(Contact, { as: 'contacts', through: ContactUser, foreignKey: 'userId' })
+
+Checklist.hasMany(Check, { as: 'checks', foreignKey: 'checklistId' })
+Check.belongsTo(Checklist, { as: 'checklist', foreignKey: 'checklistId' })
+
+User.hasMany(Checklist, { as: 'checklists', foreignKey: 'userId' })
+Checklist.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+Stage.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
+Checklist.belongsTo(Stage, { as: 'stage', foreignKey: 'checklistId' })
+
+Project.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
+Checklist.belongsTo(Project, { as: 'project', foreignKey: 'checklistId' })
+
 export {
   Permission,
   Role,
@@ -97,4 +124,10 @@ export {
   Notification,
   UserNotification,
   Cache,
+  Contact,
+  ContactProject,
+  ContactStage,
+  ContactUser,
+  Checklist,
+  Check,
 }

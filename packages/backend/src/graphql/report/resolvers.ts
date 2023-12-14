@@ -1,33 +1,94 @@
-import type { IProjectAreaReport } from '@adp/shared/types'
+import type { IProjectCountByState } from '@adp/shared'
+import { PROJECT_STATE } from '@adp/shared'
 import { QueryTypes } from 'sequelize'
 import logger from '../../logger'
 import { sequelize } from '../../database'
+import { TABLES } from '../../constants'
 
 export default {
   Query: {
-    projectAreaReport: async (
+    projectCountByState: async (
       _: any,
       args: {
-        areaId: number
+        areas: number[]
+        startDate?: string
+        endDate?: string
       }
-    ): Promise<IProjectAreaReport> => {
+    ): Promise<IProjectCountByState> => {
       try {
-        const { areaId } = args
+        const { areas, startDate, endDate } = args
+
+        const startDateFilter = startDate ? `AND startDate >= '${startDate}'` : ''
+        const endDateFilter = endDate ? `AND endDate <= '${endDate}'` : ''
 
         const query = `
           SELECT
-            COUNT(CASE WHEN stateId = 1 THEN 1 END) AS new,
-            COUNT(CASE WHEN stateId = 2 THEN 1 END) AS inProgress,
-            COUNT(CASE WHEN stateId = 3 THEN 1 END) AS completed,
-            COUNT(CASE WHEN stateId = 4 THEN 1 END) AS cancelled
-          FROM projects
-          WHERE areaId = ${areaId}
+            COUNT(CASE WHEN stateId = ${PROJECT_STATE.NEW} THEN 1 END) AS new,
+            COUNT(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN 1 END) AS inProgress,
+            COUNT(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN 1 END) AS completed,
+            COUNT(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN 1 END) AS cancelled
+          FROM ${TABLES.PROJECT}
+          WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `
 
         const result = await sequelize.query(query, {
           type: QueryTypes.SELECT,
         })
-        return result[0] as IProjectAreaReport
+        // @ts-ignore
+        return result[0] as IProjectCountByState
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    projectCostByState: async (
+      _: any,
+      args: {
+        areas: number[]
+        startDate?: string
+        endDate?: string
+      }
+    ): Promise<IProjectCountByState> => {
+      try {
+        const { areas, startDate, endDate } = args
+
+        const startDateFilter = startDate ? `AND startDate >= '${startDate}'` : ''
+        const endDateFilter = endDate ? `AND endDate <= '${endDate}'` : ''
+
+        const query = `
+          SELECT
+            SUM(CASE WHEN stateId = ${PROJECT_STATE.NEW} THEN cost END) AS new,
+            SUM(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN cost END) AS inProgress,
+            SUM(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN cost END) AS completed,
+            SUM(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN cost END) AS cancelled
+          FROM ${TABLES.PROJECT}
+          WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
+        `
+
+        const result = await sequelize.query(query, {
+          type: QueryTypes.SELECT,
+        })
+        // @ts-ignore
+        return result[0] as IProjectCountByState
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    projectMinMaxDate: async (): Promise<{ minDate: string; maxDate: string }> => {
+      try {
+        const query = `
+          SELECT
+            MIN(startDate) AS minDate,
+            MAX(endDate) AS maxDate
+          FROM ${TABLES.PROJECT}
+        `
+
+        const result = await sequelize.query(query, {
+          type: QueryTypes.SELECT,
+        })
+        // @ts-ignore
+        return result[0]
       } catch (error) {
         logger.error(error)
         throw error

@@ -1,4 +1,4 @@
-import type { IBackendEnvironment } from '@adp/shared/types'
+import type { IBackendEnvironment } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Sequelize } from 'sequelize'
 

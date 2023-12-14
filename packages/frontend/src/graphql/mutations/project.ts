@@ -5,7 +5,7 @@ export const CREATE_PROJECT = gql`
     $name: String!
     $description: String!
     $areaId: Int!
-    $cost: String
+    $cost: Float
     $startDate: String!
     $endDate: String!
   ) {
@@ -28,7 +28,7 @@ export const UPDATE_PROJECT = gql`
     $name: String
     $description: String
     $areaId: Int
-    $cost: String
+    $cost: Float
     $startDate: String
     $endDate: String
     $stateId: Int

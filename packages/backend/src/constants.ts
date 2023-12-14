@@ -1,1 +1,26 @@
 export const FRONT_PATH = '../../frontend'
+
+export const TABLES = {
+  AREA: 'areas',
+  CACHE: 'caches',
+  CHECK: 'checks',
+  CHECKLIST: 'checklists',
+  CONTACT_PROJECT: 'contact_projects',
+  CONTACT_STAGE: 'contact_stages',
+  CONTACT_USER: 'contact_users',
+  CONTACT: 'contacts',
+  NOTIFICATION: 'notifications',
+  PERMISSION: 'permissions',
+  PROJECT_NOTE: 'project_notes',
+  PROJECT_STATE: 'project_states',
+  PROJECT: 'projects',
+  ROLE_PERMISSION: 'role_permissions',
+  ROLE: 'roles',
+  SESSION: 'sessions',
+  STAGE_NOTE: 'stage_notes',
+  STAGE_STATE: 'stage_states',
+  STAGE: 'stages',
+  TOKEN: 'tokens',
+  USER_NOTIFICATION: 'user_notifications',
+  USER: 'users',
+}

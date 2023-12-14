@@ -1,6 +1,7 @@
 import { ECacheKey } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class Cache extends Model {
   public id!: number
@@ -33,6 +34,6 @@ Cache.init(
   {
     sequelize,
     modelName: 'Cache',
-    tableName: 'caches',
+    tableName: TABLES.CACHE,
   }
 )

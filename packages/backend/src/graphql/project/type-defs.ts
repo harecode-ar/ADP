@@ -3,7 +3,7 @@ export default `#graphql
     id: Int
     name: String
     description: String
-    cost: String
+    cost: Float
     startDate: String
     endDate: String
     progress: Float
@@ -26,6 +26,7 @@ export default `#graphql
     projectsByArea(areaId: Int): [Project]
     inProgressProjectsByArea(areaId: Int): [Project]
     projectsByAreaAndState(areaId: Int!, stateId: Int): [Project]
+    userProjects: [Project]
   }
 
   type Mutation {
@@ -33,7 +34,7 @@ export default `#graphql
       name: String!
       description: String!
       areaId: Int!
-      cost: String
+      cost: Float
       startDate: String!
       endDate: String!
     ): Project
@@ -43,7 +44,7 @@ export default `#graphql
       name: String
       description: String
       areaId: Int
-      cost: String
+      cost: Float
       startDate: String
       endDate: String
       progress: Float

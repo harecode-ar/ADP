@@ -3,12 +3,13 @@ import type { IArea } from './area'
 import type { IStage } from './stage'
 import { IUser } from './user'
 import { IProjectNote } from './project-note'
+import { IContact } from './contact'
 
 export interface IProject {
   id: number
   name: string
   description: string
-  cost: string
+  cost: number
   startDate: string
   endDate: string
   progress: number
@@ -23,4 +24,5 @@ export interface IProject {
   stages: IStage[]
   responsible: IUser | null
   notes: IProjectNote[]
+  contacts?: IContact[]
 }

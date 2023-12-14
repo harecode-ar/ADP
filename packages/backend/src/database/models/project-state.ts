@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
+import { TABLES } from '../../constants'
 
 export class ProjectState extends Model {
   public id!: number
@@ -25,6 +26,6 @@ ProjectState.init(
   {
     sequelize,
     modelName: 'ProjectState',
-    tableName: 'project_states',
+    tableName: TABLES.PROJECT_STATE,
   }
 )

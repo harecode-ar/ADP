@@ -1,4 +1,4 @@
-import type { IRole, IUser } from '@adp/shared/types'
+import type { IRole, IUser } from '@adp/shared'
 import { User } from '../../models'
 import { hashPassword } from '../../../utils/password'
 import users from './data'
