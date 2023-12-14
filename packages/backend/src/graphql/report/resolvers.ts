@@ -75,5 +75,24 @@ export default {
         throw error
       }
     },
+    projectMinMaxDate: async (): Promise<{ minDate: string; maxDate: string }> => {
+      try {
+        const query = `
+          SELECT
+            MIN(startDate) AS minDate,
+            MAX(endDate) AS maxDate
+          FROM ${TABLES.PROJECT}
+        `
+
+        const result = await sequelize.query(query, {
+          type: QueryTypes.SELECT,
+        })
+        // @ts-ignore
+        return result[0]
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 }

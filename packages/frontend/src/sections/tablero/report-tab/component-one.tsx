@@ -82,35 +82,35 @@ export default function ComponentOne(props: TProps) {
           <InvoiceAnalytic
             amount={news}
             subtitle="Nuevos"
-            percent= {news / (total || 1) * 100 }
+            percent={Math.round((news / (total || 1)) * 100)}
             color={theme.palette.info.main}
           />
 
           <InvoiceAnalytic
             amount={inProgress}
             subtitle="En proceso"
-            percent={inProgress / (total || 1) * 100 }
+            percent={Math.round((inProgress / (total || 1)) * 100)}
             color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
             amount={completed}
             subtitle="Finalizados"
-            percent={completed / (total || 1) * 100 }
+            percent={Math.round((completed / (total || 1)) * 100)}
             color={theme.palette.success.main}
           />
 
           <InvoiceAnalytic
             amount={cancelled}
             subtitle="Cancelados"
-            percent={cancelled / (total || 1) * 100 }
+            percent={Math.round((cancelled / (total || 1)) * 100)}
             color={theme.palette.text.secondary}
           />
 
           <InvoiceAnalytic
             amount={total}
             subtitle="Totales"
-            percent={total / (total || 1) * 100 }
+            percent={100}
             color={theme.palette.secondary.main}
           />
         </Stack>

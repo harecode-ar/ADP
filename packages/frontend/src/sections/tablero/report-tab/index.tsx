@@ -24,6 +24,7 @@ export default function ReportTab() {
   const { selectedAreas, selectedInitialDate, selectedFinalDate } = useDashboardReportContext()
 
   const areaQuery = useQuery(GET_USER_AREAS_FOR_SELECT)
+
   const areas: TArea[] = useMemo(() => {
     if (!areaQuery.data) return []
     return areaQuery.data.userAreasForSelect || []
@@ -39,12 +40,17 @@ export default function ReportTab() {
     return getLastDayOfMonth(selectedFinalDate)
   }, [selectedFinalDate])
 
+  const selectedAreasIds = useMemo(() => {
+    if (selectedAreas.find((area) => area.id === 0)) return areas.map((area) => area.id)
+    return selectedAreas.map((area) => area.id)
+  }, [areas, selectedAreas])
+
   const { data: projectCountData } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
-    variables: { areas: selectedAreas.map((area) => area.id), startDate, endDate },
+    variables: { areas: selectedAreasIds, startDate, endDate },
   })
 
   const { data: projectCostData } = useQuery(GET_PROJECT_COST_BY_STATE, {
-    variables: { areas: selectedAreas.map((area) => area.id), startDate, endDate },
+    variables: { areas: selectedAreasIds, startDate, endDate },
   })
 
   const {
