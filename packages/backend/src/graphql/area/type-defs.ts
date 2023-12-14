@@ -17,6 +17,7 @@ export default `#graphql
     children: [Area]
     responsible: User
     staff: [User]
+    projects: [Project]
 
   }
 
@@ -25,6 +26,7 @@ export default `#graphql
     areas: [Area]
     areasForDashboard: [Area]
     userAreasForSelect: [Area]
+    directAreaDescendants(areaId: Int!): [Area]
   }
 
   type Mutation {

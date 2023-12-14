@@ -2,9 +2,9 @@ import { IArea, IProjectCountByState } from '@adp/shared'
 import { Grid } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_PROJECT_COUNT_BY_STATE } from 'src/graphql/queries'
+import { GET_PROJECT_COUNT_BY_STATE, GET_DIRECT_AREA_DESCENDANTS } from 'src/graphql/queries'
 import AnalyticsWidgetSummary from './analytics-widget-summary'
-import AnalyticsPieChart from './analytics-pie-chart'
+import ProjectsByArea from './projects-by-area'
 
 type TProps = {
   area: IArea
@@ -12,6 +12,7 @@ type TProps = {
 
 export default function StadisticTab(props: TProps) {
   const { area } = props
+
   const { data } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
     variables: {
       areas: [area.id],
@@ -23,6 +24,23 @@ export default function StadisticTab(props: TProps) {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectCountByState
   }, [data])
+
+  const descendantQuery = useQuery(GET_DIRECT_AREA_DESCENDANTS, {
+    variables: {
+      areaId: area.id,
+    },
+    skip: !area.id,
+  })
+
+  const descendantAreas: IArea[] = useMemo(() => {
+    if (!descendantQuery.data) return []
+    return descendantQuery.data.directAreaDescendants
+  }, [descendantQuery.data])
+
+  const filteredDescendantAreas = useMemo(
+    () => descendantAreas.filter((a) => a.projects?.length),
+    [descendantAreas]
+  )
 
   return (
     <React.Fragment>
@@ -63,12 +81,7 @@ export default function StadisticTab(props: TProps) {
         </Grid>
       </Grid>
 
-      {report.new === 0 &&
-      report.inProgress === 0 &&
-      report.completed === 0 &&
-      report.cancelled === 0 ? null : (
-        <AnalyticsPieChart title="Proyectos" subheader="Estado de los proyectos" chart={report} />
-      )}
+      {!!filteredDescendantAreas.length && <ProjectsByArea areas={filteredDescendantAreas} />}
     </React.Fragment>
   )
 }

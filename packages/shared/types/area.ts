@@ -1,3 +1,4 @@
+import { IProject } from './project'
 import { IUser } from './user'
 
 export interface IArea {
@@ -18,4 +19,5 @@ export interface IArea {
   children?: IArea[]
   responsible?: IUser
   staff?: IUser[]
+  projects?: IProject[]
 }
