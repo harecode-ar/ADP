@@ -7,7 +7,7 @@ export default [
     email: 'martin_facciuto@hotmail.com',
     telephone: '1234567',
     password: '123',
-    image: '08f43c91-20a2-40bc-9f39-c79c009dba27.jpg',
+    image: '0b91926c-6167-422d-ab98-d173a5d7191c.jpg',
     role: ROLE_MAP.ADMIN,
   },
   {
