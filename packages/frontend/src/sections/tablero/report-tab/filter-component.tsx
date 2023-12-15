@@ -63,7 +63,7 @@ export default function FilterComponent(props: TProps) {
               slotProps={{
                 textField: {
                   fullWidth: true,
-                  margin: '0',
+                  margin: 'none',
                 },
               }}
             />
@@ -81,7 +81,7 @@ export default function FilterComponent(props: TProps) {
               slotProps={{
                 textField: {
                   fullWidth: true,
-                  margin: '0',
+                  margin: 'none',
                 },
               }}
             />

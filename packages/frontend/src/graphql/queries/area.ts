@@ -93,3 +93,32 @@ export const GET_USER_AREAS_FOR_SELECT = gql`
     }
   }
 `
+
+export const GET_AREAS_TREE = gql`
+  query areaTree($areaId: Int!) {
+    areaTree(areaId: $areaId) {
+      id
+      name
+      parentId
+      responsible {
+        id
+        email
+        fullname
+        image
+      }
+    }
+  }
+`
+
+export const GET_DIRECT_AREA_DESCENDANTS = gql`
+  query directAreaDescendants($areaId: Int!) {
+    directAreaDescendants(areaId: $areaId) {
+      id
+      name
+      color
+      projects {
+        id
+      }
+    }
+  }
+`
