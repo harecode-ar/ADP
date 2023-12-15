@@ -4,6 +4,7 @@ import type { IArea } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
+import { AreaTreeProvider } from 'src/contexts/area-tree-context'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
@@ -13,11 +14,13 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
 import StadisticTab from './stadistic-tab'
+import ChartTab from './chart-tab'
 
 enum ETab {
   PROJECTS = 'Proyectos',
   STATISTICS = 'Estadisticas',
   GANTT = 'Gantt',
+  CHART = 'Organigrama',
 }
 
 type TProps = {
@@ -113,6 +116,7 @@ export default function AreaDetailView(props: TProps) {
                   <Tab label={ETab.PROJECTS} value={ETab.PROJECTS} />
                   <Tab label={ETab.STATISTICS} value={ETab.STATISTICS} />
                   <Tab label={ETab.GANTT} value={ETab.GANTT} />
+                  <Tab label={ETab.CHART} value={ETab.CHART} sx={{ pl: 1 }} />
                 </Tabs>
               </Box>
             </Card>
@@ -120,6 +124,11 @@ export default function AreaDetailView(props: TProps) {
             {tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />}
             {tab === ETab.GANTT && <GanttTab areaId={areaId} />}
             {tab === ETab.STATISTICS && <StadisticTab area={area} />}
+            {tab === ETab.CHART && (
+              <AreaTreeProvider>
+                <ChartTab areaId={areaId} />
+              </AreaTreeProvider>
+            )}
           </React.Fragment>
         )}
       </Box>

@@ -186,6 +186,51 @@ export default {
         throw error
       }
     },
+    areaTree: async (_: any, args: { areaId: number }, context: IContext): Promise<IArea[]> => {
+      try {
+        const { areaId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const [area, cachedTree] = await Promise.all([
+          Area.findByPk(areaId, {
+            attributes: ['id', 'name', 'responsibleId'],
+          }),
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+
+        if (!area) throw new Error('Area no encontrada')
+
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+
+        const areaTree = getAreaFromTree(tree, areaId)
+        if (!areaTree) throw new Error('Area no encontrada')
+
+        const areas = await Area.findAll({
+          where: {
+            id: getAreaDescendantsIds(areaTree),
+          },
+          attributes: ['id', 'name', 'parentId', 'responsibleId'],
+          order: [['parentId', 'ASC']],
+          include: [
+            {
+              model: Project,
+              as: 'projects',
+              attributes: ['id'],
+            },
+          ],
+        })
+        areas.unshift(area)
+        return areas
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createArea: async (
