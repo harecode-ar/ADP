@@ -10,7 +10,7 @@ import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import { useQuery } from '@apollo/client'
 import { GET_AREAS_TREE } from 'src/graphql/queries'
 import { isEqual, cloneDeep } from 'lodash'
-import Chart from './chart/chart'
+import Chart from '../../organigrama/chart/chart'
 
 type TProps = {
   areaId: string
