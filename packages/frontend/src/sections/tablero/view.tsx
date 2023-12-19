@@ -12,7 +12,6 @@ import AreaTab from './area-tab'
 import AssignmentTab from './assignment-tab'
 import ReportTab from './report-tab'
 
-
 // ----------------------------------------------------------------------
 
 enum ETab {
@@ -25,14 +24,12 @@ export default function TableroView() {
   const settings = useSettingsContext()
   const [ref] = usePrint()
   const [tab, setTab] = useState<ETab>(ETab.AREAS)
-  const { data } = useQuery(GET_COUNT_USER_ASSIGNATIONS);
+  const { data } = useQuery(GET_COUNT_USER_ASSIGNATIONS)
 
-  const isAssignmentTabDisabled: boolean = useMemo(
-    () => {
-      if(!data) return true
-      return data.countUserAssignations === 0
-    }, [data]
-  );
+  const isAssignmentTabDisabled: boolean = useMemo(() => {
+    if (!data) return true
+    return data.countUserAssignations === 0
+  }, [data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -48,7 +45,12 @@ export default function TableroView() {
           >
             <Tabs value={tab} onChange={(e, v) => setTab(v)}>
               <Tab label={ETab.AREAS} value={ETab.AREAS} />
-              <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} sx={{ pl: 1 }} disabled={isAssignmentTabDisabled}/>
+              <Tab
+                label={ETab.ASSIGNMENT}
+                value={ETab.ASSIGNMENT}
+                sx={{ pl: 1 }}
+                disabled={isAssignmentTabDisabled}
+              />
               <Tab label={ETab.REPORT} value={ETab.REPORT} sx={{ pl: 1 }} />
             </Tabs>
           </Box>

@@ -63,19 +63,11 @@ export default function StadisticTab(props: TProps) {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary
-            title="Completado"
-            total={report.completed}
-            color="success"
-          />
+          <AnalyticsWidgetSummary title="Completado" total={report.completed} color="success" />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary
-            title="Cancelado"
-            total={report.cancelled}
-            color="error"
-          />
+          <AnalyticsWidgetSummary title="Cancelado" total={report.cancelled} color="error" />
         </Grid>
       </Grid>
 
