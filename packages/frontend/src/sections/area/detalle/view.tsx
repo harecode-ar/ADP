@@ -61,10 +61,12 @@ export default function AreaDetailView(props: TProps) {
     skip: !areaId,
   })
 
-  const countProjectsByArea:number = useMemo(() => {
+  const countProjectsByArea: number = useMemo(() => {
     if (!countProjectsByAreaQuery.data) return 0
     return countProjectsByAreaQuery.data.countProjectsByArea || 0
   }, [countProjectsByAreaQuery.data])
+
+  const hasProjects = countProjectsByArea > 0
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -143,7 +145,7 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {countProjectsByArea === 0 && (
+            {[ETab.PROJECTS, ETab.GANTT, ETab.STATISTICS].includes(tab) && !hasProjects && (
               <Typography
                 sx={{
                   textAlign: 'center',
@@ -154,11 +156,9 @@ export default function AreaDetailView(props: TProps) {
                 No hay proyectos asignados a esta área
               </Typography>
             )}
-            {countProjectsByArea !== 0 &&
-              ((tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />) ||
-                (tab === ETab.GANTT && <GanttTab areaId={areaId} />))}
-
-            {tab === ETab.STATISTICS && <StadisticTab area={area} />}
+            {tab === ETab.PROJECTS && hasProjects && <ProjectTab areaId={areaId} />}
+            {tab === ETab.GANTT && hasProjects && <GanttTab areaId={areaId} />}
+            {tab === ETab.STATISTICS && hasProjects && <StadisticTab area={area} />}
             {tab === ETab.CHART && (
               <AreaTreeProvider>
                 <ChartTab areaId={areaId} />
