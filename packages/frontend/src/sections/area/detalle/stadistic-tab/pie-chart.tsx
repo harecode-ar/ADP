@@ -54,12 +54,12 @@ export default function PieChart(props: TProps) {
 
   return (
     <Chart
-          dir="ltr"
-          type="pie"
-          series={areas.map((area) => area.projects?.length || 0)}
-          options={chartOptions}
-          width="100%"
-          height={400}
-        />
+      dir="ltr"
+      type="pie"
+      series={areas.map((area) => area.projects?.length || 0)}
+      options={chartOptions}
+      width="100%"
+      height={400}
+    />
   )
 }

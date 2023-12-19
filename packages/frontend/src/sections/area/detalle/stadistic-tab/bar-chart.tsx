@@ -38,19 +38,19 @@ export default function BarChart(props: TProps) {
 
   return (
     <Chart
-          dir="ltr"
-          type="bar"
-          series={areas.map((area, index) => ({
-            name: area.name,
-            data: [
-              ...Array.from({ length: index }, () => 0),
-              area.projects?.length || 0,
-              ...Array.from({ length: areas.length - index - 1 }, () => 0),
-            ],
-          }))}
-          options={chartOptions}
-          width="100%"
-          height={400}
-        />
+      dir="ltr"
+      type="bar"
+      series={areas.map((area, index) => ({
+        name: area.name,
+        data: [
+          ...Array.from({ length: index }, () => 0),
+          area.projects?.length || 0,
+          ...Array.from({ length: areas.length - index - 1 }, () => 0),
+        ],
+      }))}
+      options={chartOptions}
+      width="100%"
+      height={400}
+    />
   )
 }
