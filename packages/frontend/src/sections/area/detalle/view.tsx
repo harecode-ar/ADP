@@ -2,7 +2,7 @@
 
 import type { IArea } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Grid, TextField, Tab, Tabs, Button } from '@mui/material'
+import { Box, Container, Card, Grid, TextField, Tab, Tabs, Typography, Button } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { AreaTreeProvider } from 'src/contexts/area-tree-context'
 import { paths } from 'src/routes/paths'
@@ -10,7 +10,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_AREA } from 'src/graphql/queries'
+import { GET_AREA, GET_COUNT_PROJECTS_BY_AREA } from 'src/graphql/queries'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import Iconify from 'src/components/iconify/iconify'
@@ -55,6 +55,16 @@ export default function AreaDetailView(props: TProps) {
     if (!areaQuery.data) return null
     return areaQuery.data.area
   }, [areaQuery.data])
+
+  const countProjectsByAreaQuery = useQuery(GET_COUNT_PROJECTS_BY_AREA, {
+    variables: { areaId: Number(areaId) },
+    skip: !areaId,
+  })
+
+  const countProjectsByArea:number = useMemo(() => {
+    if (!countProjectsByAreaQuery.data) return 0
+    return countProjectsByAreaQuery.data.countProjectsByArea || 0
+  }, [countProjectsByAreaQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -133,8 +143,21 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />}
-            {tab === ETab.GANTT && <GanttTab areaId={areaId} />}
+            {countProjectsByArea === 0 && (
+              <Typography
+                sx={{
+                  textAlign: 'center',
+                  mt: 2,
+                  mb: 2,
+                }}
+              >
+                No hay proyectos asignados a esta área
+              </Typography>
+            )}
+            {countProjectsByArea !== 0 &&
+              ((tab === ETab.PROJECTS && <ProjectTab areaId={areaId} />) ||
+                (tab === ETab.GANTT && <GanttTab areaId={areaId} />))}
+
             {tab === ETab.STATISTICS && <StadisticTab area={area} />}
             {tab === ETab.CHART && (
               <AreaTreeProvider>

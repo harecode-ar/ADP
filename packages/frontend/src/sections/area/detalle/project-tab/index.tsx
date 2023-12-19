@@ -60,7 +60,7 @@ export default function ProjectTab(props: TProps) {
             marginTop: '16px',
           }}
         >
-          <Typography>No hay proyectos asignados en esta area.</Typography>
+          <Typography>No hay proyectos asignados en ese estado en esta area.</Typography>
         </Box>
       ) : (
         <React.Fragment>
