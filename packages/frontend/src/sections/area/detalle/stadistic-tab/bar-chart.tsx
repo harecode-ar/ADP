@@ -38,18 +38,7 @@ export default function BarChart(props: TProps) {
   })
 
   return (
-    <Card
-      sx={{
-        width: '100%',
-      }}
-    >
-      <Card
-        sx={{
-          p: 2,
-          pl: 0,
-        }}
-      >
-        <Chart
+    <Chart
           dir="ltr"
           type="bar"
           series={areas.map((area, index) => ({
@@ -62,9 +51,7 @@ export default function BarChart(props: TProps) {
           }))}
           options={chartOptions}
           width="100%"
-          height={320}
+          height={400}
         />
-      </Card>
-    </Card>
   )
 }

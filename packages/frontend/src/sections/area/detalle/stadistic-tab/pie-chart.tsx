@@ -54,24 +54,13 @@ export default function PieChart(props: TProps) {
   })
 
   return (
-    <Card>
-      <CardContent
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
-        <Chart
+    <Chart
           dir="ltr"
           type="pie"
           series={areas.map((area) => area.projects?.length || 0)}
           options={chartOptions}
-          width={600}
-          height="auto"
+          width="100%"
+          height={400}
         />
-      </CardContent>
-    </Card>
   )
 }
