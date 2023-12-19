@@ -142,9 +142,7 @@ export default function AreaDetailView(props: TProps) {
               </AreaTreeProvider>
             )}
             {editAreaModal.value && (
-              <ModalEdit
-                modal={editAreaModal} refetch={areaQuery.refetch} area={area}
-              />
+              <ModalEdit modal={editAreaModal} refetch={areaQuery.refetch} area={area} />
             )}
           </React.Fragment>
         )}

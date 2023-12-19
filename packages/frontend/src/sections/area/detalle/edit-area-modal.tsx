@@ -78,10 +78,7 @@ const EditAreaModal = (props: TProps) => {
     return dataArea.areas
   }, [dataArea])
 
-  const filteredAreas = useMemo(
-    () => areas.filter((a: IArea) => a.id !== area?.id),
-    [areas, area]
-  )
+  const filteredAreas = useMemo(() => areas.filter((a: IArea) => a.id !== area?.id), [areas, area])
 
   const formik = useFormik({
     initialValues: {
