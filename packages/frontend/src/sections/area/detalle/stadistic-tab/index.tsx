@@ -55,29 +55,19 @@ export default function StadisticTab(props: TProps) {
         spacing={2}
       >
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary title="Nuevo" total={report.new} color="info" icon="entypo:new" />
+          <AnalyticsWidgetSummary title="Nuevo" total={report.new} color="info" />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary title="En proceso" total={report.inProgress} icon="mdi:tools" />
+          <AnalyticsWidgetSummary title="En proceso" total={report.inProgress} />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary
-            title="Completado"
-            total={report.completed}
-            color="success"
-            icon="fluent-mdl2:completed-solid"
-          />
+          <AnalyticsWidgetSummary title="Completado" total={report.completed} color="success" />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <AnalyticsWidgetSummary
-            title="Cancelado"
-            total={report.cancelled}
-            color="error"
-            icon="ooui:cancel"
-          />
+          <AnalyticsWidgetSummary title="Cancelado" total={report.cancelled} color="error" />
         </Grid>
       </Grid>
 

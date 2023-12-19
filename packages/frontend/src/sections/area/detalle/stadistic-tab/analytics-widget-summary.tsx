@@ -4,21 +4,18 @@ import Typography from '@mui/material/Typography'
 import { alpha, useTheme } from '@mui/material/styles'
 import { bgGradient } from 'src/theme/css'
 import { ColorSchema } from 'src/theme/palette'
-import Iconify from 'src/components/iconify/iconify'
 
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
   title: string
   total: number
-  icon: string
   color?: ColorSchema
 }
 
 export default function AnalyticsWidgetSummary({
   title,
   total,
-  icon,
   color = 'primary',
   sx,
   ...other
@@ -43,8 +40,6 @@ export default function AnalyticsWidgetSummary({
       }}
       {...other}
     >
-      {icon && <Iconify icon={icon} width={48} height={48} />}
-
       <Typography variant="h3">{total}</Typography>
 
       <Typography variant="subtitle2" sx={{ opacity: 0.64 }}>

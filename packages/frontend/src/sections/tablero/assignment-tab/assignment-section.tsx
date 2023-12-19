@@ -1,20 +1,24 @@
-import { IProject } from '@adp/shared'
-import React from 'react'
+import { IProject, IStage } from '@adp/shared'
+import React, { useMemo } from 'react'
 import { Box, Typography } from '@mui/material'
 import AssignmentItem from './assignment-item'
 
 type TProps = {
   projects: IProject[]
+  stages: IStage[]
+  subStages: IStage[]
 }
 
-export default function ProjectSection(props: TProps) {
-  const { projects } = props
+export default function AssignmentSection(props: TProps) {
+  const { projects, stages, subStages } = props
+
+  const length = useMemo(
+    () => projects.length + stages.length + subStages.length,
+    [projects, stages, subStages]
+  )
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Proyectos
-      </Typography>
       <Box
         gap={3}
         display="grid"
@@ -28,8 +32,14 @@ export default function ProjectSection(props: TProps) {
         {projects.map((project) => (
           <AssignmentItem key={project.id} project={project} />
         ))}
+        {stages.map((stage) => (
+          <AssignmentItem key={stage.id} stage={stage} />
+        ))}
+        {subStages.map((subStage) => (
+          <AssignmentItem key={subStage.id} subStage={subStage} />
+        ))}
       </Box>
-      {projects.length === 0 && (
+      {length === 0 && (
         <Box
           sx={{
             display: 'flex',
