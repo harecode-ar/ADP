@@ -22,7 +22,6 @@ const DEFAULT_VALUE = { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
 
 export default function ReportTab() {
   const { selectedAreas, selectedInitialDate, selectedFinalDate } = useDashboardReportContext()
-
   const areaQuery = useQuery(GET_USER_AREAS_FOR_SELECT)
 
   const areas: TArea[] = useMemo(() => {

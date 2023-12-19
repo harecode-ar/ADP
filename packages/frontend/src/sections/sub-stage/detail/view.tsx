@@ -8,6 +8,7 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
+import { usePrint } from 'src/hooks/use-print'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
@@ -25,6 +26,7 @@ type TProps = {
 
 export default function ProjectDetailView(props: TProps) {
   const { subStageId } = props
+  const [ref] = usePrint()
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
@@ -47,7 +49,7 @@ export default function ProjectDetailView(props: TProps) {
   }, [subStageQuery.data])
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
         sx={{
           display: 'flex',
