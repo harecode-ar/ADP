@@ -2,11 +2,22 @@
 
 import { m } from 'framer-motion'
 import React from 'react'
+import { usePathname } from 'src/routes/hooks'
 import { IconButton, Box } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
+import { paths } from 'src/routes/paths'
 
+const EXCLUDE_PATHS = [
+  paths[403],
+  paths[404],
+  paths.auth.forgotPassword,
+  paths.auth.login,
+  paths.dashboard.project.new,
+]
 export default function PrintButton() {
+  const pathname = usePathname()
+  if (EXCLUDE_PATHS.some((p) => pathname.includes(p))) return null
 
   const print = () => {
     window.dispatchEvent(new Event('printScreen'))
