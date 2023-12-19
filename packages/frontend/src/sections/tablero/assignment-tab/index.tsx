@@ -6,9 +6,7 @@ import { Box, Stack, TextField, InputAdornment, Card } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
-import ProjectSection from './project-section'
-import StageSection from './stage-section'
-import SubStageSection from './sub-stage-section'
+import AssignmentSection from './assignment-section'
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
@@ -85,10 +83,11 @@ export default function AssignmentTab() {
             sx={{ width: { xs: 1, sm: 260 } }}
           />
         </Stack>
-
-        <ProjectSection projects={filteredProjects} />
-        <StageSection stages={filteredStages} />
-        <SubStageSection subStages={filteredSubStages} />
+        <AssignmentSection
+          projects={filteredProjects}
+          stages={filteredStages}
+          subStages={filteredSubStages}
+        />
       </Box>
     </Card>
   )
