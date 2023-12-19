@@ -1,7 +1,6 @@
 import React from 'react'
 import { IArea } from '@adp/shared'
 import Chart, { useChart } from 'src/components/chart'
-import { Card, CardContent } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
@@ -54,24 +53,13 @@ export default function PieChart(props: TProps) {
   })
 
   return (
-    <Card>
-      <CardContent
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
-        <Chart
-          dir="ltr"
-          type="pie"
-          series={areas.map((area) => area.projects?.length || 0)}
-          options={chartOptions}
-          width={600}
-          height="auto"
-        />
-      </CardContent>
-    </Card>
+    <Chart
+      dir="ltr"
+      type="pie"
+      series={areas.map((area) => area.projects?.length || 0)}
+      options={chartOptions}
+      width="100%"
+      height={400}
+    />
   )
 }
