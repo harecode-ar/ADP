@@ -18,6 +18,7 @@ import { useSettingsContext } from 'src/components/settings'
 import NotificationsPopover from 'src/layouts/_common/notifications-popover'
 import ChecklistPopover from 'src/layouts/_common/checklist-popover'
 import ContactPopover from 'src/layouts/_common/contact-popover'
+import PrintButton from 'src/layouts/_common/print-button'
 import { HEADER, NAV } from '../../config-layout'
 import { Searchbar, AccountPopover, SettingsButton } from '../../_common'
 
@@ -61,6 +62,7 @@ export default function Header({ onOpenNav }: Props) {
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1 }}
       >
+        <PrintButton />
         <ChecklistPopover />
         <ContactPopover />
         <NotificationsPopover />

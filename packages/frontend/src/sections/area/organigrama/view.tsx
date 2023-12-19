@@ -11,6 +11,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
 import { useQuery } from '@apollo/client'
+import { usePrint } from 'src/hooks/use-print'
 import { GET_AREAS_FOR_TREE } from 'src/graphql/queries'
 import type { TAreaTree } from 'src/contexts/area-tree-context/types'
 import { isEqual, cloneDeep } from 'lodash'
@@ -21,6 +22,7 @@ import EditAreaModal from './edit-area-modal'
 
 export default function OrganigramaView() {
   const settings = useSettingsContext()
+  const [ref] = usePrint()
   const { tree: savedTree, setTree, setSelected } = useAreaTreeContext()
   const deleteAreaModal = useBoolean()
   const createAreaModal = useBoolean()
@@ -61,7 +63,7 @@ export default function OrganigramaView() {
   }
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
         sx={{
           display: 'flex',

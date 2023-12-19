@@ -9,6 +9,7 @@ import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
+import { usePrint } from 'src/hooks/use-print'
 import { GET_AREA } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import GanttTab from './gantt-tab'
@@ -29,6 +30,7 @@ type TProps = {
 
 export default function AreaDetailView(props: TProps) {
   const { areaId } = props
+  const [ref] = usePrint()
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
@@ -51,7 +53,7 @@ export default function AreaDetailView(props: TProps) {
   }, [areaQuery.data])
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
         sx={{
           display: 'flex',

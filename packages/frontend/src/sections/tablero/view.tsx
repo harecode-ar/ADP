@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Container, Card, Box, Tabs, Tab } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
+import { usePrint } from 'src/hooks/use-print'
 import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
 import UserCard from './user-card'
 import AreaTab from './area-tab'
@@ -19,10 +20,11 @@ enum ETab {
 
 export default function TableroView() {
   const settings = useSettingsContext()
+  const [ref] = usePrint()
   const [tab, setTab] = useState<ETab>(ETab.AREAS)
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <UserCard />
         <Card sx={{ p: 1 }}>
@@ -40,16 +42,18 @@ export default function TableroView() {
             </Tabs>
           </Box>
         </Card>
-        <Box sx={{ display: tab === ETab.AREAS ? 'block' : 'none' }}>
-          <AreaTab />
-        </Box>
-        <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
-          <AssignmentTab />
-        </Box>
-        <Box sx={{ display: tab === ETab.REPORT ? 'block' : 'none' }}>
-          <DashboardReportProvider>
-            <ReportTab />
-          </DashboardReportProvider>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: tab === ETab.AREAS ? 'block' : 'none' }}>
+            <AreaTab />
+          </Box>
+          <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
+            <AssignmentTab />
+          </Box>
+          <Box sx={{ display: tab === ETab.REPORT ? 'block' : 'none' }}>
+            <DashboardReportProvider>
+              <ReportTab />
+            </DashboardReportProvider>
+          </Box>
         </Box>
       </Box>
     </Container>

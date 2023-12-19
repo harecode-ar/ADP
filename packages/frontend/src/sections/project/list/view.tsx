@@ -4,6 +4,7 @@ import * as React from 'react'
 import { Container, Button, Link } from '@mui/material'
 import NextLink from 'next/link'
 import { useSettingsContext } from 'src/components/settings'
+import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { TableContextProvider } from 'src/components/table/context'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
@@ -12,9 +13,10 @@ import Table from './table'
 
 export default function ProjectListView() {
   const settings = useSettingsContext()
+  const [ref] = usePrint()
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <CustomBreadcrumbs
         heading="Proyectos"
         links={[{ name: 'Proyectos', href: paths.dashboard.project.root }, { name: 'Listado' }]}
