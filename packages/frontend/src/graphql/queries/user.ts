@@ -33,3 +33,9 @@ export const GET_USER = gql`
     }
   }
 `
+
+export const GET_COUNT_USER_ASSIGNATIONS = gql`
+  query countUserAssignations {
+    countUserAssignations
+  }
+`

@@ -18,6 +18,7 @@ export default `#graphql
   type Query {
     user(id: Int!): User
     users: [User]
+    countUserAssignations: Int
   }
 
   type Mutation {
