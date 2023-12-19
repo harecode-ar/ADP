@@ -100,7 +100,7 @@ const EditAreaModal = (props: TProps) => {
             color: values.color.color,
             rolename: 'prueba',
             multiple: false,
-            responsibleId: values.responsible?.id,
+            responsibleId: values.responsible?.id || null,
             parentId: values.parent?.id,
           },
         })
