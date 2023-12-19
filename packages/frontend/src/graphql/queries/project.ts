@@ -163,3 +163,9 @@ export const GET_PROJECT = gql`
     }
   }
 `
+
+export const GET_COUNT_PROJECTS_BY_AREA = gql`
+  query countProjectsByArea($areaId: Int!) {
+    countProjectsByArea(areaId: $areaId)
+  }
+`

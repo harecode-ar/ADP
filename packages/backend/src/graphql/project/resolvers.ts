@@ -194,6 +194,19 @@ export default {
         throw error
       }
     },
+    countProjectsByArea: (
+      _: any,
+      args: Pick<IProject, 'areaId'>,
+      context: IContext
+    ): Promise<number> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        return Project.count({ where: { areaId: args.areaId } })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createProject: (
