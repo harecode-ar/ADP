@@ -1,6 +1,5 @@
 import { IArea } from '@adp/shared'
 import React from 'react'
-import Card from '@mui/material/Card'
 import Chart, { useChart } from 'src/components/chart'
 
 type TProps = {

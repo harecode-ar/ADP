@@ -1,7 +1,6 @@
 import React from 'react'
 import { IArea } from '@adp/shared'
 import Chart, { useChart } from 'src/components/chart'
-import { Card, CardContent } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------

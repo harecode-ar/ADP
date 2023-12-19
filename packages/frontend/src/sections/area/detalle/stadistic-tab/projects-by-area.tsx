@@ -44,10 +44,6 @@ export default function ProjectsByArea(props: TProps) {
 
       <CardContent
         sx={{
-          // display: 'flex',
-          // alignItems: 'center',
-          // flexDirection: 'column',
-          // justifyContent: 'center',
           height: 400,
           width: '100%',
         }}
