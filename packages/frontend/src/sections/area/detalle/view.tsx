@@ -57,9 +57,9 @@ export default function AreaDetailView(props: TProps) {
     skip: !areaId,
   })
 
-  const countProjectsByArea = useMemo(() => {
-    if (!countProjectsByAreaQuery.data) return null
-    return countProjectsByAreaQuery.data.countProjectsByArea
+  const countProjectsByArea:number = useMemo(() => {
+    if (!countProjectsByAreaQuery.data) return 0
+    return countProjectsByAreaQuery.data.countProjectsByArea || 0
   }, [countProjectsByAreaQuery.data])
 
   return (
