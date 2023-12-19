@@ -1,12 +1,14 @@
-import { ETokenType } from '@adp/shared'
+import { ETokenType, PERMISSION_MAP } from '@adp/shared'
 import type { IUpload, IUser } from '@adp/shared'
 import dotenv from 'dotenv'
-import { Role, User, Token } from '../../database/models'
+import { Role, User, Token, Project, Area, Stage } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
 import { sendNewUserMail } from '../../services/nodemailer/new-user'
 import { hashPassword, comparePassword, generateRandomPassword } from '../../utils/password'
 import { deleteFiles, uploadFile } from '../../services/storage'
+import { needPermission } from '../../utils/auth'
+import type { IContext } from '../types'
 
 dotenv.config()
 
@@ -48,6 +50,46 @@ export default {
         throw error
       }
     },
+    countUserAssignations: async (_: any, __: any, context: IContext) => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const foundUser = await User.findByPk(user.id, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+              include: [
+                {
+                  model: Project,
+                  as: 'projects',
+                  attributes: ['id'],
+                },
+                {
+                  model: Stage,
+                  as: 'stages',
+                  attributes: ['id'],
+                }
+              ],
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        const { areas = [] } = foundUser
+        // @ts-ignore
+        const projects: Project[] = areas.flatMap((area: Area) => area.projects)
+        // @ts-ignore
+        const stages: Stage[] = areas.flatMap((area: Area) => area.stages)
+        return projects.length + stages.length
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
   Mutation: {
     createUser: async (
