@@ -72,7 +72,7 @@ export default {
                   model: Stage,
                   as: 'stages',
                   attributes: ['id'],
-                }
+                },
               ],
             },
           ],
@@ -89,7 +89,7 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
   Mutation: {
     createUser: async (
