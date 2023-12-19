@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
+import StagePath from 'src/sections/stage/detail/stage-path'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
@@ -48,6 +49,7 @@ export default function ProjectDetailView(props: TProps) {
     return subStageQuery.data.subStage
   }, [subStageQuery.data])
 
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -60,6 +62,12 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Sub Etapa"
           links={[{ name: 'Sub Etapa', href: paths.dashboard.subStage.root }, { name: 'Detalle' }]}
+        />
+
+        <StagePath
+          project={subStage?.project || null}
+          stage={subStage?.parentStage || null}
+          subStage={subStage || null}
         />
 
         {subStageQuery.loading && <p>Cargando...</p>}

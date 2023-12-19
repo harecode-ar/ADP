@@ -1,5 +1,5 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
-import type { IStage, IUser, IProjectState, IArea } from '@adp/shared'
+import type { IStage, IUser, IProjectState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
 import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
 import logger from '../../logger'
@@ -18,6 +18,15 @@ export default {
       if (stage.area) return Promise.resolve(stage.area)
       if (!stage.areaId) return Promise.resolve(null)
       return Area.findByPk(stage.areaId)
+    },
+    project: (stage: IStage): Promise<IProject | null> => {
+      if (stage.project) return Promise.resolve(stage.project)
+      return Project.findByPk(stage.projectId) as Promise<IProject | null>
+    },
+    parentStage: (stage: IStage): Promise<IStage | null> => {
+      if (stage.parentStage) return Promise.resolve(stage.parentStage)
+      if (!stage.parentStageId) return Promise.resolve(null)
+      return Stage.findByPk(stage.parentStageId) as Promise<IStage | null>
     },
     responsible: async (stage: IStage): Promise<IUser | null> => {
       if (stage.responsible) return Promise.resolve(stage.responsible)
@@ -85,6 +94,10 @@ export default {
               as: 'state',
             },
             {
+              model: Project,
+              as: 'project',
+            },
+            {
               model: StageNote,
               as: 'notes',
               include: [
@@ -122,6 +135,14 @@ export default {
             {
               model: StageState,
               as: 'state',
+            },
+            {
+              model: Project,
+              as: 'project',
+            },
+            {
+              model: Stage,
+              as: 'parentStage',
             },
             {
               model: StageNote,
