@@ -67,6 +67,10 @@ export const GET_STAGE = gql`
       description
       hasStages
       projectId
+      project {
+        id
+        name
+      }
       area {
         id
         name
@@ -105,6 +109,15 @@ export const GET_SUB_STAGE = gql`
       description
       hasStages
       projectId
+      parentStageId
+      parentStage {
+        id
+        name
+      }
+      project {
+        id
+        name
+      }
       area {
         id
         name

@@ -26,6 +26,7 @@ import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
+import StagePath from './stage-path'
 
 enum ETab {
   NOTES = 'Notas',
@@ -90,6 +91,8 @@ export default function ProjectDetailView(props: TProps) {
           heading="Detalle de Etapa"
           links={[{ name: 'Etapa', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
         />
+
+        <StagePath project={stage?.project || null} stage={stage} subStage={null} />
 
         {stageQuery.loading && <p>Cargando...</p>}
 
