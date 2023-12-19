@@ -2,7 +2,7 @@
 
 import type { IArea } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Box, Container, Card, Grid, TextField, Tab, Tabs } from '@mui/material'
+import { Box, Container, Card, Grid, TextField, Tab, Tabs, Button } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { AreaTreeProvider } from 'src/contexts/area-tree-context'
 import { paths } from 'src/routes/paths'
@@ -11,11 +11,14 @@ import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import { GET_AREA } from 'src/graphql/queries'
+import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
+import Iconify from 'src/components/iconify/iconify'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
 import StadisticTab from './stadistic-tab'
 import ChartTab from './chart-tab'
+import ModalEdit from './edit-area-modal'
 
 enum ETab {
   PROJECTS = 'Proyectos',
@@ -35,6 +38,7 @@ export default function AreaDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const [tab, setTab] = useState<ETab>(ETab.PROJECTS)
+  const editAreaModal = useBoolean()
 
   const areaQuery = useQuery(GET_AREA, {
     variables: { id: Number(areaId) },
@@ -64,6 +68,12 @@ export default function AreaDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Area"
           links={[{ name: 'Area', href: paths.dashboard.area.root }, { name: 'Detalle' }]}
+          action={
+            <Button variant="contained" onClick={editAreaModal.onTrue}>
+              <Iconify icon="material-symbols:edit" mr={1} />
+              Editar
+            </Button>
+          }
         />
 
         {areaQuery.loading && <p>Cargando...</p>}
@@ -130,6 +140,9 @@ export default function AreaDetailView(props: TProps) {
               <AreaTreeProvider>
                 <ChartTab areaId={areaId} />
               </AreaTreeProvider>
+            )}
+            {editAreaModal.value && (
+              <ModalEdit modal={editAreaModal} refetch={areaQuery.refetch} area={area} />
             )}
           </React.Fragment>
         )}
