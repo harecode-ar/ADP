@@ -148,7 +148,12 @@ function AreaCard({ area }: AreaCardProps) {
             <Avatar
               alt={responsible?.fullname || 'Sin responsable'}
               src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
-              sx={{ width: 64, height: 64, mb: 3 }}
+              sx={(theme) => ({
+                width: 64,
+                height: 64,
+                marginBottom: 3,
+                border: `2px solid ${theme.palette.primary.main}`,
+              })}
             />
 
             <Typography
