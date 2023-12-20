@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Stack, Divider, Typography, Box, CircularProgress } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
 import { alpha, useTheme } from '@mui/material/styles'
-import { fCurrency } from 'src/utils/format-number'
+import { formatCost } from 'src/utils/format-number'
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +15,7 @@ type InvoiceAnalyticProps = {
 
 function InvoiceAnalytic(props: InvoiceAnalyticProps) {
   const { amount, subtitle, color, percent } = props
+  const formattedAmount = formatCost(amount)
   return (
     <Stack
       spacing={2.5}
@@ -50,10 +51,7 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
       </Stack>
 
       <Stack spacing={0.5}>
-        <Typography variant="subtitle1">
-          {fCurrency(amount).replace('.', ';').replace(/,/g, '.').replace(';', ',')}
-        </Typography>
-
+        <Typography variant="subtitle1">{formattedAmount}</Typography>
         <Box component="span" sx={{ color: 'text.disabled', typography: 'body2' }}>
           {subtitle}
         </Box>
