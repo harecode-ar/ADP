@@ -75,7 +75,6 @@ export default function ReportTab() {
   }, [projectCostData])
 
   const totalCost = newCost + inProgressCost + completedCost + cancelledCost
-
   return (
     <Box
       sx={{

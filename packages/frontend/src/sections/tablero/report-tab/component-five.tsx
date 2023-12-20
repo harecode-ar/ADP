@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@mui/material'
 import Label, { LabelColor } from 'src/components/label'
-import { fCurrency } from 'src/utils/format-number'
+import { formatCost } from 'src/utils/format-number'
 
 type TProps = {
   news: number
@@ -29,6 +29,7 @@ type TRowProps = {
 
 function Row(props: TRowProps) {
   const { label, value, color } = props
+  const formattedValue = formatCost(value)
   return (
     <TableRow>
       <TableCell>
@@ -39,11 +40,7 @@ function Row(props: TRowProps) {
       <TableCell align="right">
         <Grid container direction="column" alignItems="center">
           <Grid item>
-            <Typography variant="body1">
-              {value
-                ? fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')
-                : '$0'}
-            </Typography>
+            <Typography variant="body1">{formattedValue}</Typography>
           </Grid>
         </Grid>
       </TableCell>

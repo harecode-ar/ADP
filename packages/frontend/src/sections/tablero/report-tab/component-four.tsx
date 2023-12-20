@@ -2,7 +2,7 @@ import React from 'react'
 import Card from '@mui/material/Card'
 import Chart, { useChart } from 'src/components/chart'
 import { useTheme } from '@mui/material/styles'
-import { fCurrency } from 'src/utils/format-number'
+import { formatCost } from 'src/utils/format-number'
 
 type TProps = {
   news: number
@@ -13,7 +13,6 @@ type TProps = {
 
 export default function ComponentTwo(props: TProps) {
   const { news, inProgress, completed, cancelled } = props
-
   const theme = useTheme()
 
   const chartOptions = useChart({
@@ -32,8 +31,7 @@ export default function ComponentTwo(props: TProps) {
     },
     tooltip: {
       y: {
-        formatter: (value: number) =>
-          `${fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')}`,
+        formatter: (value: number) => formatCost(value),
       },
     },
     plotOptions: {
