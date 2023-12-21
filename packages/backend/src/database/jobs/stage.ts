@@ -14,7 +14,10 @@ export const calculateStageProgress = async (stageId: number) => {
       attributes: ['progress'],
     })
 
-    if (stages.length === 0) return
+    if (stages.length === 0) {
+      await foundStage.update({ progress: 0 })
+      return
+    }
 
     const totalProgress = stages.reduce((acc, stage) => acc + stage.progress, 0)
     const progress = totalProgress / stages.length

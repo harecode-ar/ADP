@@ -709,14 +709,17 @@ export default {
         if (!subStage) {
           throw new Error('Etapa no encontrada')
         }
+        const {parentStageId} = subStage
 
         const { projectId } = subStage
         await subStage.destroy()
 
-        try {
-          await calculateStageProgress(subStage.id)
-        } catch (error) {
-          logger.error(error)
+        if (parentStageId !== null) {
+          try {
+            await calculateStageProgress(parentStageId)
+          } catch (error) {
+            logger.error(error)
+          }
         }
 
         calculateProjectProgress(projectId).catch((error) => {
