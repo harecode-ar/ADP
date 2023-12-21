@@ -24,19 +24,7 @@ import { UPDATE_USER } from 'src/graphql/mutations'
 import { fData } from 'src/utils/format-number'
 import UploadAvatar from 'src/components/upload/upload-avatar'
 import { getStorageFileUrl } from 'src/utils/storage'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const userSchema = Yup.object().shape({
   firstname: Yup.string().required('Nombre requerido'),
@@ -161,7 +149,7 @@ const ModalEdit = (props: TProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Editar usuario
         </Typography>

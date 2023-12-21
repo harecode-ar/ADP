@@ -14,19 +14,7 @@ import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
 import { IContact } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -123,7 +111,7 @@ export default function ModalUpdate(props: TProps) {
         },
       }}
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
           Editar contacto
         </Typography>
