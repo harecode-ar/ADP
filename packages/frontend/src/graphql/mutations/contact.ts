@@ -73,3 +73,27 @@ export const DELETE_PROJECT_CONTACT = gql`
     deleteProjectContact(id: $id, projectId: $projectId)
   }
 `
+
+export const IMPORT_PROJECT_CONTACTS = gql`
+  mutation importProjectContacts($projectId: Int!, $contacts: [Int!]!) {
+    importProjectContacts(projectId: $projectId, contacts: $contacts)
+  }
+`
+
+export const IMPORT_STAGE_CONTACTS = gql`
+  mutation importStageContacts($stageId: Int!, $contacts: [Int!]!) {
+    importStageContacts(stageId: $stageId, contacts: $contacts)
+  }
+`
+
+export const IMPORT_USER_CONTACTS_TO_PROJECT = gql`
+  mutation importUserContactsToProject($projectId: Int!, $contacts: [Int!]!) {
+    importUserContactsToProject(projectId: $projectId, contacts: $contacts)
+  }
+`
+
+export const IMPORT_USER_CONTACTS_TO_STAGE = gql`
+  mutation importUserContactsToStage($stageId: Int!, $contacts: [Int!]!) {
+    importUserContactsToStage(stageId: $stageId, contacts: $contacts)
+  }
+`

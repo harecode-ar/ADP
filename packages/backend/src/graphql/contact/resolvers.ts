@@ -393,5 +393,185 @@ export default {
         throw error
       }
     },
+    importProjectContacts: async (
+      _: any,
+      args: { projectId: number; contacts: number[] },
+      context: IContext
+    ): Promise<number[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { projectId, contacts } = args
+        const contactProjects = await ContactProject.findAll({
+          where: {
+            contactId: contacts,
+            projectId,
+          },
+          attributes: ['contactId'],
+        })
+        if (!contactProjects.length) throw new Error('No hay contactos para importar')
+        const contactIds = contactProjects.map((contactProject) => contactProject.contactId)
+        const contactUsers = await ContactUser.findAll({
+          where: {
+            contactId: contactIds,
+            userId: user.id,
+          },
+          attributes: ['contactId'],
+        })
+        const userContactIds = contactUsers.map((contactUser) => contactUser.contactId)
+        const filteredContacts = contactIds.filter(
+          (contactId) => !userContactIds.includes(contactId)
+        )
+        if (contacts.length === 1 && !filteredContacts.length)
+          throw new Error('El contacto ya existe en el usuario')
+        if (!filteredContacts.length) throw new Error('Los contactos ya existen en el usuario')
+        await ContactUser.bulkCreate(
+          filteredContacts.map((contactId) => ({
+            contactId,
+            userId: user.id,
+          }))
+        )
+        return filteredContacts
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    importStageContacts: async (
+      _: any,
+      args: { stageId: number; contacts: number[] },
+      context: IContext
+    ): Promise<number[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { stageId, contacts } = args
+        const contactStages = await ContactStage.findAll({
+          where: {
+            contactId: contacts,
+            stageId,
+          },
+          attributes: ['contactId'],
+        })
+        if (!contactStages.length) throw new Error('No hay contactos para importar')
+        const contactIds = contactStages.map((contactStage) => contactStage.contactId)
+        const contactUsers = await ContactUser.findAll({
+          where: {
+            contactId: contactIds,
+            userId: user.id,
+          },
+          attributes: ['contactId'],
+        })
+        const userContactIds = contactUsers.map((contactUser) => contactUser.contactId)
+        const filteredContacts = contactIds.filter(
+          (contactId) => !userContactIds.includes(contactId)
+        )
+        if (contacts.length === 1 && !filteredContacts.length)
+          throw new Error('El contacto ya existe en el usuario')
+        if (!filteredContacts.length) throw new Error('Los contactos ya existen en el usuario')
+        await ContactUser.bulkCreate(
+          filteredContacts.map((contactId) => ({
+            contactId,
+            userId: user.id,
+          }))
+        )
+        return filteredContacts
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    importUserContactsToProject: async (
+      _: any,
+      args: { projectId: number; contacts: number[] },
+      context: IContext
+    ): Promise<number[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { projectId, contacts } = args
+        const contactUsers = await ContactUser.findAll({
+          where: {
+            contactId: contacts,
+            userId: user.id,
+          },
+          attributes: ['contactId'],
+        })
+        if (!contactUsers.length) throw new Error('No hay contactos para importar')
+        const contactIds = contactUsers.map((contactUser) => contactUser.contactId)
+        const contactProjects = await ContactProject.findAll({
+          where: {
+            contactId: contactIds,
+            projectId,
+          },
+          attributes: ['contactId'],
+        })
+        const projectContactIds = contactProjects.map((contactProject) => contactProject.contactId)
+        const filteredContacts = contactIds.filter(
+          (contactId) => !projectContactIds.includes(contactId)
+        )
+        if (contacts.length === 1 && !filteredContacts.length)
+          throw new Error('El contacto ya existe en el proyecto')
+        if (!filteredContacts.length) throw new Error('Los contactos ya existen en el proyecto')
+        await ContactProject.bulkCreate(
+          filteredContacts.map((contactId) => ({
+            contactId,
+            projectId,
+          }))
+        )
+        return filteredContacts
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    importUserContactsToStage: async (
+      _: any,
+      args: { stageId: number; contacts: number[] },
+      context: IContext
+    ): Promise<number[]> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        needPermission([PERMISSION_MAP.CONTACT_CREATE], context)
+        const { stageId, contacts } = args
+        const contactUsers = await ContactUser.findAll({
+          where: {
+            contactId: contacts,
+            userId: user.id,
+          },
+          attributes: ['contactId'],
+        })
+        if (!contactUsers.length) throw new Error('No hay contactos para importar')
+        const contactIds = contactUsers.map((contactUser) => contactUser.contactId)
+        const contactStages = await ContactStage.findAll({
+          where: {
+            contactId: contactIds,
+            stageId,
+          },
+          attributes: ['contactId'],
+        })
+        const stageContactIds = contactStages.map((contactStage) => contactStage.contactId)
+        const filteredContacts = contactIds.filter(
+          (contactId) => !stageContactIds.includes(contactId)
+        )
+        if (contacts.length === 1 && !filteredContacts.length)
+          throw new Error('El contacto ya existe en la etapa')
+        if (!filteredContacts.length) throw new Error('Los contactos ya existen en la etapa')
+        await ContactStage.bulkCreate(
+          filteredContacts.map((contactId) => ({
+            contactId,
+            stageId,
+          }))
+        )
+        return filteredContacts
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 }

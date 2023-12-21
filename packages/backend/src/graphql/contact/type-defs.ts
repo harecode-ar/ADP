@@ -29,5 +29,9 @@ export default `#graphql
     deleteUserContact(id: ID!): Boolean
     deleteStageContact(id: Int!, stageId: Int!): Boolean
     deleteProjectContact(id: Int!, projectId: Int!): Boolean
+    importProjectContacts(projectId: Int!, contacts: [Int!]!): [Int]
+    importStageContacts(stageId: Int!, contacts: [Int!]!): [Int]
+    importUserContactsToProject(projectId: Int!, contacts: [Int!]!): [Int]
+    importUserContactsToStage(stageId: Int!, contacts: [Int!]!): [Int]
   }
 `

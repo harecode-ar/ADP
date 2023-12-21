@@ -49,7 +49,6 @@ export default function ProjectDetailView(props: TProps) {
     return subStageQuery.data.subStage
   }, [subStageQuery.data])
 
-
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
