@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { GET_USER_CONTACTS } from 'src/graphql/queries'
+import { ECustomEvent } from 'src/types'
 import ModalCreate from './modal-create'
 import ModalUpdate from './modal-update'
 import ModalDelete from './modal-delete'
@@ -49,8 +50,8 @@ export default function ContactPopover() {
   }
 
   useEffect(() => {
-    window.addEventListener('refetchContacts', refetch)
-    return () => window.removeEventListener('refetchContacts', refetch)
+    window.addEventListener(ECustomEvent.refetchUserContacts, refetch)
+    return () => window.removeEventListener(ECustomEvent.refetchUserContacts, refetch)
   }, [refetch])
 
   if (loading) return null

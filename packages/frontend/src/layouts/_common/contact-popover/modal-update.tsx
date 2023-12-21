@@ -15,6 +15,7 @@ import { UploadAvatar } from 'src/components/upload'
 import { IContact } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { ECustomEvent } from 'src/types'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -81,6 +82,9 @@ export default function ModalUpdate(props: TProps) {
         helpers.resetForm()
         modal.onFalse()
         refetch()
+        window.dispatchEvent(new Event(ECustomEvent.refetchProjectContacts))
+        window.dispatchEvent(new Event(ECustomEvent.refetchStageContacts))
+        window.dispatchEvent(new Event(ECustomEvent.refetchSubStageContacts))
       } catch (error) {
         console.error(error)
         enqueueSnackbar('El contacto no pudo ser editado.', { variant: 'error' })
