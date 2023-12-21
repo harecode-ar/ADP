@@ -88,6 +88,7 @@ const ModalCreate = (props: TProps) => {
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
   const { projectId } = stage
+  const threeHours = 3 * 60 * 60 * 1000
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (data?.areas) return data.areas
@@ -98,8 +99,8 @@ const ModalCreate = (props: TProps) => {
     initialValues: {
       name: '',
       area: null,
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
+      startDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
+      endDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
       projectStartDate: stage.startDate,
       projectEndDate: stage.endDate,
       description: '',
