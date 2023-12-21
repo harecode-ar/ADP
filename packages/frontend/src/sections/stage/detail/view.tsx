@@ -126,7 +126,7 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* startDate */}
-                  <Grid item xs={12} md={stage.hasStages ? 2 : 3} >
+                  <Grid item xs={12} md={stage.hasStages ? 2 : 3}>
                     <TextField
                       id="startDate"
                       name="startDate"

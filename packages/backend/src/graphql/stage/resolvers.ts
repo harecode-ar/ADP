@@ -709,7 +709,7 @@ export default {
         if (!subStage) {
           throw new Error('Etapa no encontrada')
         }
-        const {parentStageId} = subStage
+        const { parentStageId } = subStage
 
         const { projectId } = subStage
         await subStage.destroy()
