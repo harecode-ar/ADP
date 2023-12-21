@@ -42,7 +42,7 @@ Project.init(
       allowNull: true,
     },
     cost: {
-      type: DataTypes.DECIMAL(12, 2),
+      type: DataTypes.DECIMAL(16, 2),
       allowNull: false,
     },
     startDate: {
