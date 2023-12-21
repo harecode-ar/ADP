@@ -8,19 +8,7 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { DELETE_USER } from 'src/graphql/mutations'
 import { useTable } from 'src/components/table'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
@@ -64,7 +52,7 @@ const ModalDelete = (props: TProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Eliminar usuario
         </Typography>

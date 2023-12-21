@@ -19,19 +19,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_USER_CONTACTS } from 'src/graphql/queries'
 import { IMPORT_USER_CONTACTS_TO_PROJECT } from 'src/graphql/mutations'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
@@ -96,7 +84,7 @@ export default function ModalImportContact(props: TProps) {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
           Importar contactos
         </Typography>

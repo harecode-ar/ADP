@@ -21,19 +21,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
 import { UPDATE_SUB_STAGE } from 'src/graphql/mutations'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 900,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -156,7 +144,7 @@ const ModalEdit = (props: TProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Editar etapa
         </Typography>

@@ -24,19 +24,7 @@ import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
 import { useMutation } from '@apollo/client'
 import { CREATE_CHECKLIST } from 'src/graphql/mutations'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const checklistSchema = Yup.object().shape({
   title: Yup.string().required('titulo requerido'),
@@ -136,7 +124,7 @@ export default function CreateChecklistModal(props: TProps) {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField

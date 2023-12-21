@@ -25,19 +25,7 @@ import { UPDATE_AREA } from 'src/graphql/mutations'
 import UserPicker from 'src/components/user-picker'
 import { USERS_FOR_SELECT } from 'src/graphql/queries/user'
 import { useAreaTreeContext } from 'src/contexts/area-tree-context'
-
-const styleModal = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 600,
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: '10px',
-  boxShadow: 24,
-  p: 4,
-}
+import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -147,7 +135,7 @@ const EditAreaModal = (props: TProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={styleModal}>
+      <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Editar área
         </Typography>
