@@ -15,7 +15,7 @@ export const calculateStageProgress = async (stageId: number) => {
     })
 
     if (stages.length === 0) {
-      await foundStage.update({ progress: 0 })
+      await foundStage.update({ progress: 0, hasStages: 0 })
       return
     }
 
