@@ -1,10 +1,11 @@
 import { IContact, IProject } from '@adp/shared'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Card, Box, TextField, Button } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_PROJECT_CONTACTS } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
+import { ECustomEvent } from 'src/types'
 import ContactItem from './contact-item'
 import ModalAddContact from './modal-add-contact'
 import ModalImportContact from './modal-import-contact'
@@ -35,6 +36,11 @@ export default function ContactTab(props: TProps) {
     if (!search) return contacts
     return contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase()))
   }, [contacts, search])
+
+  useEffect(() => {
+    window.addEventListener(ECustomEvent.refetchProjectContacts, refetch)
+    return () => window.removeEventListener(ECustomEvent.refetchProjectContacts, refetch)
+  }, [refetch])
 
   return (
     <React.Fragment>
