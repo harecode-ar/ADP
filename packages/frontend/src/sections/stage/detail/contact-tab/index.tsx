@@ -7,6 +7,7 @@ import { GET_STAGE_CONTACTS } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import ContactItem from './contact-item'
 import ModalAddContact from './modal-add-contact'
+import ModalImportContact from './modal-import-contact'
 
 type TProps = {
   stage: IStage
@@ -17,6 +18,7 @@ export default function ContactTab(props: TProps) {
 
   const [search, setSearch] = useState('')
   const modalAddContact = useBoolean()
+  const modalImportContact = useBoolean()
 
   const { data, refetch } = useQuery(GET_STAGE_CONTACTS, {
     variables: {
@@ -58,10 +60,21 @@ export default function ContactTab(props: TProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button variant="contained" color="primary" onClick={modalAddContact.onTrue}>
-            <Iconify icon="ic:round-person-add" width={18} mr={1} />
-            Agregar contacto
-          </Button>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={modalImportContact.onTrue}>
+              <Iconify icon="uil:import" width={18} mr={1} />
+              Importar contactos
+            </Button>
+            <Button variant="contained" color="primary" onClick={modalAddContact.onTrue}>
+              <Iconify icon="ic:round-person-add" width={18} mr={1} />
+              Agregar contacto
+            </Button>
+          </Box>
         </Box>
       </Card>
       {filteredContacts.length === 0 && (
@@ -88,6 +101,9 @@ export default function ContactTab(props: TProps) {
         ))}
       </Box>
       <ModalAddContact modal={modalAddContact} refetch={refetch} stage={stage} />
+      {modalImportContact.value && (
+        <ModalImportContact modal={modalImportContact} refetch={refetch} stage={stage} />
+      )}
     </React.Fragment>
   )
 }

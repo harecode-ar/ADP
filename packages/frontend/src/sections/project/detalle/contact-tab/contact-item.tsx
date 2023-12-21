@@ -2,6 +2,9 @@ import { IContact, IProject } from '@adp/shared'
 import React from 'react'
 import { Avatar, Card, IconButton, ListItemText, MenuItem, Stack, Divider } from '@mui/material'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import { useMutation } from '@apollo/client'
+import { useSnackbar } from 'src/components/snackbar'
+import { IMPORT_PROJECT_CONTACTS } from 'src/graphql/mutations'
 import Iconify from 'src/components/iconify'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -15,8 +18,11 @@ type TProps = {
 
 export default function ContactItem(props: TProps) {
   const { contact, project, refetch } = props
+  const { enqueueSnackbar } = useSnackbar()
   const popover = usePopover()
   const modalDelete = useBoolean()
+
+  const [importProjectContacts] = useMutation(IMPORT_PROJECT_CONTACTS)
 
   const handleCall = () => {
     window.open(`tel:${contact.phone}`)
@@ -25,6 +31,22 @@ export default function ContactItem(props: TProps) {
   const handleSendEmail = () => {
     if (!contact.email) return
     window.open(`mailto:${contact.email}`)
+  }
+
+  const handleImport = async () => {
+    try {
+      const { errors } = await importProjectContacts({
+        variables: {
+          projectId: project.id,
+          contacts: [contact.id],
+        },
+      })
+      if (errors) throw new Error(errors[0].message)
+      enqueueSnackbar('Contacto importado', { variant: 'success' })
+      window.dispatchEvent(new Event('refetchContacts'))
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' })
+    }
   }
 
   return (
@@ -96,6 +118,15 @@ export default function ContactItem(props: TProps) {
           </MenuItem>
         )}
         <Divider />
+        <MenuItem
+          onClick={() => {
+            popover.onClose()
+            handleImport()
+          }}
+        >
+          <Iconify icon="uil:import" />
+          Importar
+        </MenuItem>
         <MenuItem
           onClick={() => {
             popover.onClose()

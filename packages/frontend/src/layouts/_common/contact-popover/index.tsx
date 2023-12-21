@@ -1,6 +1,6 @@
 import { IContact } from '@adp/shared'
 import { m } from 'framer-motion'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { IconButton, Stack, Typography, Divider, Drawer, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
@@ -47,6 +47,11 @@ export default function ContactPopover() {
     setSelected(contact)
     modalDelete.onTrue()
   }
+
+  useEffect(() => {
+    window.addEventListener('refetchContacts', refetch)
+    return () => window.removeEventListener('refetchContacts', refetch)
+  }, [refetch])
 
   if (loading) return null
 
