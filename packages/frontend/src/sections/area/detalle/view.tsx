@@ -145,7 +145,7 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             </Card>
 
-            {[ETab.PROJECTS, ETab.GANTT, ETab.STATISTICS].includes(tab) && !hasProjects && (
+            {[ETab.PROJECTS, ETab.GANTT].includes(tab) && !hasProjects && (
               <Typography
                 sx={{
                   textAlign: 'center',
@@ -158,7 +158,7 @@ export default function AreaDetailView(props: TProps) {
             )}
             {tab === ETab.PROJECTS && hasProjects && <ProjectTab areaId={areaId} />}
             {tab === ETab.GANTT && hasProjects && <GanttTab areaId={areaId} />}
-            {tab === ETab.STATISTICS && hasProjects && <StadisticTab area={area} />}
+            {tab === ETab.STATISTICS && <StadisticTab area={area} />}
             {tab === ETab.CHART && (
               <AreaTreeProvider>
                 <ChartTab areaId={areaId} />
