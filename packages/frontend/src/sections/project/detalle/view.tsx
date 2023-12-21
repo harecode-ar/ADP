@@ -25,6 +25,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { formatCost } from 'src/utils/format-number'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -147,7 +148,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Costo proyectado"
                       variant="outlined"
                       fullWidth
-                      value={project.cost}
+                      value={formatCost(project.cost)}
                       InputProps={{
                         endAdornment: <InputAdornment position="end">$</InputAdornment>,
                         readOnly: true,
