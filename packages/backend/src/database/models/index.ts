@@ -1,3 +1,4 @@
+import { AreaAverageCompletition } from './area-average-completition'
 import { Area } from './area'
 import { Cache } from './cache'
 import { Check } from './check'
@@ -19,6 +20,7 @@ import { StageNote } from './stage-note'
 import { StageState } from './stage-state'
 import { Stage } from './stage'
 import { Token } from './token'
+import { UserAverageCompletition } from './user-average-completition'
 import { UserNotification } from './user-notification'
 import { User } from './user'
 
@@ -108,7 +110,14 @@ Checklist.belongsTo(Stage, { as: 'stage', foreignKey: 'checklistId' })
 Project.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
 Checklist.belongsTo(Project, { as: 'project', foreignKey: 'checklistId' })
 
+AreaAverageCompletition.hasOne(Area, { as: 'area', foreignKey: 'areaId' })
+Area.belongsTo(AreaAverageCompletition, { as: 'averageCompletition', foreignKey: 'areaId' })
+
+UserAverageCompletition.hasOne(User, { as: 'user', foreignKey: 'userId' })
+User.belongsTo(UserAverageCompletition, { as: 'averageCompletition', foreignKey: 'userId' })
+
 export {
+  AreaAverageCompletition,
   Area,
   Cache,
   Check,
@@ -130,6 +139,7 @@ export {
   StageState,
   Stage,
   Token,
+  UserAverageCompletition,
   UserNotification,
   User,
 }

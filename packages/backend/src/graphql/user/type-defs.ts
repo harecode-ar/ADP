@@ -10,6 +10,7 @@ export default `#graphql
 
     role: Role
     fullname: String
+    averageCompletition: UserAverageCompletition
 
     createdAt: String
     updatedAt: String

@@ -1,5 +1,6 @@
 export * from './cache'
 export * from './area'
+export * from './average-completition'
 export * from './check'
 export * from './checklist'
 export * from './configuration'
