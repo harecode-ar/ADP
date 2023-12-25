@@ -7,3 +7,5 @@ export interface IConfiguration {
   createdAt: string
   updatedAt: string
 }
+
+export type TConfigurationInput = Pick<IConfiguration, 'key' | 'value'>
