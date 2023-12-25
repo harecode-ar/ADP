@@ -15,6 +15,8 @@ export class Project extends Model {
 
   public endDate!: string
 
+  public finishedAt!: string | null
+
   public progress!: number
 
   public acp!: number
@@ -56,6 +58,10 @@ Project.init(
     endDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
+    },
+    finishedAt: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
     },
     progress: {
       type: DataTypes.FLOAT,

@@ -13,6 +13,8 @@ export class Stage extends Model {
 
   public endDate!: string
 
+  public finishedAt!: string | null
+
   public progress!: number
 
   public hasStages!: boolean
@@ -50,6 +52,10 @@ Stage.init(
       allowNull: false,
     },
     endDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    finishedAt: {
       type: DataTypes.DATEONLY,
       allowNull: true,
     },
