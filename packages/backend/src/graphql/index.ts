@@ -1,61 +1,64 @@
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
-import upload from './upload'
-import session from './session'
-import role from './role'
-import permission from './permission'
-import user from './user'
 import area from './area'
-import project from './project'
-import projectState from './project-state'
-import projectNote from './project-note'
-import stage from './stage'
-import stageState from './stage-state'
-import stageNote from './stage-note'
-import report from './report'
-import notification from './notification'
-import contact from './contact'
-import checklist from './checklist'
 import check from './check'
+import checklist from './checklist'
+import configuration from './configuration'
+import contact from './contact'
+import notification from './notification'
+import permission from './permission'
+import project from './project'
+import projectNote from './project-note'
+import projectState from './project-state'
+import report from './report'
+import role from './role'
+import session from './session'
+import stage from './stage'
+import stageNote from './stage-note'
+import stageState from './stage-state'
+import upload from './upload'
+import user from './user'
 
 export const typeDefs = mergeTypeDefs([
-  upload.typeDefs,
-  session.typeDefs,
-  role.typeDefs,
-  permission.typeDefs,
-  user.typeDefs,
   area.typeDefs,
-  project.typeDefs,
-  projectState.typeDefs,
-  projectNote.typeDefs,
-  stage.typeDefs,
-  stageState.typeDefs,
-  stageNote.typeDefs,
-  report.typeDefs,
-  notification.typeDefs,
-  contact.typeDefs,
-  checklist.typeDefs,
   check.typeDefs,
+  checklist.typeDefs,
+  configuration.typeDefs,
+  contact.typeDefs,
+  notification.typeDefs,
+  permission.typeDefs,
+  project.typeDefs,
+  projectNote.typeDefs,
+  projectState.typeDefs,
+  report.typeDefs,
+  role.typeDefs,
+  session.typeDefs,
+  stage.typeDefs,
+  stageNote.typeDefs,
+  stageState.typeDefs,
+  upload.typeDefs,
+  user.typeDefs,
 ])
 
 export const resolvers = mergeResolvers([
-  upload.resolvers,
-  session.resolvers,
-  role.resolvers,
-  permission.resolvers,
-  user.resolvers,
   area.resolvers,
-  project.resolvers,
-  projectState.resolvers,
-  projectNote.resolvers,
-  stage.resolvers,
-  stageState.resolvers,
-  stageNote.resolvers,
-  report.resolvers,
-  notification.resolvers,
-  contact.resolvers,
-  checklist.resolvers,
   check.resolvers,
+  checklist.resolvers,
+  configuration.resolvers,
+  contact.resolvers,
+  notification.resolvers,
+  permission.resolvers,
+  project.resolvers,
+  projectNote.resolvers,
+  projectState.resolvers,
+  report.resolvers,
+  role.resolvers,
+  session.resolvers,
+  stage.resolvers,
+  stageNote.resolvers,
+  stageState.resolvers,
+  upload.resolvers,
+  user.resolvers,
 ])
 
 export default makeExecutableSchema({
