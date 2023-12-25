@@ -15,6 +15,14 @@ export const getAcp = ({
   const time = today.getTime()
   const start = new Date(startDate).getTime()
   const end = new Date(endDate).getTime()
+
+  if (time < start) {
+    return {
+      acp,
+      pacp,
+    }
+  }
+
   const finished = finishedAt ? new Date(finishedAt).getTime() : null
   const deltaDate = end - start
   if (finished) {
