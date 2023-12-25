@@ -52,7 +52,6 @@ export default `#graphql
       startDate: String
       endDate: String
       progress: Float
-      stateId: Int
     ): Project
 
     deleteProject(id: Int!): Project

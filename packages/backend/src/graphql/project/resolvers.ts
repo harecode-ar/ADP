@@ -246,21 +246,13 @@ export default {
       _: any,
       args: Pick<
         IProject,
-        | 'id'
-        | 'name'
-        | 'description'
-        | 'areaId'
-        | 'cost'
-        | 'startDate'
-        | 'endDate'
-        | 'progress'
-        | 'stateId'
+        'id' | 'name' | 'description' | 'areaId' | 'cost' | 'startDate' | 'endDate' | 'progress'
       >,
       context: IContext
     ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const { id, name, description, areaId, cost, startDate, endDate, progress, stateId } = args
+        const { id, name, description, areaId, cost, startDate, endDate, progress } = args
         const project = await Project.findByPk(id)
         if (!project) {
           throw new Error('Project not found')
@@ -306,7 +298,6 @@ export default {
           startDate,
           endDate,
           progress,
-          stateId,
         })
         return project
       } catch (error) {
