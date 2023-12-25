@@ -16,14 +16,12 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_PROJECT } from 'src/graphql/queries'
-import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
-import { PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries/project-state'
+import { GET_PROJECT, AREAS_FOR_SELECT, PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries'
+import { UPDATE_PROJECT } from 'src/graphql/mutations'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
 import * as Yup from 'yup'
-import { UPDATE_PROJECT } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const validationSchema = Yup.object().shape({

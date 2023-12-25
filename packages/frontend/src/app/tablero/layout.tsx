@@ -2,6 +2,7 @@
 
 // auth
 import { AuthGuard } from 'src/auth/guard'
+import { ConfigurationProvider } from 'src/contexts/configuration-context'
 // components
 import DashboardLayout from 'src/layouts/dashboard'
 
@@ -14,7 +15,9 @@ type Props = {
 export default function Layout({ children }: Props) {
   return (
     <AuthGuard>
-      <DashboardLayout>{children}</DashboardLayout>
+      <ConfigurationProvider>
+        <DashboardLayout>{children}</DashboardLayout>
+      </ConfigurationProvider>
     </AuthGuard>
   )
 }
