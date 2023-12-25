@@ -1,11 +1,11 @@
-export enum EConfigurationKey {}
-
-export enum EConfigurationValue {}
+export enum EConfigurationKey {
+  PERCENTAGE_ALERT_MARGIN = 'percentageAlertMargin',
+}
 
 export interface IConfiguration {
   id: number
   key: EConfigurationKey
-  value: EConfigurationValue
+  value: string
   createdAt: string
   updatedAt: string
 }

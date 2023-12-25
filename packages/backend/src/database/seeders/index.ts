@@ -1,16 +1,17 @@
 import colors from 'colors'
 import { sequelize } from '..'
 import logger from '../../logger'
-import { roleSeed } from './role'
-import { permissionSeed } from './permission'
-import { rolePermissionSeed } from './role-permission'
-import { userSeed } from './user'
 import { areaSeed } from './area'
-import { projectStateSeed } from './project-state'
-import { stageStateSeed } from './stage-state'
+import { cacheSeed } from './cache'
 import { projectSeed } from './project'
 import { stageSeed } from './stage'
-import { cacheSeed } from './cache'
+import { userSeed } from './user'
+import { configurationSeed } from './configuration'
+import { permissionSeed } from './permission'
+import { projectStateSeed } from './project-state'
+import { rolePermissionSeed } from './role-permission'
+import { roleSeed } from './role'
+import { stageStateSeed } from './stage-state'
 import { wait } from '../../utils/wait'
 
 const seed = async () => {
@@ -28,7 +29,7 @@ const seed = async () => {
     await stageStateSeed({ transaction })
     await projectSeed({ transaction })
     await stageSeed({ transaction })
-
+    await configurationSeed({ transaction })
     await cacheSeed({ transaction })
     await transaction.commit()
     // eslint-disable-next-line no-console
