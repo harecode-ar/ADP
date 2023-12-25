@@ -6,8 +6,5 @@ export default `#graphql
     stageAcp: Float
     stagePacp: Float
     areaId: Int
-
-    createdAt: String
-    updatedAt: String
   }
 `

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import type { IProject, IStage } from '@adp/shared'
+import { PROJECT_STATE, type IProject, type IStage } from '@adp/shared'
 import {
   Box,
   Container,
@@ -31,6 +31,7 @@ import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
+import ModalFinishProject from './modal-finish-project'
 
 enum ETab {
   NOTES = 'Notas',
@@ -50,6 +51,7 @@ export default function ProjectDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const modalEdit = useBoolean()
+  const modalFinishProject = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -102,10 +104,23 @@ export default function ProjectDetailView(props: TProps) {
           heading="Detalle de Proyecto"
           links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
           action={
-            <Button variant="contained" onClick={modalEdit.onTrue}>
-              <Iconify icon="material-symbols:edit" mr={1} />
-              Editar
-            </Button>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+              }}
+            >
+              <Button variant="contained" onClick={modalEdit.onTrue}>
+                <Iconify icon="material-symbols:edit" mr={1} />
+                Editar
+              </Button>
+              {project && project.stateId !== PROJECT_STATE.COMPLETED && (
+                <Button variant="contained" onClick={modalFinishProject.onTrue}>
+                  <Iconify icon="pajamas:todo-done" mr={1} />
+                  Finalizar
+                </Button>
+              )}
+            </Box>
           }
         />
 
@@ -259,8 +274,15 @@ export default function ProjectDetailView(props: TProps) {
             {modalEdit.value && (
               <ModalEdit
                 modal={modalEdit}
-                projectId={Number(projectId)}
                 refetch={projectQuery.refetch}
+                projectId={Number(projectId)}
+              />
+            )}
+            {modalFinishProject.value && (
+              <ModalFinishProject
+                modal={modalFinishProject}
+                refetch={projectQuery.refetch}
+                projectId={Number(projectId)}
               />
             )}
           </React.Fragment>

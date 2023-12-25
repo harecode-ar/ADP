@@ -30,5 +30,6 @@ UserFinishedStage.init(
     sequelize,
     modelName: 'UserFinishedStage',
     tableName: TABLES.USER_FINISHED_STAGE,
+    timestamps: false,
   }
 )

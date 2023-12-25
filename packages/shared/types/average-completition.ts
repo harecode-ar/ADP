@@ -8,14 +8,8 @@ export interface IAverageCompletition {
 
 export interface IAreaAverageCompletition extends IAverageCompletition {
   areaId: number
-
-  createdAt: string
-  updatedAt: string
 }
 
 export interface IUserAverageCompletition extends IAverageCompletition {
   userId: number
-
-  createdAt: string
-  updatedAt: string
 }
