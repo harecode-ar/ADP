@@ -1,4 +1,4 @@
-import type { IUser, IRole, IPermission, ISession } from '@adp/shared'
+import type { IUser, IRole, IPermission, ISession, IConfiguration } from '@adp/shared'
 
 export type TResolverFunction = (parent?: any, args?: any, context?: IContext) => any
 
@@ -22,4 +22,5 @@ export interface IContext {
   session: ISession | null
   userAgent: string | null
   resolvers: TResolvers
+  configurations: IConfiguration[]
 }

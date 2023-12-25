@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'
 import { resolvers } from '.'
-import { Session, User, Role, Permission } from '../database/models'
+import { Session, User, Role, Permission, Configuration } from '../database/models'
 import type { IContext, TResolvers } from './types'
 
 dotenv.config()
@@ -18,6 +18,7 @@ export const getContext = async ({ req }: { req: Request }): Promise<IContext> =
     session: null,
     userAgent: null,
     resolvers: resolvers as unknown as TResolvers,
+    configurations: [],
   }
   const { headers } = req
   const { authorization: token, 'user-agent': userAgent = null } = headers
@@ -63,6 +64,8 @@ export const getContext = async ({ req }: { req: Request }): Promise<IContext> =
     if (!context.session.user) throw new Error('Invalid token')
     if (!context.session.user.role) throw new Error('Invalid token')
     if (!context.session.user.role.permissions) throw new Error('Invalid token')
+
+    context.configurations = await Configuration.findAll()
 
     context.user = context.session.user
     context.role = context.session.user.role
