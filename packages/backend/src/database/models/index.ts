@@ -21,6 +21,8 @@ import { StageState } from './stage-state'
 import { Stage } from './stage'
 import { Token } from './token'
 import { UserAverageCompletition } from './user-average-completition'
+import { UserFinishedProject } from './user-finished-project'
+import { UserFinishedStage } from './user-finished-stage'
 import { UserNotification } from './user-notification'
 import { User } from './user'
 
@@ -116,6 +118,18 @@ Area.belongsTo(AreaAverageCompletition, { as: 'averageCompletition', foreignKey:
 UserAverageCompletition.hasOne(User, { as: 'user', foreignKey: 'userId' })
 User.belongsTo(UserAverageCompletition, { as: 'averageCompletition', foreignKey: 'userId' })
 
+User.hasMany(UserFinishedProject, { as: 'finishedProjects', foreignKey: 'userId' })
+UserFinishedProject.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+Project.hasMany(UserFinishedProject, { as: 'finishedProjects', foreignKey: 'projectId' })
+UserFinishedProject.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
+
+User.hasMany(UserFinishedStage, { as: 'finishedStages', foreignKey: 'userId' })
+UserFinishedStage.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+Stage.hasMany(UserFinishedStage, { as: 'finishedStages', foreignKey: 'stageId' })
+UserFinishedStage.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
+
 export {
   AreaAverageCompletition,
   Area,
@@ -140,6 +154,8 @@ export {
   Stage,
   Token,
   UserAverageCompletition,
+  UserFinishedProject,
+  UserFinishedStage,
   UserNotification,
   User,
 }

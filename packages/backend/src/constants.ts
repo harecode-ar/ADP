@@ -24,6 +24,8 @@ export const TABLES = {
   STAGE: 'stages',
   TOKEN: 'tokens',
   USER_AVERAGE_COMPLETITION: 'user_acps',
+  USER_FINISHED_PROJECT: 'usr_fin_prs',
+  USER_FINISHED_STAGE: 'usr_fin_sts',
   USER_NOTIFICATION: 'user_notifications',
   USER: 'users',
 }
