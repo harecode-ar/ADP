@@ -16,7 +16,6 @@ import { getAcp } from '../utils/average-completition'
 cron.schedule('0 0 * * *', async () => {
   // Run every 1 minute
   // cron.schedule('*/1 * * * *', async () => {
-  console.log('Running average completition cron job')
   const [projects, stages] = await Promise.all([
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
@@ -25,8 +24,6 @@ cron.schedule('0 0 * * *', async () => {
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
     }),
   ])
-
-  console.log('projects, stages')
 
   await Promise.all([
     ...projects.map((project) => {
@@ -43,8 +40,6 @@ cron.schedule('0 0 * * *', async () => {
     }),
   ])
 
-  console.log('projects, stages saved')
-
   const [users, areas] = await Promise.all([
     User.findAll({
       attributes: ['id'],
@@ -59,38 +54,39 @@ cron.schedule('0 0 * * *', async () => {
           as: 'finishedStages',
           attributes: ['stageId'],
         },
+        {
+          model: Area,
+          as: 'areas',
+          attributes: ['id'],
+        },
       ],
     }),
     Area.findAll({ attributes: ['id'] }),
   ])
 
-  console.log('users, areas')
-
   await Promise.all(
     users.map(async (user) => {
       // @ts-ignore
-      const { id, finishedProjects, finishedStages } = user
-      console.log('finishedProjects', finishedProjects.length)
-      console.log('finishedStages', finishedStages.length)
+      const { id, finishedProjects, finishedStages, areas: userAreas } = user
       const projectIds = finishedProjects.map((project: UserFinishedProject) => project.projectId)
       const stageIds = finishedStages.map((stage: UserFinishedStage) => stage.stageId)
-
-      if (!projectIds.length && !stageIds.length) {
-        return
-      }
+      const areaIds = userAreas.map((area: Area) => area.id)
 
       const [projectResult, stageResult] = await Promise.all([
         sequelize.query(`
-        SELECT COUNT(*) as count, SUM(acp) as acp, SUM(pacp) as pacp FROM projects WHERE id IN (${projectIds.join(
-          ','
-        )})
+        SELECT COUNT(*) as count, SUM(acp) as acp, SUM(pacp) as pacp FROM projects WHERE id IN (${[
+          -1,
+          ...projectIds,
+        ].join(',')}) OR areaId IN (${[-1, ...areaIds].join(',')})
       `),
         sequelize.query(`
-        SELECT COUNT(*) as count, SUM(acp) as acp, SUM(pacp) as pacp FROM stages WHERE id IN (${stageIds.join(
-          ','
-        )})
+        SELECT COUNT(*) as count, SUM(acp) as acp, SUM(pacp) as pacp FROM stages WHERE id IN (${[
+          -1,
+          ...stageIds,
+        ].join(',')}) OR areaId IN (${[-1, ...areaIds].join(',')})
       `),
       ])
+
       // @ts-ignore
       const { count: projectCount, acp: projectAcp, pacp: projectPacp } = projectResult[0][0]
       // @ts-ignore
@@ -100,24 +96,22 @@ cron.schedule('0 0 * * *', async () => {
         where: { userId: id },
         defaults: {
           userId: id,
-          projectAcp: projectCount ? projectAcp / projectCount : null,
-          projectPacp: projectCount ? projectPacp / projectCount : null,
-          stageAcp: stageCount ? stageAcp / stageCount : null,
-          stagePacp: stageCount ? stagePacp / stageCount : null,
+          projectAcp: projectCount && projectAcp !== null ? projectAcp / projectCount : null,
+          projectPacp: projectCount && projectPacp !== null ? projectPacp / projectCount : null,
+          stageAcp: stageCount && stageAcp !== null ? stageAcp / stageCount : null,
+          stagePacp: stageCount && stagePacp !== null ? stagePacp / stageCount : null,
         },
       })
 
       if (!wasCreated) {
-        uac.projectAcp = projectCount ? projectAcp / projectCount : null
-        uac.projectPacp = projectCount ? projectPacp / projectCount : null
-        uac.stageAcp = stageCount ? stageAcp / stageCount : null
-        uac.stagePacp = stageCount ? stagePacp / stageCount : null
+        uac.projectAcp = projectCount && projectAcp !== null ? projectAcp / projectCount : null
+        uac.projectPacp = projectCount && projectPacp !== null ? projectPacp / projectCount : null
+        uac.stageAcp = stageCount && stageAcp !== null ? stageAcp / stageCount : null
+        uac.stagePacp = stageCount && stagePacp !== null ? stagePacp / stageCount : null
         await uac.save()
       }
     })
   )
-
-  console.log('users saved')
 
   await Promise.all(
     areas.map(async (area) => {
@@ -155,8 +149,4 @@ cron.schedule('0 0 * * *', async () => {
       }
     })
   )
-
-  console.log('areas saved')
-
-  console.log('Finished average completition cron job')
 })
