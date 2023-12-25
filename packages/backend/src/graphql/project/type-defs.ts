@@ -7,6 +7,8 @@ export default `#graphql
     startDate: String
     endDate: String
     progress: Float
+    acp: Float
+    pacp: Float
     stateId: Int
     areaId: Int
 

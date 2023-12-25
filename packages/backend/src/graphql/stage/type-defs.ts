@@ -8,6 +8,8 @@ export default `#graphql
     endDate: String
     progress: Float
     hasStages: Boolean
+    acp: Float
+    pacp: Float
     stateId: Int
     areaId: Int
     projectId: Int
