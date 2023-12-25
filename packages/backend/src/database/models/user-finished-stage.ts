@@ -31,5 +31,12 @@ UserFinishedStage.init(
     modelName: 'UserFinishedStage',
     tableName: TABLES.USER_FINISHED_STAGE,
     timestamps: false,
+    indexes: [
+      {
+        name: 'usr_fin_stg_ids_unique',
+        unique: true,
+        fields: ['userId', 'stageId'],
+      },
+    ],
   }
 )

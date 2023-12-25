@@ -31,5 +31,12 @@ UserFinishedProject.init(
     modelName: 'UserFinishedProject',
     tableName: TABLES.USER_FINISHED_PROJECT,
     timestamps: false,
+    indexes: [
+      {
+        name: 'usr_fin_pjc_ids_unique',
+        unique: true,
+        fields: ['userId', 'projectId'],
+      },
+    ],
   }
 )
