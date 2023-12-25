@@ -1,25 +1,26 @@
-import { Permission } from './permission'
-import { Role } from './role'
-import { RolePermission } from './role-permission'
-import { Session } from './session'
-import { User } from './user'
 import { Area } from './area'
-import { Token } from './token'
-import { Project } from './project'
-import { ProjectState } from './project-state'
-import { Stage } from './stage'
-import { StageState } from './stage-state'
-import { ProjectNote } from './project-note'
-import { StageNote } from './stage-note'
-import { Notification } from './notification'
-import { UserNotification } from './user-notification'
 import { Cache } from './cache'
-import { Contact } from './contact'
+import { Check } from './check'
+import { Checklist } from './checklist'
+import { Configuration } from './configuration'
 import { ContactProject } from './contact-project'
 import { ContactStage } from './contact-stage'
 import { ContactUser } from './contact-user'
-import { Checklist } from './checklist'
-import { Check } from './check'
+import { Contact } from './contact'
+import { Notification } from './notification'
+import { Permission } from './permission'
+import { ProjectNote } from './project-note'
+import { ProjectState } from './project-state'
+import { Project } from './project'
+import { RolePermission } from './role-permission'
+import { Role } from './role'
+import { Session } from './session'
+import { StageNote } from './stage-note'
+import { StageState } from './stage-state'
+import { Stage } from './stage'
+import { Token } from './token'
+import { UserNotification } from './user-notification'
+import { User } from './user'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -108,26 +109,27 @@ Project.hasMany(Checklist, { as: 'checklists', foreignKey: 'checklistId' })
 Checklist.belongsTo(Project, { as: 'project', foreignKey: 'checklistId' })
 
 export {
-  Permission,
-  Role,
-  RolePermission,
-  Session,
-  User,
   Area,
-  Token,
-  Project,
-  ProjectState,
-  ProjectNote,
-  Stage,
-  StageState,
-  StageNote,
-  Notification,
-  UserNotification,
   Cache,
-  Contact,
+  Check,
+  Checklist,
+  Configuration,
   ContactProject,
   ContactStage,
   ContactUser,
-  Checklist,
-  Check,
+  Contact,
+  Notification,
+  Permission,
+  ProjectNote,
+  ProjectState,
+  Project,
+  RolePermission,
+  Role,
+  Session,
+  StageNote,
+  StageState,
+  Stage,
+  Token,
+  UserNotification,
+  User,
 }

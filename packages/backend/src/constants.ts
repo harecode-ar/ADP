@@ -5,6 +5,7 @@ export const TABLES = {
   CACHE: 'caches',
   CHECK: 'checks',
   CHECKLIST: 'checklists',
+  CONFIGURATION: 'configurations',
   CONTACT_PROJECT: 'contact_projects',
   CONTACT_STAGE: 'contact_stages',
   CONTACT_USER: 'contact_users',
