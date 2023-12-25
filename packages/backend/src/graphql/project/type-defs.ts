@@ -6,6 +6,7 @@ export default `#graphql
     cost: Float
     startDate: String
     endDate: String
+    finishedAt: String
     progress: Float
     acp: Float
     pacp: Float
