@@ -1,4 +1,3 @@
-import cluster from 'cluster'
 import type { IUser, ISession, IBackendEnvironment } from '@adp/shared'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
@@ -48,8 +47,6 @@ export default {
   Query: {
     getSession: (_: any, __: any, context: IContext): ISession | null => {
       try {
-        const workerId = cluster.worker ? cluster.worker.id : 'MASTER'
-        logger.info(`Worker ${workerId} - getSession`)
         return context.session
       } catch (error) {
         logger.error(error)

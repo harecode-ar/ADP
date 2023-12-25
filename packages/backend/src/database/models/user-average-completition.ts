@@ -13,10 +13,6 @@ export class UserAverageCompletition extends Model {
 
   public stagePacp!: number | null
 
-  public subStageAcp!: number | null
-
-  public subStagePacp!: number | null
-
   public userId!: number
 
   public readonly createdAt!: string
@@ -44,14 +40,6 @@ UserAverageCompletition.init(
       allowNull: true,
     },
     stagePacp: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    subStageAcp: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-    subStagePacp: {
       type: DataTypes.FLOAT,
       allowNull: true,
     },

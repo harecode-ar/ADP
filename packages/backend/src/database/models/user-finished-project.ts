@@ -5,11 +5,9 @@ import { TABLES } from '../../constants'
 export class UserFinishedProject extends Model {
   public id!: number
 
-  public finishedAt!: string
+  public userId!: number
 
   public projectId!: number
-
-  public userId!: number
 }
 
 UserFinishedProject.init(
@@ -18,10 +16,6 @@ UserFinishedProject.init(
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
-    },
-    finishedAt: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
     },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
