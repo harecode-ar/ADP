@@ -1,9 +1,11 @@
 export enum EConfigurationKey {}
 
+export enum EConfigurationValue {}
+
 export interface IConfiguration {
   id: number
   key: EConfigurationKey
-  value: string
+  value: EConfigurationValue
   createdAt: string
   updatedAt: string
 }

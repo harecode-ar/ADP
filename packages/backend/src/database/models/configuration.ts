@@ -1,4 +1,4 @@
-import { EConfigurationKey } from '@adp/shared'
+import { EConfigurationKey, EConfigurationValue } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
 import { TABLES } from '../../constants'
@@ -8,7 +8,7 @@ export class Configuration extends Model {
 
   public key!: EConfigurationKey
 
-  public value!: string
+  public value!: EConfigurationValue
 
   public readonly createdAt!: string
 
