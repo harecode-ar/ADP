@@ -31,7 +31,6 @@ export const UPDATE_PROJECT = gql`
     $cost: Float
     $startDate: String
     $endDate: String
-    $stateId: Int
   ) {
     updateProject(
       id: $id
@@ -41,7 +40,6 @@ export const UPDATE_PROJECT = gql`
       cost: $cost
       startDate: $startDate
       endDate: $endDate
-      stateId: $stateId
     ) {
       id
     }
