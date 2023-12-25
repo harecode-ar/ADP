@@ -30,5 +30,6 @@ UserFinishedProject.init(
     sequelize,
     modelName: 'UserFinishedProject',
     tableName: TABLES.USER_FINISHED_PROJECT,
+    timestamps: false,
   }
 )

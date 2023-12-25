@@ -14,10 +14,6 @@ export class UserAverageCompletition extends Model {
   public stagePacp!: number | null
 
   public userId!: number
-
-  public readonly createdAt!: string
-
-  public readonly updatedAt!: string
 }
 
 UserAverageCompletition.init(
@@ -52,6 +48,6 @@ UserAverageCompletition.init(
     sequelize,
     modelName: 'UserAverageCompletition',
     tableName: TABLES.USER_AVERAGE_COMPLETITION,
-    timestamps: true,
+    timestamps: false,
   }
 )

@@ -1,6 +1,15 @@
 import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
-import { Project, ProjectState, ProjectNote, Area, Stage, User } from '../../database/models'
+import { Op } from 'sequelize'
+import {
+  Project,
+  ProjectState,
+  ProjectNote,
+  Area,
+  Stage,
+  User,
+  UserFinishedProject,
+} from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
@@ -319,6 +328,64 @@ export default {
           throw new Error('Project not found')
         }
         await project.destroy()
+        return project
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    finishProject: async (
+      _: any,
+      args: Pick<IProject, 'id'>,
+      context: IContext
+    ): Promise<Project> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_UPDATE], context)
+        const { id } = args
+        let userId = user.id
+        const project = await Project.findOne({
+          where: {
+            id,
+            stateId: {
+              [Op.not]: PROJECT_STATE.COMPLETED,
+            },
+          },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id'],
+              include: [
+                {
+                  model: User,
+                  as: 'responsible',
+                  attributes: ['id'],
+                },
+              ],
+            },
+          ],
+        })
+        if (!project) {
+          throw new Error('Proyecto no encontrado')
+        }
+
+        // @ts-ignore
+        if (project.area && project.area.responsible) {
+          // @ts-ignore
+          userId = project.area.responsible.id
+        }
+
+        await project.update({
+          stateId: PROJECT_STATE.COMPLETED,
+          finishedAt: new Date().toISOString().split('T')[0],
+        })
+        await UserFinishedProject.create({
+          userId,
+          projectId: project.id,
+        })
         return project
       } catch (error) {
         logger.error(error)

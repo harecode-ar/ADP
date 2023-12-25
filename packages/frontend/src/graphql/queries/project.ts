@@ -148,6 +148,8 @@ export const GET_PROJECT = gql`
       startDate
       endDate
       progress
+      stateId
+      areaId
       area {
         id
         name
