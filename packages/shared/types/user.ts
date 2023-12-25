@@ -1,3 +1,4 @@
+import type { IUserAverageCompletition } from './average-completition'
 import type { IContact } from './contact'
 import type { IRole } from './role'
 
@@ -19,6 +20,7 @@ export interface IUser {
   deletedAt: Date | null
 
   contacts?: IContact[]
+  averageCompletition?: IUserAverageCompletition
 }
 
 export type TChangePasswordInput = {

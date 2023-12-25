@@ -1,7 +1,15 @@
 import { ETokenType, PERMISSION_MAP } from '@adp/shared'
-import type { IUpload, IUser } from '@adp/shared'
+import type { IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import dotenv from 'dotenv'
-import { Role, User, Token, Project, Area, Stage } from '../../database/models'
+import {
+  Role,
+  User,
+  Token,
+  Project,
+  Area,
+  Stage,
+  UserAverageCompletition,
+} from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
 import { sendNewUserMail } from '../../services/nodemailer/new-user'
@@ -25,6 +33,16 @@ export default {
     fullname: (parent: IUser) => {
       const { firstname, lastname } = parent
       return `${firstname} ${lastname}`
+    },
+    averageCompletition: async (parent: IUser): Promise<IUserAverageCompletition> => {
+      if (parent.averageCompletition) return Promise.resolve(parent.averageCompletition)
+      const averageCompletition = await UserAverageCompletition.findOne({
+        where: {
+          userId: parent.id,
+        },
+      })
+      if (!averageCompletition) throw new Error('No encontrado')
+      return averageCompletition
     },
   },
   Query: {

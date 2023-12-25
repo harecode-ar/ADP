@@ -1,5 +1,6 @@
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
+import areaAverageCompletition from './area-average-completition'
 import area from './area'
 import check from './check'
 import checklist from './checklist'
@@ -18,8 +19,10 @@ import stageNote from './stage-note'
 import stageState from './stage-state'
 import upload from './upload'
 import user from './user'
+import userAverageCompletition from './user-average-completition'
 
 export const typeDefs = mergeTypeDefs([
+  areaAverageCompletition.typeDefs,
   area.typeDefs,
   check.typeDefs,
   checklist.typeDefs,
@@ -38,9 +41,11 @@ export const typeDefs = mergeTypeDefs([
   stageState.typeDefs,
   upload.typeDefs,
   user.typeDefs,
+  userAverageCompletition.typeDefs,
 ])
 
 export const resolvers = mergeResolvers([
+  areaAverageCompletition.resolvers,
   area.resolvers,
   check.resolvers,
   checklist.resolvers,
@@ -59,6 +64,7 @@ export const resolvers = mergeResolvers([
   stageState.resolvers,
   upload.resolvers,
   user.resolvers,
+  userAverageCompletition.resolvers,
 ])
 
 export default makeExecutableSchema({

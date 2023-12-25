@@ -1,6 +1,7 @@
 export const FRONT_PATH = '../../frontend'
 
 export const TABLES = {
+  AREA_AVERAGE_COMPLETITION: 'area_acps',
   AREA: 'areas',
   CACHE: 'caches',
   CHECK: 'checks',
@@ -22,6 +23,7 @@ export const TABLES = {
   STAGE_STATE: 'stage_states',
   STAGE: 'stages',
   TOKEN: 'tokens',
+  USER_AVERAGE_COMPLETITION: 'user_acps',
   USER_NOTIFICATION: 'user_notifications',
   USER: 'users',
 }

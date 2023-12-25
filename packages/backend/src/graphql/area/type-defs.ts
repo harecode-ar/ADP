@@ -18,7 +18,7 @@ export default `#graphql
     responsible: User
     staff: [User]
     projects: [Project]
-
+    averageCompletition: AreaAverageCompletition
   }
 
   type Query {

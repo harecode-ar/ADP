@@ -1,5 +1,6 @@
-import { IProject } from './project'
-import { IUser } from './user'
+import type { IAreaAverageCompletition } from './average-completition'
+import type { IProject } from './project'
+import type { IUser } from './user'
 
 export interface IArea {
   id: number
@@ -20,4 +21,5 @@ export interface IArea {
   responsible?: IUser
   staff?: IUser[]
   projects?: IProject[]
+  averageCompletition?: IAreaAverageCompletition
 }

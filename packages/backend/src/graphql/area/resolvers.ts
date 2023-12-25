@@ -1,6 +1,12 @@
-import { ECacheKey, ENotificationCategory, type IArea, type IUser } from '@adp/shared'
+import {
+  ECacheKey,
+  ENotificationCategory,
+  IAreaAverageCompletition,
+  type IArea,
+  type IUser,
+} from '@adp/shared'
 import { getAreaFromTree, getAreaDescendantsIds, getDirectAreaDescendantsIds } from '@adp/shared'
-import { Area, Cache, Project, User } from '../../database/models'
+import { Area, AreaAverageCompletition, Cache, Project, User } from '../../database/models'
 import logger from '../../logger'
 import { createNotification, generateAreaTreeCache } from '../../database/jobs'
 import { IContext } from '../types'
@@ -24,6 +30,16 @@ export default {
           areaId: area.id,
         },
       })
+    },
+    averageCompletition: async (area: IArea): Promise<IAreaAverageCompletition> => {
+      if (area.averageCompletition) return Promise.resolve(area.averageCompletition)
+      const averageCompletition = await AreaAverageCompletition.findOne({
+        where: {
+          areaId: area.id,
+        },
+      })
+      if (!averageCompletition) throw new Error('No encontrado')
+      return averageCompletition
     },
   },
   Query: {
