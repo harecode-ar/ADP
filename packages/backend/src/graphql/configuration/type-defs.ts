@@ -7,4 +7,17 @@ export default `#graphql
     createdAt: String
     updatedAt: String
   }
+
+  input ConfigurationInput {
+    key: String
+    value: String
+  }
+
+  type Query {
+    configurations: [Configuration]
+  }
+
+  type Mutation {
+    updateConfigurations(input: [ConfigurationInput!]!): [Configuration]
+  }
 `

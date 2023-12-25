@@ -41,6 +41,8 @@ export const PERMISSION_MAP = {
   CHECK_CREATE: 'check:create',
   CHECK_UPDATE: 'check:update',
   CHECK_DELETE: 'check:delete',
+  CONFIGURATION_READ: 'configuration:read',
+  CONFIGURATION_UPDATE: 'configuration:update',
 }
 
 export const PERMISSION_ARRAY = Object.values(PERMISSION_MAP)
