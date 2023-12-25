@@ -12,6 +12,7 @@ export interface IProject {
   cost: number
   startDate: string
   endDate: string
+  finishedAt: string | null
   progress: number
   stateId: number
   areaId: number | null
