@@ -4,8 +4,6 @@ export interface IAverageCompletition {
   projectPacp: number | null
   stageAcp: number | null
   stagePacp: number | null
-  subStageAcp: number | null
-  subStagePacp: number | null
 }
 
 export interface IAreaAverageCompletition extends IAverageCompletition {

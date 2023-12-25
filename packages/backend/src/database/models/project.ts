@@ -19,9 +19,9 @@ export class Project extends Model {
 
   public progress!: number
 
-  public acp!: number
+  public acp!: number | null
 
-  public pacp!: number
+  public pacp!: number | null
 
   public stateId!: number
 
@@ -69,11 +69,11 @@ Project.init(
     },
     acp: {
       type: DataTypes.FLOAT,
-      defaultValue: -1,
+      allowNull: true,
     },
     pacp: {
       type: DataTypes.FLOAT,
-      defaultValue: -1,
+      allowNull: true,
     },
     stateId: {
       type: DataTypes.INTEGER.UNSIGNED,

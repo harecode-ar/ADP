@@ -19,6 +19,10 @@ export class Stage extends Model {
 
   public hasStages!: boolean
 
+  public acp!: number | null
+
+  public pacp!: number | null
+
   public stateId!: number
 
   public areaId!: number | null
@@ -66,6 +70,14 @@ Stage.init(
     hasStages: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    acp: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    pacp: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
     },
     stateId: {
       type: DataTypes.INTEGER.UNSIGNED,
