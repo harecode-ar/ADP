@@ -39,6 +39,7 @@ export const STAGES = S.flatMap((stages, projectIndex) =>
     projectId: projectIndex + 1,
     startDate: transformDate(stage.startDate),
     endDate: transformDate(stage.endDate),
+    finishedAt: stage.finishedAt ? transformDate(stage.finishedAt) : null,
   }))
 )
 
@@ -52,5 +53,6 @@ export const PROJECTS = P.map((project, index) => {
     progress,
     startDate: transformDate(project.startDate),
     endDate: transformDate(project.endDate),
+    finishedAt: project.finishedAt ? transformDate(project.finishedAt) : null,
   }
 })
