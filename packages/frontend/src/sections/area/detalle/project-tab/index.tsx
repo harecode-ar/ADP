@@ -1,5 +1,5 @@
 import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
-import { Box, Autocomplete, TextField, Typography } from '@mui/material'
+import { Box, Autocomplete, TextField, Typography, Divider } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import React, { useState, useMemo } from 'react'
@@ -65,7 +65,10 @@ export default function ProjectTab(props: TProps) {
       ) : (
         <React.Fragment>
           {projects.map((project) => (
-            <ProjectLine key={project.id} project={project} />
+            <React.Fragment key={project.id}>
+              <ProjectLine project={project} />
+              <Divider />
+            </React.Fragment>
           ))}
         </React.Fragment>
       )}
