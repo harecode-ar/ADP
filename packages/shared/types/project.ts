@@ -16,6 +16,8 @@ export interface IProject {
   progress: number
   stateId: number
   areaId: number | null
+  acp: number | null
+  pacp: number | null
 
   createdAt: string
   updatedAt: string

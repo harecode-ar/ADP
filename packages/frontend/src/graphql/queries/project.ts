@@ -81,7 +81,9 @@ export const GET_PROJECTS_BY_AREA_AND_STATE = gql`
       cost
       startDate
       endDate
-
+      acp
+      pacp
+      
       state {
         id
         name
@@ -103,6 +105,8 @@ export const GET_PROJECTS_BY_AREA_AND_STATE = gql`
         startDate
         endDate
         progress
+        acp
+        pacp
       }
     }
   }
