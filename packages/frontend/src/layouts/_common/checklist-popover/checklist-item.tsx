@@ -35,7 +35,7 @@ export function ChecklistItem(props: TProps) {
           }}
         >
           <Box>
-            <Tooltip title={checklist.title}>
+            <Tooltip title={checklist.title.length > MAX_CHARACTERS ? checklist.title : ''}>
               <Typography variant="h6" sx={{ flexGrow: 1 }}>
                 {checklist.title.length > MAX_CHARACTERS
                   ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
