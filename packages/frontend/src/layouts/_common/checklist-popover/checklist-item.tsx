@@ -13,6 +13,8 @@ type TProps = {
   refetch: () => void
 }
 
+const MAX_CHARACTERS = 33
+
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
   const { checks = [] } = checklist
@@ -34,7 +36,7 @@ export function ChecklistItem(props: TProps) {
         >
           <Box>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              {checklist.title}
+              {checklist.title.length > MAX_CHARACTERS ? `${checklist.title.slice(0, MAX_CHARACTERS)}...` : checklist.title}
             </Typography>
             <Stack
               direction="row"
