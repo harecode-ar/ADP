@@ -58,10 +58,10 @@ export default function FilterComponent(props: TProps) {
               maxDate={maxDate ? new Date(maxDate) : null}
               value={selectedInitialDate ? new Date(selectedInitialDate) : null}
               onChange={(newValue) => {
-                if (newValue!== null && (!Number.isNaN(newValue.getTime()))) {
-                  setSelectedInitialDate(newValue ? newValue.toISOString().split('T')[0] : null);
+                if (newValue !== null && !Number.isNaN(newValue.getTime())) {
+                  setSelectedInitialDate(newValue ? newValue.toISOString().split('T')[0] : null)
                 } else {
-                  setSelectedInitialDate(null);
+                  setSelectedInitialDate(null)
                 }
               }}
               slotProps={{
@@ -80,10 +80,10 @@ export default function FilterComponent(props: TProps) {
               maxDate={maxDate ? new Date(maxDate) : null}
               value={selectedFinalDate ? new Date(selectedFinalDate) : null}
               onChange={(newValue) => {
-                if (newValue!== null && (!Number.isNaN(newValue.getTime()))) {
-                  setSelectedInitialDate(newValue ? newValue.toISOString().split('T')[0] : null);
+                if (newValue !== null && !Number.isNaN(newValue.getTime())) {
+                  setSelectedFinalDate(newValue ? newValue.toISOString().split('T')[0] : null)
                 } else {
-                  setSelectedInitialDate(null);
+                  setSelectedFinalDate(null)
                 }
               }}
               slotProps={{
