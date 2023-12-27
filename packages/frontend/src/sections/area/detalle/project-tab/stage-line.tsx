@@ -44,7 +44,7 @@ export default function StageLine(props: TProps) {
             height: 15,
             width: 15,
             borderRadius: '50%',
-            backgroundColor: 'primary.main',
+            backgroundColor: colorFromAcpOrPacp(stage),
           }}
         />
         <Typography>{stage.name}</Typography>
