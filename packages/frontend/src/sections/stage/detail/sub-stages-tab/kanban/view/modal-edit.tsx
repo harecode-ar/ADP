@@ -15,7 +15,7 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { AREAS_FOR_SELECT, PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries'
+import { AREAS_FOR_SELECT} from 'src/graphql/queries'
 import { UPDATE_SUB_STAGE } from 'src/graphql/mutations'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -79,18 +79,12 @@ const ModalEdit = (props: TProps) => {
   const { modal, refetch, stage, subStage } = props
   const { enqueueSnackbar } = useSnackbar()
   const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
-  const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
   const [updateSubStage] = useMutation(UPDATE_SUB_STAGE)
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (dataAreas?.areas) return dataAreas.areas
     return []
   }, [dataAreas])
-
-  const states: Pick<IProjectState, 'id' | 'name'>[] = useMemo(() => {
-    if (dataProjectState?.projectStates) return dataProjectState.projectStates
-    return []
-  }, [dataProjectState])
 
   const formik = useFormik({
     initialValues: {
@@ -151,7 +145,7 @@ const ModalEdit = (props: TProps) => {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               {/* name */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <TextField
                   id="name"
                   name="name"
@@ -165,28 +159,8 @@ const ModalEdit = (props: TProps) => {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              {/* state */}
-              <Grid item xs={12} md={6}>
-                <Autocomplete
-                  options={states}
-                  getOptionLabel={(option) => option.name}
-                  value={formik.values.state}
-                  onChange={(_, value) => formik.setFieldValue('state', value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Estado"
-                      variant="outlined"
-                      placeholder="Buscar estado"
-                      required
-                      error={Boolean(formik.errors.state)}
-                      helperText={formik.errors.state}
-                    />
-                  )}
-                />
-              </Grid>
               {/* startDate */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   type="date"
                   id="startDate"
@@ -205,7 +179,7 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               {/* endDate */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   type="date"
                   id="endDate"
@@ -224,7 +198,7 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               {/* area */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Autocomplete
                   options={areas}
                   getOptionLabel={(option) => option.name}
