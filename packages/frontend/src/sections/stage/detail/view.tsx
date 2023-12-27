@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import type { IStage } from '@adp/shared'
+import { type IStage, STAGE_STATE } from '@adp/shared'
 import {
   Box,
   Container,
@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
   InputAdornment,
+  Button
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -22,6 +23,9 @@ import { usePrint } from 'src/hooks/use-print'
 import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
+import { useBoolean } from 'src/hooks/use-boolean'
+import Iconify from 'src/components/iconify/iconify'
+import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -46,6 +50,7 @@ export default function ProjectDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
+  const modalFinishStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
@@ -90,6 +95,25 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Etapa"
           links={[{ name: 'Etapa', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
+          action={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+              }}
+            >
+              <Button variant="contained">
+                <Iconify icon="material-symbols:edit" mr={1} />
+                Editar
+              </Button>
+              {stage && stage.stateId !== STAGE_STATE.COMPLETED && (
+                <Button variant="contained" onClick={modalFinishStage.onTrue}>
+                  <Iconify icon="pajamas:todo-done" mr={1} />
+                  Finalizar
+                </Button>
+              )}
+            </Box>
+          }
         />
 
         <StagePath project={stage?.project || null} stage={stage} subStage={null} />
@@ -231,6 +255,14 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
 
             {tab === ETab.CONTACTS && <ContactTab stage={stage} />}
+
+            {modalFinishStage.value && (
+              <ModalFinishStage
+                modal={modalFinishStage}
+                refetch={stageQuery.refetch}
+                stageId={Number(stageId)}
+              />
+            )}
           </React.Fragment>
         )}
       </Box>
