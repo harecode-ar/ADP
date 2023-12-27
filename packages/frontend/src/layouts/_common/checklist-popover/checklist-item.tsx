@@ -2,7 +2,7 @@
 
 import { IChecklist } from '@adp/shared'
 import React from 'react'
-import { Typography, Box, IconButton, Stack, MenuItem } from '@mui/material'
+import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import ModalDelete from './modal-delete'
@@ -35,9 +35,13 @@ export function ChecklistItem(props: TProps) {
           }}
         >
           <Box>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              {checklist.title.length > MAX_CHARACTERS ? `${checklist.title.slice(0, MAX_CHARACTERS)}...` : checklist.title}
-            </Typography>
+            <Tooltip title={checklist.title}>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                {checklist.title.length > MAX_CHARACTERS
+                  ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
+                  : checklist.title}
+              </Typography>
+            </Tooltip>
             <Stack
               direction="row"
               alignItems="center"
