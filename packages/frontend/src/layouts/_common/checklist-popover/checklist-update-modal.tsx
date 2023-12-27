@@ -153,6 +153,7 @@ export default function CreateChecklistModal(props: TProps) {
               label="Titulo"
               variant="standard"
               fullWidth
+              multiline
               value={formik.values.title}
               onChange={formik.handleChange}
               error={!!formik.errors.title}
