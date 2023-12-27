@@ -22,6 +22,13 @@ import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completitio
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ProyectAreaReportItem from './proyect-area-report-item'
 
+const colorFromAcpOrPacp = (a: IArea) => {
+     if (a.averageCompletition?.projectAcp === null) {
+       return getColorFromPacp(a.averageCompletition?.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+     }
+     return getColorFromAcp(a.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+   }
+
 export default function AreaTab() {
   const [search, setSearch] = useState('')
 
@@ -36,8 +43,6 @@ export default function AreaTab() {
     if (!data) return []
     return data.areasForDashboard
   }, [data])
-
-  console.log('areas', areas)
 
   const filteredAreas = useMemo(
     () => areas.filter((area) => area.name.toLowerCase().includes(search.toLowerCase())),
@@ -114,13 +119,6 @@ function AreaCard({ area }: AreaCardProps) {
     if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectCountByState
   }, [data])
-
-  const colorFromAcpOrPacp = (a: IArea) => {
-     if (a.averageCompletition?.projectAcp === null) {
-       return getColorFromPacp(a.averageCompletition?.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-     }
-     return getColorFromAcp(a.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-   }
 
   return (
     <Link
