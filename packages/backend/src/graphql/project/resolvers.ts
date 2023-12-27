@@ -151,6 +151,7 @@ export default {
               where: {
                 parentStageId: null,
               },
+              required: false,
             },
             { model: ProjectState, as: 'state' },
           ],
