@@ -32,7 +32,6 @@ import ContactTab from './contact-tab'
 import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 
-
 enum ETab {
   NOTES = 'Notas',
   SUB_STAGES = 'Sub etapas',
@@ -74,7 +73,6 @@ export default function ProjectDetailView(props: TProps) {
     return stageQuery.data.stage
   }, [stageQuery.data])
 
-
   const subStages: IStage[] = useMemo(() => {
     if (!subStageQuery.data) return []
     return subStageQuery.data.subStagesByStage
@@ -84,7 +82,6 @@ export default function ProjectDetailView(props: TProps) {
     stageQuery.refetch()
     subStageQuery.refetch()
   }
-  
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
