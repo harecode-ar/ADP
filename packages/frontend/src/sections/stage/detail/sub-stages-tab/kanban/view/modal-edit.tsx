@@ -139,7 +139,7 @@ const ModalEdit = (props: TProps) => {
     >
       <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Editar etapa
+          Editar sub-etapa
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
