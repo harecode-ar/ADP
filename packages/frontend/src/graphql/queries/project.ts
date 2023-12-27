@@ -83,7 +83,7 @@ export const GET_PROJECTS_BY_AREA_AND_STATE = gql`
       endDate
       acp
       pacp
-      
+
       state {
         id
         name
