@@ -22,12 +22,13 @@ import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completitio
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ProyectAreaReportItem from './proyect-area-report-item'
 
-const colorFromAcpOrPacp = (a: IArea) => {
-     if (a.averageCompletition?.projectAcp === null) {
-       return getColorFromPacp(a.averageCompletition?.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-     }
-     return getColorFromAcp(a.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-   }
+const colorFromAcpOrPacp = (area: IArea) => {
+  if (!area.averageCompletition) return getColorFromAcp(null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  if (area.averageCompletition.projectAcp === null) {
+    return getColorFromPacp(area.averageCompletition.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(area.averageCompletition.projectAcp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
 
 export default function AreaTab() {
   const [search, setSearch] = useState('')
@@ -154,16 +155,21 @@ function AreaCard({ area }: AreaCardProps) {
               flexDirection: 'column',
             }}
           >
-            <Avatar
-              alt={responsible?.fullname || 'Sin responsable'}
-              src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
-              sx={{
-                width: 64,
-                height: 64,
-                marginBottom: 3,
-                border: `2px solid ${colorFromAcpOrPacp(area)}`,
-              }}
-            />
+            <Box sx={{
+              marginBottom: 3,
+              border: `5px solid ${colorFromAcpOrPacp(area)}`,
+              borderRadius: '50%',
+              backgroundColor: 'transparent',
+            }}>
+              <Avatar
+                alt={responsible?.fullname || 'Sin responsable'}
+                src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
+                sx={{
+                  width: 64,
+                  height: 64,
+                }}
+              />
+            </Box>
 
             <Typography
               variant="subtitle1"
