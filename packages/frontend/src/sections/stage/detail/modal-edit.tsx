@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import type { IArea, IProjectState, IStage, IProject } from '@adp/shared'
+import type { IArea, IStage, IProject } from '@adp/shared'
 import {
   Typography,
   Button,
@@ -15,7 +15,7 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { AREAS_FOR_SELECT, PROJECT_STATE_FOR_SELECT } from 'src/graphql/queries'
+import { AREAS_FOR_SELECT } from 'src/graphql/queries'
 import { UPDATE_STAGE } from 'src/graphql/mutations'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -24,7 +24,6 @@ import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
-  state: Yup.object().required('Estado requerido'),
   startDate: Yup.string()
     .required('Fecha de inicio requerida')
     .test(
@@ -68,7 +67,6 @@ type TProps = {
 type TFormikValues = {
   id: number | null
   name: string
-  state: IProjectState | null
   startDate: string
   endDate: string
   area: IArea | null
@@ -80,7 +78,6 @@ const ModalEdit = (props: TProps) => {
   const { modal, refetch, stage, project } = props
   const { enqueueSnackbar } = useSnackbar()
   const { data: dataAreas } = useQuery(AREAS_FOR_SELECT)
-  const { data: dataProjectState } = useQuery(PROJECT_STATE_FOR_SELECT)
   const [updateStage] = useMutation(UPDATE_STAGE)
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
@@ -88,16 +85,11 @@ const ModalEdit = (props: TProps) => {
     return []
   }, [dataAreas])
 
-  const states: Pick<IProjectState, 'id' | 'name'>[] = useMemo(() => {
-    if (dataProjectState?.projectStates) return dataProjectState.projectStates
-    return []
-  }, [dataProjectState])
 
   const formik = useFormik({
     initialValues: {
       id: null,
       name: stage?.name,
-      state: stage?.state,
       startDate: stage?.startDate,
       endDate: stage?.endDate,
       area: stage?.area,
@@ -112,7 +104,6 @@ const ModalEdit = (props: TProps) => {
           variables: {
             id: stage?.id,
             name: values.name,
-            stateId: values.state?.id,
             startDate: values.startDate,
             endDate: values.endDate,
             areaId: values.area?.id,
@@ -154,7 +145,7 @@ const ModalEdit = (props: TProps) => {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               {/* name */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <TextField
                   id="name"
                   name="name"
@@ -168,28 +159,8 @@ const ModalEdit = (props: TProps) => {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              {/* state */}
-              <Grid item xs={12} md={6}>
-                <Autocomplete
-                  options={states}
-                  getOptionLabel={(option) => option.name}
-                  value={formik.values.state}
-                  onChange={(_, value) => formik.setFieldValue('state', value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Estado"
-                      variant="outlined"
-                      placeholder="Buscar estado"
-                      required
-                      error={Boolean(formik.errors.state)}
-                      helperText={formik.errors.state}
-                    />
-                  )}
-                />
-              </Grid>
               {/* startDate */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   type="date"
                   id="startDate"
@@ -208,7 +179,7 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               {/* endDate */}
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   type="date"
                   id="endDate"
@@ -227,7 +198,7 @@ const ModalEdit = (props: TProps) => {
                 />
               </Grid>
               {/* area */}
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Autocomplete
                   options={areas}
                   getOptionLabel={(option) => option.name}

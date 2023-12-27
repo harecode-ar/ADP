@@ -30,7 +30,6 @@ export const UPDATE_STAGE = gql`
     $description: String
     $startDate: String
     $endDate: String
-    $stateId: Int
     $progress: Float
     $areaId: Int
     $projectId: Int
@@ -42,7 +41,6 @@ export const UPDATE_STAGE = gql`
       description: $description
       startDate: $startDate
       endDate: $endDate
-      stateId: $stateId
       progress: $progress
       areaId: $areaId
       projectId: $projectId
