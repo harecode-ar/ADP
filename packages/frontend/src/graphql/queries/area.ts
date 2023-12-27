@@ -81,6 +81,10 @@ export const GET_AREAS_FOR_DASHBOARD = gql`
         fullname
         image
       }
+      averageCompletition {
+        projectAcp
+        projectPacp
+      }
     }
   }
 `

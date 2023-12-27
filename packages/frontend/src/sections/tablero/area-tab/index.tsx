@@ -18,7 +18,16 @@ import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import { getStorageFileUrl } from 'src/utils/storage'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ProyectAreaReportItem from './proyect-area-report-item'
+
+const colorFromAcpOrPacp = (a: IArea) => {
+     if (a.averageCompletition?.projectAcp === null) {
+       return getColorFromPacp(a.averageCompletition?.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+     }
+     return getColorFromAcp(a.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+   }
 
 export default function AreaTab() {
   const [search, setSearch] = useState('')
@@ -148,12 +157,12 @@ function AreaCard({ area }: AreaCardProps) {
             <Avatar
               alt={responsible?.fullname || 'Sin responsable'}
               src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
-              sx={(theme) => ({
+              sx={{
                 width: 64,
                 height: 64,
                 marginBottom: 3,
-                border: `2px solid ${theme.palette.primary.main}`,
-              })}
+                border: `2px solid ${colorFromAcpOrPacp(area)}`,
+              }}
             />
 
             <Typography
