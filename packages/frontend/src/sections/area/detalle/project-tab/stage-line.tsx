@@ -4,9 +4,18 @@ import NextLink from 'next/link'
 import { Box, IconButton, Typography, Link } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 type TProps = {
   stage: IStage
+}
+
+const colorFromAcpOrPacp = (stag: IStage) => {
+  if (stag.acp === null) {
+    return getColorFromPacp(stag.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(stag.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function StageLine(props: TProps) {
@@ -59,7 +68,7 @@ export default function StageLine(props: TProps) {
         <Box
           sx={{
             width: `${stage.progress * 100}%`,
-            backgroundColor: 'primary.main',
+            backgroundColor: colorFromAcpOrPacp(stage),
             height: 35,
             borderRadius: 2,
             textAlign: 'center',

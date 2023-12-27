@@ -4,11 +4,20 @@ import NextLink from 'next/link'
 import { Box, Typography, IconButton, Link } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 import { paths } from 'src/routes/paths'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import StageSubLine from './stage-sub-line'
 import StageLine from './stage-line'
 
 type TProps = {
   project: IProject
+}
+
+const colorFromAcpOrPacp = (proj: IProject) => {
+  if (proj.acp === null) {
+    return getColorFromPacp(proj.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(proj.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectLine(props: TProps) {
@@ -62,7 +71,7 @@ export default function ProjectLine(props: TProps) {
           sx={{
             width: '100%',
             borderRadius: 2,
-            backgroundColor: 'primary.main',
+            backgroundColor: colorFromAcpOrPacp(project),
             height: 35,
             display: 'flex',
             flexDirection: 'row',

@@ -18,6 +18,8 @@ export interface IStage {
   areaId: number | null
   projectId: number
   parentStageId: number | null
+  acp: number | null
+  pacp: number | null
 
   createdAt: string
   updatedAt: string
