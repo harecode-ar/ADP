@@ -84,6 +84,7 @@ export default function ReportTab() {
       }}
     >
       <FilterComponent areas={areas} />
+      
       <ComponentOne
         news={newCount}
         inProgress={inProgressCount}

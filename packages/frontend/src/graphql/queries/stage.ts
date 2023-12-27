@@ -70,6 +70,8 @@ export const GET_STAGE = gql`
       project {
         id
         name
+        startDate
+        endDate
       }
       area {
         id
@@ -117,6 +119,8 @@ export const GET_SUB_STAGE = gql`
       project {
         id
         name
+        startDate
+        endDate
       }
       area {
         id

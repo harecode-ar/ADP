@@ -2,19 +2,22 @@
 
 import React, { useMemo, useState } from 'react'
 import type { IStage } from '@adp/shared'
-import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField } from '@mui/material'
+import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField, Button } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
+import Iconify from 'src/components/iconify/iconify'
+import { useBoolean } from 'src/hooks/use-boolean'
 import StagePath from 'src/sections/stage/detail/stage-path'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
+import ModalEdit from './modal-edit'
 
 enum ETab {
   NOTES = 'Notas',
@@ -31,6 +34,7 @@ export default function ProjectDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
+  const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
@@ -49,6 +53,10 @@ export default function ProjectDetailView(props: TProps) {
     return subStageQuery.data.subStage
   }, [subStageQuery.data])
 
+  const refetch = () => {
+    subStageQuery.refetch()
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -61,6 +69,19 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Sub Etapa"
           links={[{ name: 'Sub Etapa', href: paths.dashboard.subStage.root }, { name: 'Detalle' }]}
+          action={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+              }}
+            >
+              <Button variant="contained" onClick={modalEdit.onTrue}>
+                <Iconify icon="material-symbols:edit" mr={1} />
+                Editar
+              </Button>
+            </Box>
+          }
         />
 
         <StagePath
@@ -178,6 +199,10 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
+
+      {modalEdit.value && (
+        <ModalEdit modal={modalEdit} project={subStage?.project} stage={subStage} refetch={refetch} />
+      )}
     </Container>
   )
 }
