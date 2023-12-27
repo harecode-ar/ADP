@@ -1,7 +1,7 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
-import { Stage, Project, StageState, Area, User, StageNote } from '../../database/models'
+import { Stage, Project, StageState, Area, User, StageNote, UserFinishedStage } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
@@ -501,6 +501,68 @@ export default {
           logger.error(error)
         }
 
+        return stage
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    finishStage: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<Stage> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_UPDATE], context)
+        const { id } = args
+        let userId = user.id
+        const stage = await Stage.findOne({
+          where: {
+            id,
+            stateId: {
+              [Op.not]: STAGE_STATE.COMPLETED,
+            },
+          },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id'],
+              include: [
+                {
+                  model: User,
+                  as: 'responsible',
+                  attributes: ['id'],
+                },
+              ],
+            },
+          ],
+        })
+        if (!stage) {
+          throw new Error('Etapa no encontrada')
+        }
+
+        // @ts-ignore
+        if (stage.area && stage.area.responsible) {
+          // @ts-ignore
+          userId = stage.area.responsible.id
+        }
+
+        await stage.update({
+          stateId: STAGE_STATE.COMPLETED,
+          progress: 1,
+          finishedAt: new Date().toISOString().split('T')[0],
+        })
+        await UserFinishedStage.create({
+          userId,
+          stageId: stage.id,
+        })
+
+        await calculateProjectProgress(stage.projectId)
+        
         return stage
       } catch (error) {
         logger.error(error)

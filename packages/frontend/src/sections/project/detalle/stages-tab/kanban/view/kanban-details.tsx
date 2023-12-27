@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject } from '@adp/shared'
+import { IStage, IProject, STAGE_STATE } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Stack from '@mui/material/Stack'
@@ -28,6 +28,7 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
+import ModalFinishStage from './modal-finish-stage'
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +75,7 @@ export default function KanbanDetails(props: TProps) {
   const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
+  const modalFinishStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
@@ -228,6 +230,12 @@ export default function KanbanDetails(props: TProps) {
               InputProps={{ readOnly: true, sx: { typography: 'body2' } }}
             />
           </Stack>
+          {stage && stage.state.id !== STAGE_STATE.COMPLETED && (
+            <Button variant="contained" style={{ width: '120px' }} onClick={modalFinishStage.onTrue}>
+              <Iconify icon="pajamas:todo-done" mr={1} />
+              Finalizar
+            </Button>
+          )}
         </Stack>
 
         {!!stage.notes?.length && <KanbanDetailsCommentList notes={stage.notes} />}
@@ -237,6 +245,13 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
+      {modalFinishStage.value && (
+        <ModalFinishStage
+          modal={modalFinishStage}
+          refetch={refetch}
+          stageId={Number(stageId)}
+        />
+      )}
     </Drawer>
   )
 }
