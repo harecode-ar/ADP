@@ -13,15 +13,15 @@ type TProps = {
   project: IProject
 }
 
+const colorFromAcpOrPacp = (proj: IProject) => {
+  if (proj.acp === null) {
+    return getColorFromPacp(proj.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(proj.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
 export default function ProjectLine(props: TProps) {
   const { project } = props
-
-  const colorFromAcpOrPacp = (proj: IProject) => {
-    if (proj.acp === null) {
-      return getColorFromPacp(proj.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-    }
-    return getColorFromAcp(proj.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
 
   const [expanded, setExpanded] = useState(false)
 

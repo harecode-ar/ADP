@@ -11,15 +11,15 @@ type TProps = {
   stage: IStage
 }
 
+const colorFromAcpOrPacp = (stag: IStage) => {
+  if (stag.acp === null) {
+    return getColorFromPacp(stag.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(stag.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
 export default function StageLine(props: TProps) {
   const { stage } = props
-
-  const colorFromAcpOrPacp = (stag: IStage) => {
-    if (stag.acp === null) {
-      return getColorFromPacp(stag.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-    }
-    return getColorFromAcp(stag.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
 
   return (
     <Box
