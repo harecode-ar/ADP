@@ -1,5 +1,5 @@
 import { IProject } from '@adp/shared'
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import { Box, Typography, IconButton, Link } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
@@ -24,6 +24,8 @@ export default function ProjectLine(props: TProps) {
   const { project } = props
 
   const [expanded, setExpanded] = useState(false)
+
+  const hasStages = useMemo(() => project.stages.length > 0, [project.stages])
 
   return (
     <Box
@@ -60,7 +62,7 @@ export default function ProjectLine(props: TProps) {
           gap: 1,
         }}
       >
-        <IconButton onClick={() => setExpanded(!expanded)} size="small">
+        <IconButton onClick={() => setExpanded(!expanded)} size="small" disabled={!hasStages}>
           <Iconify
             icon={expanded ? 'pajamas:chevron-down' : 'material-symbols:chevron-right-rounded'}
             width={25}
