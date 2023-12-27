@@ -767,5 +767,80 @@ export default {
         throw error
       }
     },
+
+    finishSubStage: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<Stage> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_UPDATE], context)
+        const { id } = args
+        let userId = user.id
+        const subStage = await Stage.findOne({
+          where: {
+            id,
+            stateId: {
+              [Op.not]: STAGE_STATE.COMPLETED,
+            },
+          },
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id'],
+              include: [
+                {
+                  model: User,
+                  as: 'responsible',
+                  attributes: ['id'],
+                },
+              ],
+            },
+          ],
+        })
+        if (!subStage) {
+          throw new Error('Etapa no encontrada')
+        }
+
+        // @ts-ignore
+        if (subStage.area && subStage.area.responsible) {
+          // @ts-ignore
+          userId = subStage.area.responsible.id
+        }
+
+        await subStage.update({
+          stateId: STAGE_STATE.COMPLETED,
+          progress: 1,
+          finishedAt: new Date().toISOString().split('T')[0],
+        })
+        await UserFinishedStage.create({
+          userId,
+          stageId: subStage.id,
+        })
+
+        if (subStage.parentStageId !== null) {
+          const parentStage = await Stage.findByPk(subStage.parentStageId)
+          if (parentStage) {
+            try {
+              await calculateStageProgress(parentStage.id)
+            } catch (error) {
+              logger.error(error)
+            }
+          }
+        }
+
+        calculateProjectProgress(subStage.projectId).catch((error) => {
+          logger.error(error)
+        })
+
+        return subStage
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
 }

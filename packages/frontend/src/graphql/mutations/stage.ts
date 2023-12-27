@@ -118,3 +118,11 @@ export const DELETE_SUB_STAGE = gql`
     }
   }
 `
+
+export const FINISH_SUB_STAGE = gql`
+  mutation finishSubStage($id: Int!) {
+    finishSubStage(id: $id) {
+      id
+    }
+  }
+`

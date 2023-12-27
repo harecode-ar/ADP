@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import type { IStage } from '@adp/shared'
-import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField } from '@mui/material'
+import { type IStage, STAGE_STATE } from '@adp/shared'
+import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField, Button } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
@@ -13,6 +13,9 @@ import StagePath from 'src/sections/stage/detail/stage-path'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
+import { useBoolean } from 'src/hooks/use-boolean'
+import Iconify from 'src/components/iconify/iconify'
+import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 
@@ -32,6 +35,7 @@ export default function ProjectDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
+  const modalFinishSubStage = useBoolean()
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
@@ -61,6 +65,25 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Sub Etapa"
           links={[{ name: 'Sub Etapa', href: paths.dashboard.subStage.root }, { name: 'Detalle' }]}
+          action={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+              }}
+            >
+              <Button variant="contained">
+                <Iconify icon="material-symbols:edit" mr={1} />
+                Editar
+              </Button>
+              {subStage && subStage.stateId !== STAGE_STATE.COMPLETED && (
+                <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
+                  <Iconify icon="pajamas:todo-done" mr={1} />
+                  Finalizar
+                </Button>
+              )}
+            </Box>
+          }
         />
 
         <StagePath
@@ -175,6 +198,15 @@ export default function ProjectDetailView(props: TProps) {
             </Card>
             {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
             {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
+
+            {modalFinishSubStage.value && (
+              <ModalFinishSubStage
+                modal={modalFinishSubStage}
+                refetch={subStageQuery.refetch}
+                subStageId={Number(subStageId)}
+              />
+            )}
+
           </React.Fragment>
         )}
       </Box>
