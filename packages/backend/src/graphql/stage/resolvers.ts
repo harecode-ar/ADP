@@ -386,7 +386,6 @@ export default {
           startDate,
           endDate,
           hasStages,
-          stateId,
           areaId,
           projectId,
           parentStageId,
@@ -437,25 +436,12 @@ export default {
           }
         }
 
-        let progress
-        if (stateId === STAGE_STATE.COMPLETED) {
-          progress = 1
-        } else if (
-          stage.stateId === STAGE_STATE.COMPLETED &&
-          stateId !== STAGE_STATE.COMPLETED &&
-          stateId !== STAGE_STATE.CANCELLED
-        ) {
-          progress = 0
-        }
-
         await stage.update({
           name,
           description,
           startDate,
           endDate,
           hasStages,
-          stateId,
-          progress,
           areaId,
           parentStageId,
         })
@@ -599,7 +585,7 @@ export default {
     > => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const { id, name, description, startDate, endDate, stateId, areaId, parentStageId } = args
+        const { id, name, description, startDate, endDate, areaId, parentStageId } = args
 
         const subStage = await Stage.findByPk(id)
         if (!subStage) {
@@ -652,24 +638,11 @@ export default {
           }
         }
 
-        let progress
-        if (stateId === STAGE_STATE.COMPLETED) {
-          progress = 1
-        } else if (
-          subStage.stateId === STAGE_STATE.COMPLETED &&
-          stateId !== STAGE_STATE.COMPLETED &&
-          stateId !== STAGE_STATE.CANCELLED
-        ) {
-          progress = 0
-        }
-
         await subStage.update({
           name,
           description,
           startDate,
           endDate,
-          stateId,
-          progress,
           areaId,
           parentStageId,
         })
