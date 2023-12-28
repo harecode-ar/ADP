@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
   InputAdornment,
+  Button,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -20,6 +21,8 @@ import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
+import Iconify from 'src/components/iconify/iconify'
+import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import SubStagesTab from './sub-stages-tab'
@@ -27,6 +30,7 @@ import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import StagePath from './stage-path'
+import ModalEdit from './modal-edit'
 
 enum ETab {
   NOTES = 'Notas',
@@ -45,6 +49,7 @@ export default function ProjectDetailView(props: TProps) {
   const settings = useSettingsContext()
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
+  const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
 
   const stageQuery = useQuery(GET_STAGE, {
@@ -90,6 +95,19 @@ export default function ProjectDetailView(props: TProps) {
         <CustomBreadcrumbs
           heading="Detalle de Etapa"
           links={[{ name: 'Etapa', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
+          action={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+              }}
+            >
+              <Button variant="contained" onClick={modalEdit.onTrue}>
+                <Iconify icon="material-symbols:edit" mr={1} />
+                Editar
+              </Button>
+            </Box>
+          }
         />
 
         <StagePath project={stage?.project || null} stage={stage} subStage={null} />
@@ -234,6 +252,10 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
+
+      {modalEdit.value && (
+        <ModalEdit modal={modalEdit} project={stage?.project} stage={stage} refetch={refetch} />
+      )}
     </Container>
   )
 }
