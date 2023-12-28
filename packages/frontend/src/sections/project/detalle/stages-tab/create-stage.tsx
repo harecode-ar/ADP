@@ -85,8 +85,8 @@ const ModalCreate = (props: TProps) => {
     initialValues: {
       name: '',
       area: null,
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date().toISOString().split('T')[0],
+      startDate: project.startDate,
+      endDate: project.endDate,
       description: '',
       projectStartDate: project.startDate,
       projectEndDate: project.endDate,
