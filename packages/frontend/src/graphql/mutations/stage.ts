@@ -57,6 +57,14 @@ export const DELETE_STAGE = gql`
   }
 `
 
+export const FINISH_STAGE = gql`
+  mutation finishStage($id: Int!) {
+    finishStage(id: $id) {
+      id
+    }
+  }
+`
+
 export const CREATE_SUB_STAGE = gql`
   mutation createSubStage(
     $name: String!

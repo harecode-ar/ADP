@@ -63,6 +63,8 @@ export default `#graphql
 
     deleteStage(id: Int!): Stage
 
+    finishStage(id: Int!): Stage
+
     createSubStage(
       name: String!
       description: String!
