@@ -104,10 +104,10 @@ export default function ProjectDetailView(props: TProps) {
                 gap: 1,
               }}
             >
-              <Button variant="contained">
-                <Iconify icon="material-symbols:edit" mr={1} />
-                Editar
-              </Button>
+              <Button variant="contained" onClick={modalEdit.onTrue}>
+                 <Iconify icon="material-symbols:edit" mr={1} />
+                 Editar
+               </Button>
               {
                 stage && stage.stateId !== STAGE_STATE.COMPLETED && (
                   <Button variant="contained" onClick={modalFinishStage.onTrue}>
