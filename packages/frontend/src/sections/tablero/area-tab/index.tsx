@@ -155,15 +155,19 @@ function AreaCard({ area }: AreaCardProps) {
               flexDirection: 'column',
             }}
           >
-            <Box sx={{
-              marginBottom: 3,
-              border: `5px solid ${colorFromAcpOrPacp(area)}`,
-              borderRadius: '50%',
-              backgroundColor: 'transparent',
-            }}>
+            <Box
+              sx={{
+                marginBottom: 3,
+                border: `5px solid ${colorFromAcpOrPacp(area)}`,
+                borderRadius: '50%',
+                backgroundColor: 'transparent',
+              }}
+            >
               <Avatar
                 alt={responsible?.fullname || 'Sin responsable'}
-                src={responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'}
+                src={
+                  responsible?.image ? getStorageFileUrl(responsible.image) : '/broken-image.jpg'
+                }
                 sx={{
                   width: 64,
                   height: 64,
