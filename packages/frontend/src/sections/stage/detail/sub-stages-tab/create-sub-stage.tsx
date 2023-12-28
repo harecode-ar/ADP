@@ -29,11 +29,11 @@ const validationSchema = Yup.object().shape({
     .required('Fecha de inicio requerida')
     .test(
       'is-end-date-in-range',
-      'La fecha de inicio esta fuera del rango del proyecto',
+      'La fecha de inicio esta fuera del rango de la etapa',
       (value, { parent }) => {
         const { startDate } = parent
-        const { projectStartDate } = parent
-        return new Date(startDate) >= new Date(projectStartDate)
+        const { stageStartDate } = parent
+        return new Date(startDate) >= new Date(stageStartDate)
       }
     ),
   endDate: Yup.string()
@@ -48,10 +48,10 @@ const validationSchema = Yup.object().shape({
     )
     .test(
       'is-end-date-in-range',
-      'La fecha de finalizacion esta fuera del rango del proyecto',
+      'La fecha de finalizacion esta fuera del rango de la etapa',
       (value, { parent }) => {
-        const { projectEndDate } = parent
-        return new Date(value) <= new Date(projectEndDate)
+        const { stageEndDate } = parent
+        return new Date(value) <= new Date(stageEndDate)
       }
     ),
 })
@@ -76,7 +76,6 @@ const ModalCreate = (props: TProps) => {
   const { enqueueSnackbar } = useSnackbar()
   const { data } = useQuery(AREAS_FOR_SELECT)
   const { projectId } = stage
-  const threeHours = 3 * 60 * 60 * 1000
 
   const areas: Pick<IArea, 'id' | 'name'>[] = useMemo(() => {
     if (data?.areas) return data.areas
@@ -87,10 +86,10 @@ const ModalCreate = (props: TProps) => {
     initialValues: {
       name: '',
       area: null,
-      startDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
-      endDate: new Date(new Date().getTime() - threeHours).toISOString().split('T')[0],
-      projectStartDate: stage.startDate,
-      projectEndDate: stage.endDate,
+      startDate: stage.startDate,
+      endDate: stage.endDate,
+      stageStartDate: stage.startDate,
+      stageEndDate: stage.endDate,
       description: '',
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -112,7 +111,6 @@ const ModalCreate = (props: TProps) => {
         refetch()
         modal.onFalse()
       } catch (error) {
-        console.error(error)
         enqueueSnackbar(`La etapa no pudo ser creada. ${error.message}`, { variant: 'error' })
       }
     },

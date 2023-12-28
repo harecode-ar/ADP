@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage } from '@adp/shared'
+import { IStage, STAGE_STATE } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Scrollbar from 'src/components/scrollbar'
@@ -27,6 +27,7 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
+import ModalFinishSubStage from './modal-finish-substage'
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,7 @@ export default function KanbanDetails(props: TProps) {
   const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
+  const modalFinishSubStage = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
@@ -206,6 +208,13 @@ export default function KanbanDetails(props: TProps) {
               InputProps={{ readOnly: true, sx: { typography: 'body2' } }}
             />
           </Stack>
+
+          {subStage && subStage.state.id !== STAGE_STATE.COMPLETED && (
+            <Button variant="contained" style={{ width: '120px' }} onClick={modalFinishSubStage.onTrue}>
+              <Iconify icon="pajamas:todo-done" mr={1} />
+              Finalizar
+            </Button>
+          )}
         </Stack>
 
         {!!subStage.notes?.length && <KanbanDetailsCommentList notes={subStage.notes} />}
@@ -215,6 +224,14 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} stage={stage} subStage={subStage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={subStage.id} refetch={refetch} />
+
+      {modalFinishSubStage.value && (
+        <ModalFinishSubStage
+          modal={modalFinishSubStage}
+          refetch={refetch}
+          subStageId={Number(subStage.id)}
+        />
+      )}
     </Drawer>
   )
 }
