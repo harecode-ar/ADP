@@ -2,7 +2,17 @@
 
 import React, { useMemo, useState } from 'react'
 import { type IStage, STAGE_STATE } from '@adp/shared'
-import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField, Button } from '@mui/material'
+import {
+  Box,
+  Container,
+  Card,
+  CardContent,
+  Tab,
+  Tabs,
+  Grid,
+  TextField,
+  Button,
+} from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
@@ -11,15 +21,27 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import StagePath from 'src/sections/stage/detail/stage-path'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
+import Label from 'src/components/label'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 
+const getColorVariant = (name: string) => {
+  if (name === 'Nuevo') {
+    return 'info'
+  }
+  if (name === 'En progreso') {
+    return 'warning'
+  }
+  if (name === 'Completado') {
+    return 'primary'
+  }
+  return 'error'
+}
 enum ETab {
   NOTES = 'Notas',
   CONTACTS = 'Contactos',
@@ -70,7 +92,17 @@ export default function ProjectDetailView(props: TProps) {
       >
         <CustomBreadcrumbs
           heading="Detalle de Sub Etapa"
-          links={[{ name: 'Sub Etapa', href: paths.dashboard.subStage.root }, { name: 'Detalle' }]}
+          links={[
+            {
+              name: subStage?.project.name,
+              href: paths.dashboard.project.detail.replace(':id', String(subStage?.project.id)),
+            },
+            {
+              name: subStage?.parentStage?.name,
+              href: paths.dashboard.stage.detail.replace(':id', String(subStage?.parentStage?.id)),
+            },
+            { name: subStage?.name },
+          ]}
           action={
             <Box
               sx={{
@@ -92,128 +124,127 @@ export default function ProjectDetailView(props: TProps) {
           }
         />
 
-        <StagePath
-          project={subStage?.project || null}
-          stage={subStage?.parentStage || null}
-          subStage={subStage || null}
-        />
-
         {subStageQuery.loading && <p>Cargando...</p>}
 
         {!!subStage && (
-          <React.Fragment>
-            <Card>
-              <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      id="name"
-                      name="name"
-                      label="Nombre"
-                      variant="outlined"
-                      fullWidth
-                      value={subStage.name}
-                      InputProps={{ readOnly: true }}
-                    />
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Label color={getColorVariant(subStage.state.name)} variant="filled">
+                          {subStage.state.name}
+                        </Label>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="name"
+                        name="name"
+                        label="Nombre"
+                        variant="outlined"
+                        fullWidth
+                        value={subStage.name}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        id="startDate"
+                        name="startDate"
+                        label="Inicio"
+                        variant="outlined"
+                        fullWidth
+                        value={formatDate(subStage.startDate)}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <TextField
+                        id="endDate"
+                        name="endDate"
+                        label="Finalizacion"
+                        variant="outlined"
+                        fullWidth
+                        value={formatDate(subStage.endDate)}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                      <TextField
+                        id="area"
+                        name="area"
+                        label="Area"
+                        variant="outlined"
+                        fullWidth
+                        value={subStage.area ? subStage.area.name : 'Sin area'}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                      <TextField
+                        id="responsible"
+                        name="responsible"
+                        label="Responsable"
+                        variant="outlined"
+                        fullWidth
+                        value={
+                          subStage.responsible ? subStage.responsible.fullname : 'Sin responsable'
+                        }
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="description"
+                        name="description"
+                        label="Descripción"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        maxRows={10}
+                        value={subStage.description}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      id="status"
-                      name="status"
-                      label="Estado"
-                      variant="outlined"
-                      fullWidth
-                      value={subStage.state.name}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <TextField
-                      id="startDate"
-                      name="startDate"
-                      label="Fecha de inicio"
-                      variant="outlined"
-                      fullWidth
-                      value={formatDate(subStage.startDate)}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <TextField
-                      id="endDate"
-                      name="endDate"
-                      label="Fecha de finalizacion"
-                      variant="outlined"
-                      fullWidth
-                      value={formatDate(subStage.endDate)}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <TextField
-                      id="area"
-                      name="area"
-                      label="Area"
-                      variant="outlined"
-                      fullWidth
-                      value={subStage.area ? subStage.area.name : 'Sin area'}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <TextField
-                      id="responsible"
-                      name="responsible"
-                      label="Responsable"
-                      variant="outlined"
-                      fullWidth
-                      value={
-                        subStage.responsible ? subStage.responsible.fullname : 'Sin responsable'
-                      }
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="description"
-                      name="description"
-                      label="Descripción"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      maxRows={10}
-                      value={subStage.description}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-            <Card
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                p: 1,
-              }}
-            >
-              <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
-              </Tabs>
-            </Card>
-            {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
-            {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
+                </CardContent>
+              </Card>
+            </Grid>
 
-            {modalFinishSubStage.value && (
-              <ModalFinishSubStage
-                modal={modalFinishSubStage}
-                refetch={subStageQuery.refetch}
-                subStageId={Number(subStageId)}
-              />
-            )}
+            <Grid item xs={12} md={8}>
+              <Card
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
+                  <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                </Tabs>
+              </Card>
+              {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
+              {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
 
-          </React.Fragment>
+              {modalFinishSubStage.value && (
+                <ModalFinishSubStage
+                  modal={modalFinishSubStage}
+                  refetch={subStageQuery.refetch}
+                  subStageId={Number(subStageId)}
+                />
+              )}
+            </Grid>
+          </Grid>
         )}
       </Box>
 

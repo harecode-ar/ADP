@@ -28,6 +28,7 @@ export default function NotesTab(props: TProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
+        marginTop: 2,
       }}
     >
       <NotesForm subStage={subStage} refetch={refetch} />
