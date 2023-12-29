@@ -5,6 +5,7 @@ import React from 'react'
 import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
+import { useTheme } from '@mui/material/styles'
 import ModalDelete from './modal-delete'
 import UpdateChecklistModal from './checklist-update-modal'
 
@@ -18,6 +19,7 @@ const MAX_CHARACTERS = 33
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
   const { checks = [] } = checklist
+  const theme = useTheme()
   const modalDelete = useBoolean()
   const modalUpdate = useBoolean()
 
@@ -35,13 +37,26 @@ export function ChecklistItem(props: TProps) {
           }}
         >
           <Box>
-            <Tooltip title={checklist.title.length > MAX_CHARACTERS ? checklist.title : ''}>
-              <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                {checklist.title.length > MAX_CHARACTERS
-                  ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
-                  : checklist.title}
-              </Typography>
-            </Tooltip>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Tooltip title={checklist.title.length > MAX_CHARACTERS ? checklist.title : ''}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    textDecoration: checklist.finished ? 'line-through' : 'none',
+                  }}
+                >
+                  {checklist.title.length > MAX_CHARACTERS
+                    ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
+                    : checklist.title}
+                </Typography>
+              </Tooltip>
+            </Box>
+
             <Stack
               direction="row"
               alignItems="center"
@@ -58,9 +73,31 @@ export function ChecklistItem(props: TProps) {
                 />
               }
             >
-              {`${completedChecks.toString().padStart(2, '0')}/${totalChecks
-                .toString()
-                .padStart(2, '0')}`}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                }}
+              >
+                {checklist.finished ? (
+                  <Iconify icon="eva:done-all-fill" color={theme.palette.success.main} />
+                ) : (
+                  <Iconify icon="eva:done-all-fill" color={theme.palette.text.disabled} />
+                )}
+                <Typography
+                  sx={{
+                    color: checklist.finished
+                      ? theme.palette.success.main
+                      : theme.palette.text.disabled,
+                    fontSize: '14px',
+                  }}
+                >
+                  {`${completedChecks.toString().padStart(2, '0')}/${totalChecks
+                    .toString()
+                    .padStart(2, '0')}`}
+                </Typography>
+              </Box>
               {new Date(Number(checklist.createdAt)).toLocaleDateString()}
               {checklist?.project?.name || 'Sin asignar'}
             </Stack>
