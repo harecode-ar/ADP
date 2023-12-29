@@ -2,7 +2,17 @@
 
 import React, { useMemo, useState } from 'react'
 import { type IStage, STAGE_STATE } from '@adp/shared'
-import { Box, Container, Card, CardContent, Tab, Tabs, Grid, TextField, Button } from '@mui/material'
+import {
+  Box,
+  Container,
+  Card,
+  CardContent,
+  Tab,
+  Tabs,
+  Grid,
+  TextField,
+  Button,
+} from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { useQuery } from '@apollo/client'
@@ -212,7 +222,6 @@ export default function ProjectDetailView(props: TProps) {
                 subStageId={Number(subStageId)}
               />
             )}
-
           </React.Fragment>
         )}
       </Box>

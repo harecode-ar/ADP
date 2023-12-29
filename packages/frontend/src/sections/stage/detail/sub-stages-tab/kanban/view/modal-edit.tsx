@@ -15,7 +15,7 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { AREAS_FOR_SELECT} from 'src/graphql/queries'
+import { AREAS_FOR_SELECT } from 'src/graphql/queries'
 import { UPDATE_SUB_STAGE } from 'src/graphql/mutations'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'

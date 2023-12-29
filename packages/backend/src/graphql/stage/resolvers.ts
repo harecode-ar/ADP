@@ -1,7 +1,15 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
-import { Stage, Project, StageState, Area, User, StageNote, UserFinishedStage } from '../../database/models'
+import {
+  Stage,
+  Project,
+  StageState,
+  Area,
+  User,
+  StageNote,
+  UserFinishedStage,
+} from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
@@ -494,11 +502,7 @@ export default {
       }
     },
 
-    finishStage: async (
-      _: any,
-      args: Pick<IStage, 'id'>,
-      context: IContext
-    ): Promise<Stage> => {
+    finishStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -548,7 +552,7 @@ export default {
         })
 
         await calculateProjectProgress(stage.projectId)
-        
+
         return stage
       } catch (error) {
         logger.error(error)
@@ -768,11 +772,7 @@ export default {
       }
     },
 
-    finishSubStage: async (
-      _: any,
-      args: Pick<IStage, 'id'>,
-      context: IContext
-    ): Promise<Stage> => {
+    finishSubStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -841,6 +841,6 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
 }

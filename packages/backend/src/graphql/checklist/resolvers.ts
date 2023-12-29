@@ -141,7 +141,7 @@ export default {
         )
         const allChecked = checks.every((check) => check.checked)
         await checklist.update({ finished: allChecked })
-        
+
         return checklist
       } catch (error) {
         logger.error(error)

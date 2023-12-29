@@ -85,7 +85,6 @@ const ModalEdit = (props: TProps) => {
     return []
   }, [dataAreas])
 
-
   const formik = useFormik({
     initialValues: {
       id: null,
