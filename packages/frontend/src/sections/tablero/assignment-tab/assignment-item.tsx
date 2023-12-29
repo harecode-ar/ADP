@@ -123,7 +123,7 @@ export default function AssignmentItem(props: TProps) {
                 width: '15px',
                 height: '15px',
                 borderRadius: '50%',
-                display: 'inline-block',
+                // display: 'inline-block',
                 marginRight: '5px',
               }}
             />
