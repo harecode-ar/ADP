@@ -48,7 +48,7 @@ export default function AssignmentItem(props: TProps) {
       return {
         title: 'Sub Etapa',
         color: 'success',
-        path: paths.dashboard.stage.detail,
+        path: paths.dashboard.subStage.detail,
       }
     return {
       title: '',
