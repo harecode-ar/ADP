@@ -13,6 +13,8 @@ export class Checklist extends Model {
 
   public projectId!: number | null
 
+  public finished!: boolean
+
   public readonly createdAt!: string
 
   public readonly updatedAt!: string
@@ -40,6 +42,11 @@ Checklist.init(
     projectId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,
+    },
+    finished: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {

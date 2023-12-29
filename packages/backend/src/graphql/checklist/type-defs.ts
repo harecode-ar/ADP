@@ -2,6 +2,7 @@ export default `#graphql
   type Checklist {
     id: Int
     title: String
+    finished: Boolean
     userId: Int
     stageId: Int
     projectId: Int
