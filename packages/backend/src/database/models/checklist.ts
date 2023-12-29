@@ -15,6 +15,8 @@ export class Checklist extends Model {
 
   public finished!: boolean
 
+  public remember!: boolean
+
   public readonly createdAt!: string
 
   public readonly updatedAt!: string
@@ -44,6 +46,10 @@ Checklist.init(
       allowNull: true,
     },
     finished: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    remember: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
