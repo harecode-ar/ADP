@@ -135,12 +135,11 @@ export default {
           userId: user.id,
           stageId,
           projectId,
+          finished: checks.every((check) => check.checked),
         })
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
         )
-        const allChecked = checks.every((check) => check.checked)
-        await checklist.update({ finished: allChecked })
 
         return checklist
       } catch (error) {
@@ -171,6 +170,7 @@ export default {
           title,
           stageId,
           projectId,
+          finished: checks.every((check) => check.checked),
         })
         await Check.destroy({
           where: {
@@ -180,9 +180,6 @@ export default {
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
         )
-
-        const allChecked = checks.every((check) => check.checked)
-        await checklist.update({ finished: allChecked })
 
         return checklist
       } catch (error) {
