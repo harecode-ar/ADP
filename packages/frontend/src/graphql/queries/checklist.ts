@@ -67,6 +67,7 @@ export const GET_CHECKLIST = gql`
     checklist(id: $id) {
       id
       title
+      remember
       createdAt
       updatedAt
       checks {

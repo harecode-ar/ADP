@@ -14,6 +14,7 @@ import {
   Checkbox,
   Stack,
   Tooltip,
+  Switch,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -45,6 +46,7 @@ type TProps = {
 
 type TFormikValues = {
   title: string
+  remember: boolean
   checks: TCheck[]
 }
 
@@ -60,6 +62,7 @@ export default function CreateChecklistModal(props: TProps) {
   const formik = useFormik({
     initialValues: {
       title: '',
+      remember: false,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -68,6 +71,7 @@ export default function CreateChecklistModal(props: TProps) {
           variables: {
             id: checklist.id,
             title: values.title,
+            remember: values.remember,
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
@@ -96,6 +100,7 @@ export default function CreateChecklistModal(props: TProps) {
       }
       formik.setValues({
         title: d.checklist.title,
+        remember: d.checklist.remember,
         checks: d.checklist.checks || [],
       })
     },
@@ -129,6 +134,10 @@ export default function CreateChecklistModal(props: TProps) {
   const handleDeleteCheck = (check: TCheck) => {
     const newChecks = formik.values.checks.filter((c) => c.id !== check.id)
     formik.setFieldValue('checks', newChecks)
+  }
+
+  const handleChangeSwitchAlert = () => {
+    formik.setFieldValue('remember', !formik.values.remember)
   }
 
   return (
@@ -200,28 +209,56 @@ export default function CreateChecklistModal(props: TProps) {
               </Typography>
             )}
           </Grid>
+
           <Grid item xs={12}>
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 1,
               }}
             >
-              <Button onClick={modal.onFalse} color="primary" variant="outlined" disabled={loading}>
-                <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                Cancelar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => formik.handleSubmit()}
-                disabled={loading}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
               >
-                <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                {loading ? 'Guardando...' : 'Guardar'}
-              </Button>
+                <Switch
+                  checked={formik.values.remember}
+                  onChange={handleChangeSwitchAlert}
+                  name="remember"
+                />
+                <Typography>Activar alerta</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
+                <Button
+                  onClick={modal.onFalse}
+                  color="primary"
+                  variant="outlined"
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                  Cancelar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => formik.handleSubmit()}
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                  {loading ? 'Guardando...' : 'Guardar'}
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>
