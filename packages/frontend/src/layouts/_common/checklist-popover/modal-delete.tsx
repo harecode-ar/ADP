@@ -27,11 +27,17 @@ const ModalDelete = (props: TProps) => {
           id,
         },
       })
-      enqueueSnackbar('Checklist borrado correctamente.', { variant: 'success' })
+      enqueueSnackbar('Checklist borrado correctamente.', {
+        variant: 'success',
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+      })
       modal.onFalse()
       refetch()
     } catch {
-      enqueueSnackbar('El checklist no pudo ser borrada.', { variant: 'error' })
+      enqueueSnackbar('El checklist no pudo ser borrada.', {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+      })
     }
   }
 
