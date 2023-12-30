@@ -186,6 +186,8 @@ export default {
                     'startDate',
                     'endDate',
                     'progress',
+                    'acp',
+                    'pacp',
                     'stateId',
                   ],
                 },

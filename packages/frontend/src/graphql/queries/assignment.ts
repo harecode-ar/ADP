@@ -9,6 +9,8 @@ export const GET_USER_ASSIGNMENTS = gql`
       startDate
       endDate
       progress
+      acp
+      pacp
       stateId
     }
     userStages {
@@ -18,6 +20,8 @@ export const GET_USER_ASSIGNMENTS = gql`
       startDate
       endDate
       progress
+      acp
+      pacp
       stateId
       hasStages
     }
@@ -28,6 +32,8 @@ export const GET_USER_ASSIGNMENTS = gql`
       startDate
       endDate
       progress
+      acp
+      pacp
       stateId
     }
   }
