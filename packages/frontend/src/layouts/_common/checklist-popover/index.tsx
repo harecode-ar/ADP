@@ -2,8 +2,8 @@
 
 import { IChecklist } from '@adp/shared'
 import { m } from 'framer-motion'
-import React, { useMemo } from 'react'
-import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box } from '@mui/material'
+import React, { useEffect, useMemo, useState } from 'react'
+import { IconButton, Stack, Typography, Divider, Drawer, Tooltip, Box, Badge } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { useQuery } from '@apollo/client'
@@ -37,6 +37,26 @@ export default function ChecklistPopover() {
     return checklistQuery.data.userChecklists || []
   }, [checklistQuery.data])
 
+  const unfinishedChecklists: IChecklist[] = useMemo(() => {
+    if (checklists === undefined) return []
+    return checklists.filter((checklist) => !checklist.finished && checklist.remember)
+  }, [checklists])
+
+  const [initialized, setInitialized] = useState(false)
+
+  useEffect(() => {
+    if (unfinishedChecklists.length > 0 && !initialized) {
+      enqueueSnackbar('Tienes checklist sin terminar', {
+        variant: 'warning',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center',
+        },
+      })
+      setInitialized(true)
+    }
+  }, [unfinishedChecklists, initialized, enqueueSnackbar])
+
   return (
     <Box>
       <IconButton
@@ -47,7 +67,9 @@ export default function ChecklistPopover() {
         color="default"
         onClick={drawer.onTrue}
       >
-        <Iconify icon="fluent:note-add-16-filled" width={24} />
+        <Badge badgeContent={unfinishedChecklists.length} color="error">
+          <Iconify icon="fluent:note-add-16-filled" width={24} />
+        </Badge>
       </IconButton>
 
       <Drawer

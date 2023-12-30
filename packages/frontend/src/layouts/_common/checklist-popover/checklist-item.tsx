@@ -47,7 +47,8 @@ export function ChecklistItem(props: TProps) {
                 <Typography
                   variant="h6"
                   sx={{
-                    textDecoration: checklist.finished ? 'line-through' : 'none',
+                    textDecoration:
+                      checklist.finished && checklist.checks.length ? 'line-through' : 'none',
                   }}
                 >
                   {checklist.title.length > MAX_CHARACTERS
@@ -80,16 +81,17 @@ export function ChecklistItem(props: TProps) {
                   gap: 0.5,
                 }}
               >
-                {checklist.finished ? (
+                {checklist.finished && checklist.checks.length ? (
                   <Iconify icon="eva:done-all-fill" color={theme.palette.success.main} />
                 ) : (
                   <Iconify icon="eva:done-all-fill" color={theme.palette.text.disabled} />
                 )}
                 <Typography
                   sx={{
-                    color: checklist.finished
-                      ? theme.palette.success.main
-                      : theme.palette.text.disabled,
+                    color:
+                      checklist.finished && checklist.checks.length
+                        ? theme.palette.success.main
+                        : theme.palette.text.disabled,
                     fontSize: '14px',
                   }}
                 >

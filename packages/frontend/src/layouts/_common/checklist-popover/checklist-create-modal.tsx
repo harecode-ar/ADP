@@ -75,12 +75,18 @@ export default function CreateChecklistModal(props: TProps) {
             })),
           },
         })
-        enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Listado de tareas creada correctamente.', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch {
-        enqueueSnackbar('El listado de tareas no pudo ser creado.', { variant: 'error' })
+        enqueueSnackbar('El listado de tareas no pudo ser creado.', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
       }
     },
     validationSchema: checklistSchema,

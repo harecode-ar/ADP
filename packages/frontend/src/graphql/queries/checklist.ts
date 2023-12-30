@@ -6,6 +6,7 @@ export const GET_USER_CHECKLISTS = gql`
       id
       title
       finished
+      remember
       createdAt
       updatedAt
       stage {
