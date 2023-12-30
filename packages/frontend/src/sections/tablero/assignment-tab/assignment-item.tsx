@@ -7,6 +7,8 @@ import { fDate } from 'src/utils/format-time'
 import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +16,13 @@ type TProps = {
   project?: IProject
   stage?: IStage
   subStage?: IStage
+}
+
+const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function AssignmentItem(props: TProps) {
@@ -37,18 +46,24 @@ export default function AssignmentItem(props: TProps) {
         title: 'Proyecto',
         color: 'info',
         path: paths.dashboard.project.detail,
+        acp: project.acp,
+        pacp: project.pacp,
       }
     if (stage)
       return {
         title: 'Etapa',
         color: 'warning',
         path: paths.dashboard.stage.detail,
+        acp: stage.acp,
+        pacp: stage.pacp,
       }
     if (subStage)
       return {
         title: 'Sub Etapa',
         color: 'success',
-        path: paths.dashboard.stage.detail,
+        path: paths.dashboard.subStage.detail,
+        acp: subStage.acp,
+        pacp: subStage.pacp,
       }
     return {
       title: '',
@@ -102,6 +117,15 @@ export default function AssignmentItem(props: TProps) {
               color: 'text.disabled',
             }}
           >
+            <div
+              style={{
+                backgroundColor: colorFromAcpOrPacp(assignment.acp ?? null, assignment.pacp ?? null),
+                width: '15px',
+                height: '15px',
+                borderRadius: '50%',
+                marginRight: '5px',
+              }}
+            />
             {progress * 100}%
           </Stack>
           <Stack
