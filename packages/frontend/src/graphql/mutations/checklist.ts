@@ -3,14 +3,12 @@ import { gql } from '@apollo/client'
 export const CREATE_CHECKLIST = gql`
   mutation createChecklist(
     $title: String!
-    $remember: Boolean!
     $stageId: Int
     $projectId: Int
     $checks: [CheckInput]
   ) {
     createChecklist(
       title: $title
-      remember: $remember
       stageId: $stageId
       projectId: $projectId
       checks: $checks
@@ -24,7 +22,6 @@ export const UPDATE_CHECKLIST = gql`
   mutation updateChecklist(
     $id: Int!
     $title: String
-    $remember: Boolean!
     $stageId: Int
     $projectId: Int
     $checks: [CheckInput]
@@ -32,7 +29,6 @@ export const UPDATE_CHECKLIST = gql`
     updateChecklist(
       id: $id
       title: $title
-      remember: $remember
       stageId: $stageId
       projectId: $projectId
       checks: $checks
