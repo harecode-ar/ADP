@@ -120,7 +120,7 @@ export default {
   Mutation: {
     createChecklist: async (
       _: any,
-      args: Pick<IChecklist, 'title' | 'stageId' | 'projectId' | 'remember'> & {
+      args: Pick<IChecklist, 'title' | 'stageId' | 'projectId'> & {
         checks: Pick<ICheck, 'title' | 'checked'>[]
       },
       context: IContext
@@ -149,14 +149,14 @@ export default {
     },
     updateChecklist: async (
       _: any,
-      args: Pick<IChecklist, 'id' | 'title' | 'stageId' | 'projectId' | 'remember'> & {
+      args: Pick<IChecklist, 'id' | 'title' | 'stageId' | 'projectId'> & {
         checks: Pick<ICheck, 'title' | 'checked'>[]
       },
       context: IContext
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_UPDATE], context)
-        const { id, title, stageId, projectId, checks, remember } = args
+        const { id, title, stageId, projectId, checks } = args
         const { user } = context
         if (!user) throw new Error('No autorizado')
         const checklist = await Checklist.findOne({
@@ -171,7 +171,6 @@ export default {
           stageId,
           projectId,
           finished: checks.every((check) => check.checked),
-          remember,
         })
         await Check.destroy({
           where: {

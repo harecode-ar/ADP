@@ -22,7 +22,6 @@ export const UPDATE_CHECKLIST = gql`
   mutation updateChecklist(
     $id: Int!
     $title: String
-    $remember: Boolean!
     $stageId: Int
     $projectId: Int
     $checks: [CheckInput]
@@ -30,7 +29,6 @@ export const UPDATE_CHECKLIST = gql`
     updateChecklist(
       id: $id
       title: $title
-      remember: $remember
       stageId: $stageId
       projectId: $projectId
       checks: $checks
