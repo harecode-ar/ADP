@@ -144,6 +144,7 @@ const CreateAreaModal = (props: TProps) => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
+                  noOptionsText="No hay areas"
                   options={areas}
                   getOptionLabel={(option) => option.name}
                   value={formik.values.parent}

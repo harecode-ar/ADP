@@ -32,7 +32,6 @@ export default `#graphql
   type Mutation {
     createChecklist(
       title: String!
-      remember: Boolean!
       stageId: Int
       projectId: Int
       checks: [CheckInput]
@@ -41,7 +40,6 @@ export default `#graphql
     updateChecklist(
       id: Int!
       title: String
-      remember: Boolean!
       stageId: Int
       projectId: Int
       checks: [CheckInput]

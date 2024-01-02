@@ -218,6 +218,7 @@ const ModalEdit = (props: TProps) => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Autocomplete
+                  noOptionsText="No hay roles"
                   fullWidth
                   options={roles}
                   getOptionLabel={(option) => option.name}

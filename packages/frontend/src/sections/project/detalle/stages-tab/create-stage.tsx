@@ -152,6 +152,7 @@ const ModalCreate = (props: TProps) => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Autocomplete
+                  noOptionsText="No hay areas"
                   options={areas}
                   getOptionLabel={(option) => option.name}
                   value={formik.values.area}

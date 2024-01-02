@@ -20,6 +20,7 @@ const ColorPicker = (props: TProps) => {
   const { label, value, options, error, helperText, onChange } = props
   return (
     <Autocomplete
+      noOptionsText="No hay colores"
       fullWidth
       options={options}
       getOptionLabel={(option) => option.label}

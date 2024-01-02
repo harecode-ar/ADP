@@ -33,6 +33,7 @@ const UserPicker = (props: TProps) => {
   } = props
   return (
     <Autocomplete
+      noOptionsText="No hay usuarios"
       multiple={multiple}
       options={users}
       getOptionLabel={(option: any) => option.fullname}
