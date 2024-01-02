@@ -12,6 +12,10 @@ export const GET_USER_ASSIGNMENTS = gql`
       acp
       pacp
       stateId
+      state {
+        id
+        name
+      }
     }
     userStages {
       id
@@ -23,6 +27,10 @@ export const GET_USER_ASSIGNMENTS = gql`
       acp
       pacp
       stateId
+      state {
+        id
+        name
+      }
       hasStages
     }
     userSubStages {
@@ -35,6 +43,10 @@ export const GET_USER_ASSIGNMENTS = gql`
       acp
       pacp
       stateId
+      state {
+        id
+        name
+      }
     }
   }
 `

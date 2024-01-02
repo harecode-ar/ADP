@@ -1,7 +1,7 @@
 import { IProject, IStage } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
-import { Tooltip, Link, IconButton, Stack, Card } from '@mui/material'
+import { Tooltip, Link, IconButton, Stack, Card, Box } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import { fDate } from 'src/utils/format-time'
 import Label from 'src/components/label'
@@ -9,6 +9,7 @@ import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
 import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import getLabelColor from 'src/utils/color-progress'
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +49,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,
+        state: project.state ? project.state.name : null,
       }
     if (stage)
       return {
@@ -56,6 +58,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.stage.detail,
         acp: stage.acp,
         pacp: stage.pacp,
+        state: stage.state ? stage.state.name : null,
       }
     if (subStage)
       return {
@@ -64,6 +67,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.subStage.detail,
         acp: subStage.acp,
         pacp: subStage.pacp,
+        state: subStage.state ? subStage.state.name : null,
       }
     return {
       title: '',
@@ -83,10 +87,14 @@ export default function AssignmentItem(props: TProps) {
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Label variant="soft" color={assignment.color as any}>
-            {assignment.title}
-          </Label>
-
+          <Box>
+            <Label variant="soft" sx={{ mr: 1 }} color={assignment.color as any}>
+              {assignment.title}
+            </Label>
+            <Label variant="soft" color={getLabelColor(assignment.state || '')}>
+              {assignment.state}
+            </Label>
+          </Box>
           <Tooltip title="Ver detalle">
             <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
               <IconButton>
@@ -119,7 +127,10 @@ export default function AssignmentItem(props: TProps) {
           >
             <div
               style={{
-                backgroundColor: colorFromAcpOrPacp(assignment.acp ?? null, assignment.pacp ?? null),
+                backgroundColor: colorFromAcpOrPacp(
+                  assignment.acp ?? null,
+                  assignment.pacp ?? null
+                ),
                 width: '15px',
                 height: '15px',
                 borderRadius: '50%',
