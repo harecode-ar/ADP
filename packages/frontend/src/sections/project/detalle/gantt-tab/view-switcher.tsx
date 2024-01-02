@@ -19,6 +19,7 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewOption, handleCh
     <Box className="ViewContainer">
       <FormControl>
         <Autocomplete
+          noOptionsText="No hay opciones"
           style={{ width: 150, marginBottom: '16px' }}
           options={VIEW_OPTIONS}
           getOptionLabel={(option) => option.label}
