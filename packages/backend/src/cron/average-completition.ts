@@ -1,4 +1,5 @@
 import cron from 'node-cron'
+import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
 import { sequelize } from '../database'
 import {
   Project,
@@ -19,9 +20,15 @@ cron.schedule('0 0 * * *', async () => {
   const [projects, stages] = await Promise.all([
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
+      where: {
+        stateId: PROJECT_STATE.IN_PROGRESS
+      },
     }),
     Stage.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
+      where: {
+          stateId: STAGE_STATE.IN_PROGRESS
+        },
     }),
   ])
 
