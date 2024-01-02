@@ -127,7 +127,7 @@ export default {
     ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
       try {
         needPermission([PERMISSION_MAP.CHECKLIST_CREATE], context)
-        const { title, stageId, projectId, checks, remember } = args
+        const { title, stageId, projectId, checks } = args
         const { user } = context
         if (!user) throw new Error('No autorizado')
         const checklist = await Checklist.create({
@@ -136,7 +136,6 @@ export default {
           stageId,
           projectId,
           finished: checks.every((check) => check.checked),
-          remember,
         })
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
