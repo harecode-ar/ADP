@@ -119,7 +119,10 @@ export default function AssignmentItem(props: TProps) {
           >
             <div
               style={{
-                backgroundColor: colorFromAcpOrPacp(assignment.acp ?? null, assignment.pacp ?? null),
+                backgroundColor: colorFromAcpOrPacp(
+                  assignment.acp ?? null,
+                  assignment.pacp ?? null
+                ),
                 width: '15px',
                 height: '15px',
                 borderRadius: '50%',

@@ -32,13 +32,13 @@ export function ChecklistItem(props: TProps) {
 
   const rememberChecklist = async () => {
     await updateRememberChecklist({
-          variables: {
-            id: checklist.id,
-            remember: !checklist.remember,
-          },
-        })
-    refetch();
-  };
+      variables: {
+        id: checklist.id,
+        remember: !checklist.remember,
+      },
+    })
+    refetch()
+  }
 
   return (
     <React.Fragment>

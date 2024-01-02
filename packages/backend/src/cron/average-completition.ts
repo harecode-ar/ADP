@@ -21,14 +21,14 @@ cron.schedule('0 0 * * *', async () => {
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-        stateId: PROJECT_STATE.IN_PROGRESS
+        stateId: PROJECT_STATE.IN_PROGRESS,
       },
     }),
     Stage.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-          stateId: STAGE_STATE.IN_PROGRESS
-        },
+        stateId: STAGE_STATE.IN_PROGRESS,
+      },
     }),
   ])
 
