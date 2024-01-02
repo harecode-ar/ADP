@@ -14,7 +14,6 @@ import {
   Checkbox,
   Stack,
   Tooltip,
-  Switch,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -121,10 +120,6 @@ export default function CreateChecklistModal(props: TProps) {
     formik.setFieldValue('checks', newChecks)
   }
 
-  const handleChangeSwitchAlert = () => {
-    formik.setFieldValue('remember', !formik.values.remember)
-  }
-
   return (
     <Modal
       open={modal.value}
@@ -211,20 +206,6 @@ export default function CreateChecklistModal(props: TProps) {
                 gap: 1,
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                }}
-              >
-                <Switch
-                  checked={formik.values.remember}
-                  onChange={handleChangeSwitchAlert}
-                  name="remember"
-                />
-                <Typography>Activar alerta</Typography>
-              </Box>
               <Box
                 sx={{
                   display: 'flex',
