@@ -13,6 +13,7 @@ import {
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
+import { getAcp } from '../../utils/average-completition'
 
 export default {
   Project: {
@@ -221,7 +222,7 @@ export default {
     },
   },
   Mutation: {
-    createProject: (
+    createProject: async (
       _: any,
       args: Pick<
         IProject,
@@ -239,7 +240,7 @@ export default {
           throw new Error('Start date must be before end date')
         }
 
-        return Project.create({
+        const project = await Project.create({
           name,
           description,
           areaId,
@@ -248,6 +249,10 @@ export default {
           endDate,
           stateId: STAGE_STATE.NEW,
         })
+
+        await getAcp(project)
+
+        return project
       } catch (error) {
         logger.error(error)
         throw error
@@ -311,6 +316,9 @@ export default {
           endDate,
           progress,
         })
+
+        await getAcp(project)
+
         return project
       } catch (error) {
         logger.error(error)
@@ -389,6 +397,9 @@ export default {
           userId,
           projectId: project.id,
         })
+        
+        await getAcp(project)
+        
         return project
       } catch (error) {
         logger.error(error)
