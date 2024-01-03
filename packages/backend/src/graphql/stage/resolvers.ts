@@ -15,6 +15,12 @@ import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
+import { getAcp } from '../../utils/average-completition'
+
+function updateAcp(stage: Stage) {
+  const { acp, pacp } = getAcp(stage);
+  return stage.update({ acp, pacp });
+}
 
 export default {
   Stage: {
@@ -356,6 +362,7 @@ export default {
         })
         try {
           await calculateProjectProgress(projectId)
+          updateAcp(stageCreated);
         } catch (error) {
           logger.error(error)
         }
@@ -460,6 +467,7 @@ export default {
 
         try {
           await calculateProjectProgress(projectId)
+          updateAcp(stage);
         } catch (error) {
           logger.error(error)
         }
@@ -557,6 +565,8 @@ export default {
 
         await calculateProjectProgress(stage.projectId)
 
+        updateAcp(stage);
+
         return stage
       } catch (error) {
         logger.error(error)
@@ -625,6 +635,8 @@ export default {
         calculateProjectProgress(parentStage.projectId).catch((error) => {
           logger.error(error)
         })
+
+        updateAcp(stageCreated);
 
         return stageCreated
       } catch (error) {
@@ -719,6 +731,7 @@ export default {
 
         try {
           await calculateStageProgress(stage.id)
+          updateAcp(subStage);
         } catch (error) {
           logger.error(error)
         }
@@ -839,6 +852,8 @@ export default {
         calculateProjectProgress(subStage.projectId).catch((error) => {
           logger.error(error)
         })
+
+        updateAcp(subStage);
 
         return subStage
       } catch (error) {
