@@ -15,7 +15,6 @@ import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
-import { getAcp } from '../../utils/average-completition'
 
 export default {
   Stage: {
@@ -357,8 +356,6 @@ export default {
         })
         try {
           await calculateProjectProgress(projectId)
-          const { acp, pacp } = await getAcp(stageCreated)
-          await stageCreated.update({ acp, pacp })
         } catch (error) {
           logger.error(error)
         }
