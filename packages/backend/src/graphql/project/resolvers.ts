@@ -15,6 +15,11 @@ import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 import { getAcp } from '../../utils/average-completition'
 
+async function updateAcp(project: Project) {
+  const { acp, pacp } = await getAcp(project);
+  return project.update({ acp, pacp });
+}
+
 export default {
   Project: {
     state: (project: IProject): Promise<IProjectState | null> => {
@@ -250,7 +255,7 @@ export default {
           stateId: STAGE_STATE.NEW,
         })
 
-        await getAcp(project)
+        await updateAcp(project)
 
         return project
       } catch (error) {
@@ -317,7 +322,7 @@ export default {
           progress,
         })
 
-        await getAcp(project)
+        await updateAcp(project)
 
         return project
       } catch (error) {
@@ -398,7 +403,7 @@ export default {
           projectId: project.id,
         })
         
-        await getAcp(project)
+        await updateAcp(project)
         
         return project
       } catch (error) {
