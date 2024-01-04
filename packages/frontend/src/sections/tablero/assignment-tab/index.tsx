@@ -26,8 +26,7 @@ export default function AssignmentTab() {
   const [selectedState, setSelectedState] = useState<IProjectState | null> (null)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
-    if (newValue.length === 0) return
-    if (EOption.ALL === newValue[newValue.length - 1]) {
+    if (newValue.length === 0|| EOption.ALL === newValue[newValue.length - 1]) {
       setSelectedOptions([EOption.ALL])
     } else {
       setSelectedOptions(newValue.filter(option => option !== EOption.ALL ))
@@ -117,7 +116,6 @@ export default function AssignmentTab() {
               getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"
-
               value={selectedState}
               onChange={handleStateChange}
             />
