@@ -1,4 +1,4 @@
-import { IProject, IStage } from '@adp/shared'
+import { IProject, IStage, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import { Tooltip, Link, IconButton, Stack, Card, Box } from '@mui/material'
@@ -49,7 +49,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,
-        state: project.state ? project.state.name : null,
+        stateId: project.stateId
       }
     if (stage)
       return {
@@ -58,7 +58,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.stage.detail,
         acp: stage.acp,
         pacp: stage.pacp,
-        state: stage.state ? stage.state.name : null,
+        stateId: stage.stateId
       }
     if (subStage)
       return {
@@ -67,12 +67,15 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.subStage.detail,
         acp: subStage.acp,
         pacp: subStage.pacp,
-        state: subStage.state ? subStage.state.name : null,
+        stateId: subStage.stateId
       }
     return {
       title: '',
       color: 'default',
       path: '',
+      acp: null,
+      pacp: null,
+      stateId: 0
     }
   }, [project, stage, subStage])
 
@@ -91,8 +94,8 @@ export default function AssignmentItem(props: TProps) {
             <Label variant="soft" sx={{ mr: 1 }} color={assignment.color as any}>
               {assignment.title}
             </Label>
-            <Label variant="soft" color={getLabelColor(assignment.state || '')}>
-              {assignment.state}
+            <Label variant="soft" color={getLabelColor(assignment.stateId)}>
+              {PROJECT_STATE_ARRAY.find(state => state.id === assignment.stateId)?.name || ''}
             </Label>
           </Box>
           <Tooltip title="Ver detalle">
