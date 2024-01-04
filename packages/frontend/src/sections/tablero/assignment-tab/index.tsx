@@ -23,7 +23,7 @@ const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<IProjectState | undefined> (undefined)
+  const [selectedState, setSelectedState] = useState<IProjectState | null> (null)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
     if (newValue.length === 0) return
@@ -33,7 +33,7 @@ export default function AssignmentTab() {
       setSelectedOptions(newValue.filter(option => option !== EOption.ALL ))
     }
   }
-  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: IProjectState | undefined) => {
+  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: IProjectState | null) => {
     setSelectedState(newValue)
 
   }
@@ -100,7 +100,7 @@ export default function AssignmentTab() {
     <Card sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Stack spacing={2} justifyContent="space-between" direction={{ xs: 'column', sm: 'row' }}>
-        <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
+        <Stack spacing={2} sx={{ width: '100%' }} direction={{ xs: 'column', sm: 'row' }}>
           <Autocomplete
               multiple
               options={OPTIONS}
@@ -112,11 +112,12 @@ export default function AssignmentTab() {
               onChange={handleChangeOptions}
             />
             <Autocomplete
+              sx={{ minWidth: 170 }}
               options={PROJECT_STATE_ARRAY as IProjectState[]}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"
-              disableClearable
+
               value={selectedState}
               onChange={handleStateChange}
             />
