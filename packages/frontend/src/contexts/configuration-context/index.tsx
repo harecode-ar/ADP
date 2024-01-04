@@ -29,11 +29,12 @@ export function ConfigurationProvider({ children }: TConfigurationProviderProps)
 
   const value = useMemo(
     () => ({
+      loading: configurationQuery.loading,
       configurations,
       refetch: configurationQuery.refetch,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [configurations]
+    [configurations, configurationQuery.loading]
   )
 
   return <ConfigurationContext.Provider value={value}>{children}</ConfigurationContext.Provider>

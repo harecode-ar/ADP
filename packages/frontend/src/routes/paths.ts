@@ -42,6 +42,9 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/sub-etapa`,
       detail: `${ROOTS.DASHBOARD}/sub-etapa/detalle/:id`,
     },
+    configuration: {
+      root: `${ROOTS.DASHBOARD}/configuracion`,
+    },
   },
 }
 
