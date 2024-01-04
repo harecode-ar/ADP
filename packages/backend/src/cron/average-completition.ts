@@ -13,8 +13,9 @@ import {
 } from '../database/models'
 import { getAcp } from '../utils/average-completition'
 
-// Run every 24 hours
-cron.schedule('0 0 * * *', async () => {
+// Run every dat at 06:30 AM (UTC-3)
+// Run every dat at 09:30 AM (UTC)
+cron.schedule('30 6 * * *', async () => {
   // Run every 1 minute
   // cron.schedule('*/1 * * * *', async () => {
   const [projects, stages] = await Promise.all([
@@ -157,3 +158,7 @@ cron.schedule('0 0 * * *', async () => {
     })
   )
 })
+
+// Run every dat at 06:35 AM (UTC-3)
+// Run every dat at 09:35 AM (UTC)
+cron.schedule('35 6 * * *', async () => {})
