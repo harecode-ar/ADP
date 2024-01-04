@@ -16,7 +16,7 @@ type TProps = {
   refetch: () => void
 }
 
-const MAX_CHARACTERS = 33
+const MAX_CHARACTERS = 30
 
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
@@ -121,18 +121,20 @@ export function ChecklistItem(props: TProps) {
           </Box>
 
           <Box>
-            <IconButton
-              onClick={(event) => {
-                event.stopPropagation()
-                rememberChecklist()
-              }}
-            >
-              {checklist.remember ? (
-                <Iconify icon="mdi:bell-ring" />
-              ) : (
-                <Iconify icon="mdi:bell-outline" />
-              )}
-            </IconButton>
+            <Tooltip title={checklist.remember ? 'Recordatorio activado' : 'Recordatorio desactivado'}>
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation()
+                  rememberChecklist()
+                }}
+              >
+                {checklist.remember ? (
+                  <Iconify icon="mdi:bell-ring" />
+                ) : (
+                  <Iconify icon="mdi:bell-outline" />
+                )}
+              </IconButton>
+            </Tooltip>
             <IconButton
               color="error"
               onClick={(event) => {
