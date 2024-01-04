@@ -26,10 +26,11 @@ export const getAcp = ({
   const finished = finishedAt ? new Date(finishedAt).getTime() : null
   const deltaDate = end - start
   if (finished) {
-    acp = (finished - end) / deltaDate
+    acp = (finished - end) / (deltaDate || 1)
   } else {
-    pacp = (time - end) / deltaDate
+    pacp = (time - end) / (deltaDate || 1)
   }
+  
   return {
     acp,
     pacp,
