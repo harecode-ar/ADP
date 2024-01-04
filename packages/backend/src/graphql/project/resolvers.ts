@@ -163,11 +163,18 @@ export default {
         throw error
       }
     },
-    userProjects: async (_: any, __: any, context: IContext) => {
+    userProjects: async (_: any, args: {
+      stateId?: number
+    }, context: IContext) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const where = {}
+        if (args.stateId){
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -180,6 +187,7 @@ export default {
                   model: Project,
                   as: 'projects',
                   order: [['startDate', 'ASC']],
+                  where,
                   attributes: [
                     'id',
                     'name',
@@ -399,7 +407,7 @@ export default {
           userId,
           projectId: project.id,
         })
-        
+
         const finishedAt =  new Date().toISOString().split('T')[0]
         const { acp, pacp } = getAcp({ startDate: project.startDate, endDate: project.endDate, finishedAt })
         await project.update({
@@ -408,7 +416,7 @@ export default {
           acp,
           pacp
         })
-        
+
         return project
       } catch (error) {
         logger.error(error)

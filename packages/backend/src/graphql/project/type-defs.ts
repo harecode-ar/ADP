@@ -29,7 +29,7 @@ export default `#graphql
     projectsByArea(areaId: Int): [Project]
     inProgressProjectsByArea(areaId: Int): [Project]
     projectsByAreaAndState(areaId: Int!, stateId: Int): [Project]
-    userProjects: [Project]
+    userProjects(stateId: Int): [Project]
     countProjectsByArea(areaId: Int!): Int
   }
 
