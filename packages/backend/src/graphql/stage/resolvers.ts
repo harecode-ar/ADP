@@ -17,11 +17,6 @@ import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
 import { getAcp } from '../../utils/average-completition'
 
-function updateAcp(stage: Stage) {
-  const { acp, pacp } = getAcp(stage);
-  return stage.update({ acp, pacp });
-}
-
 export default {
   Stage: {
     state: (stage: IStage): Promise<IProjectState | null> => {
@@ -350,6 +345,7 @@ export default {
         if (start < projectStart || end > projectEnd) throw new Error('Dates out of range')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
           name,
           description,
@@ -359,10 +355,11 @@ export default {
           areaId,
           projectId,
           parentStageId,
+          acp,
+          pacp,
         })
         try {
           await calculateProjectProgress(projectId)
-          updateAcp(stageCreated);
         } catch (error) {
           logger.error(error)
         }
@@ -455,6 +452,7 @@ export default {
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
           name,
           description,
@@ -463,11 +461,12 @@ export default {
           hasStages,
           areaId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
           await calculateProjectProgress(projectId)
-          updateAcp(stage);
         } catch (error) {
           logger.error(error)
         }
@@ -553,10 +552,14 @@ export default {
           userId = stage.area.responsible.id
         }
 
+        const finishedAt =  new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({ startDate: stage.startDate, endDate: stage.endDate, finishedAt })
         await stage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
-          finishedAt: new Date().toISOString().split('T')[0],
+          finishedAt,
+          acp,
+          pacp,
         })
         await UserFinishedStage.create({
           userId,
@@ -564,8 +567,6 @@ export default {
         })
 
         await calculateProjectProgress(stage.projectId)
-
-        updateAcp(stage);
 
         return stage
       } catch (error) {
@@ -614,6 +615,7 @@ export default {
           throw new Error('Fechas fuera de rango')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
           name,
           description,
@@ -623,6 +625,8 @@ export default {
           areaId,
           projectId: parentStage.projectId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
@@ -635,8 +639,6 @@ export default {
         calculateProjectProgress(parentStage.projectId).catch((error) => {
           logger.error(error)
         })
-
-        updateAcp(stageCreated);
 
         return stageCreated
       } catch (error) {
@@ -720,6 +722,7 @@ export default {
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
           name,
           description,
@@ -727,11 +730,12 @@ export default {
           endDate,
           areaId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
           await calculateStageProgress(stage.id)
-          updateAcp(subStage);
         } catch (error) {
           logger.error(error)
         }
@@ -828,10 +832,14 @@ export default {
           userId = subStage.area.responsible.id
         }
 
+        const finishedAt =  new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({ startDate: subStage.startDate, endDate: subStage.endDate, finishedAt })
         await subStage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
-          finishedAt: new Date().toISOString().split('T')[0],
+          finishedAt,
+          acp,
+          pacp,
         })
         await UserFinishedStage.create({
           userId,
@@ -852,8 +860,6 @@ export default {
         calculateProjectProgress(subStage.projectId).catch((error) => {
           logger.error(error)
         })
-
-        updateAcp(subStage);
 
         return subStage
       } catch (error) {
