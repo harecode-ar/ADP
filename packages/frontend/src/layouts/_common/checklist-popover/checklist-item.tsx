@@ -121,7 +121,7 @@ export function ChecklistItem(props: TProps) {
           </Box>
 
           <Box>
-            <Tooltip title={checklist.remember ? 'Recordatorio activado' : 'Recordatorio desactivado'}>
+            <Tooltip title={checklist.remember ? 'Desactivar recordatorio' : 'Activar recordatorio'}>
               <IconButton
                 onClick={(event) => {
                   event.stopPropagation()
