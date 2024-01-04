@@ -49,7 +49,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,
-        stateId: project.stateId
+        stateId: project.stateId,
       }
     if (stage)
       return {
@@ -58,7 +58,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.stage.detail,
         acp: stage.acp,
         pacp: stage.pacp,
-        stateId: stage.stateId
+        stateId: stage.stateId,
       }
     if (subStage)
       return {
@@ -67,7 +67,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.subStage.detail,
         acp: subStage.acp,
         pacp: subStage.pacp,
-        stateId: subStage.stateId
+        stateId: subStage.stateId,
       }
     return {
       title: '',
@@ -75,7 +75,7 @@ export default function AssignmentItem(props: TProps) {
       path: '',
       acp: null,
       pacp: null,
-      stateId: 0
+      stateId: 0,
     }
   }, [project, stage, subStage])
 
@@ -95,7 +95,7 @@ export default function AssignmentItem(props: TProps) {
               {assignment.title}
             </Label>
             <Label variant="soft" color={getLabelColor(assignment.stateId)}>
-              {PROJECT_STATE_ARRAY.find(state => state.id === assignment.stateId)?.name || ''}
+              {PROJECT_STATE_ARRAY.find((state) => state.id === assignment.stateId)?.name || ''}
             </Label>
           </Box>
           <Tooltip title="Ver detalle">

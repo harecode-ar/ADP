@@ -30,7 +30,7 @@ export const getAcp = ({
   } else {
     pacp = (time - end) / (deltaDate || 1)
   }
-  
+
   return {
     acp,
     pacp,

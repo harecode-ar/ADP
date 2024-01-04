@@ -116,8 +116,7 @@ const ModalEdit = (props: TProps) => {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-      } catch (error) {
-        console.error(error)
+      } catch {
         enqueueSnackbar('La sub-etapa no pudo ser editada.', { variant: 'error' })
       }
     },

@@ -163,15 +163,19 @@ export default {
         throw error
       }
     },
-    userProjects: async (_: any, args: {
-      stateId?: number
-    }, context: IContext) => {
+    userProjects: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const where = {}
-        if (args.stateId){
+        if (args.stateId) {
           // @ts-ignore
           where.stateId = args.stateId
         }
@@ -326,7 +330,7 @@ export default {
           endDate,
           progress,
           acp,
-          pacp
+          pacp,
         })
 
         return project
@@ -408,13 +412,17 @@ export default {
           projectId: project.id,
         })
 
-        const finishedAt =  new Date().toISOString().split('T')[0]
-        const { acp, pacp } = getAcp({ startDate: project.startDate, endDate: project.endDate, finishedAt })
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: project.startDate,
+          endDate: project.endDate,
+          finishedAt,
+        })
         await project.update({
           stateId: PROJECT_STATE.COMPLETED,
           finishedAt,
           acp,
-          pacp
+          pacp,
         })
 
         return project

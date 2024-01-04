@@ -12,29 +12,25 @@ enum EOption {
   ALL = 'Todos',
   PROJECT = 'Proyectos',
   STAGE = 'Etapas',
-  SUB_STAGE = 'Sub etapas'
+  SUB_STAGE = 'Sub etapas',
 }
 
-
-
 const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
-
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<IProjectState | null> (null)
+  const [selectedState, setSelectedState] = useState<IProjectState | null>(null)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
-    if (newValue.length === 0|| EOption.ALL === newValue[newValue.length - 1]) {
+    if (newValue.length === 0 || EOption.ALL === newValue[newValue.length - 1]) {
       setSelectedOptions([EOption.ALL])
     } else {
-      setSelectedOptions(newValue.filter(option => option !== EOption.ALL ))
+      setSelectedOptions(newValue.filter((option) => option !== EOption.ALL))
     }
   }
   const handleStateChange = (event: React.ChangeEvent<{}>, newValue: IProjectState | null) => {
     setSelectedState(newValue)
-
   }
 
   const handleSearch = (event: any) => {
@@ -45,8 +41,8 @@ export default function AssignmentTab() {
   const assignmentQuery = useQuery(GET_USER_ASSIGNMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      stateId: selectedState?.id
-    }
+      stateId: selectedState?.id,
+    },
   })
 
   const { projects, stages, subStages } = useMemo(() => {
@@ -79,28 +75,41 @@ export default function AssignmentTab() {
   }, [assignmentQuery.data])
 
   const filteredProjects = useMemo(
-    () => projects.filter((project) => (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.PROJECT)) && project.name.toLowerCase().includes(search.toLowerCase())),
+    () =>
+      projects.filter(
+        (project) =>
+          (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.PROJECT)) &&
+          project.name.toLowerCase().includes(search.toLowerCase())
+      ),
     [projects, search, selectedOptions]
   )
 
   const filteredStages = useMemo(
-    () => stages.filter((stage) => (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.STAGE)) && stage.name.toLowerCase().includes(search.toLowerCase())),
+    () =>
+      stages.filter(
+        (stage) =>
+          (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.STAGE)) &&
+          stage.name.toLowerCase().includes(search.toLowerCase())
+      ),
     [stages, search, selectedOptions]
   )
 
   const filteredSubStages = useMemo(
     () =>
-      subStages.filter((subStage) => (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.SUB_STAGE)) && subStage.name.toLowerCase().includes(search.toLowerCase())),
+      subStages.filter(
+        (subStage) =>
+          (selectedOptions.includes(EOption.ALL) || selectedOptions.includes(EOption.SUB_STAGE)) &&
+          subStage.name.toLowerCase().includes(search.toLowerCase())
+      ),
     [subStages, search, selectedOptions]
   )
-
 
   return (
     <Card sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Stack spacing={2} justifyContent="space-between" direction={{ xs: 'column', sm: 'row' }}>
-        <Stack spacing={2} sx={{ width: '100%' }} direction={{ xs: 'column', sm: 'row' }}>
-          <Autocomplete
+          <Stack spacing={2} sx={{ width: '100%' }} direction={{ xs: 'column', sm: 'row' }}>
+            <Autocomplete
               multiple
               options={OPTIONS}
               getOptionLabel={(option) => option}
@@ -119,7 +128,7 @@ export default function AssignmentTab() {
               value={selectedState}
               onChange={handleStateChange}
             />
-            </Stack>
+          </Stack>
           <TextField
             value={search}
             onChange={handleSearch}
@@ -141,7 +150,6 @@ export default function AssignmentTab() {
           subStages={filteredSubStages}
         />
       </Box>
-
     </Card>
   )
 }

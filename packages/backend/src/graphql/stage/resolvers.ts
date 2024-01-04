@@ -223,15 +223,19 @@ export default {
         throw error
       }
     },
-    userStages: async (_: any, args: {
-      stateId?: number
-    }, context: IContext) => {
+    userStages: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
         const where = { parentStageId: null }
-        if (args.stateId){
+        if (args.stateId) {
           // @ts-ignore
           where.stateId = args.stateId
         }
@@ -275,9 +279,13 @@ export default {
         throw error
       }
     },
-    userSubStages: async (_: any, args: {
-      stateId?: number
-    }, context: IContext) => {
+    userSubStages: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -566,8 +574,12 @@ export default {
           userId = stage.area.responsible.id
         }
 
-        const finishedAt =  new Date().toISOString().split('T')[0]
-        const { acp, pacp } = getAcp({ startDate: stage.startDate, endDate: stage.endDate, finishedAt })
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: stage.startDate,
+          endDate: stage.endDate,
+          finishedAt,
+        })
         await stage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
@@ -846,8 +858,12 @@ export default {
           userId = subStage.area.responsible.id
         }
 
-        const finishedAt =  new Date().toISOString().split('T')[0]
-        const { acp, pacp } = getAcp({ startDate: subStage.startDate, endDate: subStage.endDate, finishedAt })
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: subStage.startDate,
+          endDate: subStage.endDate,
+          finishedAt,
+        })
         await subStage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
