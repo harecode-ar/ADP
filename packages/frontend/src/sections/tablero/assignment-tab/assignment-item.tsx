@@ -1,7 +1,7 @@
-import { IProject, IStage } from '@adp/shared'
+import { IProject, IStage, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
-import { Tooltip, Link, IconButton, Stack, Card } from '@mui/material'
+import { Tooltip, Link, IconButton, Stack, Card, Box } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import { fDate } from 'src/utils/format-time'
 import Label from 'src/components/label'
@@ -9,6 +9,7 @@ import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
 import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import getLabelColor from 'src/utils/color-progress'
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +49,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,
+        stateId: project.stateId
       }
     if (stage)
       return {
@@ -56,6 +58,7 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.stage.detail,
         acp: stage.acp,
         pacp: stage.pacp,
+        stateId: stage.stateId
       }
     if (subStage)
       return {
@@ -64,11 +67,15 @@ export default function AssignmentItem(props: TProps) {
         path: paths.dashboard.subStage.detail,
         acp: subStage.acp,
         pacp: subStage.pacp,
+        stateId: subStage.stateId
       }
     return {
       title: '',
       color: 'default',
       path: '',
+      acp: null,
+      pacp: null,
+      stateId: 0
     }
   }, [project, stage, subStage])
 
@@ -83,10 +90,14 @@ export default function AssignmentItem(props: TProps) {
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Label variant="soft" color={assignment.color as any}>
-            {assignment.title}
-          </Label>
-
+          <Box>
+            <Label variant="soft" sx={{ mr: 1 }} color={assignment.color as any}>
+              {assignment.title}
+            </Label>
+            <Label variant="soft" color={getLabelColor(assignment.stateId)}>
+              {PROJECT_STATE_ARRAY.find(state => state.id === assignment.stateId)?.name || ''}
+            </Label>
+          </Box>
           <Tooltip title="Ver detalle">
             <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
               <IconButton>
