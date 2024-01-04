@@ -7,6 +7,17 @@ import type { IContext } from '../types'
 
 export default {
   Query: {
+    configuration: async (_: any, { key }: { key: string }, context: IContext): Promise<string> => {
+      try {
+        needPermission([PERMISSION_MAP.CONFIGURATION_READ], context)
+        const configuration = await Configuration.findOne({ where: { key } })
+        if (!configuration) throw new Error(`No se encontró la configuración ${key}`)
+        return configuration.value
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
     configurations: async (_: any, __: any, context: IContext): Promise<IConfiguration[]> => {
       try {
         needPermission([PERMISSION_MAP.CONFIGURATION_READ], context)
