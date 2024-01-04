@@ -174,6 +174,7 @@ const EditAreaModal = (props: TProps) => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
+                  noOptionsText="No hay areas"
                   options={filteredAreas}
                   getOptionLabel={(option) => option.name}
                   value={formik.values.parent}

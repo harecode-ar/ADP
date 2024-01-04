@@ -14,22 +14,8 @@ import { Box, IconButton, Link } from '@mui/material'
 import Label from 'src/components/label'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
+import getLabelColor from 'src/utils/color-progress'
 import ModalEdit from './modal-edit'
-
-const getLabelColor = (id: number) => {
-  switch (id) {
-    case 1:
-      return 'secondary'
-    case 2:
-      return 'warning'
-    case 3:
-      return 'success'
-    case 4:
-      return 'error'
-    default:
-      return 'warning'
-  }
-}
 
 type TRow = Pick<
   IProject,
@@ -92,7 +78,11 @@ const columns: TColumn[] = [
     renderCell: (row: any) => {
       const result = row.state?.name
       return (
-        <Label variant="soft" sx={{ ml: 1 }} color={getLabelColor(row.state.id)}>
+        <Label
+          variant="soft"
+          sx={{ ml: 1 }}
+          color={getLabelColor(row.state?.id || row.state?.name)}
+        >
           {result}
         </Label>
       )
