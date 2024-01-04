@@ -92,7 +92,7 @@ export default function ProjectDetailView(props: TProps) {
                 <Iconify icon="material-symbols:edit" mr={1} />
                 Editar
               </Button>
-              {subStage && subStage.state.id !== STAGE_STATE.COMPLETED && (
+              {subStage && subStage.stateId !== STAGE_STATE.COMPLETED && (
                 <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
