@@ -28,6 +28,14 @@ export const UPDATE_CHECKLIST = gql`
   }
 `
 
+export const UPDATE_REMEMBER_CHECKLIST = gql`
+  mutation updateRememberChecklist($id: Int!, $remember: Boolean!) {
+    updateRememberChecklist(id: $id, remember: $remember) {
+      id
+    }
+  }
+`
+
 export const DELETE_CHECKLIST = gql`
   mutation deleteChecklist($id: Int!) {
     deleteChecklist(id: $id) {

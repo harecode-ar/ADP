@@ -45,6 +45,8 @@ export default `#graphql
       checks: [CheckInput]
     ): Checklist
 
+    updateRememberChecklist(id: Int!, remember: Boolean!): Checklist
+
     deleteChecklist(id: Int!): Checklist
   }
 `
