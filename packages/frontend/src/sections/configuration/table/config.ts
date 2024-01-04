@@ -1,4 +1,4 @@
-import { IConfiguration } from '@adp/shared'
+import { IConfiguration, EConfigurationKey } from '@adp/shared'
 import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 
@@ -17,12 +17,42 @@ export const COLUMNS: TColumn[] = [
     id: 'key',
     label: 'Clave',
     type: EColumnType.STRING,
-    renderCell: (row: TRow) => row.key,
+    renderCell: (row: TRow) => {
+      switch (row.key) {
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+          return 'Margen de alerta'
+        default:
+          return row.key
+      }
+    },
+    searchValue: (row: TRow) => {
+      switch (row.key) {
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+          return 'Margen de alerta'
+        default:
+          return row.key
+      }
+    },
   },
   {
     id: 'value',
     label: 'Valor',
     type: EColumnType.STRING,
-    renderCell: (row: TRow) => row.value,
+    renderCell: (row: TRow) => {
+      switch (row.key) {
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+          return `${Number(row.value) * 100}%`
+        default:
+          return row.value
+      }
+    },
+    searchValue: (row: TRow) => {
+      switch (row.key) {
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+          return `${Number(row.value) * 100}%`
+        default:
+          return row.value
+      }
+    },
   },
 ]

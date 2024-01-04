@@ -1,10 +1,7 @@
 'use client'
 
 import React from 'react'
-import {
-  Box,
-  Container
-} from '@mui/material'
+import { Box, Container } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
 import { usePrint } from 'src/hooks/use-print'
@@ -33,7 +30,6 @@ export default function ConfigurationView() {
         <TableContextProvider>
           <Table />
         </TableContextProvider>
-
       </Box>
     </Container>
   )
