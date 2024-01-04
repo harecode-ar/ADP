@@ -15,11 +15,6 @@ import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 import { getAcp } from '../../utils/average-completition'
 
-function updateAcp(project: Project) {
-  const { acp, pacp } = getAcp(project);
-  return project.update({ acp, pacp });
-}
-
 export default {
   Project: {
     state: (project: IProject): Promise<IProjectState | null> => {
@@ -245,6 +240,7 @@ export default {
           throw new Error('Start date must be before end date')
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const project = await Project.create({
           name,
           description,
@@ -252,10 +248,10 @@ export default {
           cost,
           startDate,
           endDate,
+          acp,
+          pacp,
           stateId: STAGE_STATE.NEW,
         })
-
-        updateAcp(project)
 
         return project
       } catch (error) {
@@ -312,6 +308,7 @@ export default {
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: project.finishedAt })
         await project.update({
           name,
           description,
@@ -320,9 +317,9 @@ export default {
           startDate,
           endDate,
           progress,
+          acp,
+          pacp
         })
-
-        updateAcp(project)
 
         return project
       } catch (error) {
@@ -403,7 +400,14 @@ export default {
           projectId: project.id,
         })
         
-        updateAcp(project)
+        const finishedAt =  new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({ startDate: project.startDate, endDate: project.endDate, finishedAt })
+        await project.update({
+          stateId: PROJECT_STATE.COMPLETED,
+          finishedAt,
+          acp,
+          pacp
+        })
         
         return project
       } catch (error) {
