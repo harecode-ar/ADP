@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_USER_ASSIGNMENTS = gql`
-  query userAssignments {
-    userProjects {
+  query userAssignments($stateId: Int) {
+    userProjects(stateId: $stateId) {
       id
       name
       description
@@ -13,7 +13,7 @@ export const GET_USER_ASSIGNMENTS = gql`
       pacp
       stateId
     }
-    userStages {
+    userStages(stateId: $stateId) {
       id
       name
       description
@@ -25,7 +25,7 @@ export const GET_USER_ASSIGNMENTS = gql`
       stateId
       hasStages
     }
-    userSubStages {
+    userSubStages(stateId: $stateId) {
       id
       name
       description

@@ -34,8 +34,8 @@ export default `#graphql
     subStage(id: Int): Stage
     stagesByProject(projectId: Int): [Stage]
     subStagesByStage(stageId: Int): [Stage]
-    userStages: [Stage]
-    userSubStages: [Stage]
+    userStages(stateId: Int): [Stage]
+    userSubStages(stateId: Int): [Stage]
   }
 
   type Mutation {

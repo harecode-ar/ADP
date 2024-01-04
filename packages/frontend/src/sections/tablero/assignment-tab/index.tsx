@@ -1,8 +1,8 @@
 'use client'
 
-import { IProject, IStage } from '@adp/shared'
+import { IProject, IProjectState, IStage, PROJECT_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
-import { Box, Stack, TextField, InputAdornment, Card, Grid, Autocomplete } from '@mui/material'
+import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
@@ -15,18 +15,27 @@ enum EOption {
   SUB_STAGE = 'Sub etapas'
 }
 
+
+
 const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
+
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
+  const [selectedState, setSelectedState] = useState<IProjectState | undefined> (undefined)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
+    if (newValue.length === 0) return
     if (EOption.ALL === newValue[newValue.length - 1]) {
       setSelectedOptions([EOption.ALL])
     } else {
       setSelectedOptions(newValue.filter(option => option !== EOption.ALL ))
     }
+  }
+  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: IProjectState | undefined) => {
+    setSelectedState(newValue)
+
   }
 
   const handleSearch = (event: any) => {
@@ -36,6 +45,9 @@ export default function AssignmentTab() {
 
   const assignmentQuery = useQuery(GET_USER_ASSIGNMENTS, {
     fetchPolicy: 'cache-and-network',
+    variables: {
+      stateId: selectedState?.id
+    }
   })
 
   const { projects, stages, subStages } = useMemo(() => {
@@ -100,14 +112,13 @@ export default function AssignmentTab() {
               onChange={handleChangeOptions}
             />
             <Autocomplete
-              multiple
-              options={OPTIONS}
-              getOptionLabel={(option) => option}
+              options={PROJECT_STATE_ARRAY as IProjectState[]}
+              getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"
               disableClearable
-              value={selectedOptions}
-              onChange={handleChangeOptions}
+              value={selectedState}
+              onChange={handleStateChange}
             />
             </Stack>
           <TextField

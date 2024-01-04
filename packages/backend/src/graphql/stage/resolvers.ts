@@ -222,11 +222,18 @@ export default {
         throw error
       }
     },
-    userStages: async (_: any, __: any, context: IContext) => {
+    userStages: async (_: any, args: {
+      stateId?: number
+    }, context: IContext) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const where = { parentStageId: null }
+        if (args.stateId){
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -239,7 +246,7 @@ export default {
                   model: Stage,
                   as: 'stages',
                   order: [['startDate', 'ASC']],
-                  where: { parentStageId: null },
+                  where,
                   attributes: [
                     'id',
                     'name',
@@ -267,11 +274,18 @@ export default {
         throw error
       }
     },
-    userSubStages: async (_: any, __: any, context: IContext) => {
+    userSubStages: async (_: any, args: {
+      stateId?: number
+    }, context: IContext) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const where = { parentStageId: { [Op.ne]: null } }
+        if (args.stateId) {
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -284,7 +298,7 @@ export default {
                   model: Stage,
                   as: 'stages',
                   order: [['startDate', 'ASC']],
-                  where: { parentStageId: { [Op.ne]: null } },
+                  where,
                   attributes: [
                     'id',
                     'name',

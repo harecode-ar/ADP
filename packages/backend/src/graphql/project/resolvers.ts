@@ -162,11 +162,18 @@ export default {
         throw error
       }
     },
-    userProjects: async (_: any, __: any, context: IContext) => {
+    userProjects: async (_: any, args: {
+      statedId?: number
+    }, context: IContext) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const where = {}
+        if (args.statedId){
+          // @ts-ignore
+          where.stateId = args.statedId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -174,6 +181,7 @@ export default {
               model: Area,
               as: 'areas',
               attributes: ['id'],
+              where,
               include: [
                 {
                   model: Project,
