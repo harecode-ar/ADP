@@ -210,7 +210,11 @@ export default function KanbanDetails(props: TProps) {
           </Stack>
 
           {subStage && subStage.state.id !== STAGE_STATE.COMPLETED && (
-            <Button variant="contained" style={{ width: '120px' }} onClick={modalFinishSubStage.onTrue}>
+            <Button
+              variant="contained"
+              style={{ width: '120px' }}
+              onClick={modalFinishSubStage.onTrue}
+            >
               <Iconify icon="pajamas:todo-done" mr={1} />
               Finalizar
             </Button>

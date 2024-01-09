@@ -231,7 +231,11 @@ export default function KanbanDetails(props: TProps) {
             />
           </Stack>
           {stage && stage.state.id !== STAGE_STATE.COMPLETED && (
-            <Button variant="contained" style={{ width: '120px' }} onClick={modalFinishStage.onTrue}>
+            <Button
+              variant="contained"
+              style={{ width: '120px' }}
+              onClick={modalFinishStage.onTrue}
+            >
               <Iconify icon="pajamas:todo-done" mr={1} />
               Finalizar
             </Button>
@@ -246,11 +250,7 @@ export default function KanbanDetails(props: TProps) {
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
       {modalFinishStage.value && (
-        <ModalFinishStage
-          modal={modalFinishStage}
-          refetch={refetch}
-          stageId={Number(stageId)}
-        />
+        <ModalFinishStage modal={modalFinishStage} refetch={refetch} stageId={Number(stageId)} />
       )}
     </Drawer>
   )

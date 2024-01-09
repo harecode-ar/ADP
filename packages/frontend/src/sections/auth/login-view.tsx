@@ -59,7 +59,6 @@ export default function JwtLoginView() {
 
       router.push(returnTo || PATH_AFTER_LOGIN)
     } catch (error) {
-      console.error(error)
       reset()
       setErrorMsg(typeof error === 'string' ? error : error.message)
     }
@@ -100,7 +99,7 @@ export default function JwtLoginView() {
         variant="contained"
         loading={isSubmitting}
       >
-        Iniciar sesión
+        {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
       </LoadingButton>
       <Box
         sx={{

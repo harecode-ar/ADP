@@ -45,6 +45,7 @@ type TProps = {
 
 type TFormikValues = {
   title: string
+  remember: boolean
   checks: TCheck[]
 }
 
@@ -60,6 +61,7 @@ export default function CreateChecklistModal(props: TProps) {
   const formik = useFormik({
     initialValues: {
       title: '',
+      remember: false,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -68,18 +70,25 @@ export default function CreateChecklistModal(props: TProps) {
           variables: {
             id: checklist.id,
             title: values.title,
+            remember: values.remember,
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
             })),
           },
         })
-        enqueueSnackbar('Listado de tareas editado correctamente.', { variant: 'success' })
+        enqueueSnackbar('Listado de tareas editado correctamente.', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch {
-        enqueueSnackbar('El listado de tareas no pudo ser editado.', { variant: 'error' })
+        enqueueSnackbar('El listado de tareas no pudo ser editado.', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
       }
     },
     validationSchema: checklistSchema,
@@ -96,6 +105,7 @@ export default function CreateChecklistModal(props: TProps) {
       }
       formik.setValues({
         title: d.checklist.title,
+        remember: d.checklist.remember,
         checks: d.checklist.checks || [],
       })
     },
@@ -200,28 +210,42 @@ export default function CreateChecklistModal(props: TProps) {
               </Typography>
             )}
           </Grid>
+
           <Grid item xs={12}>
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 1,
               }}
             >
-              <Button onClick={modal.onFalse} color="primary" variant="outlined" disabled={loading}>
-                <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                Cancelar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => formik.handleSubmit()}
-                disabled={loading}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
               >
-                <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                {loading ? 'Guardando...' : 'Guardar'}
-              </Button>
+                <Button
+                  onClick={modal.onFalse}
+                  color="primary"
+                  variant="outlined"
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                  Cancelar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => formik.handleSubmit()}
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                  {loading ? 'Guardando...' : 'Guardar'}
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>

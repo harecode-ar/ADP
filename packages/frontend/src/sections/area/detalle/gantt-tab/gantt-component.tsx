@@ -70,6 +70,7 @@ const GanttComponent = (props: TProps) => {
     <Card sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Autocomplete
+          noOptionsText="No hay estados"
           style={{ width: 170, marginBottom: '16px' }}
           options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
           getOptionLabel={(option) => option.name}

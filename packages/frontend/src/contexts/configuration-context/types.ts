@@ -4,6 +4,7 @@ import React from 'react'
 export type TConfigurationContextProps = {
   configurations: Pick<IConfiguration, 'key' | 'value'>[]
   refetch: () => void
+  loading: boolean
 }
 
 export type TConfigurationProviderProps = {

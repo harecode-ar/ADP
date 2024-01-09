@@ -15,7 +15,7 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { AREAS_FOR_SELECT} from 'src/graphql/queries'
+import { AREAS_FOR_SELECT } from 'src/graphql/queries'
 import { UPDATE_SUB_STAGE } from 'src/graphql/mutations'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -116,8 +116,7 @@ const ModalEdit = (props: TProps) => {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-      } catch (error) {
-        console.error(error)
+      } catch {
         enqueueSnackbar('La sub-etapa no pudo ser editada.', { variant: 'error' })
       }
     },
@@ -200,6 +199,7 @@ const ModalEdit = (props: TProps) => {
               {/* area */}
               <Grid item xs={12}>
                 <Autocomplete
+                  noOptionsText="No hay areas"
                   options={areas}
                   getOptionLabel={(option) => option.name}
                   value={formik.values.area}

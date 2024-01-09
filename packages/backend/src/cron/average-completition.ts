@@ -1,4 +1,12 @@
 import cron from 'node-cron'
+import {
+  PROJECT_STATE,
+  STAGE_STATE,
+  EConfigurationKey,
+  IArea,
+  ENotificationCategory,
+} from '@adp/shared'
+import { Op } from 'sequelize'
 import { sequelize } from '../database'
 import {
   Project,
@@ -9,19 +17,36 @@ import {
   UserAverageCompletition,
   Area,
   AreaAverageCompletition,
+  Configuration,
+  Notification,
+  UserNotification,
 } from '../database/models'
 import { getAcp } from '../utils/average-completition'
+import { getDaysDiff } from '../utils/date'
 
-// Run every 24 hours
-cron.schedule('0 0 * * *', async () => {
+const daysToText = (days: number) => {
+  const abs = Math.abs(days)
+  if (abs === 1) return `1 dia`
+  return `${abs} dias`
+}
+
+// Run every dat at 00:30 AM (UTC-3)
+// Run every dat at 03:30 AM (UTC)
+cron.schedule('30 3 * * *', async () => {
   // Run every 1 minute
   // cron.schedule('*/1 * * * *', async () => {
   const [projects, stages] = await Promise.all([
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
+      where: {
+        stateId: PROJECT_STATE.IN_PROGRESS,
+      },
     }),
     Stage.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
+      where: {
+        stateId: STAGE_STATE.IN_PROGRESS,
+      },
     }),
   ])
 
@@ -149,4 +174,185 @@ cron.schedule('0 0 * * *', async () => {
       }
     })
   )
+})
+
+// Run every dat at 00:35 AM (UTC-3)
+// Run every dat at 03:35 AM (UTC)
+cron.schedule('35 3 * * *', async () => {
+  const configuration = await Configuration.findOne({
+    where: { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN },
+  })
+
+  const percentageAlertMargin = configuration ? Number(configuration.value) : 0
+
+  const areas = await Area.findAll({
+    attributes: ['id', 'responsibleId'],
+  })
+
+  const areaMap = areas.reduce(
+    (acc, area) => ({
+      ...acc,
+      [area.id]: area,
+    }),
+    {} as {
+      [key: number]: IArea
+    }
+  )
+
+  const [projects, foundStages] = await Promise.all([
+    Project.findAll({
+      attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'areaId'],
+      where: {
+        stateId: PROJECT_STATE.IN_PROGRESS,
+        areaId: {
+          [Op.not]: null,
+        },
+      },
+    }),
+    Stage.findAll({
+      attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'parentStageId', 'areaId'],
+      where: {
+        stateId: STAGE_STATE.IN_PROGRESS,
+        areaId: {
+          [Op.not]: null,
+        },
+      },
+    }),
+  ])
+
+  const stages = foundStages.filter((stage) => {
+    const { parentStageId } = stage
+    return !parentStageId
+  })
+
+  const subStages = foundStages.filter((stage) => {
+    const { parentStageId } = stage
+    return parentStageId
+  })
+
+  projects.forEach((project) => {
+    const { name, startDate, endDate, areaId } = project
+
+    if (!areaId) return null
+
+    const area = areaMap[areaId as keyof typeof areaMap]
+
+    if (!area?.responsibleId) return null
+
+    const currentDate = new Date().toISOString().split('T')[0]
+    const days = getDaysDiff(startDate, endDate)
+
+    const expectedDays = Math.round(days * percentageAlertMargin) || 1
+    const currentDays = getDaysDiff(currentDate, endDate)
+
+    let notificationTitle: string | null = null
+
+    if (currentDays === 0) {
+      notificationTitle = `El plazo del proyecto "${name}" vence hoy`
+    } else if (currentDays < 0) {
+      notificationTitle = `El plazo del proyecto "${name}" vencio hace ${daysToText(currentDays)}`
+    } else if (expectedDays >= currentDays) {
+      notificationTitle = `Faltan ${daysToText(
+        currentDays
+      )} para que finalize el plazo del proyecto "${name}"`
+    }
+
+    if (notificationTitle) {
+      Notification.create({
+        title: notificationTitle,
+        category: ENotificationCategory.PROJECT,
+      }).then((notification) => {
+        UserNotification.create({
+          userId: area.responsibleId,
+          notificationId: notification.id,
+        })
+      })
+    }
+
+    return null
+  })
+  stages.forEach((stage) => {
+    const { name, startDate, endDate, areaId } = stage
+
+    if (!areaId) return null
+
+    const area = areaMap[areaId as keyof typeof areaMap]
+
+    if (!area?.responsibleId) return null
+
+    const currentDate = new Date().toISOString().split('T')[0]
+    const days = getDaysDiff(startDate, endDate)
+
+    const expectedDays = Math.round(days * percentageAlertMargin) || 1
+    const currentDays = getDaysDiff(currentDate, endDate)
+
+    let notificationTitle: string | null = null
+
+    if (currentDays === 0) {
+      notificationTitle = `El plazo de la etapa "${name}" vence hoy`
+    } else if (currentDays < 0) {
+      notificationTitle = `El plazo de la etapa "${name}" vencio hace ${daysToText(currentDays)}`
+    } else if (expectedDays >= currentDays) {
+      notificationTitle = `Faltan ${daysToText(
+        currentDays
+      )} para que finalize el plazo de la etapa "${name}"`
+    }
+
+    if (notificationTitle) {
+      Notification.create({
+        title: notificationTitle,
+        category: ENotificationCategory.STAGE,
+      }).then((notification) => {
+        UserNotification.create({
+          userId: area.responsibleId,
+          notificationId: notification.id,
+        })
+      })
+    }
+
+    return null
+  })
+  subStages.forEach((subStage) => {
+    const { name, startDate, endDate, areaId } = subStage
+
+    if (!areaId) return null
+
+    const area = areaMap[areaId as keyof typeof areaMap]
+
+    if (!area?.responsibleId) return null
+
+    const currentDate = new Date().toISOString().split('T')[0]
+    const days = getDaysDiff(startDate, endDate)
+
+    const expectedDays = Math.round(days * percentageAlertMargin) || 1
+    const currentDays = getDaysDiff(currentDate, endDate)
+
+    let notificationTitle: string | null = null
+
+    if (currentDays === 0) {
+      notificationTitle = `El plazo de la sub etapa "${name}" vence hoy`
+    } else if (currentDays < 0) {
+      notificationTitle = `El plazo de la sub etapa "${name}" vencio hace ${daysToText(
+        currentDays
+      )}`
+    } else if (expectedDays >= currentDays) {
+      notificationTitle = `Faltan ${daysToText(
+        currentDays
+      )} para que finalize el plazo de la sub etapa "${name}"`
+    }
+
+    if (notificationTitle) {
+      Notification.create({
+        title: notificationTitle,
+        category: ENotificationCategory.SUB_STAGE,
+      }).then((notification) => {
+        UserNotification.create({
+          userId: area.responsibleId,
+          notificationId: notification.id,
+        })
+      })
+    }
+
+    return null
+  })
 })

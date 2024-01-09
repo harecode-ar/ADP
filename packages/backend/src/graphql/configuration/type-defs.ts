@@ -14,6 +14,7 @@ export default `#graphql
   }
 
   type Query {
+    configuration(key: String!): String
     configurations: [Configuration]
   }
 

@@ -5,6 +5,8 @@ export const GET_USER_CHECKLISTS = gql`
     userChecklists {
       id
       title
+      finished
+      remember
       createdAt
       updatedAt
       stage {
@@ -66,6 +68,7 @@ export const GET_CHECKLIST = gql`
     checklist(id: $id) {
       id
       title
+      remember
       createdAt
       updatedAt
       checks {

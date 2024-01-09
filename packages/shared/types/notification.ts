@@ -3,6 +3,7 @@ import type { IUser } from './user'
 export enum ENotificationCategory {
   PROJECT = 'Proyecto',
   STAGE = 'Etapa',
+  SUB_STAGE = 'Sub Etapa',
   AREA = 'Area',
 }
 

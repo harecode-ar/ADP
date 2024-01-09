@@ -100,8 +100,13 @@ export function useNavData(): TNavData[] {
                 { title: 'Listado', path: paths.dashboard.project.list },
               ],
             },
+            {
+              title: 'Configuración',
+              path: paths.dashboard.configuration.root,
+              icon: ICONS.user,
+            },
           ],
-          roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
+          roles: [ROLE_MAP.ADMIN],
         },
       ].map(
         (group) =>

@@ -1,12 +1,21 @@
 import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
 import type { IStage, IUser, IProjectState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
-import { Stage, Project, StageState, Area, User, StageNote, UserFinishedStage } from '../../database/models'
+import {
+  Stage,
+  Project,
+  StageState,
+  Area,
+  User,
+  StageNote,
+  UserFinishedStage,
+} from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
+import { getAcp } from '../../utils/average-completition'
 
 export default {
   Stage: {
@@ -214,11 +223,22 @@ export default {
         throw error
       }
     },
-    userStages: async (_: any, __: any, context: IContext) => {
+    userStages: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const where = { parentStageId: null }
+        if (args.stateId) {
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -231,7 +251,7 @@ export default {
                   model: Stage,
                   as: 'stages',
                   order: [['startDate', 'ASC']],
-                  where: { parentStageId: null },
+                  where,
                   attributes: [
                     'id',
                     'name',
@@ -239,6 +259,8 @@ export default {
                     'startDate',
                     'endDate',
                     'progress',
+                    'acp',
+                    'pacp',
                     'stateId',
                   ],
                 },
@@ -257,11 +279,22 @@ export default {
         throw error
       }
     },
-    userSubStages: async (_: any, __: any, context: IContext) => {
+    userSubStages: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const where = { parentStageId: { [Op.ne]: null } }
+        if (args.stateId) {
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -274,7 +307,7 @@ export default {
                   model: Stage,
                   as: 'stages',
                   order: [['startDate', 'ASC']],
-                  where: { parentStageId: { [Op.ne]: null } },
+                  where,
                   attributes: [
                     'id',
                     'name',
@@ -282,6 +315,8 @@ export default {
                     'startDate',
                     'endDate',
                     'progress',
+                    'acp',
+                    'pacp',
                     'stateId',
                   ],
                 },
@@ -332,6 +367,7 @@ export default {
         if (start < projectStart || end > projectEnd) throw new Error('Dates out of range')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
           name,
           description,
@@ -341,6 +377,8 @@ export default {
           areaId,
           projectId,
           parentStageId,
+          acp,
+          pacp,
         })
         try {
           await calculateProjectProgress(projectId)
@@ -436,6 +474,7 @@ export default {
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
           name,
           description,
@@ -444,6 +483,8 @@ export default {
           hasStages,
           areaId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
@@ -494,11 +535,7 @@ export default {
       }
     },
 
-    finishStage: async (
-      _: any,
-      args: Pick<IStage, 'id'>,
-      context: IContext
-    ): Promise<Stage> => {
+    finishStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -537,10 +574,18 @@ export default {
           userId = stage.area.responsible.id
         }
 
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: stage.startDate,
+          endDate: stage.endDate,
+          finishedAt,
+        })
         await stage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
-          finishedAt: new Date().toISOString().split('T')[0],
+          finishedAt,
+          acp,
+          pacp,
         })
         await UserFinishedStage.create({
           userId,
@@ -548,7 +593,7 @@ export default {
         })
 
         await calculateProjectProgress(stage.projectId)
-        
+
         return stage
       } catch (error) {
         logger.error(error)
@@ -596,6 +641,7 @@ export default {
           throw new Error('Fechas fuera de rango')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
           name,
           description,
@@ -605,6 +651,8 @@ export default {
           areaId,
           projectId: parentStage.projectId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
@@ -700,6 +748,7 @@ export default {
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
           name,
           description,
@@ -707,6 +756,8 @@ export default {
           endDate,
           areaId,
           parentStageId,
+          acp,
+          pacp,
         })
 
         try {
@@ -768,11 +819,7 @@ export default {
       }
     },
 
-    finishSubStage: async (
-      _: any,
-      args: Pick<IStage, 'id'>,
-      context: IContext
-    ): Promise<Stage> => {
+    finishSubStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -811,10 +858,18 @@ export default {
           userId = subStage.area.responsible.id
         }
 
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: subStage.startDate,
+          endDate: subStage.endDate,
+          finishedAt,
+        })
         await subStage.update({
           stateId: STAGE_STATE.COMPLETED,
           progress: 1,
-          finishedAt: new Date().toISOString().split('T')[0],
+          finishedAt,
+          acp,
+          pacp,
         })
         await UserFinishedStage.create({
           userId,
@@ -841,6 +896,6 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
 }

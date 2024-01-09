@@ -135,10 +135,12 @@ export default {
           userId: user.id,
           stageId,
           projectId,
+          finished: checks.every((check) => check.checked),
         })
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
         )
+
         return checklist
       } catch (error) {
         logger.error(error)
@@ -168,6 +170,7 @@ export default {
           title,
           stageId,
           projectId,
+          finished: checks.every((check) => check.checked),
         })
         await Check.destroy({
           where: {
@@ -177,6 +180,34 @@ export default {
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
         )
+
+        return checklist
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    updateRememberChecklist: async (
+      _: any,
+      args: Pick<IChecklist, 'id' | 'remember'>,
+      context: IContext
+    ): Promise<Omit<IChecklist, 'checks' | 'user' | 'stage' | 'project'>> => {
+      try {
+        needPermission([PERMISSION_MAP.CHECKLIST_UPDATE], context)
+        const { id, remember } = args
+        const { user } = context
+        if (!user) throw new Error('No autorizado')
+        const checklist = await Checklist.findOne({
+          where: {
+            id,
+            userId: user.id,
+          },
+        })
+        if (!checklist) throw new Error('Checklist no encontrado')
+        await checklist.update({
+          remember,
+        })
+
         return checklist
       } catch (error) {
         logger.error(error)

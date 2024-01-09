@@ -32,6 +32,7 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ onViewModeChange }) 
     <Box className="ViewContainer">
       <FormControl>
         <Autocomplete
+          noOptionsText="No hay opciones"
           style={{ width: 150, marginBottom: '16px' }}
           options={viewOptions}
           getOptionLabel={(option) => option.label}

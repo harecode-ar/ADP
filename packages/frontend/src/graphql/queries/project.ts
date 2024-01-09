@@ -154,6 +154,8 @@ export const GET_PROJECT = gql`
       progress
       stateId
       areaId
+      acp
+      pacp
       area {
         id
         name

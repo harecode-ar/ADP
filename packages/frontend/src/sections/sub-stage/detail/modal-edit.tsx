@@ -85,7 +85,6 @@ const ModalEdit = (props: TProps) => {
     return []
   }, [dataAreas])
 
-
   const formik = useFormik({
     initialValues: {
       id: null,
@@ -116,8 +115,7 @@ const ModalEdit = (props: TProps) => {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-      } catch (error) {
-        console.error(error)
+      } catch {
         enqueueSnackbar('La etapa no pudo ser editada.', { variant: 'error' })
       }
     },
@@ -200,6 +198,7 @@ const ModalEdit = (props: TProps) => {
               {/* area */}
               <Grid item xs={12} md={12}>
                 <Autocomplete
+                  noOptionsText="No hay areas"
                   options={areas}
                   getOptionLabel={(option) => option.name}
                   value={formik.values.area}

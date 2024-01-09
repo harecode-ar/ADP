@@ -2,6 +2,8 @@ export default `#graphql
   type Checklist {
     id: Int
     title: String
+    finished: Boolean
+    remember: Boolean
     userId: Int
     stageId: Int
     projectId: Int
@@ -42,6 +44,8 @@ export default `#graphql
       projectId: Int
       checks: [CheckInput]
     ): Checklist
+
+    updateRememberChecklist(id: Int!, remember: Boolean!): Checklist
 
     deleteChecklist(id: Int!): Checklist
   }

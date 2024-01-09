@@ -67,6 +67,9 @@ export const GET_STAGE = gql`
       description
       hasStages
       projectId
+      stateId
+      acp
+      pacp
       project {
         id
         name
@@ -112,6 +115,7 @@ export const GET_SUB_STAGE = gql`
       hasStages
       projectId
       parentStageId
+      stateId
       parentStage {
         id
         name

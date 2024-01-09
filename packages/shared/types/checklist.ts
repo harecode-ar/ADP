@@ -9,6 +9,8 @@ export interface IChecklist {
   userId: number
   stageId: number | null
   projectId: number | null
+  finished: boolean
+  remember: boolean
 
   createdAt: String
   updatedAt: String

@@ -27,11 +27,11 @@ import { CREATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const checklistSchema = Yup.object().shape({
-  title: Yup.string().required('titulo requerido'),
+  title: Yup.string().required('Título requerido'),
   checks: Yup.array().of(
     Yup.object().shape({
-      title: Yup.string().required('titulo requerido'),
-      checked: Yup.boolean().required('checked requerido'),
+      title: Yup.string().required('Título requerido'),
+      checked: Yup.boolean().required('Checked requerido'),
     })
   ),
 })
@@ -43,6 +43,7 @@ type TProps = {
 
 type TFormikValues = {
   title: string
+  remember: boolean
   checks: TCheck[]
 }
 
@@ -58,6 +59,7 @@ export default function CreateChecklistModal(props: TProps) {
   const formik = useFormik({
     initialValues: {
       title: '',
+      remember: false,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -65,18 +67,25 @@ export default function CreateChecklistModal(props: TProps) {
         await createChecklist({
           variables: {
             title: values.title,
+            remember: values.remember,
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
             })),
           },
         })
-        enqueueSnackbar('Listado de tareas creada correctamente.', { variant: 'success' })
+        enqueueSnackbar('Listado de tareas creada correctamente.', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch {
-        enqueueSnackbar('El listado de tareas no pudo ser creado.', { variant: 'error' })
+        enqueueSnackbar('El listado de tareas no pudo ser creado.', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        })
       }
     },
     validationSchema: checklistSchema,
@@ -140,6 +149,7 @@ export default function CreateChecklistModal(props: TProps) {
               helperText={formik.errors.title}
             />
           </Grid>
+
           <Grid item xs={12}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography variant="h6" gutterBottom style={{ fontSize: '1rem' }}>
@@ -175,7 +185,14 @@ export default function CreateChecklistModal(props: TProps) {
               </Stack>
             </Scrollbar>
             {!!formik.errors.checks && (
-              <Typography color="error" variant="caption">
+              <Typography
+                color="error"
+                variant="caption"
+                sx={{
+                  display: 'block',
+                  mt: 2,
+                }}
+              >
                 No puede haber tareas vacias
               </Typography>
             )}
@@ -184,24 +201,37 @@ export default function CreateChecklistModal(props: TProps) {
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 1,
               }}
             >
-              <Button onClick={modal.onFalse} color="primary" variant="outlined" disabled={loading}>
-                <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
-                Cancelar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => formik.handleSubmit()}
-                disabled={loading}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
               >
-                <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                {loading ? 'Creando...' : 'Crear'}
-              </Button>
+                <Button
+                  onClick={modal.onFalse}
+                  color="primary"
+                  variant="outlined"
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                  Cancelar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => formik.handleSubmit()}
+                  disabled={loading}
+                >
+                  <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
+                  {loading ? 'Creando...' : 'Crear'}
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>

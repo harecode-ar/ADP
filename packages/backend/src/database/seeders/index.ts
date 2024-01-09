@@ -6,6 +6,7 @@ import { cacheSeed } from './cache'
 import { projectSeed } from './project'
 import { stageSeed } from './stage'
 import { userSeed } from './user'
+import { calculateAcp } from './average-completion'
 import { configurationSeed } from './configuration'
 import { permissionSeed } from './permission'
 import { projectStateSeed } from './project-state'
@@ -32,6 +33,7 @@ const seed = async () => {
     await configurationSeed({ transaction })
     await cacheSeed({ transaction })
     await transaction.commit()
+    await calculateAcp()
     // eslint-disable-next-line no-console
     console.log(colors.green('Seeding complete'))
     await wait(100)
