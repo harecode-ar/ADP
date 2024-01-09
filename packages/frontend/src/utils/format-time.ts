@@ -8,17 +8,16 @@ import { es } from 'date-fns/locale'
 type InputValue = Date | string | number | null | undefined
 
 export function fDate(date: InputValue) {
-
   if (date) {
     const formattedDate = new Date(date).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'short',
       day: '2-digit',
       timeZone: 'UTC',
-    });
-    return formattedDate;
+    })
+    return formattedDate
   }
-  return '';
+  return ''
 }
 
 export function fDateTime(date: InputValue, newFormat?: string) {
