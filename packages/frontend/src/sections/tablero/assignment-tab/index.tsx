@@ -105,8 +105,8 @@ export default function AssignmentTab() {
   )
 
   return (
-    <Card sx={{ p: 2 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Card sx={{ p: 2 }}>
         <Stack spacing={2} justifyContent="space-between" direction={{ xs: 'column', sm: 'row' }}>
           <Stack spacing={2} sx={{ width: '100%' }} direction={{ xs: 'column', sm: 'row' }}>
             <Autocomplete
@@ -143,13 +143,12 @@ export default function AssignmentTab() {
             sx={{ width: { xs: 1, sm: 260 } }}
           />
         </Stack>
-
-        <AssignmentSection
-          projects={filteredProjects}
-          stages={filteredStages}
-          subStages={filteredSubStages}
-        />
-      </Box>
-    </Card>
+      </Card>
+      <AssignmentSection
+        projects={filteredProjects}
+        stages={filteredStages}
+        subStages={filteredSubStages}
+      />
+    </Box>
   )
 }
