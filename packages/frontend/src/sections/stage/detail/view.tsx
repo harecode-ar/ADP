@@ -26,7 +26,12 @@ import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
-import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
@@ -193,17 +198,20 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* progress */}
-                    <Grid item xs={12} md={2}>
-                      <TextField
-                        id="progress"
-                        name="progress"
-                        label="Progreso"
-                        variant="outlined"
-                        fullWidth
-                        value={`${stage.progress * 100}`}
-                        InputProps={{
-                          startAdornment: <InputAdornment position="start">
-                            <Tooltip title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}>
+                  <Grid item xs={12} md={2}>
+                    <TextField
+                      id="progress"
+                      name="progress"
+                      label="Progreso"
+                      variant="outlined"
+                      fullWidth
+                      value={`${stage.progress * 100}`}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Tooltip
+                              title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}
+                            >
                               <Box
                                 sx={{
                                   backgroundColor: colorFromAcpOrPacp(
@@ -216,12 +224,13 @@ export default function ProjectDetailView(props: TProps) {
                                 }}
                               />
                             </Tooltip>
-                          </InputAdornment>,
-                          endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                          readOnly: true,
-                        }}
-                      />
-                    </Grid>
+                          </InputAdornment>
+                        ),
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
                   {/* area */}
                   <Grid item xs={12} md={3}>
                     <TextField
