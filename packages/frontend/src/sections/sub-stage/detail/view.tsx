@@ -126,23 +126,24 @@ export default function ProjectDetailView(props: TProps) {
             { name: subStage?.name },
           ]}
           action={
-            subStage && subStage.stateId !== STAGE_STATE.COMPLETED && (
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 1,
-              }}
+            subStage &&
+            subStage.stateId !== STAGE_STATE.COMPLETED && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 1,
+                }}
               >
-              <Button variant="contained" onClick={modalEdit.onTrue}>
-                <Iconify icon="material-symbols:edit" mr={1} />
-                Editar
-              </Button>
+                <Button variant="contained" onClick={modalEdit.onTrue}>
+                  <Iconify icon="material-symbols:edit" mr={1} />
+                  Editar
+                </Button>
                 <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
                 </Button>
-            </Box>
-              )
+              </Box>
+            )
           }
         />
 
@@ -163,7 +164,10 @@ export default function ProjectDetailView(props: TProps) {
                         }}
                       >
                         <Tooltip
-                          title={getTootipFromAcpOrPacp(subStage.acp ?? null, subStage.pacp ?? null)}
+                          title={getTootipFromAcpOrPacp(
+                            subStage.acp ?? null,
+                            subStage.pacp ?? null
+                          )}
                         >
                           <Box
                             sx={{
@@ -175,7 +179,6 @@ export default function ProjectDetailView(props: TProps) {
                               height: 15,
                               borderRadius: '50%',
                               marginRight: 1,
-
                             }}
                           />
                         </Tooltip>
