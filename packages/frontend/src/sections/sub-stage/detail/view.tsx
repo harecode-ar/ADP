@@ -12,6 +12,7 @@ import {
   Grid,
   TextField,
   Button,
+  Tooltip,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -24,6 +25,13 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -49,6 +57,20 @@ enum ETab {
 
 type TProps = {
   subStageId: string
+}
+
+const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -104,23 +126,23 @@ export default function ProjectDetailView(props: TProps) {
             { name: subStage?.name },
           ]}
           action={
+            subStage && subStage.stateId !== STAGE_STATE.COMPLETED && (
             <Box
               sx={{
                 display: 'flex',
                 gap: 1,
               }}
-            >
+              >
               <Button variant="contained" onClick={modalEdit.onTrue}>
                 <Iconify icon="material-symbols:edit" mr={1} />
                 Editar
               </Button>
-              {subStage && subStage.stateId !== STAGE_STATE.COMPLETED && (
                 <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
                 </Button>
-              )}
             </Box>
+              )
           }
         />
 
@@ -140,6 +162,23 @@ export default function ProjectDetailView(props: TProps) {
                           alignItems: 'center',
                         }}
                       >
+                        <Tooltip
+                          title={getTootipFromAcpOrPacp(subStage.acp ?? null, subStage.pacp ?? null)}
+                        >
+                          <Box
+                            sx={{
+                              backgroundColor: colorFromAcpOrPacp(
+                                subStage.acp ?? null,
+                                subStage.pacp ?? null
+                              ),
+                              width: 15,
+                              height: 15,
+                              borderRadius: '50%',
+                              marginRight: 1,
+
+                            }}
+                          />
+                        </Tooltip>
                         <Label color={getColorVariant(subStage.state.name)} variant="filled">
                           {subStage.state.name}
                         </Label>
