@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { PERMISSION_MAP, PROJECT_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
@@ -251,6 +251,8 @@ export default {
         if (projectStartDate > projectEndDate) {
           throw new Error('Start date must be before end date')
         }
+        const stateId =
+          new Date().toISOString().slice(0, 10) >= projectStartDate ? PROJECT_STATE.IN_PROGRESS : PROJECT_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const project = await Project.create({
@@ -262,7 +264,7 @@ export default {
           endDate,
           acp,
           pacp,
-          stateId: STAGE_STATE.NEW,
+          stateId,
         })
 
         return project
