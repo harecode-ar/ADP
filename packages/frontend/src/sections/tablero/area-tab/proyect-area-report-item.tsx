@@ -18,7 +18,7 @@ const ProyectAreaReportItem = (props: TProps) => {
         justifyContent: 'center',
         alignItems: 'center',
         gap: 1,
-        color: 'grey.800',
+        color: 'text.secondary',
         mt: 1,
       }}
     >
