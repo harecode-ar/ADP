@@ -5,25 +5,32 @@ export const PROJECT_STATE = {
   CANCELLED: 4,
 }
 
+export const PROJECT_STATE_NAME = {
+  NEW: 'Nuevo',
+  IN_PROGRESS: 'En progreso',
+  COMPLETED: 'Completado',
+  CANCELLED: 'Cancelado',
+}
+
 export const PROJECT_STATE_ARRAY = [
   {
     id: PROJECT_STATE.NEW,
-    name: 'Nuevo',
+    name: PROJECT_STATE_NAME.NEW,
     description: 'Nuevo proyecto',
   },
   {
     id: PROJECT_STATE.IN_PROGRESS,
-    name: 'En progreso',
+    name: PROJECT_STATE_NAME.IN_PROGRESS,
     description: 'Proyecto en progreso',
   },
   {
     id: PROJECT_STATE.COMPLETED,
-    name: 'Completado',
+    name: PROJECT_STATE_NAME.COMPLETED,
     description: 'Proyecto completado',
   },
   {
     id: PROJECT_STATE.CANCELLED,
-    name: 'Cancelado',
+    name: PROJECT_STATE_NAME.CANCELLED,
     description: 'Proyecto cancelado',
   },
 ]

@@ -79,7 +79,7 @@ const ModalEdit = (props: TProps) => {
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        await updateProject({
+        const { errors } = await updateProject({
           variables: {
             id: projectId,
             name: values.name,
@@ -90,13 +90,13 @@ const ModalEdit = (props: TProps) => {
             description: values.description,
           },
         })
+        if (errors) throw new Error(errors[0].message)
         enqueueSnackbar('Proyecto editado correctamente.', { variant: 'success' })
         helpers.resetForm()
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
-        enqueueSnackbar('El proyecto no pudo ser editado.', { variant: 'error' })
+        enqueueSnackbar(error.message, { variant: 'error', autoHideDuration: 10000 })
       }
     },
     validationSchema,

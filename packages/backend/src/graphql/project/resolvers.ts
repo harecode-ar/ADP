@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { PERMISSION_MAP, PROJECT_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
@@ -13,6 +13,7 @@ import {
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
+import { getAcp } from '../../utils/average-completition'
 
 export default {
   Project: {
@@ -162,11 +163,22 @@ export default {
         throw error
       }
     },
-    userProjects: async (_: any, __: any, context: IContext) => {
+    userProjects: async (
+      _: any,
+      args: {
+        stateId?: number
+      },
+      context: IContext
+    ) => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const where = {}
+        if (args.stateId) {
+          // @ts-ignore
+          where.stateId = args.stateId
+        }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
           include: [
@@ -179,6 +191,7 @@ export default {
                   model: Project,
                   as: 'projects',
                   order: [['startDate', 'ASC']],
+                  where,
                   attributes: [
                     'id',
                     'name',
@@ -221,7 +234,7 @@ export default {
     },
   },
   Mutation: {
-    createProject: (
+    createProject: async (
       _: any,
       args: Pick<
         IProject,
@@ -238,16 +251,25 @@ export default {
         if (projectStartDate > projectEndDate) {
           throw new Error('Start date must be before end date')
         }
+        const stateId =
+          new Date().toISOString().slice(0, 10) >= projectStartDate
+            ? PROJECT_STATE.IN_PROGRESS
+            : PROJECT_STATE.NEW
 
-        return Project.create({
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
+        const project = await Project.create({
           name,
           description,
           areaId,
           cost,
           startDate,
           endDate,
-          stateId: STAGE_STATE.NEW,
+          acp,
+          pacp,
+          stateId,
         })
+
+        return project
       } catch (error) {
         logger.error(error)
         throw error
@@ -267,7 +289,7 @@ export default {
         const { id, name, description, areaId, cost, startDate, endDate, progress } = args
         const project = await Project.findByPk(id)
         if (!project) {
-          throw new Error('Project not found')
+          throw new Error('Proyecto no encontrado')
         }
 
         if (startDate) {
@@ -277,10 +299,24 @@ export default {
             if (endDate) {
               const newEndDate = new Date(endDate).toISOString().slice(0, 10)
               if (newStartDate > newEndDate)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de inicio debe ser menor a la fecha de finalización')
             } else {
               throw new Error(
-                'Start date is after previous project end date, consider changing both dates simultaneously.'
+                'La fecha de inicio es posterior a la fecha de finalización del proyecto anterior, considere cambiar ambas fechas simultáneamente.'
+              )
+            }
+          }
+
+          const stage = await Stage.findOne({
+            where: { projectId: project.id, parentStageId: null },
+            order: [['startDate', 'ASC']],
+            attributes: ['startDate'],
+          })
+          if (stage) {
+            const stageStartDate = new Date(stage.startDate).toISOString().slice(0, 10)
+            if (stageStartDate < newStartDate) {
+              throw new Error(
+                'La fecha de inicio del proyecto es posterior a la fecha de inicio de la primera etapa.'
               )
             }
           }
@@ -293,15 +329,30 @@ export default {
             if (startDate) {
               const newStartDate = new Date(startDate).toISOString().slice(0, 10)
               if (newStartDate > newEndDate)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de finalización debe ser mayor a la fecha de inicio')
             } else {
               throw new Error(
-                'End date is before previous project start date, consider changing both dates simultaneously.'
+                'La fecha de finalización es anterior a la fecha de inicio del proyecto, considere cambiar ambas fechas simultáneamente.'
+              )
+            }
+          }
+
+          const stage = await Stage.findOne({
+            where: { projectId: project.id, parentStageId: null },
+            order: [['endDate', 'DESC']],
+            attributes: ['endDate'],
+          })
+          if (stage) {
+            const stageEndDate = new Date(stage.endDate).toISOString().slice(0, 10)
+            if (stageEndDate > newEndDate) {
+              throw new Error(
+                'La fecha de finalización del proyecto es anterior a la fecha de finalización de la última etapa.'
               )
             }
           }
         }
 
+        const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: project.finishedAt })
         await project.update({
           name,
           description,
@@ -310,7 +361,10 @@ export default {
           startDate,
           endDate,
           progress,
+          acp,
+          pacp,
         })
+
         return project
       } catch (error) {
         logger.error(error)
@@ -389,6 +443,20 @@ export default {
           userId,
           projectId: project.id,
         })
+
+        const finishedAt = new Date().toISOString().split('T')[0]
+        const { acp, pacp } = getAcp({
+          startDate: project.startDate,
+          endDate: project.endDate,
+          finishedAt,
+        })
+        await project.update({
+          stateId: PROJECT_STATE.COMPLETED,
+          finishedAt,
+          acp,
+          pacp,
+        })
+
         return project
       } catch (error) {
         logger.error(error)

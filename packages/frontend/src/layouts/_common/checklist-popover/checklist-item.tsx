@@ -6,6 +6,8 @@ import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/mate
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { useTheme } from '@mui/material/styles'
+import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
+import { useMutation } from '@apollo/client'
 import ModalDelete from './modal-delete'
 import UpdateChecklistModal from './checklist-update-modal'
 
@@ -14,7 +16,7 @@ type TProps = {
   refetch: () => void
 }
 
-const MAX_CHARACTERS = 33
+const MAX_CHARACTERS = 30
 
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
@@ -25,6 +27,19 @@ export function ChecklistItem(props: TProps) {
 
   const totalChecks = checks.length
   const completedChecks = checks.filter((check) => check.checked).length
+
+  const [updateRememberChecklist] = useMutation(UPDATE_REMEMBER_CHECKLIST)
+
+  const rememberChecklist = async () => {
+    await updateRememberChecklist({
+      variables: {
+        id: checklist.id,
+        remember: !checklist.remember,
+      },
+    })
+    refetch()
+  }
+
   return (
     <React.Fragment>
       <MenuItem onClick={modalUpdate.onTrue}>
@@ -106,6 +121,22 @@ export function ChecklistItem(props: TProps) {
           </Box>
 
           <Box>
+            <Tooltip
+              title={checklist.remember ? 'Desactivar recordatorio' : 'Activar recordatorio'}
+            >
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation()
+                  rememberChecklist()
+                }}
+              >
+                {checklist.remember ? (
+                  <Iconify icon="mdi:bell-ring" />
+                ) : (
+                  <Iconify icon="mdi:bell-outline" />
+                )}
+              </IconButton>
+            </Tooltip>
             <IconButton
               color="error"
               onClick={(event) => {
