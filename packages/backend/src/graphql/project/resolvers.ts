@@ -252,7 +252,9 @@ export default {
           throw new Error('Start date must be before end date')
         }
         const stateId =
-          new Date().toISOString().slice(0, 10) >= projectStartDate ? PROJECT_STATE.IN_PROGRESS : PROJECT_STATE.NEW
+          new Date().toISOString().slice(0, 10) >= projectStartDate
+            ? PROJECT_STATE.IN_PROGRESS
+            : PROJECT_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const project = await Project.create({
@@ -287,7 +289,7 @@ export default {
         const { id, name, description, areaId, cost, startDate, endDate, progress } = args
         const project = await Project.findByPk(id)
         if (!project) {
-          throw new Error('Project not found')
+          throw new Error('Proyecto no encontrado')
         }
 
         if (startDate) {
@@ -297,10 +299,24 @@ export default {
             if (endDate) {
               const newEndDate = new Date(endDate).toISOString().slice(0, 10)
               if (newStartDate > newEndDate)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de inicio debe ser menor a la fecha de finalización')
             } else {
               throw new Error(
-                'Start date is after previous project end date, consider changing both dates simultaneously.'
+                'La fecha de inicio es posterior a la fecha de finalización del proyecto anterior, considere cambiar ambas fechas simultáneamente.'
+              )
+            }
+          }
+
+          const stage = await Stage.findOne({
+            where: { projectId: project.id, parentStageId: null },
+            order: [['startDate', 'ASC']],
+            attributes: ['startDate'],
+          })
+          if (stage) {
+            const stageStartDate = new Date(stage.startDate).toISOString().slice(0, 10)
+            if (stageStartDate < newStartDate) {
+              throw new Error(
+                'La fecha de inicio del proyecto es posterior a la fecha de inicio de la primera etapa.'
               )
             }
           }
@@ -313,10 +329,24 @@ export default {
             if (startDate) {
               const newStartDate = new Date(startDate).toISOString().slice(0, 10)
               if (newStartDate > newEndDate)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de finalización debe ser mayor a la fecha de inicio')
             } else {
               throw new Error(
-                'End date is before previous project start date, consider changing both dates simultaneously.'
+                'La fecha de finalización es anterior a la fecha de inicio del proyecto, considere cambiar ambas fechas simultáneamente.'
+              )
+            }
+          }
+
+          const stage = await Stage.findOne({
+            where: { projectId: project.id, parentStageId: null },
+            order: [['endDate', 'DESC']],
+            attributes: ['endDate'],
+          })
+          if (stage) {
+            const stageEndDate = new Date(stage.endDate).toISOString().slice(0, 10)
+            if (stageEndDate > newEndDate) {
+              throw new Error(
+                'La fecha de finalización del proyecto es anterior a la fecha de finalización de la última etapa.'
               )
             }
           }
