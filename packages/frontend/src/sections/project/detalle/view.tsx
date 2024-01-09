@@ -13,6 +13,7 @@ import {
   TextField,
   InputAdornment,
   Button,
+  Tooltip,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -26,6 +27,13 @@ import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { formatCost } from 'src/utils/format-number'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -42,6 +50,20 @@ enum ETab {
 
 type TProps = {
   projectId: string
+}
+
+const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -204,6 +226,28 @@ export default function ProjectDetailView(props: TProps) {
                       fullWidth
                       value={`${project.progress * 100}`}
                       InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Tooltip
+                              title={getTootipFromAcpOrPacp(
+                                project.acp ?? null,
+                                project.pacp ?? null
+                              )}
+                            >
+                              <Box
+                                sx={{
+                                  backgroundColor: colorFromAcpOrPacp(
+                                    project.acp ?? null,
+                                    project.pacp ?? null
+                                  ),
+                                  width: 15,
+                                  height: 15,
+                                  borderRadius: '50%',
+                                }}
+                              />
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
                         endAdornment: <InputAdornment position="end">%</InputAdornment>,
                         readOnly: true,
                       }}
