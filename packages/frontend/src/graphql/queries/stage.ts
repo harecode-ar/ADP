@@ -68,6 +68,8 @@ export const GET_STAGE = gql`
       hasStages
       projectId
       stateId
+      acp
+      pacp
       project {
         id
         name

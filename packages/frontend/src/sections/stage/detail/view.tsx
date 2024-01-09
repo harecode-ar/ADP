@@ -13,6 +13,7 @@ import {
   TextField,
   InputAdornment,
   Button,
+  Tooltip,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -25,6 +26,13 @@ import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
@@ -42,6 +50,20 @@ enum ETab {
 
 type TProps = {
   stageId: string
+}
+
+const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -152,7 +174,7 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* startDate */}
-                  <Grid item xs={12} md={stage.hasStages ? 2 : 3}>
+                  <Grid item xs={12} md={2}>
                     <TextField
                       id="startDate"
                       name="startDate"
@@ -164,7 +186,7 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* endDate */}
-                  <Grid item xs={12} md={stage.hasStages ? 2 : 3}>
+                  <Grid item xs={12} md={2}>
                     <TextField
                       id="endDate"
                       name="endDate"
@@ -176,22 +198,39 @@ export default function ProjectDetailView(props: TProps) {
                     />
                   </Grid>
                   {/* progress */}
-                  {stage.hasStages ? (
-                    <Grid item xs={12} md={2}>
-                      <TextField
-                        id="progress"
-                        name="progress"
-                        label="Progreso"
-                        variant="outlined"
-                        fullWidth
-                        value={`${stage.progress * 100}`}
-                        InputProps={{
-                          endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                          readOnly: true,
-                        }}
-                      />
-                    </Grid>
-                  ) : null}
+                  <Grid item xs={12} md={2}>
+                    <TextField
+                      id="progress"
+                      name="progress"
+                      label="Progreso"
+                      variant="outlined"
+                      fullWidth
+                      value={`${stage.progress * 100}`}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Tooltip
+                              title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}
+                            >
+                              <Box
+                                sx={{
+                                  backgroundColor: colorFromAcpOrPacp(
+                                    stage.acp ?? null,
+                                    stage.pacp ?? null
+                                  ),
+                                  width: 15,
+                                  height: 15,
+                                  borderRadius: '50%',
+                                }}
+                              />
+                            </Tooltip>
+                          </InputAdornment>
+                        ),
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
                   {/* area */}
                   <Grid item xs={12} md={3}>
                     <TextField
