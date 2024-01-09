@@ -434,6 +434,10 @@ export default {
           throw new Error('Stage not found')
         }
 
+        if (stage.stateId === STAGE_STATE.COMPLETED) {
+          throw new Error('Cannot update finished stage')
+        }
+
         const project = await Project.findByPk(projectId)
         if (!project) throw new Error('Project not found')
 
@@ -700,6 +704,10 @@ export default {
         const subStage = await Stage.findByPk(id)
         if (!subStage) {
           throw new Error('Etapa no encontrada')
+        }
+
+        if (subStage.stateId === STAGE_STATE.COMPLETED) {
+          throw new Error('No se puede actualizar una subetapa finalizada')
         }
 
         if (!subStage.parentStageId) throw new Error('No se encontro etapa padre')

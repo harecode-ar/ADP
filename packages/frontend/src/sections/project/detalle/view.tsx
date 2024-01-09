@@ -126,7 +126,8 @@ export default function ProjectDetailView(props: TProps) {
           heading="Detalle de Proyecto"
           links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
           action={
-            project && project.stateId !== PROJECT_STATE.COMPLETED && (
+            project &&
+            project.stateId !== PROJECT_STATE.COMPLETED && (
               <Box
                 sx={{
                   display: 'flex',
@@ -137,10 +138,10 @@ export default function ProjectDetailView(props: TProps) {
                   <Iconify icon="material-symbols:edit" mr={1} />
                   Editar
                 </Button>
-                  <Button variant="contained" onClick={modalFinishProject.onTrue}>
-                    <Iconify icon="pajamas:todo-done" mr={1} />
-                    Finalizar
-                  </Button>
+                <Button variant="contained" onClick={modalFinishProject.onTrue}>
+                  <Iconify icon="pajamas:todo-done" mr={1} />
+                  Finalizar
+                </Button>
               </Box>
             )
           }
