@@ -11,6 +11,7 @@ import ComponentThree from './component-three'
 import ComponentFour from './component-four'
 import ComponentFive from './component-five'
 import ComponentSix from './component-six'
+import FilterComponent from './filter-component'
 
 type TProps = {
   area: IArea
@@ -70,6 +71,7 @@ export default function ReportTab({ area }: TProps) {
         gap: 2,
       }}
     >
+      <FilterComponent />
       <ComponentOne
         news={newCount}
         inProgress={inProgressCount}
