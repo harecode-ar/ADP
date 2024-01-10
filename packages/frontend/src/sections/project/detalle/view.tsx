@@ -39,6 +39,7 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
+import { formatCost } from 'src/utils/format-number'
 
 enum ETab {
   NOTES = 'Notas',
@@ -184,7 +185,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Costo proyectado"
                       variant="outlined"
                       fullWidth
-                      value={formatCostM(project.cost).replace('$', '')}
+                      value={formatCost(project.cost).replace('$', '')}
                       InputProps={{
                         readOnly: true, endAdornment: <InputAdornment position="end">$</InputAdornment>
                       }}
