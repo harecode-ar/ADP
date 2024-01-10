@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject, STAGE_STATE } from '@adp/shared'
+import { IStage, IProject } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Stack from '@mui/material/Stack'
@@ -28,7 +28,6 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
-import ModalFinishStage from './modal-finish-stage'
 
 // ----------------------------------------------------------------------
 
@@ -75,7 +74,6 @@ export default function KanbanDetails(props: TProps) {
   const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
-  const modalFinishStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {

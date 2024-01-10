@@ -27,7 +27,6 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
-import ModalFinishSubStage from './modal-finish-substage'
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +63,6 @@ export default function KanbanDetails(props: TProps) {
   const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
-  const modalFinishSubStage = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
