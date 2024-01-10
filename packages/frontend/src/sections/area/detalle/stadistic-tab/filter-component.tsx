@@ -1,11 +1,9 @@
-
 import React from 'react'
 import { useDashboardReportContext } from 'src/contexts/dashboard-report-context'
 import { Box, Grid, Card } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export default function FilterComponent() {
-
   const {
     selectedInitialDate,
     selectedFinalDate,

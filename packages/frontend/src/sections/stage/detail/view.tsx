@@ -205,7 +205,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Progreso"
                       variant="outlined"
                       fullWidth
-                      value={`${stage.progress * 100}`}
+                      value={`${(stage.progress * 100).toFixed(2)}`}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
