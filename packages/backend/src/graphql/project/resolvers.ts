@@ -292,6 +292,10 @@ export default {
           throw new Error('Proyecto no encontrado')
         }
 
+        if (project.stateId === PROJECT_STATE.COMPLETED) {
+          throw new Error('No se puede modificar un proyecto finalizado')
+        }
+
         if (startDate) {
           const previousEndDate = project.endDate
           const newStartDate = new Date(startDate).toISOString().slice(0, 10)

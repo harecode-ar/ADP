@@ -1,4 +1,4 @@
-import { IProject, IStage } from '@adp/shared'
+import { IProject, IStage, PROJECT_STATE } from '@adp/shared'
 import React from 'react'
 import { Box, Button, Card } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -26,22 +26,24 @@ export default function StagesTab(props: TProps) {
           gap: 2,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={modalCreate.onTrue}
-            sx={{ width: 'fit-content' }}
+        {project && project.stateId !== PROJECT_STATE.COMPLETED && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+            }}
           >
-            <Iconify icon="mingcute:add-fill" mr={1} />
-            Crear etapa
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={modalCreate.onTrue}
+              sx={{ width: 'fit-content' }}
+            >
+              <Iconify icon="mingcute:add-fill" mr={1} />
+              Crear etapa
+            </Button>
+          </Box>
+        )}
         <KanbanComponent stages={stages} project={project} refetch={refetch} />
         {modalCreate.value && (
           <ModalCreate modal={modalCreate} project={project} refetch={refetch} />
