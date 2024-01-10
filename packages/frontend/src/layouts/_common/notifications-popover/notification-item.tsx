@@ -72,7 +72,6 @@ export default function NotificationItem({
         p: 2.5,
         display: 'flex',
         alignItems: 'flex-start',
-        justifyContent: 'space-between',
         borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
         ...(checked && {
           bgcolor: (theme) => theme.palette.primary.lighter,
@@ -103,7 +102,7 @@ export default function NotificationItem({
 
       {renderUnReadBadge}
 
-      <Stack sx={{ flexGrow: 1 }}>{renderText}</Stack>
+      <Stack sx={{ flexGrow: 1, maxWidth: 310 }}>{renderText}</Stack>
     </ListItemButton>
   )
 }
