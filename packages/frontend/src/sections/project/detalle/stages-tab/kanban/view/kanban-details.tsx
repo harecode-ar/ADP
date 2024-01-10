@@ -230,16 +230,6 @@ export default function KanbanDetails(props: TProps) {
               InputProps={{ readOnly: true, sx: { typography: 'body2' } }}
             />
           </Stack>
-          {stage && stage.state.id !== STAGE_STATE.COMPLETED && (
-            <Button
-              variant="contained"
-              style={{ width: '120px' }}
-              onClick={modalFinishStage.onTrue}
-            >
-              <Iconify icon="pajamas:todo-done" mr={1} />
-              Finalizar
-            </Button>
-          )}
         </Stack>
 
         {!!stage.notes?.length && <KanbanDetailsCommentList notes={stage.notes} />}
@@ -249,9 +239,6 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
-      {modalFinishStage.value && (
-        <ModalFinishStage modal={modalFinishStage} refetch={refetch} stageId={Number(stageId)} />
-      )}
     </Drawer>
   )
 }
