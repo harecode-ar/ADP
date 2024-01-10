@@ -70,7 +70,7 @@ export default function KanbansubStageItemItem({
         {...other}
       >
         <Stack spacing={2} sx={{ px: 2, py: 2, position: 'relative', minWidth: 280 }}>
-            <Typography variant="subtitle2">{subStageItem.name}</Typography>
+          <Typography variant="subtitle2">{subStageItem.name}</Typography>
           <Box
             sx={{
               mt: -2,
@@ -110,10 +110,15 @@ export default function KanbansubStageItemItem({
                 color: 'text.disabled',
               }}
             >
-              <Tooltip title={getTootipFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null)}>
+              <Tooltip
+                title={getTootipFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null)}
+              >
                 <Box
                   sx={{
-                    backgroundColor: colorFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null),
+                    backgroundColor: colorFromAcpOrPacp(
+                      subStageItem.acp ?? null,
+                      subStageItem.pacp ?? null
+                    ),
                     width: 15,
                     height: 15,
                     borderRadius: '50%',
@@ -137,7 +142,8 @@ export default function KanbansubStageItemItem({
               <Stack direction="row" alignItems="center">
                 <Iconify icon="clarity:date-line" width={16} sx={{ mr: 1 }} />
                 <Stack alignItems="center">
-                  {fDate(new Date(subStageItem.startDate))} - {fDate(new Date(subStageItem.endDate))}
+                  {fDate(new Date(subStageItem.startDate))} -{' '}
+                  {fDate(new Date(subStageItem.endDate))}
                 </Stack>
               </Stack>
             </Stack>

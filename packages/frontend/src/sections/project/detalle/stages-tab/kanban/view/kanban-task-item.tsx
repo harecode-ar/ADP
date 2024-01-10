@@ -70,7 +70,7 @@ export default function KanbanTaskItem({ project, task, sx, refetch, ...other }:
               <Tooltip title="Tiene subetapas">
                 <Iconify icon="clarity:folder-line" width={16} sx={{ color: 'text.disabled' }} />
               </Tooltip>
-            )}            
+            )}
           </Stack>
 
           <Box
