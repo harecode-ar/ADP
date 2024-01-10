@@ -520,7 +520,7 @@ export default {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const stage = await Stage.findByPk(args.id)
         if (!stage) {
-          throw new Error('Eta no encontrada')
+          throw new Error('Etapa no encontrada')
         }
 
         const { projectId } = stage
