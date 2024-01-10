@@ -1,6 +1,6 @@
 import { IStage, IContact } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Card, Box, TextField, Button } from '@mui/material'
+import { Card, Box, TextField, Button, CardContent } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_STAGE_CONTACTS } from 'src/graphql/queries'
@@ -41,6 +41,8 @@ export default function ContactTab(props: TProps) {
       <Card
         sx={{
           p: 2,
+          marginTop: 2,
+          marginBottom: 2,
         }}
       >
         <Box
@@ -59,6 +61,7 @@ export default function ContactTab(props: TProps) {
             }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            style={{ marginRight: '10px' }}
           />
           <Box
             sx={{
@@ -68,42 +71,51 @@ export default function ContactTab(props: TProps) {
           >
             <Button variant="contained" color="primary" onClick={modalImportContact.onTrue}>
               <Iconify icon="uil:import" width={18} mr={1} />
-              Importar contactos
+              Importar
             </Button>
             <Button variant="contained" color="primary" onClick={modalAddContact.onTrue}>
               <Iconify icon="ic:round-person-add" width={18} mr={1} />
-              Agregar contacto
+              Agregar
             </Button>
           </Box>
         </Box>
       </Card>
-      {filteredContacts.length === 0 && (
-        <Box
-          sx={{
-            textAlign: 'center',
-            color: 'text.disabled',
-          }}
-        >
-          No hay contactos
-        </Box>
-      )}
-      <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-      >
-        {filteredContacts.map((contact) => (
-          <ContactItem key={contact.id} contact={contact} subStage={subStage} refetch={refetch} />
-        ))}
-      </Box>
-      <ModalAddContact modal={modalAddContact} refetch={refetch} subStage={subStage} />
-      {modalImportContact.value && (
-        <ModalImportContact modal={modalImportContact} refetch={refetch} stage={subStage} />
-      )}
+      <Card>
+        <CardContent>
+          {filteredContacts.length === 0 && (
+            <Box
+              sx={{
+                textAlign: 'center',
+                color: 'text.disabled',
+              }}
+            >
+              No hay contactos
+            </Box>
+          )}
+          <Box
+            gap={3}
+            display="grid"
+            gridTemplateColumns={{
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }}
+          >
+            {filteredContacts.map((contact) => (
+              <ContactItem
+                key={contact.id}
+                contact={contact}
+                subStage={subStage}
+                refetch={refetch}
+              />
+            ))}
+          </Box>
+          <ModalAddContact modal={modalAddContact} refetch={refetch} subStage={subStage} />
+          {modalImportContact.value && (
+            <ModalImportContact modal={modalImportContact} refetch={refetch} stage={subStage} />
+          )}
+        </CardContent>
+      </Card>
     </React.Fragment>
   )
 }

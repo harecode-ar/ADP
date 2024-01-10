@@ -1,7 +1,7 @@
 import type { IStage } from '@adp/shared'
 import React from 'react'
 import * as Yup from 'yup'
-import { Card, Stack } from '@mui/material'
+import { Card, Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@apollo/client'
@@ -50,7 +50,6 @@ export default function NotesForm(props: TProps) {
       reset()
       refetch()
     } catch (error) {
-      console.error(error)
       enqueueSnackbar(`La nota no pudo ser creada`, { variant: 'error' })
     }
   })
@@ -58,21 +57,23 @@ export default function NotesForm(props: TProps) {
   return (
     <Card sx={{ p: 2 }}>
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Stack spacing={3}>
-          <RHFTextField
-            name="message"
-            placeholder="Escribe algun comentario..."
-            multiline
-            maxRows={10}
-            rows={4}
-          />
-
-          <Stack direction="row" alignItems="center" justifyContent="end">
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Publicar
-            </LoadingButton>
-          </Stack>
-        </Stack>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <RHFTextField
+              name="message"
+              placeholder="Escribe algun comentario..."
+              multiline
+              maxRows={5}
+              InputProps={{
+                endAdornment: (
+                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                    Publicar
+                  </LoadingButton>
+                ),
+              }}
+            />
+          </Grid>
+        </Grid>
       </FormProvider>
     </Card>
   )

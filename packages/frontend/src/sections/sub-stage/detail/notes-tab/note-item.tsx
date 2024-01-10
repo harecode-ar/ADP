@@ -1,8 +1,6 @@
 import type { IStageNote } from '@adp/shared'
 import React from 'react'
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import Card from '@mui/material/Card'
+import { Box, Card } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import CardHeader from '@mui/material/CardHeader'
@@ -26,6 +24,7 @@ export default function NoteItem(props: TProps) {
 
   const renderHead = (
     <CardHeader
+      style={{ marginTop: '-8px' }}
       disableTypography
       avatar={
         user ? (
@@ -39,16 +38,18 @@ export default function NoteItem(props: TProps) {
         ) : null
       }
       title={
-        <Link color="inherit" variant="subtitle1">
-          {user?.fullname}
-        </Link>
-      }
-      subheader={
-        <Box sx={{ color: 'text.disabled', typography: 'caption', mt: 0.5 }}>
-          {fDate(new Date(Number(note.createdAt)))} -{' '}
-          {new Date(Number(note.createdAt)).toLocaleTimeString()}
+        <Box sx={{ display: 'flex', alignItems: 'center', textDecoration: 'bold' }}>
+          <Typography>{user?.fullname}</Typography>
+          <Typography fontSize={13} sx={{ color: 'text.disabled', ml: 1 }}>
+            {fDate(new Date(Number(note.createdAt)))} {' - '}
+            {new Date(Number(note.createdAt)).toLocaleTimeString(undefined, {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Typography>
         </Box>
       }
+      // subheader={ }
       action={
         <IconButton
           onClick={() => {
@@ -67,7 +68,7 @@ export default function NoteItem(props: TProps) {
       <Typography
         variant="body2"
         sx={{
-          p: (theme) => theme.spacing(3, 3, 2, 3),
+          p: (theme) => theme.spacing(1, 3, 2, 3),
         }}
       >
         {note.message}
