@@ -10,7 +10,8 @@ import {
   TextField,
   Grid,
   Backdrop,
-  Autocomplete
+  Autocomplete,
+  InputAdornment
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
@@ -175,6 +176,9 @@ const ModalEdit = (props: TProps) => {
                   multiline
                   maxRows={10}
                   value={formik.values.cost}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                  }}
                   onChange={formik.handleChange}
                   error={Boolean(formik.errors.cost)}
                   helperText={formik.errors.cost}

@@ -13,6 +13,11 @@ export function fCurrency(number: InputValue) {
 
   return result(format, '.00')
 }
+export function fCurrencyM(number: InputValue) {
+  const format = number ? numeral(number).format('0,0.00') : ''
+
+  return result(format, '.00')
+}
 
 export function fPercent(number: InputValue) {
   const format = number ? numeral(Number(number) / 100).format('0.0%') : ''
@@ -42,7 +47,17 @@ export const formatPrice = (value: number) =>
   fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')
 
 export const formatCost = (value: number) => {
-  if (!value) return '$0'
+  if (!value) return '0'
   if (value / 1000000 >= 1) return `${formatPrice(value / 1000000)}M`
   return formatPrice(value)
 }
+
+export const formatPriceM = (value: number) =>
+fCurrencyM(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')
+
+export const formatCostM = (value: number) => {
+  if (!value) return '0'
+  if (value / 1000000 >= 1) return `${formatPriceM(value / 1000000)}M`
+  return formatPriceM(value)
+}
+

@@ -26,7 +26,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { formatCost } from 'src/utils/format-number'
+import {formatCostM } from 'src/utils/format-number'
 import {
   getColorFromAcp,
   getColorFromPacp,
@@ -185,9 +185,9 @@ export default function ProjectDetailView(props: TProps) {
                       label="Costo proyectado"
                       variant="outlined"
                       fullWidth
-                      value={formatCost(project.cost)}
+                      value={formatCostM(project.cost)}
                       InputProps={{
-                        readOnly: true,
+                        readOnly: true, endAdornment: <InputAdornment position="end">$</InputAdornment>
                       }}
                     />
                   </Grid>

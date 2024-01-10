@@ -131,6 +131,9 @@ const CreateProject = () => {
               multiline
               maxRows={10}
               value={formik.values.cost}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">$</InputAdornment>,
+              }}
               onChange={formik.handleChange}
               error={Boolean(formik.errors.cost)}
               helperText={formik.errors.cost}
