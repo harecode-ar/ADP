@@ -358,13 +358,13 @@ export default {
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
         const end = new Date(endDate).toISOString().slice(0, 10)
-        if (start > end) throw new Error('End date must be greater than start date')
+        if (start > end) throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
 
         const project = await Project.findByPk(projectId)
-        if (!project) throw new Error('Project not found')
+        if (!project) throw new Error('Proyecto no encontrado')
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
-        if (start < projectStart || end > projectEnd) throw new Error('Dates out of range')
+        if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
         const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
@@ -431,30 +431,30 @@ export default {
 
         const stage = await Stage.findByPk(id)
         if (!stage) {
-          throw new Error('Stage not found')
+          throw new Error('Etapa no encontrada')
         }
 
         if (stage.stateId === STAGE_STATE.COMPLETED) {
-          throw new Error('Cannot update finished stage')
+          throw new Error('No se puede modificar una etapa finalizada')
         }
 
         const project = await Project.findByPk(projectId)
-        if (!project) throw new Error('Project not found')
+        if (!project) throw new Error('Proyecto no encontrado')
 
         if (startDate) {
           const previousStageEnd = stage.endDate
           const newStageStart = new Date(startDate).toISOString().slice(0, 10)
           const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
           if (newStageStart < projectStart)
-            throw new Error('Start date is out of project date range')
+            throw new Error('La fecha de inicio esta fuera del rango del proyecto')
           if (previousStageEnd < newStageStart) {
             if (endDate) {
               const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
               if (newStageStart > newStageEnd)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
             } else {
               throw new Error(
-                'Start date is after previous stage end date, consider changing both dates simultaneously.'
+                'La fecha de inicio es posterior a la fecha de finalizacion de la etapa anterior, considere cambiar ambas fechas simultaneamente.'
               )
             }
           }
@@ -464,15 +464,15 @@ export default {
           const previousStageStart = stage.startDate
           const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
           const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
-          if (newStageEnd > projectEnd) throw new Error('End date is out of project date range')
+          if (newStageEnd > projectEnd) throw new Error('La fecha de finalizacion esta fuera del rango del proyecto')
           if (previousStageStart > newStageEnd) {
             if (startDate) {
               const newStageStart = new Date(startDate).toISOString().slice(0, 10)
               if (newStageStart > newStageEnd)
-                throw new Error('End date must be greater than start date')
+                throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
             } else {
               throw new Error(
-                'End date is before previous stage start date, consider changing both dates simultaneously.'
+                'La fecha de finalizacion es anterior a la fecha de inicio de la etapa anterior, considere cambiar ambas fechas simultaneamente.'
               )
             }
           }
@@ -520,7 +520,7 @@ export default {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const stage = await Stage.findByPk(args.id)
         if (!stage) {
-          throw new Error('Stage not found')
+          throw new Error('Eta no encontrada')
         }
 
         const { projectId } = stage
