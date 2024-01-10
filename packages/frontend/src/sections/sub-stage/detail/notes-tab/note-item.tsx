@@ -1,6 +1,6 @@
 import type { IStageNote } from '@adp/shared'
 import React from 'react'
-import Card from '@mui/material/Card'
+import { Box, Card } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import CardHeader from '@mui/material/CardHeader'
@@ -38,8 +38,8 @@ export default function NoteItem(props: TProps) {
         ) : null
       }
       title={
-        <div style={{ display: 'flex', alignItems: 'center', textDecoration: 'bold' }}>
-          <div>{user?.fullname}</div>
+        <Box sx={{ display: 'flex', alignItems: 'center', textDecoration: 'bold' }}>
+          <Typography>{user?.fullname}</Typography>
           <Typography fontSize={13} sx={{ color: 'text.disabled', ml: 1 }}>
             {fDate(new Date(Number(note.createdAt)))} {' - '}
             {new Date(Number(note.createdAt)).toLocaleTimeString(undefined, {
@@ -47,7 +47,7 @@ export default function NoteItem(props: TProps) {
               minute: '2-digit',
             })}
           </Typography>
-        </div>
+        </Box>
       }
       // subheader={ }
       action={
