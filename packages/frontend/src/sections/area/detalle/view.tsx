@@ -14,9 +14,10 @@ import { GET_AREA, GET_COUNT_PROJECTS_BY_AREA } from 'src/graphql/queries'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import Iconify from 'src/components/iconify/iconify'
+import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
-import StadisticTab from './stadistic-tab'
+import ReportTab from './stadistic-tab'
 import ChartTab from './chart-tab'
 import ModalEdit from './edit-area-modal'
 
@@ -181,7 +182,11 @@ export default function AreaDetailView(props: TProps) {
             )}
             {tab === ETab.PROJECTS && hasProjects && <ProjectTab areaId={areaId} />}
             {tab === ETab.GANTT && hasProjects && <GanttTab areaId={areaId} />}
-            {tab === ETab.STATISTICS && <StadisticTab area={area} />}
+            {tab === ETab.STATISTICS && (
+              <DashboardReportProvider>
+                <ReportTab area={area} />
+              </DashboardReportProvider>
+            )}
             {tab === ETab.CHART && (
               <AreaTreeProvider>
                 <ChartTab areaId={areaId} />
