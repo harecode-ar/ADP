@@ -14,7 +14,6 @@ const DEFAULT_AREA: TArea = { id: 0, name: 'Todas las areas' }
 
 export default function FilterComponent(props: TProps) {
   const { areas } = props
-
   const {
     selectedAreas,
     selectedInitialDate,

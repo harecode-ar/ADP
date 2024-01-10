@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { paths } from 'src/routes/paths'
+import { formatCost } from 'src/utils/format-number'
 
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -130,9 +131,6 @@ const CreateProject = () => {
               multiline
               maxRows={10}
               value={formik.values.cost}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">$</InputAdornment>,
-              }}
               onChange={formik.handleChange}
               error={Boolean(formik.errors.cost)}
               helperText={formik.errors.cost}

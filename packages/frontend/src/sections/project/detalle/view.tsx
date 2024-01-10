@@ -187,7 +187,6 @@ export default function ProjectDetailView(props: TProps) {
                       fullWidth
                       value={formatCost(project.cost)}
                       InputProps={{
-                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
                         readOnly: true,
                       }}
                     />
