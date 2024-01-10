@@ -12,6 +12,8 @@ export const GET_STAGES_BY_PROJECT = gql`
       hasStages
       projectId
       stateId
+      acp
+      pacp
       area {
         id
         name
@@ -40,6 +42,8 @@ export const GET_SUB_STAGES_BY_STAGE = gql`
       hasStages
       projectId
       stateId
+      acp
+      pacp
       area {
         id
         name

@@ -1,11 +1,17 @@
 import { IStage } from '@adp/shared'
 import React from 'react'
-import { Stack, Box, Avatar, PaperProps, Paper, Typography } from '@mui/material'
+import { Stack, Box, PaperProps, Paper, Typography, Tooltip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { fDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify'
-import { ERROR, INFO, WARNING } from 'src/theme/palette'
-import { getStorageFileUrl } from 'src/utils/storage'
 import KanbanDetails from './kanban-details'
 
 // ----------------------------------------------------------------------
@@ -16,14 +22,18 @@ type Props = PaperProps & {
   refetch: () => void
 }
 
-const getColor = (progress: number) => {
-  if (progress >= 0.6) {
-    return INFO.main
+const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
   }
-  if (progress > 0.3 && progress <= 0.6) {
-    return WARNING.main
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
   }
-  return ERROR.main
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function KanbansubStageItemItem({
@@ -34,8 +44,6 @@ export default function KanbansubStageItemItem({
   ...other
 }: Props) {
   const theme = useTheme()
-
-  const color = getColor(subStageItem.progress)
 
   const openDetails = useBoolean()
 
@@ -61,47 +69,79 @@ export default function KanbansubStageItemItem({
         }}
         {...other}
       >
-        <Stack spacing={2} sx={{ px: 2, py: 2.5, position: 'relative' }}>
-          <Typography variant="subtitle2">{subStageItem.name}</Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="subtitle2">
-              {subStageItem.responsible?.fullname || 'Sin asignar'}
-            </Typography>
-            <Avatar
-              src={
-                subStageItem.responsible
-                  ? getStorageFileUrl(subStageItem.responsible.image, '/broken-image.jpg')
-                  : '/broken-image.jpg'
+        <Stack spacing={2} sx={{ px: 2, py: 2, position: 'relative', minWidth: 280 }}>
+            <Typography variant="subtitle2">{subStageItem.name}</Typography>
+          <Box
+            sx={{
+              mt: -2,
+              mb: -1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{ typography: 'caption', color: 'text.disabled' }}
+              divider={
+                <Box
+                  sx={{
+                    width: 2,
+                    height: 2,
+                    bgcolor: 'currentColor',
+                    mx: 0.5,
+                    borderRadius: '50%',
+                  }}
+                />
               }
-              sx={{ width: 35, height: 35, border: `solid 2px ${color}` }}
-            />
+            >
+              {subStageItem.area?.name || 'Sin area'}
+              {subStageItem.responsible?.fullname || 'Sin asignar'}
+            </Stack>
           </Box>
 
-          <Iconify
-            icon={
-              (subStageItem.progress <= 0.3 && 'solar:double-alt-arrow-down-bold-duotone') ||
-              (subStageItem.progress > 0.3 &&
-                subStageItem.progress <= 0.6 &&
-                'solar:double-alt-arrow-right-bold-duotone') ||
-              'solar:double-alt-arrow-up-bold-duotone'
-            }
-            sx={{
-              position: 'absolute',
-              top: 4,
-              right: 4,
-              ...(subStageItem.progress >= 0.6 && {
-                color: 'info.main',
-              }),
-              ...(subStageItem.progress > 0.3 &&
-                subStageItem.progress <= 0.6 && {
-                  color: 'warning.main',
-                }),
-              ...(subStageItem.progress <= 0.3 && {
-                color: 'error.main',
-              }),
-            }}
-          />
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{
+                typography: 'caption',
+                color: 'text.disabled',
+              }}
+            >
+              <Tooltip title={getTootipFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null)}>
+                <Box
+                  sx={{
+                    backgroundColor: colorFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null),
+                    width: 15,
+                    height: 15,
+                    borderRadius: '50%',
+                    marginRight: 1,
+                  }}
+                />
+              </Tooltip>
+              {subStageItem.progress * 100}%
+            </Stack>
+            <Stack
+              spacing={1.5}
+              flexGrow={1}
+              direction="row"
+              flexWrap="wrap"
+              justifyContent="flex-end"
+              sx={{
+                typography: 'caption',
+                color: 'text.disabled',
+              }}
+            >
+              <Stack direction="row" alignItems="center">
+                <Iconify icon="clarity:date-line" width={16} sx={{ mr: 1 }} />
+                <Stack alignItems="center">
+                  {fDate(new Date(subStageItem.startDate))} - {fDate(new Date(subStageItem.endDate))}
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
         </Stack>
       </Paper>
       {openDetails.value && (
