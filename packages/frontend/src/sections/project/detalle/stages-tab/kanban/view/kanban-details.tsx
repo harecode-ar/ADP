@@ -138,11 +138,14 @@ export default function KanbanDetails(props: TProps) {
               </IconButton>
             </Link>
           </Tooltip>
-          <Tooltip title="Editar">
-            <IconButton onClick={modalEdit.onTrue}>
-              <Iconify icon="mdi:pencil" />
-            </IconButton>
-          </Tooltip>
+          {stage && stage.stateId !== 3 && stage.stateId !== 4 && (
+            <Tooltip title="Editar">
+              <IconButton onClick={modalEdit.onTrue}>
+                <Iconify icon="mdi:pencil" />
+              </IconButton>
+            </Tooltip>
+          )}
+
           <Tooltip title="Eliminar">
             <IconButton onClick={modalDelete.onTrue}>
               <Iconify icon="solar:trash-bin-trash-bold" />
