@@ -44,6 +44,14 @@ export default function ProjectLine(props: TProps) {
           gap: 1,
         }}
       >
+        <Box
+          sx={{
+            height: 15,
+            width: 15,
+            borderRadius: '50%',
+            backgroundColor: colorFromAcpOrPacp(project),
+          }}
+        />
         <Typography>{project.name}</Typography>
         <Link
           component={NextLink}
@@ -73,7 +81,7 @@ export default function ProjectLine(props: TProps) {
           sx={{
             width: '100%',
             borderRadius: 2,
-            backgroundColor: colorFromAcpOrPacp(project),
+            backgroundColor: 'grey.700',
             height: 35,
             display: 'flex',
             flexDirection: 'row',

@@ -358,7 +358,8 @@ export default {
         const actualDate = new Date().toISOString().slice(0, 10)
         const start = new Date(startDate).toISOString().slice(0, 10)
         const end = new Date(endDate).toISOString().slice(0, 10)
-        if (start > end) throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
+        if (start > end)
+          throw new Error('La fecha de finalizacion debe ser mayor a la fecha de inicio')
 
         const project = await Project.findByPk(projectId)
         if (!project) throw new Error('Proyecto no encontrado')
@@ -464,7 +465,8 @@ export default {
           const previousStageStart = stage.startDate
           const newStageEnd = new Date(endDate).toISOString().slice(0, 10)
           const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
-          if (newStageEnd > projectEnd) throw new Error('La fecha de finalizacion esta fuera del rango del proyecto')
+          if (newStageEnd > projectEnd)
+            throw new Error('La fecha de finalizacion esta fuera del rango del proyecto')
           if (previousStageStart > newStageEnd) {
             if (startDate) {
               const newStageStart = new Date(startDate).toISOString().slice(0, 10)
