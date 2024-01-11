@@ -127,8 +127,6 @@ export default function KanbanDetails(props: TProps) {
             </Link>
           </Tooltip>
 
-          
-          
           {subStage && subStage.stateId !== 3 && subStage.stateId !== 4 && (
             <Tooltip title="Editar">
               <IconButton onClick={modalEdit.onTrue}>
