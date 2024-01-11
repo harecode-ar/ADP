@@ -127,7 +127,7 @@ export default function KanbanDetails(props: TProps) {
             </Link>
           </Tooltip>
 
-          {subStage && subStage.stateId !== 3 && subStage.stateId !== 4 && (
+          {subStage && subStage.stateId !== STAGE_STATE.CANCELLED && subStage.stateId !== STAGE_STATE.COMPLETED && (
             <Tooltip title="Editar">
               <IconButton onClick={modalEdit.onTrue}>
                 <Iconify icon="mdi:pencil" />
