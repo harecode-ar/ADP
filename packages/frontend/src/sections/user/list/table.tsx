@@ -9,20 +9,34 @@ import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { USERS_FOR_LIST, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
-import { Box, IconButton } from '@mui/material'
+import { Avatar, Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import { getStorageFileUrl } from 'src/utils/storage'
 import ModalCreate from './modal-create'
 import ModalEdit from './modal-edit'
 import ModalDelete from './modal-delete'
 
-type TRow = Pick<IUser, 'id' | 'firstname' | 'lastname' | 'email' | 'telephone' | 'roleId' | 'role'>
+type TRow = Pick<
+  IUser,
+  'id' | 'firstname' | 'lastname' | 'email' | 'telephone' | 'image' | 'roleId' | 'role'
+>
 
 const columns: TColumn[] = [
   {
-    id: 'id',
-    label: 'ID',
-    type: EColumnType.NUMBER,
-    renderCell: (row: TRow) => row.id,
+    id: 'image',
+    label: 'Imagen',
+    type: EColumnType.ACTIONS,
+    searchable: false,
+    renderCell: (row: TRow) => (
+      <Avatar
+        src={getStorageFileUrl(row.image, '/broken-image.jpg')}
+        alt={row.firstname}
+        sx={{
+          width: 50,
+          height: 50,
+        }}
+      />
+    ),
   },
   {
     id: 'firstname',

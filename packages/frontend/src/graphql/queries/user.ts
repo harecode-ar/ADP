@@ -8,6 +8,7 @@ export const USERS_FOR_LIST = gql`
       lastname
       email
       telephone
+      image
       roleId
     }
   }
