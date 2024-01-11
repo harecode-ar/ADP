@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject } from '@adp/shared'
+import { IStage, IProject, STAGE_STATE } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Stack from '@mui/material/Stack'
@@ -138,11 +138,14 @@ export default function KanbanDetails(props: TProps) {
               </IconButton>
             </Link>
           </Tooltip>
-          <Tooltip title="Editar">
-            <IconButton onClick={modalEdit.onTrue}>
-              <Iconify icon="mdi:pencil" />
-            </IconButton>
-          </Tooltip>
+          {stage && stage.stateId !== STAGE_STATE.CANCELLED && stage.stateId !== STAGE_STATE.COMPLETED && (
+            <Tooltip title="Editar">
+              <IconButton onClick={modalEdit.onTrue}>
+                <Iconify icon="mdi:pencil" />
+              </IconButton>
+            </Tooltip>
+          )}
+
           <Tooltip title="Eliminar">
             <IconButton onClick={modalDelete.onTrue}>
               <Iconify icon="solar:trash-bin-trash-bold" />
