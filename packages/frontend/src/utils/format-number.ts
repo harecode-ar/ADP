@@ -42,9 +42,7 @@ export const formatPrice = (value: number) =>
   fCurrency(value).replace('.', ';').replace(/,/g, '.').replace(';', ',')
 
 export const formatCost = (value: number) => {
-  if (!value) return '0'
+  if (!value) return '$0'
   if (value / 1000000 >= 1) return `${formatPrice(value / 1000000)}M`
   return formatPrice(value)
 }
-
-

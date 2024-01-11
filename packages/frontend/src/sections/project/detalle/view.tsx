@@ -33,13 +33,13 @@ import {
   getTooltipFromPacp,
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { formatCost } from 'src/utils/format-number'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
-import { formatCost } from 'src/utils/format-number'
 
 enum ETab {
   NOTES = 'Notas',
@@ -187,7 +187,8 @@ export default function ProjectDetailView(props: TProps) {
                       fullWidth
                       value={formatCost(project.cost).replace('$', '')}
                       InputProps={{
-                        readOnly: true, endAdornment: <InputAdornment position="end">$</InputAdornment>
+                        readOnly: true,
+                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
                       }}
                     />
                   </Grid>

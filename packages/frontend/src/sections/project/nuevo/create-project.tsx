@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import type { IArea } from '@adp/shared'
 import { useRouter } from 'src/routes/hooks'
 import { Button, Box, TextField, Grid, Autocomplete, Card, InputAdornment } from '@mui/material'
-
 import { useFormik, FormikHelpers } from 'formik'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation, useQuery } from '@apollo/client'
@@ -11,7 +10,6 @@ import * as Yup from 'yup'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { paths } from 'src/routes/paths'
-import { formatCost } from 'src/utils/format-number'
 
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
