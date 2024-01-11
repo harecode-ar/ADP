@@ -162,6 +162,7 @@ function AreaCard({ area }: AreaCardProps) {
                 border: `5px solid ${colorFromAcpOrPacp(area)}`,
                 borderRadius: '50%',
                 backgroundColor: 'transparent',
+                boxShadow: `0 0 20px 0 ${colorFromAcpOrPacp(area)}`
               }}
             >
               <Avatar
