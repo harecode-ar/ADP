@@ -26,7 +26,6 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { formatCost } from 'src/utils/format-number'
 import {
   getColorFromAcp,
   getColorFromPacp,
@@ -34,6 +33,7 @@ import {
   getTooltipFromPacp,
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { formatCost } from 'src/utils/format-number'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -186,10 +186,10 @@ export default function ProjectDetailView(props: TProps) {
                       label="Costo proyectado"
                       variant="outlined"
                       fullWidth
-                      value={formatCost(project.cost)}
+                      value={formatCost(project.cost).replace('$', '')}
                       InputProps={{
-                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
                         readOnly: true,
+                        endAdornment: <InputAdornment position="end">$</InputAdornment>,
                       }}
                     />
                   </Grid>
