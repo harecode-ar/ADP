@@ -38,7 +38,6 @@ import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
-import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 
 enum ETab {
@@ -118,7 +117,13 @@ export default function ProjectDetailView(props: TProps) {
       >
         <CustomBreadcrumbs
           heading="Detalle de Etapa"
-          links={[{ name: 'Etapa', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
+          links={[
+            {
+              name: stage?.project.name,
+              href: paths.dashboard.project.detail.replace(':id', String(stage?.project.id)),
+            },
+            { name: stage?.name },
+          ]}
           action={
             <Box
               sx={{
@@ -139,8 +144,6 @@ export default function ProjectDetailView(props: TProps) {
             </Box>
           }
         />
-
-        <StagePath project={stage?.project || null} stage={stage} subStage={null} />
 
         {stageQuery.loading && <p>Cargando...</p>}
 
