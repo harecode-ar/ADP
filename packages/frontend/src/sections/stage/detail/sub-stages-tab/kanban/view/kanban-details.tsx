@@ -127,13 +127,15 @@ export default function KanbanDetails(props: TProps) {
             </Link>
           </Tooltip>
 
-          {subStage && subStage.stateId !== STAGE_STATE.CANCELLED && subStage.stateId !== STAGE_STATE.COMPLETED && (
-            <Tooltip title="Editar">
-              <IconButton onClick={modalEdit.onTrue}>
-                <Iconify icon="mdi:pencil" />
-              </IconButton>
-            </Tooltip>
-          )}
+          {subStage &&
+            subStage.stateId !== STAGE_STATE.CANCELLED &&
+            subStage.stateId !== STAGE_STATE.COMPLETED && (
+              <Tooltip title="Editar">
+                <IconButton onClick={modalEdit.onTrue}>
+                  <Iconify icon="mdi:pencil" />
+                </IconButton>
+              </Tooltip>
+            )}
 
           <Tooltip title="Eliminar">
             <IconButton onClick={modalDelete.onTrue}>

@@ -134,12 +134,14 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
-                {subStage && subStage.stateId !== STAGE_STATE.CANCELLED && subStage.stateId !== STAGE_STATE.COMPLETED && (
-                  <Button variant="contained" onClick={modalEdit.onTrue}>
-                    <Iconify icon="material-symbols:edit" mr={1} />
-                    Editar
-                  </Button>
-                )}
+                {subStage &&
+                  subStage.stateId !== STAGE_STATE.CANCELLED &&
+                  subStage.stateId !== STAGE_STATE.COMPLETED && (
+                    <Button variant="contained" onClick={modalEdit.onTrue}>
+                      <Iconify icon="material-symbols:edit" mr={1} />
+                      Editar
+                    </Button>
+                  )}
                 <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
