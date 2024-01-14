@@ -11,6 +11,7 @@ export const GET_CONFIGURATIONS = gql`
     configurations {
       key
       value
+      description
     }
   }
 `

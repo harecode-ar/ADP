@@ -3,6 +3,7 @@ export default `#graphql
     id: Int
     key: String
     value: String
+    description: String
 
     createdAt: String
     updatedAt: String

@@ -2,7 +2,7 @@ import { IConfiguration, EConfigurationKey } from '@adp/shared'
 import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 
-type TRow = Pick<IConfiguration, 'id' | 'key' | 'value'>
+type TRow = Pick<IConfiguration, 'id' | 'key' | 'value' | 'description'>
 
 export const TABLE_ID = 'configuration-list-table'
 
@@ -54,5 +54,12 @@ export const COLUMNS: TColumn[] = [
           return row.value
       }
     },
+  },
+  {
+    id: 'description',
+    label: 'Descripción',
+    type: EColumnType.STRING,
+    searchable: false,
+    renderCell: (row: TRow) => row.description,
   },
 ]
