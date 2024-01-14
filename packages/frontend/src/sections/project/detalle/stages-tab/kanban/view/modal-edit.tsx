@@ -21,6 +21,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import * as Yup from 'yup'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -120,7 +121,7 @@ const ModalEdit = (props: TProps) => {
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('La etapa no pudo ser editada.', { variant: 'error' })
       }
     },

@@ -26,6 +26,7 @@ import UserPicker from 'src/components/user-picker'
 import { TAreaTree } from 'src/contexts/area-tree-context/types'
 import { USERS_FOR_SELECT } from 'src/graphql/queries/user'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -88,7 +89,7 @@ const CreateAreaModal = (props: TProps) => {
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El Area no pudo ser creada.', { variant: 'error' })
       }
     },

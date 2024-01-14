@@ -9,6 +9,7 @@ import { CREATE_PROJECT_NOTE } from 'src/graphql/mutations'
 import { IProject } from '@adp/shared'
 import FormProvider, { RHFTextField } from 'src/components/hook-form'
 import { enqueueSnackbar } from 'notistack'
+import { logger } from 'src/utils/logger'
 
 // ----------------------------------------------------------------------
 type TProps = {
@@ -50,7 +51,7 @@ export default function PostCommentForm(props: TProps) {
       reset()
       refetch()
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       enqueueSnackbar(`La nota no pudo ser creada`, { variant: 'error' })
     }
   })

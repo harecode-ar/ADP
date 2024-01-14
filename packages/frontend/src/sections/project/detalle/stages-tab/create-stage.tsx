@@ -21,6 +21,7 @@ import { CREATE_STAGE } from 'src/graphql/mutations'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import * as Yup from 'yup'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -109,7 +110,7 @@ const ModalCreate = (props: TProps) => {
         refetch()
         modal.onFalse()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar(`La etapa no pudo ser creada. ${error.message}`, { variant: 'error' })
       }
     },

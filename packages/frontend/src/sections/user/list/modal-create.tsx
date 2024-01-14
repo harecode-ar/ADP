@@ -23,6 +23,7 @@ import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const userSchema = Yup.object().shape({
   firstname: Yup.string().required('Nombre requerido'),
@@ -86,7 +87,7 @@ const ModalCreate = (props: TProps) => {
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El usuario no pudo ser creado.', { variant: 'error' })
       }
     },
