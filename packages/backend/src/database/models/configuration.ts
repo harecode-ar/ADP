@@ -10,6 +10,8 @@ export class Configuration extends Model {
 
   public value!: string
 
+  public description!: string
+
   public readonly createdAt!: string
 
   public readonly updatedAt!: string
@@ -28,6 +30,10 @@ Configuration.init(
     },
     value: {
       type: DataTypes.JSON,
+      allowNull: false,
+    },
+    description: {
+      type: new DataTypes.STRING(255),
       allowNull: false,
     },
   },

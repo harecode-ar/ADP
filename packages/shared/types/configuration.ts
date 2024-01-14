@@ -6,6 +6,7 @@ export interface IConfiguration {
   id: number
   key: EConfigurationKey
   value: string
+  description: string
   createdAt: string
   updatedAt: string
 }
