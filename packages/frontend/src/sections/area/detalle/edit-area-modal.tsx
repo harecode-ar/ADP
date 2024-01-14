@@ -25,6 +25,7 @@ import { UPDATE_AREA } from 'src/graphql/mutations'
 import UserPicker from 'src/components/user-picker'
 import { USERS_FOR_SELECT } from 'src/graphql/queries/user'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const areaSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -97,7 +98,7 @@ const EditAreaModal = (props: TProps) => {
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El Area no pudo ser editada.', { variant: 'error' })
       }
     },

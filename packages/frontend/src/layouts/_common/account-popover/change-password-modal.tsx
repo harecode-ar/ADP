@@ -10,6 +10,7 @@ import { UPDATE_PASSWORD } from 'src/graphql/mutations'
 import * as Yup from 'yup'
 import { useAuthContext } from 'src/auth/hooks'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
@@ -84,7 +85,7 @@ const ChangePasswordModal = (props: TProps) => {
         helpers.resetForm()
         modal.onFalse()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('la contraseña no pudo ser cambiada.', { variant: 'error' })
       }
     },

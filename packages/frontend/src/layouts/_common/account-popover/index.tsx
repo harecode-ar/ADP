@@ -17,6 +17,7 @@ import { useAuthContext } from 'src/auth/hooks'
 import { varHover } from 'src/components/animate'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
 import { getStorageFileUrl } from 'src/utils/storage'
+import { logger } from 'src/utils/logger'
 import ChangePasswordModal from './change-password-modal'
 
 // ----------------------------------------------------------------------
@@ -36,7 +37,7 @@ export default function AccountPopover() {
       popover.onClose()
       router.replace('/')
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     }
   }
 

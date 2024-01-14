@@ -2,6 +2,7 @@ import React from 'react'
 import { Task } from 'gantt-task-react'
 import { Card } from '@mui/material'
 import Gantt, { useGantt } from 'src/components/gantt'
+import { logger } from 'src/utils/logger'
 import { ViewSwitcher } from './view-switcher'
 import TaskTooltip from './task-tooltip'
 
@@ -15,7 +16,7 @@ const GanttComponent = (props: TProps) => {
   const { viewOption, handleChangeView } = useGantt()
 
   const handleClick = (task: Task) => {
-    console.log('etapa seleccionada: ', task.id)
+    logger.log('etapa seleccionada: ', task.id)
   }
 
   return (

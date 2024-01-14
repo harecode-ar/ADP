@@ -16,6 +16,7 @@ import { IContact } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { ECustomEvent } from 'src/types'
+import { logger } from 'src/utils/logger'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -86,7 +87,7 @@ export default function ModalUpdate(props: TProps) {
         window.dispatchEvent(new Event(ECustomEvent.refetchStageContacts))
         window.dispatchEvent(new Event(ECustomEvent.refetchSubStageContacts))
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El contacto no pudo ser editado.', { variant: 'error' })
       }
     },

@@ -10,6 +10,7 @@ import * as Yup from 'yup'
 import { AREAS_FOR_SELECT } from 'src/graphql/queries/area'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import { paths } from 'src/routes/paths'
+import { logger } from 'src/utils/logger'
 
 const projectSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -74,7 +75,7 @@ const CreateProject = () => {
         router.push(paths.dashboard.project.list)
         helpers.resetForm()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El proyecto no pudo ser creado.', { variant: 'error' })
       }
     },

@@ -13,6 +13,7 @@ import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
 import { UploadAvatar } from 'src/components/upload'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { logger } from 'src/utils/logger'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -63,7 +64,7 @@ export default function ModalAddContact(props: TProps) {
         modal.onFalse()
         refetch()
       } catch (error) {
-        console.error(error)
+        logger.error(error)
         enqueueSnackbar('El contacto no pudo ser creado.', { variant: 'error' })
       }
     },
