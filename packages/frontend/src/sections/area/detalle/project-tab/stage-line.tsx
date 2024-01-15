@@ -36,6 +36,7 @@ export default function StageLine(props: TProps) {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 1,
         }}
       >
@@ -47,7 +48,13 @@ export default function StageLine(props: TProps) {
             backgroundColor: colorFromAcpOrPacp(stage),
           }}
         />
-        <Typography>{stage.name}</Typography>
+        <Typography
+          sx={{
+            textAlign: 'center',
+          }}
+        >
+          {stage.name}
+        </Typography>
         <Link
           component={NextLink}
           href={paths.dashboard.stage.detail.replace(':id', String(stage.id))}
@@ -60,8 +67,8 @@ export default function StageLine(props: TProps) {
       <Box
         sx={(theme) => ({
           width: '100%',
-          backgroundColor: theme.palette.mode === 'dark' ? 'grey.800' : 'grey.200',
-          height: 35,
+          backgroundColor: theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300',
+          height: 25,
           borderRadius: 2,
         })}
       >
@@ -69,7 +76,7 @@ export default function StageLine(props: TProps) {
           sx={{
             width: `${stage.progress * 100}%`,
             backgroundColor: colorFromAcpOrPacp(stage),
-            height: 35,
+            height: 25,
             borderRadius: 2,
             textAlign: 'center',
           }}
@@ -82,7 +89,7 @@ export default function StageLine(props: TProps) {
           flexDirection: 'row',
           justifyContent: 'center',
           position: 'absolute',
-          top: 34,
+          top: 29,
         }}
       >
         <Typography
