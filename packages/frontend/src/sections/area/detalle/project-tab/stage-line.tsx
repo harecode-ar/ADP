@@ -70,6 +70,7 @@ export default function StageLine(props: TProps) {
           backgroundColor: theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300',
           height: 25,
           borderRadius: 2,
+          position: 'relative',
         })}
       >
         <Box
@@ -81,27 +82,27 @@ export default function StageLine(props: TProps) {
             textAlign: 'center',
           }}
         />
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          position: 'absolute',
-          top: 29,
-        }}
-      >
-        <Typography
+        <Box
           sx={{
-            color: 'white',
-            fontWeight: 'bold',
-            lineHeight: '35px',
-            textShadow: '0px 0px 2px rgba(0,0,0,0.5)',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 0,
           }}
         >
-          {stage.progress * 100}%
-        </Typography>
+          <Typography
+            sx={{
+              color: 'white',
+              fontWeight: 'bold',
+              lineHeight: '26px',
+              textShadow: '0px 0px 2px rgba(0,0,0,0.5)',
+            }}
+          >
+            {stage.progress * 100}%
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )
