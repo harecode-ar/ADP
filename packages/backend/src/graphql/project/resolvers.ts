@@ -251,8 +251,14 @@ export default {
         if (projectStartDate > projectEndDate) {
           throw new Error('Start date must be before end date')
         }
+
+        // Ya que el servidor se encuentra
+        // en un huso horario diferente
+        // al de Argentina se le restan 3 horas
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+
         const stateId =
-          new Date().toISOString().slice(0, 10) >= projectStartDate
+          today.toISOString().slice(0, 10) >= projectStartDate
             ? PROJECT_STATE.IN_PROGRESS
             : PROJECT_STATE.NEW
 
