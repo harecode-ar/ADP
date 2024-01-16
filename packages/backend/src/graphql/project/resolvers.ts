@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, PROJECT_STATE } from '@adp/shared'
+import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
@@ -433,6 +433,11 @@ export default {
                 },
               ],
             },
+            {
+              model: Stage,
+              as: 'stages',
+              attributes: ['stateId'],
+            },
           ],
         })
         if (!project) {
@@ -443,6 +448,18 @@ export default {
         if (project.area && project.area.responsible) {
           // @ts-ignore
           userId = project.area.responsible.id
+        }
+
+        // @ts-ignore
+        const { stages = [] } = project
+        // @ts-ignore
+        const allStagesFinished = stages.every((stage: Stage) => (
+            stage.stateId === STAGE_STATE.COMPLETED ||
+            stage.stateId === STAGE_STATE.CANCELLED
+        ))
+        
+        if (!allStagesFinished) {
+          throw new Error('No se puede finalizar un proyecto con etapas pendientes')
         }
 
         await project.update({
