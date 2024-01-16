@@ -453,15 +453,14 @@ export default {
         // @ts-ignore
         const { stages = [] } = project
         // @ts-ignore
-        const hasUnfinishedStages = stages.some((stage) => (
-            stage.stateId === STAGE_STATE.COMPLETED || 
+        const allStagesFinished = stages.every((stage: Stage) => (
+            stage.stateId === STAGE_STATE.COMPLETED ||
             stage.stateId === STAGE_STATE.CANCELLED
-          )
-        )
-        if (hasUnfinishedStages) {
-          throw new Error('No se puede finalizar el proyecto porque tiene etapas sin finalizar.')
+        ))
+        
+        if (!allStagesFinished) {
+          throw new Error('No se puede finalizar un proyecto con etapas pendientes')
         }
-
 
         await project.update({
           stateId: PROJECT_STATE.COMPLETED,
