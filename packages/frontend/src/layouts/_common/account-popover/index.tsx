@@ -9,10 +9,12 @@ import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import { Switch } from '@mui/material'
 // routes
 import { useRouter } from 'src/routes/hooks'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAuthContext } from 'src/auth/hooks'
+import { useSettingsContext } from 'src/components/settings'
 // components
 import { varHover } from 'src/components/animate'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
@@ -30,6 +32,7 @@ export default function AccountPopover() {
   const { user, logout } = useAuthContext()
 
   const popover = usePopover()
+  const settings = useSettingsContext()
 
   const handleLogout = async () => {
     try {
@@ -92,6 +95,22 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           <MenuItem onClick={() => changePasswordModal.onTrue()}>Cambiar contraseña</MenuItem>
+        </Stack>
+
+        <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <Stack sx={{ p: 1 }}>
+          <MenuItem>
+            Modo oscuro
+            <Switch
+              sx={{ ml: 1 }}
+              size="small"
+              checked={settings.themeMode === 'dark'}
+              onChange={(event) =>
+                settings.onUpdate('themeMode', event.target.checked ? 'dark' : 'light')
+              }
+            />
+          </MenuItem>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
