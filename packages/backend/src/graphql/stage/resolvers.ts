@@ -565,8 +565,13 @@ export default {
                   model: User,
                   as: 'responsible',
                   attributes: ['id'],
-                },
+                }
               ],
+            },
+            {
+              model: Stage,
+              as: 'childStages',
+              attributes: ['stateId'],
             },
           ],
         })
@@ -574,17 +579,15 @@ export default {
           throw new Error('Etapa no encontrada')
         }
 
-        // Check if there are pending sub-stages
-        const pendingSubStages = await Stage.findOne({
-          where: {
-            parentStageId: stage.id,
-            stateId: {
-              [Op.not]: STAGE_STATE.COMPLETED,
-            },
-          },
-        })
+        // @ts-ignore
+        const { childStages = [] } = stage
+        // @ts-ignore
+        const allSubStagesFinished = childStages.every((subStage: Stage) => (
+            subStage.stateId === STAGE_STATE.COMPLETED ||
+            subStage.stateId === STAGE_STATE.CANCELLED
+        ))
 
-        if (pendingSubStages) {
+        if (!allSubStagesFinished) {
           throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.')
         }
 
