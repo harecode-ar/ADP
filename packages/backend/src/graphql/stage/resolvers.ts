@@ -582,10 +582,10 @@ export default {
               [Op.not]: STAGE_STATE.COMPLETED,
             },
           },
-        });
+        })
 
         if (pendingSubStages) {
-          throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.');
+          throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.')
         }
 
         // @ts-ignore
