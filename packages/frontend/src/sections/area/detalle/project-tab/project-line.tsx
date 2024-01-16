@@ -1,6 +1,7 @@
 import { IProject } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
+import { useResponsive } from 'src/hooks/use-responsive'
 import { Box, Typography, IconButton, Link } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 import { paths } from 'src/routes/paths'
@@ -24,6 +25,8 @@ export default function ProjectLine(props: TProps) {
   const { project } = props
 
   const [expanded, setExpanded] = useState(false)
+
+  const isMobile = useResponsive('down', 'sm')
 
   const hasStages = useMemo(() => project.stages.length > 0, [project.stages])
 
@@ -57,6 +60,7 @@ export default function ProjectLine(props: TProps) {
           sx={{
             fontSize: '18px',
             textAlign: 'center',
+            flex: isMobile ? 1 : null,
           }}
         >
           {project.name}

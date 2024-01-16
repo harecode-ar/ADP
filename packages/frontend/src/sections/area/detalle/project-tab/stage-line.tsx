@@ -6,6 +6,7 @@ import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { useResponsive } from 'src/hooks/use-responsive'
 
 type TProps = {
   stage: IStage
@@ -20,6 +21,8 @@ const colorFromAcpOrPacp = (stag: IStage) => {
 
 export default function StageLine(props: TProps) {
   const { stage } = props
+
+  const isMobile = useResponsive('down', 'sm')
 
   return (
     <Box
@@ -51,6 +54,7 @@ export default function StageLine(props: TProps) {
         <Typography
           sx={{
             textAlign: 'center',
+            flex: isMobile ? 1 : null,
           }}
         >
           {stage.name}
