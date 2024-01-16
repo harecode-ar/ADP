@@ -6,6 +6,7 @@ import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { useResponsive } from 'src/hooks/use-responsive'
 
 type TProps = {
   stage: IStage
@@ -20,6 +21,8 @@ const colorFromAcpOrPacp = (stag: IStage) => {
 
 export default function StageLine(props: TProps) {
   const { stage } = props
+
+  const isMobile = useResponsive('down', 'sm')
 
   return (
     <Box
@@ -51,6 +54,7 @@ export default function StageLine(props: TProps) {
         <Typography
           sx={{
             textAlign: 'center',
+            flex: isMobile ? 1 : null,
           }}
         >
           {stage.name}
@@ -70,6 +74,7 @@ export default function StageLine(props: TProps) {
           backgroundColor: theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300',
           height: 25,
           borderRadius: 2,
+          position: 'relative',
         })}
       >
         <Box
@@ -81,27 +86,27 @@ export default function StageLine(props: TProps) {
             textAlign: 'center',
           }}
         />
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          position: 'absolute',
-          top: 29,
-        }}
-      >
-        <Typography
+        <Box
           sx={{
-            color: 'white',
-            fontWeight: 'bold',
-            lineHeight: '35px',
-            textShadow: '0px 0px 2px rgba(0,0,0,0.5)',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 0,
           }}
         >
-          {stage.progress * 100}%
-        </Typography>
+          <Typography
+            sx={{
+              color: 'white',
+              fontWeight: 'bold',
+              lineHeight: '26px',
+              textShadow: '0px 0px 2px rgba(0,0,0,0.5)',
+            }}
+          >
+            {stage.progress * 100}%
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )
