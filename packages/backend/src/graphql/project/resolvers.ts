@@ -433,7 +433,6 @@ export default {
                 },
               ],
             },
-            { model: Stage, as: 'stages' },
           ],
         })
         if (!project) {
@@ -444,19 +443,6 @@ export default {
         if (project.area && project.area.responsible) {
           // @ts-ignore
           userId = project.area.responsible.id
-        }
-
-        // @ts-ignore
-        const { stages = [] } = project
-        const stagesIds = stages.map((stage: Stage) => stage.id)
-        const stagesFinished = await Stage.count({
-          where: {
-            id: stagesIds,
-            stateId: PROJECT_STATE.COMPLETED,
-          },
-        })
-        if (stagesFinished !== stagesIds.length) {
-          throw new Error('No se puede finalizar un proyecto con etapas pendientes')
         }
 
         await project.update({
