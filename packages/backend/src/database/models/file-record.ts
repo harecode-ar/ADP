@@ -1,3 +1,4 @@
+import { TMimeType } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
 import { MODELS, TABLES } from '../../constants'
@@ -9,17 +10,17 @@ export class FileRecord extends Model {
 
   public fileName!: string
 
-  public mimeType!: string
+  public mimeType!: TMimeType
 
   public size!: number
 
   public userId!: number
 
-  public createdAt!: string
+  public readonly createdAt!: string
 
-  public updatedAt!: string
+  public readonly updatedAt!: string
 
-  public deletedAt!: string | null
+  public readonly deletedAt!: string | null
 }
 
 FileRecord.init(
