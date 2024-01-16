@@ -8,6 +8,7 @@ import { ContactProject } from './contact-project'
 import { ContactStage } from './contact-stage'
 import { ContactUser } from './contact-user'
 import { Contact } from './contact'
+import { FileRecord } from './file-record'
 import { Notification } from './notification'
 import { Permission } from './permission'
 import { ProjectNote } from './project-note'
@@ -141,6 +142,7 @@ export {
   ContactStage,
   ContactUser,
   Contact,
+  FileRecord,
   Notification,
   Permission,
   ProjectNote,

@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class AreaAverageCompletition extends Model {
   public id!: number
@@ -50,7 +50,7 @@ AreaAverageCompletition.init(
   },
   {
     sequelize,
-    modelName: 'AreaAverageCompletition',
+    modelName: MODELS.AREA_AVERAGE_COMPLETITION,
     tableName: TABLES.AREA_AVERAGE_COMPLETITION,
     timestamps: true,
   }

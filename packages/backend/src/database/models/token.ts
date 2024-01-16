@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class Token extends Model {
   public id!: number
@@ -38,7 +38,7 @@ Token.init(
   },
   {
     sequelize,
-    modelName: 'Token',
+    modelName: MODELS.TOKEN,
     tableName: TABLES.TOKEN,
     timestamps: true,
   }

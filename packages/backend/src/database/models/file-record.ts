@@ -2,16 +2,18 @@ import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
 import { MODELS, TABLES } from '../../constants'
 
-export class Contact extends Model {
+export class FileRecord extends Model {
   public id!: number
 
-  public name!: string
+  public originalName!: string
 
-  public phone!: string
+  public fileName!: string
 
-  public email!: string | null
+  public mimeType!: string
 
-  public image!: string | null
+  public size!: number
+
+  public userId!: number
 
   public createdAt!: string
 
@@ -20,34 +22,38 @@ export class Contact extends Model {
   public deletedAt!: string | null
 }
 
-Contact.init(
+FileRecord.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    originalName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    phone: {
-      type: DataTypes.STRING(128),
+    fileName: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING(128),
-      allowNull: true,
-    },
-    image: {
+    mimeType: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+    },
+    size: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: MODELS.CONTACT,
-    tableName: TABLES.CONTACT,
+    modelName: MODELS.FILE_RECORD,
+    tableName: TABLES.FILE_RECORD,
     timestamps: true,
     paranoid: true,
   }
