@@ -13,6 +13,13 @@ export const GET_PROJECT_NOTES = gql`
         fullname
         image
       }
+
+      files {
+        filename
+        originalName
+        mimeType
+        size
+      }
     }
   }
 `

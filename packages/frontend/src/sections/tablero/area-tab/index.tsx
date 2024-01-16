@@ -20,7 +20,7 @@ export default function AreaTab() {
 
   const areas: IArea[] = useMemo(() => {
     if (!data) return []
-    return data.areasForDashboard
+    return data.areasForDashboard || []
   }, [data])
 
   const filteredAreas = useMemo(

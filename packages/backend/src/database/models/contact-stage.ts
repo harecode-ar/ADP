@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class ContactStage extends Model {
   public id!: number
@@ -28,7 +28,7 @@ ContactStage.init(
   },
   {
     sequelize,
-    modelName: 'ContactStage',
+    modelName: MODELS.CONTACT_STAGE,
     tableName: TABLES.CONTACT_STAGE,
   }
 )

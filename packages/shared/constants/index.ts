@@ -1,6 +1,7 @@
 export * from './role-permission'
 export * from './color'
 export * from './configuration'
+export * from './function'
 export * from './mime-type'
 export * from './permission'
 export * from './project-state'

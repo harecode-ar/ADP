@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class ProjectNote extends Model {
   public id!: number
@@ -38,7 +38,7 @@ ProjectNote.init(
   },
   {
     sequelize,
-    modelName: 'ProjectNote',
+    modelName: MODELS.PROJECT_NOTE,
     tableName: TABLES.PROJECT_NOTE,
     timestamps: true,
   }

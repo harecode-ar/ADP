@@ -16,6 +16,7 @@ export const uploadFile = async (
   filename: string
   extension: string
   createdAt: string
+  size: number
 }> => {
   try {
     // @ts-ignore
