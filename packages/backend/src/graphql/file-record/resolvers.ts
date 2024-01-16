@@ -3,7 +3,7 @@ import { FileRecord, User } from '../../database/models'
 import logger from '../../logger'
 
 export default {
-  Contact: {
+  FileRecord: {
     user: async (parent: IFileRecord): Promise<IUser | undefined> => {
       if (parent.user) return parent.user
       try {

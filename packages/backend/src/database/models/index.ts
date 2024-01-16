@@ -131,6 +131,9 @@ UserFinishedStage.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Stage.hasMany(UserFinishedStage, { as: 'finishedStages', foreignKey: 'stageId' })
 UserFinishedStage.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
 
+User.hasMany(FileRecord, { as: 'files', foreignKey: 'userId' })
+FileRecord.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
 export {
   AreaAverageCompletition,
   Area,
