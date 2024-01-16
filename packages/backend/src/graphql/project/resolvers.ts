@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, PROJECT_STATE } from '@adp/shared'
+import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
 import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
@@ -433,7 +433,11 @@ export default {
                 },
               ],
             },
-            { model: Stage, as: 'stages' },
+            {
+              model: Stage,
+              as: 'stages',
+              attributes: ['stateId'],
+            },
           ],
         })
         if (!project) {
@@ -448,16 +452,16 @@ export default {
 
         // @ts-ignore
         const { stages = [] } = project
-        const stagesIds = stages.map((stage: Stage) => stage.id)
-        const stagesFinished = await Stage.count({
-          where: {
-            id: stagesIds,
-            stateId: PROJECT_STATE.COMPLETED,
-          },
-        })
-        if (stagesFinished !== stagesIds.length) {
-          throw new Error('No se puede finalizar un proyecto con etapas pendientes')
+        // @ts-ignore
+        const hasUnfinishedStages = stages.some((stage) => (
+            stage.stateId !== STAGE_STATE.COMPLETED && 
+            stage.stateId !== STAGE_STATE.CANCELLED
+          )
+        )
+        if (hasUnfinishedStages) {
+          throw new Error('No se puede finalizar el proyecto porque tiene etapas sin finalizar.')
         }
+
 
         await project.update({
           stateId: PROJECT_STATE.COMPLETED,
