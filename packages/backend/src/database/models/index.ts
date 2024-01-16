@@ -137,12 +137,12 @@ FileRecord.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
 ProjectNote.belongsToMany(FileRecord, {
   as: 'files',
-  through: RolePermission,
+  through: ProjectNoteFile,
   foreignKey: 'projectNoteId',
 })
 FileRecord.belongsToMany(ProjectNote, {
   as: 'projectNotes',
-  through: RolePermission,
+  through: ProjectNoteFile,
   foreignKey: 'fileRecordId',
 })
 

@@ -27,7 +27,7 @@ export default function ContactPopover() {
 
   const contacts: IContact[] = useMemo(() => {
     if (!data) return []
-    return data.userContacts
+    return data.userContacts || []
   }, [data])
 
   const handleCall = (contact: IContact) => {
