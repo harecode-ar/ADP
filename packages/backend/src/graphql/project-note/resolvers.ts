@@ -1,6 +1,6 @@
 import { PERMISSION_MAP } from '@adp/shared'
-import type { IProjectNote, IUser } from '@adp/shared'
-import { ProjectNote, User } from '../../database/models'
+import type { IProjectNote, IUser, IFileRecord } from '@adp/shared'
+import { ProjectNote, User, FileRecord } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
@@ -10,6 +10,23 @@ export default {
     user: (projectNote: IProjectNote): Promise<IUser | null> => {
       if (projectNote.user) return Promise.resolve(projectNote.user)
       return User.findByPk(projectNote.userId)
+    },
+    files: async (projectNote: IProjectNote): Promise<IFileRecord[]> => {
+      if (projectNote.files) return Promise.resolve(projectNote.files)
+      const { id } = projectNote
+      if (!id) throw new Error('No se encontro el id de la nota de proyecto')
+      const projectNoteWithFiles = await ProjectNote.findByPk(id, {
+        attributes: ['id'],
+        include: [
+          {
+            model: FileRecord,
+            as: 'files',
+          },
+        ],
+      })
+      if (!projectNoteWithFiles) throw new Error('No se encontro la nota de proyecto')
+      const { files = [] } = projectNoteWithFiles as IProjectNote
+      return files
     },
   },
   Query: {

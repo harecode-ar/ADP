@@ -11,6 +11,7 @@ import { Contact } from './contact'
 import { FileRecord } from './file-record'
 import { Notification } from './notification'
 import { Permission } from './permission'
+import { ProjectNoteFile } from './project-note-file'
 import { ProjectNote } from './project-note'
 import { ProjectState } from './project-state'
 import { Project } from './project'
@@ -134,6 +135,17 @@ UserFinishedStage.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
 User.hasMany(FileRecord, { as: 'files', foreignKey: 'userId' })
 FileRecord.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
+ProjectNote.belongsToMany(FileRecord, {
+  as: 'files',
+  through: RolePermission,
+  foreignKey: 'projectNoteId',
+})
+FileRecord.belongsToMany(ProjectNote, {
+  as: 'projectNotes',
+  through: RolePermission,
+  foreignKey: 'fileRecordId',
+})
+
 export {
   AreaAverageCompletition,
   Area,
@@ -148,6 +160,7 @@ export {
   FileRecord,
   Notification,
   Permission,
+  ProjectNoteFile,
   ProjectNote,
   ProjectState,
   Project,

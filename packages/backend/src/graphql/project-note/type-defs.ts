@@ -9,6 +9,7 @@ export default `#graphql
     updatedAt: String
 
     user: User
+    files: [FileRecord]
   }
 
   type Query {
