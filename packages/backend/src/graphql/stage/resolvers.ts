@@ -574,6 +574,20 @@ export default {
           throw new Error('Etapa no encontrada')
         }
 
+        // Check if there are pending sub-stages
+        const pendingSubStages = await Stage.findOne({
+          where: {
+            parentStageId: stage.id,
+            stateId: {
+              [Op.not]: STAGE_STATE.COMPLETED,
+            },
+          },
+        });
+
+        if (pendingSubStages) {
+          throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.');
+        }
+
         // @ts-ignore
         if (stage.area && stage.area.responsible) {
           // @ts-ignore
