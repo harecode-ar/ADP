@@ -8,7 +8,7 @@ export class FileRecord extends Model {
 
   public originalName!: string
 
-  public fileName!: string
+  public filename!: string
 
   public mimeType!: TMimeType
 
@@ -34,7 +34,7 @@ FileRecord.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    fileName: {
+    filename: {
       type: DataTypes.STRING,
       allowNull: false,
     },

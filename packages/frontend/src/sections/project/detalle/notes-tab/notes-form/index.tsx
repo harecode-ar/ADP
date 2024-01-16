@@ -1,15 +1,14 @@
-import React from 'react'
-import * as Yup from 'yup'
-import { Card, Stack } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation } from '@apollo/client'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { CREATE_PROJECT_NOTE } from 'src/graphql/mutations'
 import { IProject } from '@adp/shared'
-import FormProvider, { RHFTextField } from 'src/components/hook-form'
+import React, { useMemo } from 'react'
+import { Button, Card, IconButton, InputBase, Paper, Stack, Typography } from '@mui/material'
+import { useMutation } from '@apollo/client'
+import { useBoolean } from 'src/hooks/use-boolean'
+import { useFormik } from 'formik'
+import { CREATE_PROJECT_NOTE } from 'src/graphql/mutations'
 import { enqueueSnackbar } from 'notistack'
 import { logger } from 'src/utils/logger'
+import Iconify from 'src/components/iconify'
+import AttachFileModal from 'src/sections/shared/attach-file-modal'
 
 // ----------------------------------------------------------------------
 type TProps = {
@@ -19,62 +18,82 @@ type TProps = {
 
 export default function PostCommentForm(props: TProps) {
   const { project, refetch } = props
+  const attachFileModal = useBoolean()
+
   const [createProjectNote] = useMutation(CREATE_PROJECT_NOTE)
 
-  const CommentSchema = Yup.object().shape({
-    message: Yup.string().required('mensaje requerido'),
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+      files: [],
+    },
+    onSubmit: async (values) => {
+      try {
+        await createProjectNote({
+          variables: {
+            message: values.message,
+            projectId: project.id,
+            files: values.files,
+          },
+        })
+        formik.resetForm()
+        refetch()
+      } catch (error) {
+        logger.error(error)
+        enqueueSnackbar(`La nota no pudo ser creada`, { variant: 'error' })
+      }
+    },
   })
 
-  const defaultValues = {
-    message: '',
+  const isDisabled = useMemo(
+    () =>
+      (formik.values.message.length === 0 && formik.values.files.length === 0) ||
+      formik.isSubmitting,
+    [formik.isSubmitting, formik.values]
+  )
+
+  const handleAttachFile = (files: any[]) => {
+    formik.setFieldValue('files', files)
+    attachFileModal.onFalse()
   }
-
-  const methods = useForm({
-    resolver: yupResolver(CommentSchema),
-    defaultValues,
-  })
-
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await createProjectNote({
-        variables: {
-          message: data.message,
-          projectId: project.id,
-        },
-      })
-      reset()
-      refetch()
-    } catch (error) {
-      logger.error(error)
-      enqueueSnackbar(`La nota no pudo ser creada`, { variant: 'error' })
-    }
-  })
 
   return (
     <Card sx={{ p: 2 }}>
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <Stack spacing={3}>
-          <RHFTextField
-            name="message"
-            placeholder="Escribe algun comentario..."
-            multiline
-            maxRows={10}
-            rows={4}
-          />
+      <Paper variant="outlined" sx={{ p: 1, flexGrow: 1, bgcolor: 'transparent' }}>
+        <InputBase
+          fullWidth
+          multiline
+          maxRows={4}
+          placeholder="Escribe una nota"
+          sx={{ px: 1 }}
+          value={formik.values.message}
+          onChange={(e) => formik.setFieldValue('message', e.target.value)}
+        />
 
-          <Stack direction="row" alignItems="center" justifyContent="end">
-            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Publicar
-            </LoadingButton>
+        <Stack direction="row" alignItems="center">
+          <Stack direction="row" flexGrow={1} alignItems="center">
+            <IconButton onClick={attachFileModal.onTrue}>
+              <Iconify icon="eva:attach-2-fill" />
+            </IconButton>
+            <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+              {formik.values.files.length === 0 && 'No hay archivos adjuntos'}
+              {formik.values.files.length === 1 && '1 archivo adjunto'}
+              {formik.values.files.length > 1 && `${formik.values.files.length} archivos adjuntos`}
+            </Typography>
           </Stack>
+
+          <Button variant="contained" onClick={() => formik.handleSubmit()} disabled={isDisabled}>
+            {formik.isSubmitting ? 'Publicando...' : 'Publicar'}
+          </Button>
         </Stack>
-      </FormProvider>
+      </Paper>
+      {attachFileModal.value && (
+        <AttachFileModal
+          files={formik.values.files}
+          modal={attachFileModal}
+          onSuccess={handleAttachFile}
+        />
+      )}
     </Card>
   )
 }

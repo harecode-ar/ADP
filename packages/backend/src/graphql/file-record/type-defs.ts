@@ -2,7 +2,7 @@ export default `#graphql
   type FileRecord {
     id: Int
     originalName: String
-    fileName: String
+    filename: String
     mimeType: String
     size: Int
     userId: Int

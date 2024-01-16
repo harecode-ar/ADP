@@ -4,7 +4,7 @@ import type { IUser } from './user'
 export interface IFileRecord {
   id: number
   originalName: string
-  fileName: string
+  filename: string
   mimeType: TMimeType
   size: number
   userId: number
