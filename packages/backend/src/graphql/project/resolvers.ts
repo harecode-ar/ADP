@@ -454,8 +454,8 @@ export default {
         const { stages = [] } = project
         // @ts-ignore
         const hasUnfinishedStages = stages.some((stage) => (
-            stage.stateId !== STAGE_STATE.COMPLETED && 
-            stage.stateId !== STAGE_STATE.CANCELLED
+            stage.stateId === STAGE_STATE.COMPLETED || 
+            stage.stateId === STAGE_STATE.CANCELLED
           )
         )
         if (hasUnfinishedStages) {
