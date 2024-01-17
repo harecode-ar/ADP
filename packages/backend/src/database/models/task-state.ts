@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class TaskState extends Model {
   public id!: number
@@ -22,7 +22,7 @@ TaskState.init(
   },
   {
     sequelize,
-    modelName: 'TaskState',
+    modelName: MODELS.TASK_STATE,
     tableName: TABLES.TASK_STATE,
   }
 )

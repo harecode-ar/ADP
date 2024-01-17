@@ -565,13 +565,30 @@ export default {
                   model: User,
                   as: 'responsible',
                   attributes: ['id'],
-                },
+                }
               ],
+            },
+            {
+              model: Stage,
+              as: 'childStages',
+              attributes: ['stateId'],
             },
           ],
         })
         if (!stage) {
           throw new Error('Etapa no encontrada')
+        }
+
+        // @ts-ignore
+        const { childStages = [] } = stage
+        // @ts-ignore
+        const allSubStagesFinished = childStages.every((subStage: Stage) => (
+            subStage.stateId === STAGE_STATE.COMPLETED ||
+            subStage.stateId === STAGE_STATE.CANCELLED
+        ))
+
+        if (!allSubStagesFinished) {
+          throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.')
         }
 
         // @ts-ignore

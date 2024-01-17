@@ -46,3 +46,10 @@ export const formatCost = (value: number) => {
   if (value / 1000000 >= 1) return `${formatPrice(value / 1000000)}M`
   return formatPrice(value)
 }
+
+export function fShortenFileSize(bytes: number) {
+  if (bytes === 0) return '0B'
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+  const i = Math.floor(Math.log(Number(bytes)) / Math.log(1024))
+  return `${Number(bytes / 1024 ** i).toFixed(i ? 1 : 0)}${sizes[i]}`
+}

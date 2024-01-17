@@ -6,6 +6,7 @@ import check from './check'
 import checklist from './checklist'
 import configuration from './configuration'
 import contact from './contact'
+import fileRecord from './file-record'
 import notification from './notification'
 import permission from './permission'
 import project from './project'
@@ -27,6 +28,7 @@ export const typeDefs = mergeTypeDefs([
   checklist.typeDefs,
   configuration.typeDefs,
   contact.typeDefs,
+  fileRecord.typeDefs,
   notification.typeDefs,
   permission.typeDefs,
   project.typeDefs,
@@ -49,6 +51,7 @@ export const resolvers = mergeResolvers([
   checklist.resolvers,
   configuration.resolvers,
   contact.resolvers,
+  fileRecord.resolvers,
   notification.resolvers,
   permission.resolvers,
   project.resolvers,

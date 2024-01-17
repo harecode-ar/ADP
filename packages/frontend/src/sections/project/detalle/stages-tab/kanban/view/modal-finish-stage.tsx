@@ -32,8 +32,8 @@ export default function ModalFinishStage(props: TProps) {
       enqueueSnackbar('Etapa finalizada correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
-    } catch {
-      enqueueSnackbar('Error al finalizar la etapa.', { variant: 'error' })
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
 

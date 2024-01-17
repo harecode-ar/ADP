@@ -8,8 +8,10 @@ import { ContactProject } from './contact-project'
 import { ContactStage } from './contact-stage'
 import { ContactUser } from './contact-user'
 import { Contact } from './contact'
+import { FileRecord } from './file-record'
 import { Notification } from './notification'
 import { Permission } from './permission'
+import { ProjectNoteFile } from './project-note-file'
 import { ProjectNote } from './project-note'
 import { Project } from './project'
 import { RolePermission } from './role-permission'
@@ -129,6 +131,20 @@ UserFinishedStage.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 Stage.hasMany(UserFinishedStage, { as: 'finishedStages', foreignKey: 'stageId' })
 UserFinishedStage.belongsTo(Stage, { as: 'stage', foreignKey: 'stageId' })
 
+User.hasMany(FileRecord, { as: 'files', foreignKey: 'userId' })
+FileRecord.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+
+ProjectNote.belongsToMany(FileRecord, {
+  as: 'files',
+  through: ProjectNoteFile,
+  foreignKey: 'projectNoteId',
+})
+FileRecord.belongsToMany(ProjectNote, {
+  as: 'projectNotes',
+  through: ProjectNoteFile,
+  foreignKey: 'fileRecordId',
+})
+
 export {
   AreaAverageCompletition,
   Area,
@@ -140,8 +156,10 @@ export {
   ContactStage,
   ContactUser,
   Contact,
+  FileRecord,
   Notification,
   Permission,
+  ProjectNoteFile,
   ProjectNote,
   Project,
   RolePermission,
