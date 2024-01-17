@@ -100,11 +100,18 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          <MenuItem>
+          <MenuItem
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             Modo oscuro
             <Switch
               sx={{ ml: 1 }}
               size="small"
+              color="info"
               checked={settings.themeMode === 'dark'}
               onChange={(event) =>
                 settings.onUpdate('themeMode', event.target.checked ? 'dark' : 'light')
