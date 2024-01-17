@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class Session extends Model {
   public id!: number
@@ -34,7 +34,7 @@ Session.init(
   },
   {
     sequelize,
-    modelName: 'Session',
+    modelName: MODELS.SESSION,
     tableName: TABLES.SESSION,
     timestamps: true,
     paranoid: true,

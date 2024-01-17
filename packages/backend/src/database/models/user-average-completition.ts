@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class UserAverageCompletition extends Model {
   public id!: number
@@ -46,7 +46,7 @@ UserAverageCompletition.init(
   },
   {
     sequelize,
-    modelName: 'UserAverageCompletition',
+    modelName: MODELS.USER_AVERAGE_COMPLETITION,
     tableName: TABLES.USER_AVERAGE_COMPLETITION,
     timestamps: false,
   }
