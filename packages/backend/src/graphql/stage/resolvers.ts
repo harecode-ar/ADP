@@ -583,8 +583,8 @@ export default {
         const { childStages = [] } = stage
         // @ts-ignore
         const allSubStagesFinished = childStages.every((subStage: Stage) => (
-            subStage.stateId === STAGE_STATE.COMPLETED ||
-            subStage.stateId === STAGE_STATE.CANCELLED
+            subStage.stateId === TASK_STATE.COMPLETED ||
+            subStage.stateId === TASK_STATE.CANCELLED
         ))
 
         if (!allSubStagesFinished) {
