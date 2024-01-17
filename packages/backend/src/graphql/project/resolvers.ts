@@ -453,11 +453,11 @@ export default {
         // @ts-ignore
         const { stages = [] } = project
         // @ts-ignore
-        const allStagesFinished = stages.every((stage: Stage) => (
-            stage.stateId === STAGE_STATE.COMPLETED ||
-            stage.stateId === STAGE_STATE.CANCELLED
-        ))
-        
+        const allStagesFinished = stages.every(
+          (stage: Stage) =>
+            stage.stateId === STAGE_STATE.COMPLETED || stage.stateId === STAGE_STATE.CANCELLED
+        )
+
         if (!allStagesFinished) {
           throw new Error('No se puede finalizar un proyecto con etapas pendientes')
         }

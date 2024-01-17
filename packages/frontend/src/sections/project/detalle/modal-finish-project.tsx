@@ -32,8 +32,8 @@ export default function ModalFinishProject(props: TProps) {
       enqueueSnackbar('Proyecto finalizado correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' })
+    } catch {
+      enqueueSnackbar('Error al finalizar el proyecto.', { variant: 'error' })
     }
   }
 
