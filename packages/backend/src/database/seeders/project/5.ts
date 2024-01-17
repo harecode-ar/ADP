@@ -1,4 +1,4 @@
-import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 
 export const PROJECT = {
   name: 'Creación de Plaza Pública',
@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
-  stateId: PROJECT_STATE.IN_PROGRESS,
+  stateId: TASK_STATE.IN_PROGRESS,
 }
 
 export const STAGES = [
@@ -23,7 +23,7 @@ export const STAGES = [
     finishedAt: '2023-03-31',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Adquisición de Terreno',
@@ -34,7 +34,7 @@ export const STAGES = [
     finishedAt: '2023-05-31',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Construcción de Infraestructura',
@@ -45,7 +45,7 @@ export const STAGES = [
     finishedAt: '2023-09-30',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Paisajismo y Vegetación',
@@ -56,7 +56,7 @@ export const STAGES = [
     finishedAt: null,
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.IN_PROGRESS,
+    stateId: TASK_STATE.IN_PROGRESS,
   },
   {
     name: 'Finalización y Entrega',
@@ -67,6 +67,6 @@ export const STAGES = [
     finishedAt: null,
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
 ]

@@ -10,13 +10,12 @@ import notification from './notification'
 import permission from './permission'
 import project from './project'
 import projectNote from './project-note'
-import projectState from './project-state'
 import report from './report'
 import role from './role'
 import session from './session'
 import stage from './stage'
 import stageNote from './stage-note'
-import stageState from './stage-state'
+import taskState from './task-state'
 import upload from './upload'
 import user from './user'
 import userAverageCompletition from './user-average-completition'
@@ -32,13 +31,12 @@ export const typeDefs = mergeTypeDefs([
   permission.typeDefs,
   project.typeDefs,
   projectNote.typeDefs,
-  projectState.typeDefs,
   report.typeDefs,
   role.typeDefs,
   session.typeDefs,
   stage.typeDefs,
   stageNote.typeDefs,
-  stageState.typeDefs,
+  taskState.typeDefs,
   upload.typeDefs,
   user.typeDefs,
   userAverageCompletition.typeDefs,
@@ -55,13 +53,12 @@ export const resolvers = mergeResolvers([
   permission.resolvers,
   project.resolvers,
   projectNote.resolvers,
-  projectState.resolvers,
   report.resolvers,
   role.resolvers,
   session.resolvers,
   stage.resolvers,
   stageNote.resolvers,
-  stageState.resolvers,
+  taskState.resolvers,
   upload.resolvers,
   user.resolvers,
   userAverageCompletition.resolvers,

@@ -1,9 +1,9 @@
-import { PERMISSION_MAP, PROJECT_STATE, STAGE_STATE } from '@adp/shared'
-import type { IProject, IProjectState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
+import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
+import type { IProject, ITaskState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
   Project,
-  ProjectState,
+  TaskState,
   ProjectNote,
   Area,
   Stage,
@@ -17,9 +17,9 @@ import { getAcp } from '../../utils/average-completition'
 
 export default {
   Project: {
-    state: (project: IProject): Promise<IProjectState | null> => {
+    state: (project: IProject): Promise<ITaskState | null> => {
       if (project.state) return Promise.resolve(project.state)
-      return ProjectState.findByPk(project.stateId)
+      return TaskState.findByPk(project.stateId)
     },
     area: (project: IProject): Promise<IArea | null> => {
       if (project.area) return Promise.resolve(project.area)
@@ -103,7 +103,7 @@ export default {
           include: [
             { model: Area, as: 'area' },
             { model: Stage, as: 'stages' },
-            { model: ProjectState, as: 'state' },
+            { model: TaskState, as: 'state' },
           ],
           order: [['startDate', 'ASC']],
         })
@@ -120,11 +120,11 @@ export default {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         return Project.findAll({
-          where: { areaId: args.areaId, stateId: PROJECT_STATE.IN_PROGRESS },
+          where: { areaId: args.areaId, stateId: TASK_STATE.IN_PROGRESS },
           include: [
             { model: Area, as: 'area' },
             { model: Stage, as: 'stages' },
-            { model: ProjectState, as: 'state' },
+            { model: TaskState, as: 'state' },
           ],
           order: [['startDate', 'ASC']],
         })
@@ -154,7 +154,7 @@ export default {
               },
               required: false,
             },
-            { model: ProjectState, as: 'state' },
+            { model: TaskState, as: 'state' },
           ],
           order: [['startDate', 'ASC']],
         })
@@ -259,8 +259,8 @@ export default {
 
         const stateId =
           today.toISOString().slice(0, 10) >= projectStartDate
-            ? PROJECT_STATE.IN_PROGRESS
-            : PROJECT_STATE.NEW
+            ? TASK_STATE.IN_PROGRESS
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const project = await Project.create({
@@ -298,7 +298,7 @@ export default {
           throw new Error('Proyecto no encontrado')
         }
 
-        if (project.stateId === PROJECT_STATE.COMPLETED) {
+        if (project.stateId === TASK_STATE.COMPLETED) {
           throw new Error('No se puede modificar un proyecto finalizado')
         }
 
@@ -417,7 +417,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: PROJECT_STATE.COMPLETED,
+              [Op.not]: TASK_STATE.COMPLETED,
             },
           },
           include: [
@@ -454,8 +454,8 @@ export default {
         const { stages = [] } = project
         // @ts-ignore
         const allStagesFinished = stages.every((stage: Stage) => (
-            stage.stateId === STAGE_STATE.COMPLETED ||
-            stage.stateId === STAGE_STATE.CANCELLED
+            stage.stateId === TASK_STATE.COMPLETED ||
+            stage.stateId === TASK_STATE.CANCELLED
         ))
         
         if (!allStagesFinished) {
@@ -463,7 +463,7 @@ export default {
         }
 
         await project.update({
-          stateId: PROJECT_STATE.COMPLETED,
+          stateId: TASK_STATE.COMPLETED,
           finishedAt: new Date().toISOString().split('T')[0],
         })
         await UserFinishedProject.create({
@@ -478,7 +478,7 @@ export default {
           finishedAt,
         })
         await project.update({
-          stateId: PROJECT_STATE.COMPLETED,
+          stateId: TASK_STATE.COMPLETED,
           finishedAt,
           acp,
           pacp,

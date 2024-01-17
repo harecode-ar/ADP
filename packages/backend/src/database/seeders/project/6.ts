@@ -1,4 +1,4 @@
-import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 
 export const PROJECT = {
   name: 'Instalación de Radares de Velocidad en la Ruta',
@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000,
   progress: 1,
   areaId: 1,
-  stateId: PROJECT_STATE.COMPLETED,
+  stateId: TASK_STATE.COMPLETED,
 }
 
 export const STAGES = [
@@ -23,7 +23,7 @@ export const STAGES = [
     finishedAt: '2023-04-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Adquisición de Radares',
@@ -34,7 +34,7 @@ export const STAGES = [
     finishedAt: '2023-05-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Instalación de Radares',
@@ -45,7 +45,7 @@ export const STAGES = [
     finishedAt: '2023-07-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Pruebas y Ajustes',
@@ -56,6 +56,6 @@ export const STAGES = [
     finishedAt: '2023-07-31',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
 ]

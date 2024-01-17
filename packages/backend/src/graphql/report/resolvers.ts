@@ -1,5 +1,5 @@
 import type { IProjectCountByState } from '@adp/shared'
-import { PROJECT_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 import { QueryTypes } from 'sequelize'
 import logger from '../../logger'
 import { sequelize } from '../../database'
@@ -23,10 +23,10 @@ export default {
 
         const query = `
           SELECT
-            COUNT(CASE WHEN stateId = ${PROJECT_STATE.NEW} THEN 1 END) AS new,
-            COUNT(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN 1 END) AS inProgress,
-            COUNT(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN 1 END) AS completed,
-            COUNT(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN 1 END) AS cancelled
+            COUNT(CASE WHEN stateId = ${TASK_STATE.NEW} THEN 1 END) AS new,
+            COUNT(CASE WHEN stateId = ${TASK_STATE.IN_PROGRESS} THEN 1 END) AS inProgress,
+            COUNT(CASE WHEN stateId = ${TASK_STATE.COMPLETED} THEN 1 END) AS completed,
+            COUNT(CASE WHEN stateId = ${TASK_STATE.CANCELLED} THEN 1 END) AS cancelled
           FROM ${TABLES.PROJECT}
           WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `
@@ -57,10 +57,10 @@ export default {
 
         const query = `
           SELECT
-            SUM(CASE WHEN stateId = ${PROJECT_STATE.NEW} THEN cost END) AS new,
-            SUM(CASE WHEN stateId = ${PROJECT_STATE.IN_PROGRESS} THEN cost END) AS inProgress,
-            SUM(CASE WHEN stateId = ${PROJECT_STATE.COMPLETED} THEN cost END) AS completed,
-            SUM(CASE WHEN stateId = ${PROJECT_STATE.CANCELLED} THEN cost END) AS cancelled
+            SUM(CASE WHEN stateId = ${TASK_STATE.NEW} THEN cost END) AS new,
+            SUM(CASE WHEN stateId = ${TASK_STATE.IN_PROGRESS} THEN cost END) AS inProgress,
+            SUM(CASE WHEN stateId = ${TASK_STATE.COMPLETED} THEN cost END) AS completed,
+            SUM(CASE WHEN stateId = ${TASK_STATE.CANCELLED} THEN cost END) AS cancelled
           FROM ${TABLES.PROJECT}
           WHERE areaId IN (${areas.join(', ')}) ${startDateFilter} ${endDateFilter}
         `

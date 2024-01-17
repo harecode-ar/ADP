@@ -1,4 +1,4 @@
-import { IProject, IStage, PROJECT_STATE } from '@adp/shared'
+import { IProject, IStage, TASK_STATE } from '@adp/shared'
 import React from 'react'
 import { Box, Button, Card } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -26,7 +26,7 @@ export default function StagesTab(props: TProps) {
           gap: 2,
         }}
       >
-        {project && project.stateId !== PROJECT_STATE.COMPLETED && (
+        {project && project.stateId !== TASK_STATE.COMPLETED && (
           <Box
             sx={{
               display: 'flex',

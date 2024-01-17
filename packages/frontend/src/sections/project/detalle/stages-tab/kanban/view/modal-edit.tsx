@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import type { IArea, IProjectState, IStage, IProject } from '@adp/shared'
+import type { IArea, ITaskState, IStage, IProject } from '@adp/shared'
 import {
   Typography,
   Button,
@@ -69,7 +69,7 @@ type TProps = {
 type TFormikValues = {
   id: number | null
   name: string
-  state: IProjectState | null
+  state: ITaskState | null
   startDate: string
   endDate: string
   area: IArea | null

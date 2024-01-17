@@ -1,4 +1,4 @@
-import type { IStageState } from './stage-state'
+import type { ITaskState } from './task-state'
 import type { IArea } from './area'
 import type { IProject } from './project'
 import { IUser } from './user'
@@ -24,7 +24,7 @@ export interface IStage {
   createdAt: string
   updatedAt: string
 
-  state: IStageState
+  state: ITaskState
   area: IArea | null
   responsible: IUser | null
   project: IProject

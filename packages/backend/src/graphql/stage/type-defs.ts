@@ -19,7 +19,7 @@ export default `#graphql
     createdAt: String
     updatedAt: String
 
-    state: StageState
+    state: TaskState
     area: Area
     responsible: User
     parentStage: Stage

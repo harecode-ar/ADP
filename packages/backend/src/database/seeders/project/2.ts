@@ -1,4 +1,4 @@
-import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 
 export const PROJECT = {
   name: 'Incentivo a la Utilización de Energías Renovables',
@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
-  stateId: PROJECT_STATE.IN_PROGRESS,
+  stateId: TASK_STATE.IN_PROGRESS,
 }
 
 export const STAGES = [
@@ -23,7 +23,7 @@ export const STAGES = [
     finishedAt: '2023-03-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Subsidios y Incentivos Financieros',
@@ -34,7 +34,7 @@ export const STAGES = [
     finishedAt: '2023-06-28',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Asesoramiento Técnico',
@@ -45,7 +45,7 @@ export const STAGES = [
     finishedAt: '2023-09-30',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Instalación de Tecnologías Renovables',
@@ -56,6 +56,6 @@ export const STAGES = [
     finishedAt: null,
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.IN_PROGRESS,
+    stateId: TASK_STATE.IN_PROGRESS,
   },
 ]

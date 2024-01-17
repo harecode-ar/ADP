@@ -1,4 +1,4 @@
-import { IProject, PROJECT_STATE_ARRAY } from '@adp/shared'
+import { IProject, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import { Task } from 'gantt-task-react'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
@@ -12,7 +12,7 @@ type TProps = {
 export default function GanttTab(props: TProps) {
   const { areaId } = props
 
-  const [projectState, setProjectState] = useState(PROJECT_STATE_ARRAY[1]) // IN_PROGRESS
+  const [projectState, setProjectState] = useState(TASK_STATE_ARRAY[1]) // IN_PROGRESS
 
   const handleProjectStateChange = (event: React.ChangeEvent<{}>, option: any | null) => {
     if (option !== null) {

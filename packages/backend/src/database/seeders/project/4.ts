@@ -1,4 +1,4 @@
-import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 
 export const PROJECT = {
   name: 'Cambio de Luces Halógenas por Luces LED',
@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000,
   progress: 1,
   areaId: 1,
-  stateId: PROJECT_STATE.COMPLETED,
+  stateId: TASK_STATE.COMPLETED,
 }
 
 export const STAGES = [
@@ -23,7 +23,7 @@ export const STAGES = [
     finishedAt: '2023-03-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Adquisición de Luces LED',
@@ -33,7 +33,7 @@ export const STAGES = [
     finishedAt: '2023-04-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Instalación de Luces LED',
@@ -44,7 +44,7 @@ export const STAGES = [
     finishedAt: '2023-06-15',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
   {
     name: 'Pruebas y Ajustes',
@@ -55,6 +55,6 @@ export const STAGES = [
     finishedAt: '2023-06-30',
     progress: 1,
     areaId: 1,
-    stateId: STAGE_STATE.COMPLETED,
+    stateId: TASK_STATE.COMPLETED,
   },
 ]

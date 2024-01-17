@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { type IStage, STAGE_STATE } from '@adp/shared'
+import { type IStage, TASK_STATE } from '@adp/shared'
 import {
   Box,
   Container,
@@ -127,15 +127,15 @@ export default function ProjectDetailView(props: TProps) {
               }}
             >
               {stage &&
-                stage.stateId !== STAGE_STATE.CANCELLED &&
-                stage.stateId !== STAGE_STATE.COMPLETED && (
+                stage.stateId !== TASK_STATE.CANCELLED &&
+                stage.stateId !== TASK_STATE.COMPLETED && (
                   <Button variant="contained" onClick={modalEdit.onTrue}>
                     <Iconify icon="material-symbols:edit" mr={1} />
                     Editar
                   </Button>
                 )}
 
-              {stage && stage.stateId !== STAGE_STATE.COMPLETED && (
+              {stage && stage.stateId !== TASK_STATE.COMPLETED && (
                 <Button variant="contained" onClick={modalFinishStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar

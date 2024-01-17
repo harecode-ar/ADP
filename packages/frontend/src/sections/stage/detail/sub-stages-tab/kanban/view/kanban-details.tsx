@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, STAGE_STATE } from '@adp/shared'
+import { IStage, TASK_STATE } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Scrollbar from 'src/components/scrollbar'
@@ -128,8 +128,8 @@ export default function KanbanDetails(props: TProps) {
           </Tooltip>
 
           {subStage &&
-            subStage.stateId !== STAGE_STATE.CANCELLED &&
-            subStage.stateId !== STAGE_STATE.COMPLETED && (
+            subStage.stateId !== TASK_STATE.CANCELLED &&
+            subStage.stateId !== TASK_STATE.COMPLETED && (
               <Tooltip title="Editar">
                 <IconButton onClick={modalEdit.onTrue}>
                   <Iconify icon="mdi:pencil" />
