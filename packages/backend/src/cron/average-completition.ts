@@ -1,10 +1,5 @@
 import cron from 'node-cron'
-import {
-  TASK_STATE,
-  EConfigurationKey,
-  IArea,
-  ENotificationCategory,
-} from '@adp/shared'
+import { TASK_STATE, EConfigurationKey, IArea, ENotificationCategory } from '@adp/shared'
 import { Op } from 'sequelize'
 import { sequelize } from '../database'
 import {

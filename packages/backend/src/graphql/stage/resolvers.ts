@@ -565,7 +565,7 @@ export default {
                   model: User,
                   as: 'responsible',
                   attributes: ['id'],
-                }
+                },
               ],
             },
             {
@@ -582,10 +582,10 @@ export default {
         // @ts-ignore
         const { childStages = [] } = stage
         // @ts-ignore
-        const allSubStagesFinished = childStages.every((subStage: Stage) => (
-            subStage.stateId === TASK_STATE.COMPLETED ||
-            subStage.stateId === TASK_STATE.CANCELLED
-        ))
+        const allSubStagesFinished = childStages.every(
+          (subStage: Stage) =>
+            subStage.stateId === TASK_STATE.COMPLETED || subStage.stateId === TASK_STATE.CANCELLED
+        )
 
         if (!allSubStagesFinished) {
           throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.')
