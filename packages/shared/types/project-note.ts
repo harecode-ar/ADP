@@ -1,4 +1,5 @@
-import { IUser } from './user'
+import type { IFileRecord } from './file-record'
+import type { IUser } from './user'
 
 export interface IProjectNote {
   id: number
@@ -10,4 +11,5 @@ export interface IProjectNote {
   updatedAt: string
 
   user?: IUser
+  files?: IFileRecord[]
 }

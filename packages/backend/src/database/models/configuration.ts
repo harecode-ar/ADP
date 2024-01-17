@@ -1,7 +1,7 @@
 import { EConfigurationKey } from '@adp/shared'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class Configuration extends Model {
   public id!: number
@@ -39,7 +39,7 @@ Configuration.init(
   },
   {
     sequelize,
-    modelName: 'Configuration',
+    modelName: MODELS.CONFIGURATION,
     tableName: TABLES.CONFIGURATION,
   }
 )

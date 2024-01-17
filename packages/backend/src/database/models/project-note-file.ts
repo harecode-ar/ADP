@@ -2,44 +2,33 @@ import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
 import { MODELS, TABLES } from '../../constants'
 
-export class Token extends Model {
+export class ProjectNoteFile extends Model {
   public id!: number
 
-  public token!: string
+  public projectNoteId!: number
 
-  public type!: string
-
-  public userId!: number
-
-  public createdAt!: Date
-
-  public updatedAt!: Date
+  public fileRecordId!: number
 }
 
-Token.init(
+ProjectNoteFile.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    token: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    type: {
-      type: DataTypes.STRING,
+    projectNoteId: {
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    userId: {
+    fileRecordId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: MODELS.TOKEN,
-    tableName: TABLES.TOKEN,
-    timestamps: true,
+    modelName: MODELS.PROJECT_NOTE_FILE,
+    tableName: TABLES.PROJECT_NOTE_FILE,
   }
 )

@@ -75,7 +75,7 @@ export default function NotificationsPopover() {
 
   const notifications: INotification[] = useMemo(() => {
     if (notificationQuery.data) {
-      return notificationQuery.data.notifications
+      return notificationQuery.data.notifications || []
     }
     return []
   }, [notificationQuery.data])

@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '..'
-import { TABLES } from '../../constants'
+import { MODELS, TABLES } from '../../constants'
 
 export class ContactUser extends Model {
   public id!: number
@@ -28,7 +28,7 @@ ContactUser.init(
   },
   {
     sequelize,
-    modelName: 'ContactUser',
+    modelName: MODELS.CONTACT_USER,
     tableName: TABLES.CONTACT_USER,
   }
 )
