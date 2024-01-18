@@ -1,6 +1,6 @@
 import { IStage } from '@adp/shared'
 import React from 'react'
-import { Box, Button, Card } from '@mui/material'
+import { Box, Button, Card, Typography } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCreate from './create-sub-stage'
@@ -42,8 +42,19 @@ export default function SubStagesTab(props: TProps) {
             Crear Sub-etapa
           </Button>
         </Box>
-        <KanbanComponent subStages={subStages} stage={stage} refetch={refetch} />
+        {subStages.length > 0 && <KanbanComponent subStages={subStages} stage={stage} refetch={refetch} />}
         {modalCreate.value && <ModalCreate modal={modalCreate} stage={stage} refetch={refetch} />}
+        {subStages.length === 0 && (
+          <Typography
+            sx={{
+              textAlign: 'center',
+              mt: 2,
+              mb: 2,
+            }}
+          >
+            No hay sub etapas asignadas a este proyecto
+          </Typography>
+        )}
       </Box>
     </Card>
   )
