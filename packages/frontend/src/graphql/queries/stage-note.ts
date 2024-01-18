@@ -13,6 +13,13 @@ export const GET_STAGE_NOTES = gql`
         fullname
         image
       }
+
+      files {
+        filename
+        originalName
+        mimeType
+        size
+      }
     }
   }
 `

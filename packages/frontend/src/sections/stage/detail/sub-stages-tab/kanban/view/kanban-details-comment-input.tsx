@@ -33,6 +33,7 @@ export default function KanbanDetailsCommentInput(props: TProps) {
         variables: {
           message: values.message,
           stageId,
+          files: [],
         },
       })
         .then(() => {
