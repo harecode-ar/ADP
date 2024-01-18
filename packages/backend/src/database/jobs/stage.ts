@@ -1,4 +1,4 @@
-import { STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 import { Op } from 'sequelize'
 import { Stage } from '../models'
 import logger from '../../logger'
@@ -10,7 +10,7 @@ export const calculateStageProgress = async (stageId: number) => {
     if (!foundStage) throw new Error('Stage not found')
 
     const stages = await Stage.findAll({
-      where: { parentStageId: stageId, stateId: { [Op.ne]: STAGE_STATE.CANCELLED } },
+      where: { parentStageId: stageId, stateId: { [Op.ne]: TASK_STATE.CANCELLED } },
       attributes: ['progress'],
     })
 

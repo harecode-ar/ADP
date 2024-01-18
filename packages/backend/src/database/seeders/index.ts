@@ -9,10 +9,9 @@ import { userSeed } from './user'
 import { calculateAcp } from './average-completion'
 import { configurationSeed } from './configuration'
 import { permissionSeed } from './permission'
-import { projectStateSeed } from './project-state'
 import { rolePermissionSeed } from './role-permission'
 import { roleSeed } from './role'
-import { stageStateSeed } from './stage-state'
+import { taskStateSeed } from './task-state'
 import { wait } from '../../utils/wait'
 
 const seed = async () => {
@@ -26,8 +25,7 @@ const seed = async () => {
     await rolePermissionSeed({ transaction, roles, permissions })
     await userSeed({ transaction, roles })
     await areaSeed({ transaction })
-    await projectStateSeed({ transaction })
-    await stageStateSeed({ transaction })
+    await taskStateSeed({ transaction })
     await projectSeed({ transaction })
     await stageSeed({ transaction })
     await configurationSeed({ transaction })

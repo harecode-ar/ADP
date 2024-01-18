@@ -1,4 +1,4 @@
-import { PROJECT_STATE, STAGE_STATE } from '@adp/shared'
+import { TASK_STATE } from '@adp/shared'
 
 export const PROJECT = {
   name: 'Construcción de 10 km de calle en Intendencia',
@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000 + 0.94,
   progress: 0,
   areaId: 1,
-  stateId: PROJECT_STATE.NEW,
+  stateId: TASK_STATE.NEW,
 }
 
 export const STAGES = [
@@ -23,7 +23,7 @@ export const STAGES = [
       'Incluye estudios de ingeniería, diseño de la calle, y otros costos administrativos. Esto podría representar alrededor del 10-15% del costo total del proyecto. Los costos varían según las regulaciones locales y los requisitos de permisos. Podría ser un pequeño porcentaje del costo total, alrededor del 1-3%.',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
   {
     name: 'Preparación del sitio',
@@ -34,7 +34,7 @@ export const STAGES = [
       'Incluye desbroce, movimiento de tierras, y preparación del sitio. Esto podría costar entre 5-10% del total.',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
   {
     name: 'Excavación y nivelación',
@@ -44,7 +44,7 @@ export const STAGES = [
     description: '',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
   {
     name: 'Construcción de la base',
@@ -55,7 +55,7 @@ export const STAGES = [
       'Esto constituye una gran parte del costo, incluyendo materiales como asfalto, concreto y la mano de obra. Puede ser hasta el 50-70% del costo total.',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
   {
     name: 'Colocación de pavimento',
@@ -66,7 +66,7 @@ export const STAGES = [
       'Incluye señalización vial, pintura, y otros acabados. Esto podría ser alrededor del 5-10%.',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
   {
     name: 'Acabados y señalización',
@@ -77,6 +77,6 @@ export const STAGES = [
       'Incluye inspecciones finales y otros costos asociados a la finalización del proyecto, alrededor del 1-5%.',
     progress: 0,
     areaId: 1,
-    stateId: STAGE_STATE.NEW,
+    stateId: TASK_STATE.NEW,
   },
 ]

@@ -1,4 +1,4 @@
-import { IProject, IStage, PROJECT_STATE_ARRAY } from '@adp/shared'
+import { IProject, IStage, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import { Tooltip, Link, IconButton, Stack, Card, Box } from '@mui/material'
@@ -107,7 +107,7 @@ export default function AssignmentItem(props: TProps) {
               {assignment.title}
             </Label>
             <Label variant="soft" color={getLabelColor(assignment.stateId)}>
-              {PROJECT_STATE_ARRAY.find((state) => state.id === assignment.stateId)?.name || ''}
+              {TASK_STATE_ARRAY.find((state) => state.id === assignment.stateId)?.name || ''}
             </Label>
           </Box>
           <Tooltip title="Ver detalle">

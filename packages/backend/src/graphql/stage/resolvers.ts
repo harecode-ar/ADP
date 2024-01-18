@@ -1,10 +1,10 @@
-import { PERMISSION_MAP, STAGE_STATE } from '@adp/shared'
-import type { IStage, IUser, IProjectState, IArea, IProject } from '@adp/shared'
+import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
+import type { IStage, IUser, ITaskState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
   Stage,
   Project,
-  StageState,
+  TaskState,
   Area,
   User,
   StageNote,
@@ -19,9 +19,9 @@ import { getAcp } from '../../utils/average-completition'
 
 export default {
   Stage: {
-    state: (stage: IStage): Promise<IProjectState | null> => {
+    state: (stage: IStage): Promise<ITaskState | null> => {
       if (stage.state) return Promise.resolve(stage.state)
-      return StageState.findByPk(stage.stateId)
+      return TaskState.findByPk(stage.stateId)
     },
     area: (stage: IStage): Promise<IArea | null> => {
       if (stage.area) return Promise.resolve(stage.area)
@@ -99,7 +99,7 @@ export default {
               as: 'area',
             },
             {
-              model: StageState,
+              model: TaskState,
               as: 'state',
             },
             {
@@ -142,7 +142,7 @@ export default {
               as: 'area',
             },
             {
-              model: StageState,
+              model: TaskState,
               as: 'state',
             },
             {
@@ -186,7 +186,7 @@ export default {
               as: 'area',
             },
             {
-              model: StageState,
+              model: TaskState,
               as: 'state',
             },
           ],
@@ -212,7 +212,7 @@ export default {
               as: 'area',
             },
             {
-              model: StageState,
+              model: TaskState,
               as: 'state',
             },
           ],
@@ -366,7 +366,7 @@ export default {
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
-        const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
+        const state = start > actualDate ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -435,7 +435,7 @@ export default {
           throw new Error('Etapa no encontrada')
         }
 
-        if (stage.stateId === STAGE_STATE.COMPLETED) {
+        if (stage.stateId === TASK_STATE.COMPLETED) {
           throw new Error('No se puede modificar una etapa finalizada')
         }
 
@@ -552,7 +552,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: STAGE_STATE.COMPLETED,
+              [Op.not]: TASK_STATE.COMPLETED,
             },
           },
           include: [
@@ -565,7 +565,7 @@ export default {
                   model: User,
                   as: 'responsible',
                   attributes: ['id'],
-                }
+                },
               ],
             },
             {
@@ -582,10 +582,10 @@ export default {
         // @ts-ignore
         const { childStages = [] } = stage
         // @ts-ignore
-        const allSubStagesFinished = childStages.every((subStage: Stage) => (
-            subStage.stateId === STAGE_STATE.COMPLETED ||
-            subStage.stateId === STAGE_STATE.CANCELLED
-        ))
+        const allSubStagesFinished = childStages.every(
+          (subStage: Stage) =>
+            subStage.stateId === TASK_STATE.COMPLETED || subStage.stateId === TASK_STATE.CANCELLED
+        )
 
         if (!allSubStagesFinished) {
           throw new Error('No se puede finalizar la etapa porque tiene subetapas sin finalizar.')
@@ -604,7 +604,7 @@ export default {
           finishedAt,
         })
         await stage.update({
-          stateId: STAGE_STATE.COMPLETED,
+          stateId: TASK_STATE.COMPLETED,
           progress: 1,
           finishedAt,
           acp,
@@ -662,7 +662,7 @@ export default {
 
         if (start < parentStageStart || end > parentStageEnd)
           throw new Error('Fechas fuera de rango')
-        const state = start > actualDate ? STAGE_STATE.NEW : STAGE_STATE.IN_PROGRESS
+        const state = start > actualDate ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -725,7 +725,7 @@ export default {
           throw new Error('Etapa no encontrada')
         }
 
-        if (subStage.stateId === STAGE_STATE.COMPLETED) {
+        if (subStage.stateId === TASK_STATE.COMPLETED) {
           throw new Error('No se puede actualizar una subetapa finalizada')
         }
 
@@ -857,7 +857,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: STAGE_STATE.COMPLETED,
+              [Op.not]: TASK_STATE.COMPLETED,
             },
           },
           include: [
@@ -892,7 +892,7 @@ export default {
           finishedAt,
         })
         await subStage.update({
-          stateId: STAGE_STATE.COMPLETED,
+          stateId: TASK_STATE.COMPLETED,
           progress: 1,
           finishedAt,
           acp,

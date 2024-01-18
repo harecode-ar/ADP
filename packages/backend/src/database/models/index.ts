@@ -13,13 +13,12 @@ import { Notification } from './notification'
 import { Permission } from './permission'
 import { ProjectNoteFile } from './project-note-file'
 import { ProjectNote } from './project-note'
-import { ProjectState } from './project-state'
 import { Project } from './project'
 import { RolePermission } from './role-permission'
 import { Role } from './role'
 import { Session } from './session'
 import { StageNote } from './stage-note'
-import { StageState } from './stage-state'
+import { TaskState } from './task-state'
 import { Stage } from './stage'
 import { Token } from './token'
 import { UserAverageCompletition } from './user-average-completition'
@@ -55,14 +54,14 @@ Stage.belongsTo(Area, { as: 'area', foreignKey: 'areaId' })
 Project.hasMany(Stage, { as: 'stages', foreignKey: 'projectId' })
 Stage.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
 
-ProjectState.hasMany(Project, { as: 'projects', foreignKey: 'stateId' })
-Project.belongsTo(ProjectState, { as: 'state', foreignKey: 'stateId' })
+TaskState.hasMany(Project, { as: 'projects', foreignKey: 'stateId' })
+Project.belongsTo(TaskState, { as: 'state', foreignKey: 'stateId' })
 
 Stage.hasMany(Stage, { as: 'childStages', foreignKey: 'parentStageId' })
 Stage.belongsTo(Stage, { as: 'parentStage', foreignKey: 'parentStageId' })
 
-StageState.hasMany(Stage, { as: 'stages', foreignKey: 'stateId' })
-Stage.belongsTo(StageState, { as: 'state', foreignKey: 'stateId' })
+TaskState.hasMany(Stage, { as: 'stages', foreignKey: 'stateId' })
+Stage.belongsTo(TaskState, { as: 'state', foreignKey: 'stateId' })
 
 Project.hasMany(ProjectNote, { as: 'notes', foreignKey: 'projectId' })
 ProjectNote.belongsTo(Project, { as: 'project', foreignKey: 'projectId' })
@@ -162,13 +161,12 @@ export {
   Permission,
   ProjectNoteFile,
   ProjectNote,
-  ProjectState,
   Project,
   RolePermission,
   Role,
   Session,
   StageNote,
-  StageState,
+  TaskState,
   Stage,
   Token,
   UserAverageCompletition,

@@ -1,11 +1,5 @@
 import cron from 'node-cron'
-import {
-  PROJECT_STATE,
-  STAGE_STATE,
-  EConfigurationKey,
-  IArea,
-  ENotificationCategory,
-} from '@adp/shared'
+import { TASK_STATE, EConfigurationKey, IArea, ENotificationCategory } from '@adp/shared'
 import { Op } from 'sequelize'
 import { sequelize } from '../database'
 import {
@@ -39,13 +33,13 @@ cron.schedule('30 3 * * *', async () => {
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-        stateId: PROJECT_STATE.IN_PROGRESS,
+        stateId: TASK_STATE.IN_PROGRESS,
       },
     }),
     Stage.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-        stateId: STAGE_STATE.IN_PROGRESS,
+        stateId: TASK_STATE.IN_PROGRESS,
       },
     }),
   ])
@@ -203,7 +197,7 @@ cron.schedule('35 3 * * *', async () => {
     Project.findAll({
       attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'areaId'],
       where: {
-        stateId: PROJECT_STATE.IN_PROGRESS,
+        stateId: TASK_STATE.IN_PROGRESS,
         areaId: {
           [Op.not]: null,
         },
@@ -212,7 +206,7 @@ cron.schedule('35 3 * * *', async () => {
     Stage.findAll({
       attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'parentStageId', 'areaId'],
       where: {
-        stateId: STAGE_STATE.IN_PROGRESS,
+        stateId: TASK_STATE.IN_PROGRESS,
         areaId: {
           [Op.not]: null,
         },

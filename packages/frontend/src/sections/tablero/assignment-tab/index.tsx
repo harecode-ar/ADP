@@ -1,6 +1,6 @@
 'use client'
 
-import { IProject, IProjectState, IStage, PROJECT_STATE_ARRAY } from '@adp/shared'
+import { IProject, ITaskState, IStage, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
@@ -20,7 +20,7 @@ const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<IProjectState | null>(null)
+  const [selectedState, setSelectedState] = useState<ITaskState | null>(null)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
     if (newValue.length === 0 || EOption.ALL === newValue[newValue.length - 1]) {
@@ -29,7 +29,7 @@ export default function AssignmentTab() {
       setSelectedOptions(newValue.filter((option) => option !== EOption.ALL))
     }
   }
-  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: IProjectState | null) => {
+  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: ITaskState | null) => {
     setSelectedState(newValue)
   }
 
@@ -121,7 +121,7 @@ export default function AssignmentTab() {
             />
             <Autocomplete
               sx={{ minWidth: 170 }}
-              options={PROJECT_STATE_ARRAY as IProjectState[]}
+              options={TASK_STATE_ARRAY as ITaskState[]}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"

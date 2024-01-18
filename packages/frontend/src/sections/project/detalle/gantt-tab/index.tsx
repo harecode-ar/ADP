@@ -1,4 +1,4 @@
-import { IProject, IStage, STAGE_STATE } from '@adp/shared'
+import { IProject, IStage, TASK_STATE } from '@adp/shared'
 import React from 'react'
 import { Task } from 'gantt-task-react'
 import GanttComponent from './gantt-component'
@@ -12,7 +12,7 @@ export default function GanttTab(props: TProps) {
   const { project, stages } = props
 
   const mappedStages: Task[] = stages
-    .filter((stage) => stage.stateId !== STAGE_STATE.CANCELLED)
+    .filter((stage) => stage.stateId !== TASK_STATE.CANCELLED)
     .map((stage, index) => ({
       displayOrder: index + 2,
       id: String(stage.id),

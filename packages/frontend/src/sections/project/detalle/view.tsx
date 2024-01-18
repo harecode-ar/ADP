@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { PROJECT_STATE, type IProject, type IStage } from '@adp/shared'
+import { TASK_STATE, type IProject, type IStage } from '@adp/shared'
 import {
   Box,
   Container,
@@ -127,7 +127,7 @@ export default function ProjectDetailView(props: TProps) {
           links={[{ name: 'Proyecto', href: paths.dashboard.project.root }, { name: 'Detalle' }]}
           action={
             project &&
-            project.stateId !== PROJECT_STATE.COMPLETED && (
+            project.stateId !== TASK_STATE.COMPLETED && (
               <Box
                 sx={{
                   display: 'flex',

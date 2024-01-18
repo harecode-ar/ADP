@@ -1,4 +1,4 @@
-import { IStage, STAGE_STATE, PROJECT_STATE_ARRAY } from '@adp/shared'
+import { IStage, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Task } from 'gantt-task-react'
 import { Card, Box, Autocomplete, TextField, Typography } from '@mui/material'
@@ -35,7 +35,7 @@ const GanttComponent = (props: TProps) => {
     )
 
     const mappedStages: Task[] = stages
-      .filter((stage) => stage.stateId !== STAGE_STATE.CANCELLED)
+      .filter((stage) => stage.stateId !== TASK_STATE.CANCELLED)
       .map((stage) => ({
         displayOrder: indexOfSelectedProject + 1,
         id: String(stage.id),
@@ -72,7 +72,7 @@ const GanttComponent = (props: TProps) => {
         <Autocomplete
           noOptionsText="No hay estados"
           style={{ width: 170, marginBottom: '16px' }}
-          options={[{ id: 0, name: 'Todos' }, ...PROJECT_STATE_ARRAY]}
+          options={[{ id: 0, name: 'Todos' }, ...TASK_STATE_ARRAY]}
           getOptionLabel={(option) => option.name}
           value={projectState}
           onChange={handleProjectStateChange}
