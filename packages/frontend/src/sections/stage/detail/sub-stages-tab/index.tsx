@@ -52,7 +52,7 @@ export default function SubStagesTab(props: TProps) {
               mb: 2,
             }}
           >
-            No hay sub etapas asignadas a este proyecto
+            No hay sub etapas asignadas a esta etapa
           </Typography>
         )}
       </Box>
