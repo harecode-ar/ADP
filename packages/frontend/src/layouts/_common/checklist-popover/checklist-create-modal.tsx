@@ -184,6 +184,8 @@ export default function CreateChecklistModal(props: TProps) {
                 ))}
               </Stack>
             </Scrollbar>
+          </Grid>
+          <Grid item xs={12}>
             {!!formik.errors.checks && (
               <Typography
                 color="error"
@@ -196,14 +198,13 @@ export default function CreateChecklistModal(props: TProps) {
                 No puede haber tareas vacias
               </Typography>
             )}
-          </Grid>
-          <Grid item xs={12}>
             <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 1,
+                marginTop: 2,
               }}
             >
               <Box
