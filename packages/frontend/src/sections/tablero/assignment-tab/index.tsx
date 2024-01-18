@@ -1,6 +1,6 @@
 'use client'
 
-import { IProject, ITaskState, IStage, TASK_STATE_ARRAY } from '@adp/shared'
+import { IProject, ITaskState, IStage, TASK_STATE_ARRAY, TASK_STATE_NAME } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
@@ -19,8 +19,9 @@ const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
+  const defaultState = TASK_STATE_ARRAY.find((state) => state.name === TASK_STATE_NAME.IN_PROGRESS);
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<ITaskState | null>(null)
+  const [selectedState, setSelectedState] = useState<ITaskState | null>(defaultState ?? null)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
     if (newValue.length === 0 || EOption.ALL === newValue[newValue.length - 1]) {
