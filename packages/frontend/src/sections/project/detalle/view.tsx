@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
+  Typography,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -113,6 +114,7 @@ export default function ProjectDetailView(props: TProps) {
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
 
+  const hasStages = stages.length > 0
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -310,8 +312,20 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
               </Tabs>
             </Card>
-            {tab === ETab.NOTES && <NotesTab project={project} />}
-            {tab === ETab.STAGES && (
+            {[ETab.NOTES, ETab.STAGES].includes(tab) && !hasStages && (
+              <Typography
+                sx={{
+                  textAlign: 'center',
+                  mt: 2,
+                  mb: 2,
+                }}
+              >
+                No hay etapas asignadas a esta proyecto
+              </Typography>
+            )}
+
+            {tab === ETab.NOTES && hasStages && <NotesTab project={project} />}
+            {tab === ETab.STAGES && hasStages && (
               <StagesTab project={project} stages={stages} refetch={refetch} />
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
