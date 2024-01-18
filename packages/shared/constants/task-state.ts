@@ -3,6 +3,7 @@ export const TASK_STATE = {
   IN_PROGRESS: 2,
   COMPLETED: 3,
   CANCELLED: 4,
+  ON_HOLD: 5,
 }
 
 export const TASK_STATE_NAME = {
@@ -10,6 +11,7 @@ export const TASK_STATE_NAME = {
   IN_PROGRESS: 'En progreso',
   COMPLETED: 'Completado',
   CANCELLED: 'Cancelado',
+  ON_HOLD: 'En espera',
 }
 
 export const TASK_STATE_ARRAY = [
@@ -28,5 +30,9 @@ export const TASK_STATE_ARRAY = [
   {
     id: TASK_STATE.CANCELLED,
     name: TASK_STATE_NAME.CANCELLED,
+  },
+  {
+    id: TASK_STATE.ON_HOLD,
+    name: TASK_STATE_NAME.ON_HOLD,
   },
 ]
