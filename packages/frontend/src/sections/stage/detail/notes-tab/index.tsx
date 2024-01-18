@@ -2,9 +2,11 @@ import { IStage, IStageNote } from '@adp/shared'
 import React, { useMemo } from 'react'
 import { Box } from '@mui/material'
 import { useQuery } from '@apollo/client'
+import { useBoolean } from 'src/hooks/use-boolean'
 import { GET_STAGE_NOTES } from 'src/graphql/queries'
+import NoteItem from 'src/sections/shared/note-item'
 import NotesForm from './notes-form'
-import NoteItem from './note-item'
+import ModalDelete from './modal-delete'
 
 type TProps = {
   stage: IStage
@@ -12,6 +14,9 @@ type TProps = {
 
 export default function NotesTab(props: TProps) {
   const { stage } = props
+  const [selectedNote, setSelectedNote] = React.useState<number | null>(null)
+  const modalDelete = useBoolean()
+
   const { data, refetch } = useQuery(GET_STAGE_NOTES, {
     variables: { stageId: Number(stage.id) },
     skip: !stage,
@@ -21,6 +26,11 @@ export default function NotesTab(props: TProps) {
     if (!data) return []
     return data.stageNotes || []
   }, [data])
+
+  const onDelete = (id: number) => {
+    modalDelete.onTrue()
+    setSelectedNote(id)
+  }
 
   return (
     <Box
@@ -41,7 +51,10 @@ export default function NotesTab(props: TProps) {
           No hay notas
         </Box>
       ) : (
-        notes.map((note) => <NoteItem key={note.id} note={note} refetch={refetch} />)
+        notes.map((note) => <NoteItem key={note.id} note={note} onDelete={onDelete} />)
+      )}
+      {!!selectedNote && modalDelete.value && (
+        <ModalDelete modal={modalDelete} refetch={refetch} noteId={selectedNote} />
       )}
     </Box>
   )

@@ -41,8 +41,7 @@ export default function ContactTab(props: TProps) {
       <Card
         sx={{
           p: 2,
-          marginTop: 2,
-          marginBottom: 2,
+          mb: 2,
         }}
       >
         <Box

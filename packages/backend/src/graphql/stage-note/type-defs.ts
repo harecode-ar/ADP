@@ -9,6 +9,7 @@ export default `#graphql
     updatedAt: String
 
     user: User
+    files: [FileRecord]
   }
 
   type Query {
@@ -19,6 +20,7 @@ export default `#graphql
     createStageNote(
       message: String!
       stageId: Int!
+      files: [Upload]
     ): StageNote
 
     deleteStageNote(id: Int!): StageNote

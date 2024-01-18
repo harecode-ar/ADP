@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_STAGE_NOTE = gql`
-  mutation createStageNote($message: String!, $stageId: Int!) {
-    createStageNote(message: $message, stageId: $stageId) {
+  mutation createStageNote($message: String!, $stageId: Int!, $files: [Upload]) {
+    createStageNote(message: $message, stageId: $stageId, files: $files) {
       id
     }
   }

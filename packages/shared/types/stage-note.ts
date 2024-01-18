@@ -1,4 +1,5 @@
-import { IUser } from './user'
+import type { IFileRecord } from './file-record'
+import type { IUser } from './user'
 
 export interface IStageNote {
   id: number
@@ -10,4 +11,5 @@ export interface IStageNote {
   updatedAt: string
 
   user?: IUser
+  files?: IFileRecord[]
 }

@@ -1,34 +1,30 @@
 import React from 'react'
-
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import Card from '@mui/material/Card'
-import Avatar from '@mui/material/Avatar'
-import IconButton from '@mui/material/IconButton'
-import CardHeader from '@mui/material/CardHeader'
-import Typography from '@mui/material/Typography'
-import { CardContent, Tooltip } from '@mui/material'
-
+import {
+  Box,
+  Link,
+  Card,
+  Avatar,
+  IconButton,
+  CardHeader,
+  Typography,
+  CardContent,
+  Tooltip,
+} from '@mui/material'
 import { fDate } from 'src/utils/format-time'
-
 import Iconify from 'src/components/iconify'
-import { IProjectNote } from '@adp/shared'
-import { useBoolean } from 'src/hooks/use-boolean'
+import { IProjectNote, IStageNote } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { fShortenFileSize } from 'src/utils/format-number'
 import FileThumbnail from 'src/components/file-thumbnail/file-thumbnail'
-import ModalDelete from './modal-delete'
 
-// ----------------------------------------------------------------------
 interface TProps {
-  refetch: () => void
-  note: IProjectNote
+  note: IProjectNote | IStageNote
+  onDelete: (noteId: number) => void
 }
 
 export default function NoteItem(props: TProps) {
-  const { note, refetch } = props
+  const { note, onDelete } = props
   const { user, files = [] } = note
-  const modalDelete = useBoolean()
 
   return (
     <Card>
@@ -57,11 +53,7 @@ export default function NoteItem(props: TProps) {
           </Box>
         }
         action={
-          <IconButton
-            onClick={() => {
-              modalDelete.onTrue()
-            }}
-          >
+          <IconButton onClick={() => onDelete(note.id)}>
             <Iconify icon="solar:trash-bin-trash-bold" />
           </IconButton>
         }
@@ -124,7 +116,6 @@ export default function NoteItem(props: TProps) {
           )}
         </Box>
       </CardContent>
-      <ModalDelete modal={modalDelete} refetch={refetch} noteId={note.id} />
     </Card>
   )
 }

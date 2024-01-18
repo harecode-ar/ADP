@@ -19,7 +19,7 @@ const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
 
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
-  const defaultState = TASK_STATE_ARRAY.find((state) => state.name === TASK_STATE_NAME.IN_PROGRESS);
+  const defaultState = TASK_STATE_ARRAY.find((state) => state.name === TASK_STATE_NAME.IN_PROGRESS)
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
   const [selectedState, setSelectedState] = useState<ITaskState | null>(defaultState ?? null)
 

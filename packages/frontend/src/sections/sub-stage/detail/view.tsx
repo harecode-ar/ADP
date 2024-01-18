@@ -272,6 +272,7 @@ export default function ProjectDetailView(props: TProps) {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  mb: 2,
                 }}
               >
                 <Tabs value={tab} onChange={(e, v) => setTab(v)}>

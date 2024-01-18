@@ -17,6 +17,7 @@ import { Project } from './project'
 import { RolePermission } from './role-permission'
 import { Role } from './role'
 import { Session } from './session'
+import { StageNoteFile } from './stage-note-file'
 import { StageNote } from './stage-note'
 import { TaskState } from './task-state'
 import { Stage } from './stage'
@@ -145,6 +146,17 @@ FileRecord.belongsToMany(ProjectNote, {
   foreignKey: 'fileRecordId',
 })
 
+StageNote.belongsToMany(FileRecord, {
+  as: 'files',
+  through: StageNoteFile,
+  foreignKey: 'stageNoteId',
+})
+FileRecord.belongsToMany(StageNote, {
+  as: 'stageNotes',
+  through: StageNoteFile,
+  foreignKey: 'fileRecordId',
+})
+
 export {
   AreaAverageCompletition,
   Area,
@@ -165,6 +177,7 @@ export {
   RolePermission,
   Role,
   Session,
+  StageNoteFile,
   StageNote,
   TaskState,
   Stage,
