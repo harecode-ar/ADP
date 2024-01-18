@@ -111,7 +111,6 @@ export default function AccountPopover() {
             <Switch
               sx={{ ml: 1 }}
               size="small"
-              color="info"
               checked={settings.themeMode === 'dark'}
               onChange={(event) =>
                 settings.onUpdate('themeMode', event.target.checked ? 'dark' : 'light')
