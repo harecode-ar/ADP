@@ -2,10 +2,10 @@ import { IProject } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import { useResponsive } from 'src/hooks/use-responsive'
-import { Box, Typography, IconButton, Link } from '@mui/material'
+import { Box, Typography, IconButton, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 import { paths } from 'src/routes/paths'
-import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import StageSubLine from './stage-sub-line'
 import StageLine from './stage-line'
@@ -19,6 +19,13 @@ const colorFromAcpOrPacp = (proj: IProject) => {
     return getColorFromPacp(proj.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
   }
   return getColorFromAcp(proj.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectLine(props: TProps) {
@@ -48,14 +55,18 @@ export default function ProjectLine(props: TProps) {
           gap: 1,
         }}
       >
-        <Box
-          sx={{
-            height: 15,
-            width: 15,
-            borderRadius: '50%',
-            backgroundColor: colorFromAcpOrPacp(project),
-          }}
-        />
+        <Tooltip
+          title={getTootipFromAcpOrPacp(project.acp ?? null, project.pacp ?? null)}
+        >
+          <Box
+            sx={{
+              height: 15,
+              width: 15,
+              borderRadius: '50%',
+              backgroundColor: colorFromAcpOrPacp(project),
+            }}
+          />
+        </Tooltip>
         <Typography
           sx={{
             fontSize: '18px',
