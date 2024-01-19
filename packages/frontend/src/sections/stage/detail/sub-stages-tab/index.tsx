@@ -42,7 +42,9 @@ export default function SubStagesTab(props: TProps) {
             Crear Sub-etapa
           </Button>
         </Box>
-        {subStages.length > 0 && <KanbanComponent subStages={subStages} stage={stage} refetch={refetch} />}
+        {subStages.length > 0 && (
+          <KanbanComponent subStages={subStages} stage={stage} refetch={refetch} />
+        )}
         {modalCreate.value && <ModalCreate modal={modalCreate} stage={stage} refetch={refetch} />}
         {subStages.length === 0 && (
           <Typography

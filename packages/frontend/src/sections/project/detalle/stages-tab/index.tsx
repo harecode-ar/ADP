@@ -44,7 +44,9 @@ export default function StagesTab(props: TProps) {
             </Button>
           </Box>
         )}
-        {stages.length > 0 && <KanbanComponent stages={stages} project={project} refetch={refetch} />}
+        {stages.length > 0 && (
+          <KanbanComponent stages={stages} project={project} refetch={refetch} />
+        )}
         {modalCreate.value && (
           <ModalCreate modal={modalCreate} project={project} refetch={refetch} />
         )}
