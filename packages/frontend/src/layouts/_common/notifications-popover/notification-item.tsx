@@ -2,6 +2,7 @@ import { INotification } from '@adp/shared'
 import { Box, Stack, ListItemText, ListItemButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { fToNow } from 'src/utils/format-time'
+import { useSettingsContext } from 'src/components/settings'
 
 type NotificationItemProps = {
   notification: INotification
@@ -9,15 +10,31 @@ type NotificationItemProps = {
   setSelected: React.Dispatch<React.SetStateAction<INotification[]>>
 }
 
+const getColor = (theme: any, darkMode: boolean, isChecked: boolean) => {
+  if (darkMode) {
+    return isChecked ? theme.palette.primary.main : 'white'
+  }
+  return isChecked ? 'black' : theme.palette.text.primary
+}
+
 export default function NotificationItem({
   notification,
   checked,
   setSelected,
 }: NotificationItemProps) {
+  const settings = useSettingsContext()
   const renderText = (
     <ListItemText
       disableTypography
-      primary={reader(notification.title)}
+      primary={
+        <Stack
+          sx={{
+            color: (theme) => getColor(theme, settings.themeMode === 'dark', checked),
+          }}
+        >
+          {reader(notification.title)}
+        </Stack>
+      }
       secondary={
         <Stack
           direction="row"
