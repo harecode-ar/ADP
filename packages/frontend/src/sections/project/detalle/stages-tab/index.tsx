@@ -1,6 +1,6 @@
 import { IProject, IStage, TASK_STATE } from '@adp/shared'
 import React from 'react'
-import { Box, Button, Card } from '@mui/material'
+import { Box, Button, Card, Typography } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCreate from './create-stage'
@@ -44,9 +44,20 @@ export default function StagesTab(props: TProps) {
             </Button>
           </Box>
         )}
-        <KanbanComponent stages={stages} project={project} refetch={refetch} />
+        {stages.length > 0 && <KanbanComponent stages={stages} project={project} refetch={refetch} />}
         {modalCreate.value && (
           <ModalCreate modal={modalCreate} project={project} refetch={refetch} />
+        )}
+        {stages.length === 0 && (
+          <Typography
+            sx={{
+              textAlign: 'center',
+              mt: 2,
+              mb: 2,
+            }}
+          >
+            No hay etapas asignadas a este proyecto
+          </Typography>
         )}
       </Box>
     </Card>
