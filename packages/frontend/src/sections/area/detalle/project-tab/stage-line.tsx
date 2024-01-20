@@ -4,7 +4,12 @@ import NextLink from 'next/link'
 import { Box, IconButton, Typography, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
-import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import { useResponsive } from 'src/hooks/use-responsive'
 
@@ -50,9 +55,7 @@ export default function StageLine(props: TProps) {
           gap: 1,
         }}
       >
-        <Tooltip
-          title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}
-        >
+        <Tooltip title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}>
           <Box
             sx={{
               height: 15,

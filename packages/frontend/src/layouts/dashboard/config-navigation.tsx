@@ -72,6 +72,11 @@ export function useNavData(): TNavData[] {
               path: paths.dashboard.root,
               icon: ICONS.user,
             },
+            {
+              title: 'Reporte',
+              path: paths.dashboard.report.root,
+              icon: ICONS.user,
+            },
           ],
           roles: [ROLE_MAP.ADMIN, ROLE_MAP.USER],
         },
