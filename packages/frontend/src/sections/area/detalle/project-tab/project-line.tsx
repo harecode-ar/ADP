@@ -5,7 +5,12 @@ import { useResponsive } from 'src/hooks/use-responsive'
 import { Box, Typography, IconButton, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 import { paths } from 'src/routes/paths'
-import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import StageSubLine from './stage-sub-line'
 import StageLine from './stage-line'
@@ -55,9 +60,7 @@ export default function ProjectLine(props: TProps) {
           gap: 1,
         }}
       >
-        <Tooltip
-          title={getTootipFromAcpOrPacp(project.acp ?? null, project.pacp ?? null)}
-        >
+        <Tooltip title={getTootipFromAcpOrPacp(project.acp ?? null, project.pacp ?? null)}>
           <Box
             sx={{
               height: 15,
