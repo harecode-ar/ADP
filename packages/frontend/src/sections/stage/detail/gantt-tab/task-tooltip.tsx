@@ -16,7 +16,7 @@ const TaskTooltip = (props: TProps) => {
     <Card sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <div>Nombre: {task.name}</div>
-        <div>Progreso: {task.progress}%</div>
+        <div>Progreso: {task.progress.toFixed(0)}%</div>
         <div>
           Duracion: {duration} {duration === 1 ? 'dia' : 'dias'}
         </div>

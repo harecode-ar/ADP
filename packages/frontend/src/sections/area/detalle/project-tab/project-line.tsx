@@ -165,7 +165,7 @@ export default function ProjectLine(props: TProps) {
                     fontSize: '18px',
                   }}
                 >
-                  {project.progress * 100}%
+                  {(project.progress * 100).toFixed(0)}%
                 </Typography>
               </Box>
             </Box>
