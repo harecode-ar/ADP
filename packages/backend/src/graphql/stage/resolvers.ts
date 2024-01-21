@@ -364,7 +364,7 @@ export default {
         const project = await Project.findByPk(projectId)
         if (!project) throw new Error('Proyecto no encontrado')
 
-        if ((project.stateId === TASK_STATE.COMPLETED) || (project.stateId === TASK_STATE.CANCELLED)) {
+        if (project.stateId === TASK_STATE.COMPLETED || project.stateId === TASK_STATE.CANCELLED) {
           throw new Error('No se puede crear etapas en un proyecto finalizado')
         }
 
@@ -663,7 +663,10 @@ export default {
         const parentStage = await Stage.findByPk(parentStageId)
         if (!parentStage) throw new Error('Etapa padre no encontrada')
 
-        if ((parentStage.stateId === TASK_STATE.COMPLETED) || (parentStage.stateId === TASK_STATE.CANCELLED)) {
+        if (
+          parentStage.stateId === TASK_STATE.COMPLETED ||
+          parentStage.stateId === TASK_STATE.CANCELLED
+        ) {
           throw new Error('No se puede crear subetapas en una etapa finalizada')
         }
 
