@@ -156,7 +156,7 @@ export default function AssignmentItem(props: TProps) {
                 }}
               />
             </Tooltip>
-            {progress * 100}%
+            {(progress * 100).toFixed(0)}%
           </Stack>
           <Stack
             spacing={1.5}

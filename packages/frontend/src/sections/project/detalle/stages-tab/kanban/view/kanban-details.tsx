@@ -216,7 +216,7 @@ export default function KanbanDetails(props: TProps) {
             <Stack direction="row" alignItems="center">
               <StyledLabel>Progreso</StyledLabel>
               <Typography color={color} variant="subtitle2" sx={{ fontWeight: 700 }}>
-                {stage?.progress !== null ? stage.progress * 100 : '0'}%
+                {stage?.progress !== null ? (stage.progress * 100).toFixed(0) : '0'}%
               </Typography>
             </Stack>
           ) : (

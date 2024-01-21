@@ -123,7 +123,7 @@ export default function KanbanTaskItem({ project, task, sx, refetch, ...other }:
                   }}
                 />
               </Tooltip>
-              {task.progress * 100}%
+              {(task.progress * 100).toFixed(0)}%
             </Stack>
             <Stack
               spacing={1.5}

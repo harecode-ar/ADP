@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
+  Alert
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -34,6 +35,7 @@ import {
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import { formatCost } from 'src/utils/format-number'
+import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -64,6 +66,20 @@ const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
     return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
   }
   return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+const getSeverityFromAcp = (acp: number | null) => {
+  const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  switch (severity) {
+    case SUCCESS.main:
+      return 'success'
+    case WARNING.main:
+      return 'warning'
+    case ERROR.main:
+      return 'error'
+    default:
+      return 'info'
+  }
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -151,6 +167,11 @@ export default function ProjectDetailView(props: TProps) {
 
         {!!project && (
           <React.Fragment>
+            {project.stateId === TASK_STATE.COMPLETED && (
+              <Alert severity={getSeverityFromAcp(project.acp ?? null)}>
+                El proyecto fue finalizado en la fecha: {formatDate(project.endDate)}
+              </Alert>
+            )}
             <Card>
               <CardContent>
                 <Grid container spacing={2}>
@@ -225,7 +246,7 @@ export default function ProjectDetailView(props: TProps) {
                       label="Progreso"
                       variant="outlined"
                       fullWidth
-                      value={`${(project.progress * 100).toFixed(2)}`}
+                      value={`${(project.progress * 100).toFixed(0)}`}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
