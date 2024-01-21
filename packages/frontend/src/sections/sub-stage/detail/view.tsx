@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
   Tooltip,
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -32,6 +33,7 @@ import {
   getTooltipFromPacp,
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -72,6 +74,20 @@ const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
   }
   return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
+
+const getSeverityFromAcp = (acp: number | null) => {
+    const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+    switch (severity) {
+      case SUCCESS.main:
+        return 'success'
+      case WARNING.main:
+        return 'warning'
+      case ERROR.main:
+        return 'error'
+      default:
+        return 'info'
+    }
+  }
 
 export default function ProjectDetailView(props: TProps) {
   const { subStageId } = props
@@ -154,6 +170,14 @@ export default function ProjectDetailView(props: TProps) {
         {subStageQuery.loading && <p>Cargando...</p>}
 
         {!!subStage && (
+        <Box>
+          {subStage.stateId === TASK_STATE.COMPLETED && (
+            <Box sx={{ mb: 2 }}>
+              <Alert severity={getSeverityFromAcp(subStage.acp ?? null)}>
+                La sub-etapa fue finalizada en la fecha: {formatDate(subStage.endDate)}
+              </Alert>
+            </Box>
+          )}
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <Card>
@@ -292,6 +316,7 @@ export default function ProjectDetailView(props: TProps) {
               )}
             </Grid>
           </Grid>
+        </Box>
         )}
       </Box>
 
