@@ -27,13 +27,10 @@ import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
-import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -60,34 +57,6 @@ enum ETab {
 type TProps = {
   subStageId: string
 }
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getSeverityFromAcp = (acp: number | null) => {
-    const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-    switch (severity) {
-      case SUCCESS.main:
-        return 'success'
-      case WARNING.main:
-        return 'warning'
-      case ERROR.main:
-        return 'error'
-      default:
-        return 'info'
-    }
-  }
 
 export default function ProjectDetailView(props: TProps) {
   const { subStageId } = props
