@@ -14,6 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
+  Alert
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -33,6 +34,7 @@ import {
   getTooltipFromPacp,
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
@@ -65,6 +67,20 @@ const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
   }
   return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
+
+const getSeverityFromAcp = (acp: number | null) => {
+   const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+   switch (severity) {
+     case SUCCESS.main:
+       return 'success'
+     case WARNING.main:
+       return 'warning'
+     case ERROR.main:
+       return 'error'
+     default:
+       return 'info'
+   }
+ }
 
 export default function ProjectDetailView(props: TProps) {
   const { stageId } = props
@@ -151,6 +167,11 @@ export default function ProjectDetailView(props: TProps) {
 
         {!!stage && (
           <React.Fragment>
+            {stage.stateId === TASK_STATE.COMPLETED && (
+               <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
+                 La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
+               </Alert>
+             )}
             <Card>
               <CardContent>
                 <Grid container spacing={2}>
