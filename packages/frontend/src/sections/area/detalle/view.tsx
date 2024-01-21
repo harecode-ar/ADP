@@ -125,7 +125,7 @@ export default function AreaDetailView(props: TProps) {
                     }}
                   />
                 </Grid>
-                <Grid item xs={11} md={11}>
+                <Grid item xs={12} md={12}>
                   <TextField
                     fullWidth
                     label="Descripción"
@@ -135,19 +135,6 @@ export default function AreaDetailView(props: TProps) {
                     }}
                     multiline
                     maxRows={10}
-                  />
-                </Grid>
-                <Grid item xs={1} md={1}>
-                  <div
-                    style={{
-                      backgroundColor: area.color || 'transparent',
-                      width: '30px',
-                      height: '30px',
-                      borderRadius: '50%',
-                      display: 'inline-block',
-                      marginTop: '12px',
-                      marginLeft: '15px',
-                    }}
                   />
                 </Grid>
               </Grid>
