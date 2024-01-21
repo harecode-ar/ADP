@@ -118,7 +118,7 @@ export default function StageLine(props: TProps) {
               textShadow: '0px 0px 2px rgba(0,0,0,0.5)',
             }}
           >
-            {stage.progress * 100}%
+            {(stage.progress * 100).toFixed(0)}%
           </Typography>
         </Box>
       </Box>
