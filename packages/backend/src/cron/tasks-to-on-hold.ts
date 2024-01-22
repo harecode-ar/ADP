@@ -30,10 +30,11 @@ cron.schedule('0 0 * * *', async () => {
       },
     })
 
-    const updateTasksToOnHold = async (tasks: any) =>
-      Promise.all(tasks.map((task: any) => task.update({ stateId: TASK_STATE.ON_HOLD })))
-
-    await Promise.all([updateTasksToOnHold(stages), updateTasksToOnHold(projects)])
+    await Promise.all(
+      [...projects, ...stages].map((task: Project | Stage) =>
+        task.update({ stateId: TASK_STATE.ON_HOLD })
+      )
+    )
   } catch (error) {
     logger.error(error)
   }
