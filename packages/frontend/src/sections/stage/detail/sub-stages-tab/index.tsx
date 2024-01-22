@@ -1,4 +1,4 @@
-import { IStage } from '@adp/shared'
+import { IStage, TASK_STATE } from '@adp/shared'
 import React from 'react'
 import { Box, Button, Card, Typography } from '@mui/material'
 import Iconify from 'src/components/iconify'
@@ -26,22 +26,24 @@ export default function SubStagesTab(props: TProps) {
           gap: 2,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={modalCreate.onTrue}
-            sx={{ width: 'fit-content' }}
+        {stage && stage.stateId !== TASK_STATE.COMPLETED && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+            }}
           >
-            <Iconify icon="mingcute:add-fill" mr={1} />
-            Crear Sub-etapa
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={modalCreate.onTrue}
+              sx={{ width: 'fit-content' }}
+            >
+              <Iconify icon="mingcute:add-fill" mr={1} />
+              Crear Sub-etapa
+            </Button>
+          </Box>
+        )}
         {subStages.length > 0 && (
           <KanbanComponent subStages={subStages} stage={stage} refetch={refetch} />
         )}

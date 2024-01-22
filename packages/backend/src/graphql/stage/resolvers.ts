@@ -363,10 +363,19 @@ export default {
 
         const project = await Project.findByPk(projectId)
         if (!project) throw new Error('Proyecto no encontrado')
+
+        if (project.stateId === TASK_STATE.COMPLETED || project.stateId === TASK_STATE.CANCELLED) {
+          throw new Error('No se puede crear etapas en un proyecto finalizado')
+        }
+
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -480,6 +489,10 @@ export default {
           }
         }
 
+        // if startDate is before today, set state to new
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
           name,
@@ -491,6 +504,7 @@ export default {
           parentStageId,
           acp,
           pacp,
+          stateId,
         })
 
         try {
@@ -552,7 +566,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [
@@ -657,12 +671,24 @@ export default {
 
         const parentStage = await Stage.findByPk(parentStageId)
         if (!parentStage) throw new Error('Etapa padre no encontrada')
+
+        if (
+          parentStage.stateId === TASK_STATE.COMPLETED ||
+          parentStage.stateId === TASK_STATE.CANCELLED
+        ) {
+          throw new Error('No se puede crear subetapas en una etapa finalizada')
+        }
+
         const parentStageStart = new Date(parentStage.startDate).toISOString().slice(0, 10)
         const parentStageEnd = new Date(parentStage.endDate).toISOString().slice(0, 10)
 
         if (start < parentStageStart || end > parentStageEnd)
           throw new Error('Fechas fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -775,6 +801,10 @@ export default {
           }
         }
 
+        // if startDate is before today, set state to new
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
           name,
@@ -785,6 +815,7 @@ export default {
           parentStageId,
           acp,
           pacp,
+          stateId,
         })
 
         try {
@@ -857,7 +888,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [
