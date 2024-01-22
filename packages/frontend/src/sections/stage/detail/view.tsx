@@ -28,13 +28,10 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
-import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
@@ -53,34 +50,6 @@ enum ETab {
 type TProps = {
   stageId: string
 }
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getSeverityFromAcp = (acp: number | null) => {
-   const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-   switch (severity) {
-     case SUCCESS.main:
-       return 'success'
-     case WARNING.main:
-       return 'warning'
-     case ERROR.main:
-       return 'error'
-     default:
-       return 'info'
-   }
- }
 
 export default function ProjectDetailView(props: TProps) {
   const { stageId } = props

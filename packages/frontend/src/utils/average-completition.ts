@@ -1,4 +1,5 @@
 import { SUCCESS, WARNING, ERROR, GREY } from 'src/theme/palette'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 export const getColorFromAcp = (acp: number | null, percentageAlertMargin: number) => {
   if (acp === null) {
@@ -70,4 +71,32 @@ export const getTooltipFromPacp = (pacp: number | null, percentageAlertMargin: n
   }
 
   return ''
+}
+
+export const getSeverityFromAcp = (acp: number | null) => {
+  const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  switch (severity) {
+      case SUCCESS.main:
+      return 'success'
+      case WARNING.main:
+      return 'warning'
+      case ERROR.main:
+      return 'error'
+      default:
+      return 'info'
+  }
+}
+
+export const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+}
+
+export const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
+  if (acp === null) {
+    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  }
+  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
