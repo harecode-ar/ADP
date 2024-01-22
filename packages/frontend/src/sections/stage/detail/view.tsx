@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
-  Alert
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -137,10 +137,10 @@ export default function ProjectDetailView(props: TProps) {
         {!!stage && (
           <React.Fragment>
             {stage.stateId === TASK_STATE.COMPLETED && (
-               <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
-                 La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
-               </Alert>
-             )}
+              <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
+                La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
+              </Alert>
+            )}
             <Card>
               <CardContent>
                 <Grid container spacing={2}>

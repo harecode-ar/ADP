@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
-  Alert
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
