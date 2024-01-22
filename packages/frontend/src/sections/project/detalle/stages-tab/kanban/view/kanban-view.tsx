@@ -19,6 +19,7 @@ export default function KanbanComponent(props: TProps) {
 
   const stagesByState: Record<string, IStage[]> = {
     Nuevo: [],
+    'En espera': [],
     'En progreso': [],
     Completado: [],
     Cancelado: [],
