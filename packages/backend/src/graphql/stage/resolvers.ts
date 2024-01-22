@@ -366,7 +366,11 @@ export default {
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -662,7 +666,11 @@ export default {
 
         if (start < parentStageStart || end > parentStageEnd)
           throw new Error('Fechas fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({

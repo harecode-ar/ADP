@@ -255,11 +255,11 @@ export default {
         // Ya que el servidor se encuentra
         // en un huso horario diferente
         // al de Argentina se le restan 3 horas
-        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
 
         const stateId =
-          today.toISOString().slice(0, 10) >= projectStartDate
-            ? TASK_STATE.IN_PROGRESS
+          today >= projectStartDate
+            ? TASK_STATE.ON_HOLD
             : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
