@@ -249,7 +249,7 @@ export default {
         const projectStartDate = new Date(startDate).toISOString().slice(0, 10)
         const projectEndDate = new Date(endDate).toISOString().slice(0, 10)
         if (projectStartDate > projectEndDate) {
-          throw new Error('Start date must be before end date')
+          throw new Error('La fecha de inicio debe ser menor a la fecha de finalización')
         }
 
         // Ya que el servidor se encuentra
@@ -392,7 +392,7 @@ export default {
         const { id } = args
         const project = await Project.findByPk(id)
         if (!project) {
-          throw new Error('Project not found')
+          throw new Error('Proyecto no encontrado')
         }
         await project.destroy()
         return project
