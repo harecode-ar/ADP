@@ -17,8 +17,6 @@ export default function StagesTab(props: TProps) {
 
   const modalCreate = useBoolean()
 
-  console.log(stages)
-
   return (
     <Card sx={{ p: 3 }}>
       <Box
