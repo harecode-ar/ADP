@@ -89,7 +89,7 @@ export default function ProjectDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const modalEdit = useBoolean()
-  const [tab, setTab] = useState<ETab>(ETab.NOTES)
+  const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
   const modalFinishStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
@@ -151,7 +151,7 @@ export default function ProjectDetailView(props: TProps) {
                   </Button>
                 )}
 
-              {stage && stage.stateId !== TASK_STATE.COMPLETED && (
+              {stage && stage.stateId === TASK_STATE.IN_PROGRESS && (
                 <Button variant="contained" onClick={modalFinishStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
