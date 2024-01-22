@@ -371,7 +371,11 @@ export default {
         const projectStart = new Date(project.startDate).toISOString().slice(0, 10)
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -485,6 +489,10 @@ export default {
           }
         }
 
+        // if startDate is before today, set state to new
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
           name,
@@ -496,6 +504,7 @@ export default {
           parentStageId,
           acp,
           pacp,
+          stateId,
         })
 
         try {
@@ -557,7 +566,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [
@@ -675,7 +684,11 @@ export default {
 
         if (start < parentStageStart || end > parentStageEnd)
           throw new Error('Fechas fuera de rango')
-        const stateId = start > today ? TASK_STATE.NEW : TASK_STATE.IN_PROGRESS
+
+        const stateId =
+          today >= start
+            ? TASK_STATE.ON_HOLD
+            : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -788,6 +801,10 @@ export default {
           }
         }
 
+        // if startDate is before today, set state to new
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
           name,
@@ -798,6 +815,7 @@ export default {
           parentStageId,
           acp,
           pacp,
+          stateId,
         })
 
         try {
@@ -870,7 +888,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [

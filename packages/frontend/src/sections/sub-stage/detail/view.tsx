@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
   Tooltip,
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -26,12 +27,10 @@ import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -57,20 +56,6 @@ enum ETab {
 
 type TProps = {
   subStageId: string
-}
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -142,10 +127,12 @@ export default function ProjectDetailView(props: TProps) {
                       Editar
                     </Button>
                   )}
-                <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
-                  <Iconify icon="pajamas:todo-done" mr={1} />
-                  Finalizar
-                </Button>
+                {subStage && subStage.stateId === TASK_STATE.IN_PROGRESS && (
+                  <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
+                    <Iconify icon="pajamas:todo-done" mr={1} />
+                    Finalizar
+                  </Button>
+                )}
               </Box>
             )
           }
@@ -154,6 +141,14 @@ export default function ProjectDetailView(props: TProps) {
         {subStageQuery.loading && <p>Cargando...</p>}
 
         {!!subStage && (
+        <Box>
+          {subStage.stateId === TASK_STATE.COMPLETED && (
+            <Box sx={{ mb: 2 }}>
+              <Alert severity={getSeverityFromAcp(subStage.acp ?? null)}>
+                La sub-etapa fue finalizada en la fecha: {formatDate(subStage.endDate)}
+              </Alert>
+            </Box>
+          )}
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <Card>
@@ -292,6 +287,7 @@ export default function ProjectDetailView(props: TProps) {
               )}
             </Grid>
           </Grid>
+        </Box>
         )}
       </Box>
 
