@@ -482,9 +482,7 @@ export default {
 
         // if startDate is before today, set state to new
         const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
-        const stateId = today >= startDate
-            ? TASK_STATE.ON_HOLD
-            : TASK_STATE.NEW
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
@@ -784,9 +782,7 @@ export default {
 
         // if startDate is before today, set state to new
         const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
-        const stateId = today >= startDate
-            ? TASK_STATE.ON_HOLD
-            : TASK_STATE.NEW
+        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
