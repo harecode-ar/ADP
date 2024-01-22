@@ -5,6 +5,9 @@ const getLabelColor = (idOrName: number | string) => {
     case TASK_STATE.NEW:
     case TASK_STATE_NAME.NEW:
       return 'secondary'
+    case TASK_STATE.ON_HOLD:
+    case TASK_STATE_NAME.ON_HOLD:
+      return 'info'
     case TASK_STATE.IN_PROGRESS:
     case TASK_STATE_NAME.IN_PROGRESS:
       return 'warning'

@@ -5,30 +5,13 @@ import { Box, IconButton, Typography, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import { useResponsive } from 'src/hooks/use-responsive'
 
 type TProps = {
   stage: IStage
-}
-
-const colorFromAcpOrPacp = (stag: IStage) => {
-  if (stag.acp === null) {
-    return getColorFromPacp(stag.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(stag.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function StageLine(props: TProps) {
@@ -61,7 +44,7 @@ export default function StageLine(props: TProps) {
               height: 15,
               width: 15,
               borderRadius: '50%',
-              backgroundColor: colorFromAcpOrPacp(stage),
+              backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
             }}
           />
         </Tooltip>
@@ -94,7 +77,7 @@ export default function StageLine(props: TProps) {
         <Box
           sx={{
             width: `${stage.progress * 100}%`,
-            backgroundColor: colorFromAcpOrPacp(stage),
+            backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
             height: 25,
             borderRadius: 2,
             textAlign: 'center',
