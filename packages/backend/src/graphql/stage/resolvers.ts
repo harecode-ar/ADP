@@ -556,7 +556,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [
@@ -865,7 +865,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [

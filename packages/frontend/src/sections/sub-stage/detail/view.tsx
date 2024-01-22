@@ -127,10 +127,12 @@ export default function ProjectDetailView(props: TProps) {
                       Editar
                     </Button>
                   )}
-                <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
-                  <Iconify icon="pajamas:todo-done" mr={1} />
-                  Finalizar
-                </Button>
+                {subStage && subStage.stateId === TASK_STATE.IN_PROGRESS && (
+                  <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
+                    <Iconify icon="pajamas:todo-done" mr={1} />
+                    Finalizar
+                  </Button>
+                )}
               </Box>
             )
           }
