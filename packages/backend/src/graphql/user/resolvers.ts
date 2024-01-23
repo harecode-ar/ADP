@@ -173,7 +173,7 @@ export default {
         const { id, firstname, lastname, email, telephone, image, roleId } = args
         const user = await User.findByPk(id)
         if (!user) {
-          throw new Error('User not found')
+          throw new Error('Usuario no encontrado')
         }
 
         const prevImage = user.image
@@ -216,7 +216,7 @@ export default {
         const { id } = args
         const user = await User.findByPk(id)
         if (!user) {
-          throw new Error('User not found')
+          throw new Error('Usuario no encontrado')
         }
         await user.destroy()
         return user

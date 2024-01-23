@@ -96,7 +96,6 @@ export default function NavUpgrade() {
             Quedan {freeSpace.toFixed(2)} Gb de {totalSpace.toFixed(2)} Gb restantes
           </Typography>
         </Box>
-
         <Button variant="contained" href={paths.minimalUI} target="_blank" rel="noopener">
           Upgrade to Pro
         </Button>
