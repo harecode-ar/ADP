@@ -68,7 +68,7 @@ const columns: TColumn[] = [
     type: EColumnType.NUMBER,
     searchable: true,
     renderCell: (row: any) => `${(row.progress * 100).toFixed(0)}%`,
-    searchValue: (row: TRow) => (row.progress * 100).toFixed(0),
+    searchValue: (row: TRow) => Number((row.progress * 100).toFixed(0)),
   },
   {
     id: 'state',
