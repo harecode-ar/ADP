@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
-  Alert
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -35,7 +35,7 @@ import {
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import { formatCost } from 'src/utils/format-number'
-import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
+import { SUCCESS, WARNING, ERROR } from 'src/theme/palette'
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
