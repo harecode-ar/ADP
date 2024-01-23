@@ -216,7 +216,10 @@ export default {
               as: 'state',
             },
           ],
-          order: [['startDate', 'ASC']],
+          order: [
+            ['startDate', 'ASC'],
+            ['createdAt', 'ASC'],
+          ],
         }) as unknown as Promise<Omit<IStage, 'parentStage' | 'childStages' | 'project'>[]>
       } catch (error) {
         logger.error(error)
