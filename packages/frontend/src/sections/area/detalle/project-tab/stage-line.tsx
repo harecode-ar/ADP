@@ -4,10 +4,7 @@ import NextLink from 'next/link'
 import { Box, IconButton, Typography, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
-import {
-  colorFromAcpOrPacp,
-  getTootipFromAcpOrPacp
-} from 'src/utils/average-completition'
+import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import { useResponsive } from 'src/hooks/use-responsive'
 
 type TProps = {
