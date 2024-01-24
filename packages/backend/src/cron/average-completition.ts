@@ -33,13 +33,17 @@ cron.schedule('30 3 * * *', async () => {
     Project.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-        stateId: TASK_STATE.IN_PROGRESS,
+        stateId: {
+          [Op.or]: [TASK_STATE.ON_HOLD, TASK_STATE.IN_PROGRESS],
+        },
       },
     }),
     Stage.findAll({
       attributes: ['id', 'startDate', 'endDate', 'finishedAt'],
       where: {
-        stateId: TASK_STATE.IN_PROGRESS,
+        stateId: {
+          [Op.or]: [TASK_STATE.ON_HOLD, TASK_STATE.IN_PROGRESS],
+        },
       },
     }),
   ])
@@ -197,7 +201,9 @@ cron.schedule('35 3 * * *', async () => {
     Project.findAll({
       attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'areaId'],
       where: {
-        stateId: TASK_STATE.IN_PROGRESS,
+        stateId: {
+          [Op.or]: [TASK_STATE.ON_HOLD, TASK_STATE.IN_PROGRESS],
+        },
         areaId: {
           [Op.not]: null,
         },
@@ -206,7 +212,9 @@ cron.schedule('35 3 * * *', async () => {
     Stage.findAll({
       attributes: ['id', 'name', 'startDate', 'endDate', 'finishedAt', 'parentStageId', 'areaId'],
       where: {
-        stateId: TASK_STATE.IN_PROGRESS,
+        stateId: {
+          [Op.or]: [TASK_STATE.ON_HOLD, TASK_STATE.IN_PROGRESS],
+        },
         areaId: {
           [Op.not]: null,
         },
