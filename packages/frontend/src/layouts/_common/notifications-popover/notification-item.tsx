@@ -1,7 +1,7 @@
 import { INotification } from '@adp/shared'
-import { Box, Stack, ListItemText, ListItemButton } from '@mui/material'
+import { Box, Stack, ListItemText, ListItemButton, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import { fToNow } from 'src/utils/format-time'
+import { fDate, fToNow } from 'src/utils/format-time'
 import { useSettingsContext } from 'src/components/settings'
 
 type NotificationItemProps = {
@@ -52,7 +52,11 @@ export default function NotificationItem({
             />
           }
         >
-          {fToNow(Number(notification.createdAt))}
+          <Tooltip title={`${fDate(Number(notification.createdAt))} - ${new Date(Number(notification.createdAt)).toLocaleTimeString()}`}>
+            <Box>
+              {fToNow(Number(notification.createdAt))}
+            </Box>
+          </Tooltip>
           {notification.category}
         </Stack>
       }
