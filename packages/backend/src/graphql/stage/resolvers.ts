@@ -378,10 +378,7 @@ export default {
         const projectEnd = new Date(project.endDate).toISOString().slice(0, 10)
         if (start < projectStart || end > projectEnd) throw new Error('Fecha fuera de rango')
 
-        const stateId =
-          today >= start
-            ? TASK_STATE.ON_HOLD
-            : TASK_STATE.NEW
+        const stateId = today >= start ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -495,9 +492,18 @@ export default {
           }
         }
 
-        // if startDate is before today, set state to new
-        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
-        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+        // if startDate is diferent from previous startDate and stateId is New or On_hold then if startDate is before today, set state to new
+        let { stateId } = stage
+        if (
+          startDate && 
+          startDate !== stage.startDate && 
+          (stage.stateId === TASK_STATE.NEW || stage.stateId === TASK_STATE.ON_HOLD)
+        ) {
+          const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+            .toISOString()
+            .slice(0, 10)
+          stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+        }
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: stage.finishedAt })
         await stage.update({
@@ -691,10 +697,7 @@ export default {
         if (start < parentStageStart || end > parentStageEnd)
           throw new Error('Fechas fuera de rango')
 
-        const stateId =
-          today >= start
-            ? TASK_STATE.ON_HOLD
-            : TASK_STATE.NEW
+        const stateId = today >= start ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const stageCreated = await Stage.create({
@@ -807,9 +810,18 @@ export default {
           }
         }
 
-        // if startDate is before today, set state to new
-        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
-        const stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+        // if startDate is diferent from previous startDate and stateId is New or On_hold then if startDate is before today, set state to new
+        let { stateId } = subStage
+        if (
+          startDate &&
+          startDate !== subStage.startDate &&
+          (subStage.stateId === TASK_STATE.NEW || subStage.stateId === TASK_STATE.ON_HOLD)
+        ) {
+          const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+            .toISOString()
+            .slice(0, 10)
+          stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+        }
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: subStage.finishedAt })
         await subStage.update({
