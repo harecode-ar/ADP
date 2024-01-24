@@ -76,13 +76,13 @@ export const getTooltipFromPacp = (pacp: number | null, percentageAlertMargin: n
 export const getSeverityFromAcp = (acp: number | null) => {
   const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
   switch (severity) {
-      case SUCCESS.main:
+    case SUCCESS.main:
       return 'success'
-      case WARNING.main:
+    case WARNING.main:
       return 'warning'
-      case ERROR.main:
+    case ERROR.main:
       return 'error'
-      default:
+    default:
       return 'info'
   }
 }

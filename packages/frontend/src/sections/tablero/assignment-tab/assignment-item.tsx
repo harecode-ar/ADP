@@ -7,10 +7,7 @@ import { fDate } from 'src/utils/format-time'
 import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
-import {
-  colorFromAcpOrPacp,
-  getTootipFromAcpOrPacp
-} from 'src/utils/average-completition'
+import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import getLabelColor from 'src/utils/color-progress'
 
 // ----------------------------------------------------------------------

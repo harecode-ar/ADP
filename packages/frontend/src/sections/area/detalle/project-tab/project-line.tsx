@@ -5,10 +5,7 @@ import { useResponsive } from 'src/hooks/use-responsive'
 import { Box, Typography, IconButton, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
 import { paths } from 'src/routes/paths'
-import {
-  colorFromAcpOrPacp,
-  getTootipFromAcpOrPacp
-} from 'src/utils/average-completition'
+import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import StageSubLine from './stage-sub-line'
 import StageLine from './stage-line'
 
