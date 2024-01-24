@@ -52,7 +52,7 @@ type TUser = {
 }
 
 const ModalEdit = (props: TProps) => {
-  const { modal, roles,  refetch } = props
+  const { modal, roles, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
   const { selected, setSelected } = useTable()
   const [updateUser, { loading: mutationLoading }] = useMutation(UPDATE_USER)
@@ -103,7 +103,6 @@ const ModalEdit = (props: TProps) => {
     onCompleted: (data) => {
       const { user } = data
       if (user) {
-
         formik.setValues({
           id: user.id,
           firstname: user.firstname,
