@@ -39,7 +39,7 @@ export default function KanbanComponent(props: TProps) {
             },
           }}
         >
-          <Box gap={3} display="grid" gridTemplateColumns="repeat(4, 1fr)">
+          <Box gap={3} display="grid" gridTemplateColumns="repeat(5, 1fr)">
             {/* <KanbanColumn stage={stages} title="Etapas de Proyecto" /> */}
             {Object.entries(stagesByState).map(([state, stateStages]) => (
               <KanbanColumn stage={stateStages} project={project} title={state} refetch={refetch} />
