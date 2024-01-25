@@ -135,7 +135,7 @@ const Table = (props: TProps) => {
             }
           />
           {modalCreate.value && <ModalCreate modal={modalCreate} refetch={refetch} />}
-          {modalEdit.value && <ModalEdit modal={modalEdit} refetch={refetch} />}
+          {modalEdit.value && <ModalEdit modal={modalEdit} roles={roles} refetch={refetch} />}
           <ModalDelete modal={modalDelete} refetch={refetch} />
         </React.Fragment>
       )}

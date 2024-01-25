@@ -4,10 +4,7 @@ import { Stack, Box, PaperProps, Paper, Typography, Tooltip } from '@mui/materia
 import { useTheme } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
-import {
-  colorFromAcpOrPacp,
-  getTootipFromAcpOrPacp
-} from 'src/utils/average-completition'
+import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import { fDate } from 'src/utils/format-time'
 import KanbanDetails from './kanban-details'
 
