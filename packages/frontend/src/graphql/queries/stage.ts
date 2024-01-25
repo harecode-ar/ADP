@@ -102,6 +102,12 @@ export const GET_STAGE = gql`
           fullname
           image
         }
+        files {
+          id
+          originalName
+          filename
+          size
+        }
       }
     }
   }
