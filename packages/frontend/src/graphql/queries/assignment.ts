@@ -38,3 +38,19 @@ export const GET_USER_ASSIGNMENTS = gql`
     }
   }
 `
+export const GET_USER_ASSIGNMENTS_FOR_LIST = gql`
+  query userAssignments($stateId: Int) {
+    userProjects(stateId: $stateId) {
+      id
+      name
+    }
+    userStages(stateId: $stateId) {
+      id
+      name
+    }
+    userSubStages(stateId: $stateId) {
+      id
+      name
+    }
+  }
+`
