@@ -160,6 +160,12 @@ export const GET_SUB_STAGE = gql`
           fullname
           image
         }
+        files {
+          id
+          originalName
+          filename
+          size
+        }
       }
     }
   }
