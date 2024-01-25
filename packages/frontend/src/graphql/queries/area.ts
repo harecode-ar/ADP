@@ -7,7 +7,6 @@ export const AREAS_FOR_LIST = gql`
       name
       rolename
       description
-      color
       multiple
 
       responsible {
@@ -33,7 +32,6 @@ export const GET_AREAS_FOR_TREE = gql`
     areas {
       id
       name
-      color
       parentId
       responsible {
         id
@@ -52,7 +50,6 @@ export const GET_AREA = gql`
       name
       rolename
       description
-      color
       multiple
       responsible {
         id
@@ -73,7 +70,6 @@ export const GET_AREAS_FOR_DASHBOARD = gql`
     areasForDashboard {
       id
       name
-      color
       description
       rolename
       responsible {
@@ -119,7 +115,6 @@ export const GET_DIRECT_AREA_DESCENDANTS = gql`
     directAreaDescendants(areaId: $areaId) {
       id
       name
-      color
       projects {
         id
       }
