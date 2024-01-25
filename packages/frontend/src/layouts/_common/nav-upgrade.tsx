@@ -16,6 +16,7 @@ import { paths } from 'src/routes/paths'
 import Label from 'src/components/label'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { LinearProgress } from '@mui/material'
+import { fShortenFileSize } from 'src/utils/format-number'
 
 // ----------------------------------------------------------------------
 
@@ -28,9 +29,9 @@ export default function NavUpgrade() {
     return storageQuery.data.storage
   }, [storageQuery.data])
 
-  const freeSpace = (storage?.freeStorageSize ?? 0) / 1000000000
-  const usedSpace = (storage?.occupiedStorageSize ?? 0) / 1000000000
-  const totalSpace = (storage?.storageSize ?? 0) / 1000000000
+  const freeSpace = fShortenFileSize(storage?.freeStorageSize ?? 0)
+  const usedSpace = fShortenFileSize(storage?.occupiedStorageSize ?? 0)
+  const totalSpace = fShortenFileSize(storage?.storageSize ?? 0)
 
   return (
     <Stack
@@ -93,7 +94,7 @@ export default function NavUpgrade() {
               fontSize: 13,
             }}
           >
-            Quedan {freeSpace.toFixed(2)} Gb de {totalSpace.toFixed(2)} Gb restantes
+            Quedan {freeSpace} de {totalSpace} restantes
           </Typography>
         </Box>
         <Button variant="contained" href={paths.minimalUI} target="_blank" rel="noopener">
