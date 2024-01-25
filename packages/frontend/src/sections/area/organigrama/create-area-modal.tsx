@@ -14,7 +14,6 @@ import {
   Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import ColorPicker from 'src/components/color-picker'
 import { useFormik, FormikHelpers } from 'formik'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
@@ -160,18 +159,6 @@ const CreateAreaModal = (props: TProps) => {
                       helperText={formik.errors.parent}
                     />
                   )}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <ColorPicker
-                  label="Color"
-                  value={formik.values.color}
-                  onChange={(_, value) => {
-                    formik.setFieldValue('color', value)
-                  }}
-                  error={Boolean(formik.errors.color)}
-                  helperText={String(formik.errors.color || '')}
-                  options={COLORS}
                 />
               </Grid>
               <Grid item xs={12}>
