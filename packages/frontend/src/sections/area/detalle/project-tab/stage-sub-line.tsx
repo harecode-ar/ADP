@@ -2,21 +2,13 @@ import { IProject, IStage } from '@adp/shared'
 import React, { useMemo } from 'react'
 import { Box, Tooltip } from '@mui/material'
 import { alpha } from '@mui/material/styles'
-import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { colorFromAcpOrPacp } from 'src/utils/average-completition'
 
 type TProps = {
   project: IProject
   stage: IStage
   first?: boolean
   last?: boolean
-}
-
-const colorFromAcpOrPacp = (stage: IStage) => {
-  if (stage.acp === null) {
-    return getColorFromPacp(stage.pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(stage.acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 const getDuration = (startDate: string, endDate: string) => {
@@ -42,10 +34,10 @@ export default function StageSubLine(props: TProps) {
         sx={(theme) => ({
           width: `${width}%`,
           height: '100%',
-          backgroundColor: colorFromAcpOrPacp(stage),
+          backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
           cursor: 'pointer',
           '&:hover': {
-            backgroundColor: alpha(colorFromAcpOrPacp(stage), 0.25),
+            backgroundColor: alpha(colorFromAcpOrPacp(stage.acp, stage.pacp), 0.25),
           },
           borderTop: 'none',
           borderBottom: 'none',

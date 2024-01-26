@@ -1,4 +1,4 @@
-import { IProject, IStage, TASK_STATE_ARRAY } from '@adp/shared'
+import { IProject, IStage, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import { Tooltip, Link, IconButton, Stack, Card, Box } from '@mui/material'
@@ -7,39 +7,22 @@ import { fDate } from 'src/utils/format-time'
 import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
-import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
-} from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import getLabelColor from 'src/utils/color-progress'
+import { useBoolean } from 'src/hooks/use-boolean'
+import ModalStartTask from './modal-start-task'
 
 // ----------------------------------------------------------------------
 
 type TProps = {
-  project?: IProject
-  stage?: IStage
-  subStage?: IStage
-}
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
+  project?: IProject | null
+  stage?: IStage | null
+  subStage?: IStage | null
 }
 
 export default function AssignmentItem(props: TProps) {
   const { project, stage, subStage } = props
+  const modalStartTask = useBoolean()
 
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
@@ -110,13 +93,22 @@ export default function AssignmentItem(props: TProps) {
               {TASK_STATE_ARRAY.find((state) => state.id === assignment.stateId)?.name || ''}
             </Label>
           </Box>
-          <Tooltip title="Ver detalle">
-            <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
-              <IconButton>
-                <Iconify icon="mdi:eye" />
-              </IconButton>
-            </Link>
-          </Tooltip>
+          <Box>
+            {assignment.stateId === TASK_STATE.ON_HOLD && (
+              <Tooltip title="Comenzar tarea">
+                <IconButton onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Ver detalle">
+              <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
+                <IconButton>
+                  <Iconify icon="mdi:eye" />
+                </IconButton>
+              </Link>
+            </Tooltip>
+          </Box>
         </Stack>
 
         <Stack spacing={1} flexGrow={1}>
@@ -175,6 +167,15 @@ export default function AssignmentItem(props: TProps) {
             </Stack>
           </Stack>
         </Stack>
+
+        {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={project || null}
+            stage={stage || null}
+            subStage={subStage || null}
+          />
+        )}
       </Stack>
     </Stack>
   )

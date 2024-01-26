@@ -249,18 +249,15 @@ export default {
         const projectStartDate = new Date(startDate).toISOString().slice(0, 10)
         const projectEndDate = new Date(endDate).toISOString().slice(0, 10)
         if (projectStartDate > projectEndDate) {
-          throw new Error('Start date must be before end date')
+          throw new Error('La fecha de inicio debe ser menor a la fecha de finalización')
         }
 
         // Ya que el servidor se encuentra
         // en un huso horario diferente
         // al de Argentina se le restan 3 horas
-        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+        const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3).toISOString().slice(0, 10)
 
-        const stateId =
-          today.toISOString().slice(0, 10) >= projectStartDate
-            ? TASK_STATE.IN_PROGRESS
-            : TASK_STATE.NEW
+        const stateId = today >= projectStartDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
 
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: null })
         const project = await Project.create({
@@ -362,6 +359,19 @@ export default {
           }
         }
 
+        // if startDate is diferent from previous startDate and stateId is New or On_hold then if startDate is before today, set state to new
+        let { stateId } = project
+        if (
+          startDate &&
+          startDate !== project.startDate &&
+          (project.stateId === TASK_STATE.NEW || project.stateId === TASK_STATE.ON_HOLD)
+        ) {
+          const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
+            .toISOString()
+            .slice(0, 10)
+          stateId = today >= startDate ? TASK_STATE.ON_HOLD : TASK_STATE.NEW
+        }
+
         const { acp, pacp } = getAcp({ startDate, endDate, finishedAt: project.finishedAt })
         await project.update({
           name,
@@ -373,6 +383,7 @@ export default {
           progress,
           acp,
           pacp,
+          stateId,
         })
 
         return project
@@ -392,7 +403,7 @@ export default {
         const { id } = args
         const project = await Project.findByPk(id)
         if (!project) {
-          throw new Error('Project not found')
+          throw new Error('Proyecto no encontrado')
         }
         await project.destroy()
         return project
@@ -417,7 +428,7 @@ export default {
           where: {
             id,
             stateId: {
-              [Op.not]: TASK_STATE.COMPLETED,
+              [Op.eq]: TASK_STATE.IN_PROGRESS,
             },
           },
           include: [

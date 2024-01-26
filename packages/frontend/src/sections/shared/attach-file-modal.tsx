@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { Dialog, Button, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import { Upload } from 'src/components/upload'
+import Upload from 'src/components/upload/upload'
 
 type TProps = {
   onSuccess: (files: any[]) => void

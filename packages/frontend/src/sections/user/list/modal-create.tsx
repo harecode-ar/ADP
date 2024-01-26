@@ -21,7 +21,7 @@ import { CREATE_USER } from 'src/graphql/mutations'
 import { GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import * as Yup from 'yup'
 import { fData } from 'src/utils/format-number'
-import { UploadAvatar } from 'src/components/upload'
+import UploadAvatar from 'src/components/upload/upload-avatar'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { logger } from 'src/utils/logger'
 

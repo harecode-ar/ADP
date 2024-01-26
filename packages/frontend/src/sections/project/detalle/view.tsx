@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
-  Alert
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -28,14 +28,11 @@ import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import { formatCost } from 'src/utils/format-number'
-import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
@@ -52,34 +49,6 @@ enum ETab {
 
 type TProps = {
   projectId: string
-}
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getSeverityFromAcp = (acp: number | null) => {
-  const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  switch (severity) {
-    case SUCCESS.main:
-      return 'success'
-    case WARNING.main:
-      return 'warning'
-    case ERROR.main:
-      return 'error'
-    default:
-      return 'info'
-  }
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -154,10 +123,12 @@ export default function ProjectDetailView(props: TProps) {
                   <Iconify icon="material-symbols:edit" mr={1} />
                   Editar
                 </Button>
-                <Button variant="contained" onClick={modalFinishProject.onTrue}>
-                  <Iconify icon="pajamas:todo-done" mr={1} />
-                  Finalizar
-                </Button>
+                {project.stateId === TASK_STATE.IN_PROGRESS && (
+                  <Button variant="contained" onClick={modalFinishProject.onTrue}>
+                    <Iconify icon="pajamas:todo-done" mr={1} />
+                    Finalizar
+                  </Button>
+                )}
               </Box>
             )
           }

@@ -72,7 +72,7 @@ export default {
         const { id, title, checked, checklistId } = args
         const check = await Check.findByPk(id)
         if (!check) {
-          throw new Error('Check not found')
+          throw new Error('Check no encontrado')
         }
         await check.update({
           title,
@@ -95,7 +95,7 @@ export default {
         const { id } = args
         const check = await Check.findByPk(id)
         if (!check) {
-          throw new Error('Check not found')
+          throw new Error('Check no encontrado')
         }
         await check.destroy()
         return check

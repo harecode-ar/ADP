@@ -1,7 +1,7 @@
 'use client'
 
-import type { ICheck } from '@adp/shared'
-import React from 'react'
+import type { ICheck, IProject, IStage } from '@adp/shared'
+import React, { useMemo } from 'react'
 import {
   IconButton,
   Typography,
@@ -14,6 +14,7 @@ import {
   Checkbox,
   Stack,
   Tooltip,
+  Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -22,8 +23,9 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_CHECKLIST } from 'src/graphql/mutations'
+import { GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
 const checklistSchema = Yup.object().shape({
@@ -44,6 +46,7 @@ type TProps = {
 type TFormikValues = {
   title: string
   remember: boolean
+  assignation: []
   checks: TCheck[]
 }
 
@@ -60,6 +63,7 @@ export default function CreateChecklistModal(props: TProps) {
     initialValues: {
       title: '',
       remember: false,
+      assignation: null as any,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -120,6 +124,18 @@ export default function CreateChecklistModal(props: TProps) {
     formik.setFieldValue('checks', newChecks)
   }
 
+  const assignationsQuery = useQuery(GET_USER_ASSIGNMENTS_FOR_LIST)
+  const assignations = useMemo(() => {
+    if (!assignationsQuery.data) return [];
+  
+    const array = [
+      ...assignationsQuery.data.userProjects.map((project: IProject) => ({ type: 'Proyecto', ...project })),
+      ...assignationsQuery.data.userStages.map((stage: IStage) => ({ type: 'Etapa', ...stage })),
+      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({ type: 'Subetapa', ...subStage })),
+    ];
+    return array;
+  }, [assignationsQuery.data]);
+
   return (
     <Modal
       open={modal.value}
@@ -147,6 +163,28 @@ export default function CreateChecklistModal(props: TProps) {
               onChange={formik.handleChange}
               error={!!formik.errors.title}
               helperText={formik.errors.title}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Autocomplete              
+              style={{ marginTop: '1rem', marginBottom: '1rem' }}
+              fullWidth
+              options={assignations}
+              getOptionLabel={(option) => `${option.type}: ${option.name}`}
+              value={formik.values.assignation}
+              onChange={(event, value) => {
+                formik.setFieldValue('assignation', value)
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Asignado a:"
+                  variant="standard"
+                  error={Boolean(formik.errors.assignation)}
+                  helperText={formik.errors.assignation}
+                />
+              )}
             />
           </Grid>
 

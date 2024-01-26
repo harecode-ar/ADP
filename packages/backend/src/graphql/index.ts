@@ -16,6 +16,8 @@ import role from './role'
 import session from './session'
 import stage from './stage'
 import stageNote from './stage-note'
+import storage from './storage'
+import task from './task'
 import taskState from './task-state'
 import upload from './upload'
 import user from './user'
@@ -38,8 +40,10 @@ export const typeDefs = mergeTypeDefs([
   session.typeDefs,
   stage.typeDefs,
   stageNote.typeDefs,
+  task.typeDefs,
   taskState.typeDefs,
   upload.typeDefs,
+  storage.typeDefs,
   user.typeDefs,
   userAverageCompletition.typeDefs,
 ])
@@ -61,6 +65,8 @@ export const resolvers = mergeResolvers([
   session.resolvers,
   stage.resolvers,
   stageNote.resolvers,
+  storage.resolvers,
+  task.resolvers,
   taskState.resolvers,
   upload.resolvers,
   user.resolvers,

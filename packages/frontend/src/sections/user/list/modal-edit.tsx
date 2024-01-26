@@ -15,7 +15,7 @@ import {
 import Iconify from 'src/components/iconify'
 import { useFormik, FormikHelpers } from 'formik'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_USER, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
+import { GET_USER } from 'src/graphql/queries'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useTable } from 'src/components/table'
@@ -36,10 +36,9 @@ const userSchema = Yup.object().shape({
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
+  roles: IRole[]
   refetch: () => void
 }
-
-type TRole = Pick<IRole, 'id' | 'name'>
 
 type TUser = {
   id: number | null
@@ -53,17 +52,11 @@ type TUser = {
 }
 
 const ModalEdit = (props: TProps) => {
-  const { modal, refetch } = props
+  const { modal, roles, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
   const { selected, setSelected } = useTable()
   const [updateUser, { loading: mutationLoading }] = useMutation(UPDATE_USER)
   const userId = useMemo(() => Number(selected[0]), [selected])
-
-  const rolesQuery = useQuery(GET_ROLES_FOR_SELECT)
-  const roles: TRole[] = useMemo(() => {
-    if (!rolesQuery.data) return []
-    return rolesQuery.data.roles || []
-  }, [rolesQuery.data])
 
   const formik = useFormik({
     initialValues: {

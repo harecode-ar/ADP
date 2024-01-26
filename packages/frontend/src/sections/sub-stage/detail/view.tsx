@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
   Tooltip,
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -26,12 +27,10 @@ import { GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -57,20 +56,6 @@ enum ETab {
 
 type TProps = {
   subStageId: string
-}
-
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
 }
 
 export default function ProjectDetailView(props: TProps) {
@@ -142,10 +127,12 @@ export default function ProjectDetailView(props: TProps) {
                       Editar
                     </Button>
                   )}
-                <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
-                  <Iconify icon="pajamas:todo-done" mr={1} />
-                  Finalizar
-                </Button>
+                {subStage && subStage.stateId === TASK_STATE.IN_PROGRESS && (
+                  <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
+                    <Iconify icon="pajamas:todo-done" mr={1} />
+                    Finalizar
+                  </Button>
+                )}
               </Box>
             )
           }
@@ -154,144 +141,153 @@ export default function ProjectDetailView(props: TProps) {
         {subStageQuery.loading && <p>Cargando...</p>}
 
         {!!subStage && (
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <Card>
-                <CardContent>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Tooltip
-                          title={getTootipFromAcpOrPacp(
-                            subStage.acp ?? null,
-                            subStage.pacp ?? null
-                          )}
+          <Box>
+            {subStage.stateId === TASK_STATE.COMPLETED && (
+              <Box sx={{ mb: 2 }}>
+                <Alert severity={getSeverityFromAcp(subStage.acp ?? null)}>
+                  La sub-etapa fue finalizada en la fecha: {formatDate(subStage.endDate)}
+                </Alert>
+              </Box>
+            )}
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={4}>
+                <Card>
+                  <CardContent>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
                         >
-                          <Box
-                            sx={{
-                              backgroundColor: colorFromAcpOrPacp(
-                                subStage.acp ?? null,
-                                subStage.pacp ?? null
-                              ),
-                              width: 15,
-                              height: 15,
-                              borderRadius: '50%',
-                              marginRight: 1,
-                            }}
-                          />
-                        </Tooltip>
-                        <Label color={getColorVariant(subStage.state.name)} variant="filled">
-                          {subStage.state.name}
-                        </Label>
-                      </Box>
+                          <Tooltip
+                            title={getTootipFromAcpOrPacp(
+                              subStage.acp ?? null,
+                              subStage.pacp ?? null
+                            )}
+                          >
+                            <Box
+                              sx={{
+                                backgroundColor: colorFromAcpOrPacp(
+                                  subStage.acp ?? null,
+                                  subStage.pacp ?? null
+                                ),
+                                width: 15,
+                                height: 15,
+                                borderRadius: '50%',
+                                marginRight: 1,
+                              }}
+                            />
+                          </Tooltip>
+                          <Label color={getColorVariant(subStage.state.name)} variant="filled">
+                            {subStage.state.name}
+                          </Label>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          id="name"
+                          name="name"
+                          label="Nombre"
+                          variant="outlined"
+                          fullWidth
+                          value={subStage.name}
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="startDate"
+                          name="startDate"
+                          label="Inicio"
+                          variant="outlined"
+                          fullWidth
+                          value={formatDate(subStage.startDate)}
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          id="endDate"
+                          name="endDate"
+                          label="Finalizacion"
+                          variant="outlined"
+                          fullWidth
+                          value={formatDate(subStage.endDate)}
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={12}>
+                        <TextField
+                          id="area"
+                          name="area"
+                          label="Area"
+                          variant="outlined"
+                          fullWidth
+                          value={subStage.area ? subStage.area.name : 'Sin area'}
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={12}>
+                        <TextField
+                          id="responsible"
+                          name="responsible"
+                          label="Responsable"
+                          variant="outlined"
+                          fullWidth
+                          value={
+                            subStage.responsible ? subStage.responsible.fullname : 'Sin responsable'
+                          }
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          id="description"
+                          name="description"
+                          label="Descripción"
+                          variant="outlined"
+                          fullWidth
+                          multiline
+                          maxRows={10}
+                          value={subStage.description}
+                          InputProps={{ readOnly: true }}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="name"
-                        name="name"
-                        label="Nombre"
-                        variant="outlined"
-                        fullWidth
-                        value={subStage.name}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        id="startDate"
-                        name="startDate"
-                        label="Inicio"
-                        variant="outlined"
-                        fullWidth
-                        value={formatDate(subStage.startDate)}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        id="endDate"
-                        name="endDate"
-                        label="Finalizacion"
-                        variant="outlined"
-                        fullWidth
-                        value={formatDate(subStage.endDate)}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <TextField
-                        id="area"
-                        name="area"
-                        label="Area"
-                        variant="outlined"
-                        fullWidth
-                        value={subStage.area ? subStage.area.name : 'Sin area'}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={12}>
-                      <TextField
-                        id="responsible"
-                        name="responsible"
-                        label="Responsable"
-                        variant="outlined"
-                        fullWidth
-                        value={
-                          subStage.responsible ? subStage.responsible.fullname : 'Sin responsable'
-                        }
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="description"
-                        name="description"
-                        label="Descripción"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        maxRows={10}
-                        value={subStage.description}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
 
-            <Grid item xs={12} md={8}>
-              <Card
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  mb: 2,
-                }}
-              >
-                <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                  <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                  <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
-                </Tabs>
-              </Card>
-              {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
-              {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
+              <Grid item xs={12} md={8}>
+                <Card
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    mb: 2,
+                  }}
+                >
+                  <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                    <Tab label={ETab.NOTES} value={ETab.NOTES} />
+                    <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                  </Tabs>
+                </Card>
+                {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
+                {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
 
-              {modalFinishSubStage.value && (
-                <ModalFinishSubStage
-                  modal={modalFinishSubStage}
-                  refetch={subStageQuery.refetch}
-                  subStageId={Number(subStageId)}
-                />
-              )}
+                {modalFinishSubStage.value && (
+                  <ModalFinishSubStage
+                    modal={modalFinishSubStage}
+                    refetch={subStageQuery.refetch}
+                    subStageId={Number(subStageId)}
+                  />
+                )}
+              </Grid>
             </Grid>
-          </Grid>
+          </Box>
         )}
       </Box>
 

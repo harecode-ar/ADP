@@ -19,6 +19,7 @@ export default function KanbanComponent(props: TProps) {
 
   const subStagesByState: Record<string, IStage[]> = {
     Nuevo: [],
+    'En espera': [],
     'En progreso': [],
     Completado: [],
     Cancelado: [],
@@ -38,7 +39,7 @@ export default function KanbanComponent(props: TProps) {
             },
           }}
         >
-          <Box gap={3} display="grid" gridTemplateColumns="repeat(4, 1fr)">
+          <Box gap={3} display="grid" gridTemplateColumns="repeat(5, 1fr)">
             {Object.entries(subStagesByState).map(([state, stateSubStages]) => (
               <KanbanColumn
                 subStages={stateSubStages}

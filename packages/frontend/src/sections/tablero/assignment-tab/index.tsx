@@ -1,7 +1,7 @@
 'use client'
 
 import { IProject, ITaskState, IStage, TASK_STATE_ARRAY, TASK_STATE_NAME } from '@adp/shared'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
@@ -39,7 +39,7 @@ export default function AssignmentTab() {
     setSearch(value)
   }
 
-  const assignmentQuery = useQuery(GET_USER_ASSIGNMENTS, {
+  const { data, refetch } = useQuery(GET_USER_ASSIGNMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
       stateId: selectedState?.id,
@@ -56,24 +56,24 @@ export default function AssignmentTab() {
       stages: [],
       subStages: [],
     }
-    if (!assignmentQuery.data) return assignment
-    if (assignmentQuery.data.userProjects) {
-      assignment.projects = [...(assignmentQuery.data.userProjects || [])].sort((a, b) =>
+    if (!data) return assignment
+    if (data.userProjects) {
+      assignment.projects = [...(data.userProjects || [])].sort((a, b) =>
         a.startDate > b.startDate ? 1 : -1
       )
     }
-    if (assignmentQuery.data.userStages) {
-      assignment.stages = [...(assignmentQuery.data.userStages || [])].sort((a, b) =>
+    if (data.userStages) {
+      assignment.stages = [...(data.userStages || [])].sort((a, b) =>
         a.startDate > b.startDate ? 1 : -1
       )
     }
-    if (assignmentQuery.data.userSubStages) {
-      assignment.subStages = [...(assignmentQuery.data.userSubStages || [])].sort((a, b) =>
+    if (data.userSubStages) {
+      assignment.subStages = [...(data.userSubStages || [])].sort((a, b) =>
         a.startDate > b.startDate ? 1 : -1
       )
     }
     return assignment
-  }, [assignmentQuery.data])
+  }, [data])
 
   const filteredProjects = useMemo(
     () =>
@@ -104,6 +104,14 @@ export default function AssignmentTab() {
       ),
     [subStages, search, selectedOptions]
   )
+
+  useEffect(() => {
+    const handleRefetch = () => refetch()
+    window.addEventListener('refetch-assignment-tab', handleRefetch)
+    return () => {
+      window.removeEventListener('refetch-assignment-tab', handleRefetch)
+    }
+  }, [refetch])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

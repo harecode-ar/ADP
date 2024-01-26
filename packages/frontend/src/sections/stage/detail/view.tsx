@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
   Tooltip,
-  Alert
+  Alert,
 } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { paths } from 'src/routes/paths'
@@ -28,13 +28,10 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
+  colorFromAcpOrPacp,
+  getTootipFromAcpOrPacp,
+  getSeverityFromAcp,
 } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
-import { SUCCESS, WARNING, ERROR } from 'src/theme/palette';
 import ModalFinishStage from 'src/sections/project/detalle/stages-tab/kanban/view/modal-finish-stage'
 import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
@@ -54,34 +51,6 @@ type TProps = {
   stageId: string
 }
 
-const colorFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getColorFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getTootipFromAcpOrPacp = (acp: number | null, pacp: number | null) => {
-  if (acp === null) {
-    return getTooltipFromPacp(pacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getTooltipFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
-
-const getSeverityFromAcp = (acp: number | null) => {
-   const severity = getColorFromAcp(acp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-   switch (severity) {
-     case SUCCESS.main:
-       return 'success'
-     case WARNING.main:
-       return 'warning'
-     case ERROR.main:
-       return 'error'
-     default:
-       return 'info'
-   }
- }
-
 export default function ProjectDetailView(props: TProps) {
   const { stageId } = props
   const [ref] = usePrint()
@@ -89,7 +58,7 @@ export default function ProjectDetailView(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const modalEdit = useBoolean()
-  const [tab, setTab] = useState<ETab>(ETab.NOTES)
+  const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
   const modalFinishStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
@@ -151,7 +120,7 @@ export default function ProjectDetailView(props: TProps) {
                   </Button>
                 )}
 
-              {stage && stage.stateId !== TASK_STATE.COMPLETED && (
+              {stage && stage.stateId === TASK_STATE.IN_PROGRESS && (
                 <Button variant="contained" onClick={modalFinishStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
@@ -168,10 +137,10 @@ export default function ProjectDetailView(props: TProps) {
         {!!stage && (
           <React.Fragment>
             {stage.stateId === TASK_STATE.COMPLETED && (
-               <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
-                 La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
-               </Alert>
-             )}
+              <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
+                La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
+              </Alert>
+            )}
             <Card>
               <CardContent>
                 <Grid container spacing={2}>

@@ -6,32 +6,36 @@ import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { FINISH_PROJECT } from 'src/graphql/mutations'
+import { START_TASK } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { IProject, IStage } from '@adp/shared'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
-  refetch: () => void
-  projectId: number
+  project: IProject | null
+  stage: IStage | null
+  subStage: IStage | null
 }
 
-export default function ModalFinishProject(props: TProps) {
-  const { modal, refetch, projectId } = props
-  const [finishProject, { loading }] = useMutation(FINISH_PROJECT)
+export default function ModalStartTask(props: TProps) {
+  const { modal, project, stage, subStage } = props
+  const [startTask, { loading }] = useMutation(START_TASK)
   const { enqueueSnackbar } = useSnackbar()
 
   const onAccept = async () => {
     if (loading) return
     try {
-      const { errors } = await finishProject({
+      const { errors } = await startTask({
         variables: {
-          id: projectId,
+          projectId: project?.id,
+          stageId: stage?.id || subStage?.id,
         },
       })
       if (errors) throw new Error(errors[0].message)
-      enqueueSnackbar('Proyecto finalizado correctamente.', { variant: 'success' })
+      enqueueSnackbar('La tarea ha comenzado corractamente.', { variant: 'success' })
       modal.onFalse()
-      refetch()
+      const event = new CustomEvent('refetch-assignment-tab')
+      window.dispatchEvent(event)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }
@@ -52,10 +56,10 @@ export default function ModalFinishProject(props: TProps) {
     >
       <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
-          Finalizar proyecto
+          Comenzar tarea
         </Typography>
         <Typography id="modal-description" sx={{ mt: 2 }}>
-          ¿Está seguro que desea finalizar el proyecto?
+          ¿Está seguro que desea comenzar la tarea?
           <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -73,7 +77,7 @@ export default function ModalFinishProject(props: TProps) {
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => onAccept()}>
                     <Iconify sx={{ mr: 1 }} icon="pajamas:todo-done" />
-                    Finalizar
+                    Comenzar
                   </Button>
                 </Box>
               </Grid>
