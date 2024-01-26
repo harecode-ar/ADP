@@ -973,5 +973,31 @@ export default {
         throw error
       }
     },
+
+    startStageOrSubStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
+      try {
+        needPermission([PERMISSION_MAP.STAGE_UPDATE], context)
+        const { id } = args
+        const stage = await Stage.findOne({
+          where: {
+            id,
+            stateId: {
+              [Op.eq]: TASK_STATE.ON_HOLD,
+            },
+          },
+        })
+        if (!stage) {
+          throw new Error('Etapa no encontrada')
+        }
+        const stateId = TASK_STATE.IN_PROGRESS
+        await stage.update({
+          stateId,
+        })
+        return stage
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 }
