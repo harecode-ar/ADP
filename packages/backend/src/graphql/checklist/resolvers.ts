@@ -135,7 +135,7 @@ export default {
           userId: user.id,
           stageId,
           projectId,
-          finished: checks.every((check) => check.checked),
+          finished: checks.length > 0 && checks.every((check) => check.checked),
         })
         await Promise.all(
           checks.map((check) => Check.create({ ...check, checklistId: checklist.id }))
@@ -170,7 +170,7 @@ export default {
           title,
           stageId,
           projectId,
-          finished: checks.every((check) => check.checked),
+          finished: checks.length > 0 && checks.every((check) => check.checked),
         })
         await Check.destroy({
           where: {
