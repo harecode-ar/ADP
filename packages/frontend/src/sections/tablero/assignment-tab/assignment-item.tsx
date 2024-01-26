@@ -27,14 +27,14 @@ export default function AssignmentItem(props: TProps) {
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
     subStage || {
-    id: 0,
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    progress: 0,
-    stateId: 0,
-  }
+      id: 0,
+      name: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      progress: 0,
+      stateId: 0,
+    }
 
   const assignment = useMemo(() => {
     if (project)
@@ -95,11 +95,8 @@ export default function AssignmentItem(props: TProps) {
           </Box>
           <Box>
             {assignment.stateId === TASK_STATE.ON_HOLD && (
-              <Tooltip title="Comenzar">
-                <IconButton
-                  // sx={{mr: -5}}
-                  onClick={modalStartTask.onTrue}
-                >
+              <Tooltip title="Comenzar tarea">
+                <IconButton onClick={modalStartTask.onTrue}>
                   <Iconify icon="mdi:stopwatch-start-outline" />
                 </IconButton>
               </Tooltip>
