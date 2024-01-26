@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { Request } from 'express'
 import jwt from 'jsonwebtoken'
 import { resolvers } from '.'
-import { Session, User, Role, Permission, Configuration } from '../database/models'
+import { Session, User, Role, Permission, Configuration, Area } from '../database/models'
 import type { IContext, TResolvers } from './types'
 
 dotenv.config()
@@ -19,6 +19,7 @@ export const getContext = async ({ req }: { req: Request }): Promise<IContext> =
     userAgent: null,
     resolvers: resolvers as unknown as TResolvers,
     configurations: [],
+    areas: [],
   }
   const { headers } = req
   const { authorization: token, 'user-agent': userAgent = null } = headers
@@ -54,6 +55,11 @@ export const getContext = async ({ req }: { req: Request }): Promise<IContext> =
                 },
               ],
             },
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+            },
           ],
         },
       ],
@@ -70,6 +76,7 @@ export const getContext = async ({ req }: { req: Request }): Promise<IContext> =
     context.user = context.session.user
     context.role = context.session.user.role
     context.permissions = context.session.user.role.permissions
+    context.areas = context.session.user.areas || []
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error)
