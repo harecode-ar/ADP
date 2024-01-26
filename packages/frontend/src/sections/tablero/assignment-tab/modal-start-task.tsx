@@ -34,7 +34,8 @@ export default function ModalStartTask(props: TProps) {
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('La tarea ha comenzado corractamente.', { variant: 'success' })
       modal.onFalse()
-      // TO DO: REFETCH ASSIGNMENTS
+      const event = new CustomEvent('refetch-assignment-tab')
+      window.dispatchEvent(event)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }
