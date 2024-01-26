@@ -27,14 +27,14 @@ export default function AssignmentItem(props: TProps) {
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
     subStage || {
-      id: 0,
-      name: '',
-      description: '',
-      startDate: '',
-      endDate: '',
-      progress: 0,
-      stateId: 0,
-    }
+    id: 0,
+    name: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    progress: 0,
+    stateId: 0,
+  }
 
   const assignment = useMemo(() => {
     if (project)
@@ -174,7 +174,6 @@ export default function AssignmentItem(props: TProps) {
         {modalStartTask.value && (
           <ModalStartTask
             modal={modalStartTask}
-            refetch={() => {}}
             project={project || null}
             stage={stage || null}
             subStage={subStage || null}

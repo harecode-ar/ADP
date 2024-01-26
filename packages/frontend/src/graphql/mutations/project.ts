@@ -61,11 +61,3 @@ export const FINISH_PROJECT = gql`
     }
   }
 `
-
-export const START_PROJECT = gql`
-  mutation startProject($id: Int!) {
-    startProject(id: $id) {
-      id
-    }
-  }
-`

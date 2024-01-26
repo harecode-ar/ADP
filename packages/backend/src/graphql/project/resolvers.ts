@@ -501,34 +501,5 @@ export default {
         throw error
       }
     },
-
-    startProject: async (
-      _: any,
-      args: Pick<IProject, 'id'>,
-      context: IContext
-    ): Promise<Project> => {
-      try {
-        needPermission([PERMISSION_MAP.PROJECT_UPDATE], context)
-        const { id } = args
-        const project = await Project.findOne({
-          where: {
-            id,
-            stateId: {
-              [Op.eq]: TASK_STATE.ON_HOLD,
-            },
-          },
-        })
-        if (!project) {
-          throw new Error('Proyecto no encontrado')
-        }
-        await project.update({
-          stateId: TASK_STATE.IN_PROGRESS,
-        })
-        return project
-      } catch (error) {
-        logger.error(error)
-        throw error
-      }
-    },
   },
 }

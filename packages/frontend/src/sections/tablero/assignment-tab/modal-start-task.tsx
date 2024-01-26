@@ -6,56 +6,35 @@ import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { START_PROJECT, START_STAGE_OR_SUB_STAGE } from 'src/graphql/mutations'
+import { START_TASK } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { IProject, IStage } from '@adp/shared'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
-  refetch: () => void
   project: IProject | null
   stage: IStage | null
   subStage: IStage | null
 }
 
-export default function ModalStartProject(props: TProps) {
-  const { modal, refetch, project, stage, subStage } = props
-  const [startProject, { loading }] = useMutation(START_PROJECT)
-  const [startStageOrSubStage, { loading: loadingStage }] = useMutation(START_STAGE_OR_SUB_STAGE)
+export default function ModalStartTask(props: TProps) {
+  const { modal, project, stage, subStage } = props
+  const [startTask, { loading }] = useMutation(START_TASK)
   const { enqueueSnackbar } = useSnackbar()
 
   const onAccept = async () => {
-    if (loading || loadingStage) return
+    if (loading) return
     try {
-      if (project) {
-        const { errors } = await startProject({
-          variables: {
-            id: project.id,
-          },
-        })
-        if (errors) throw new Error(errors[0].message)
-        enqueueSnackbar('El proyecto ha comenzado corractamente.', { variant: 'success' })
-      }
-      if (stage) {
-        const { errors } = await startStageOrSubStage({
-          variables: {
-            id: stage.id,
-          },
-        })
-        if (errors) throw new Error(errors[0].message)
-        enqueueSnackbar('La etapa ha comenzado corractamente.', { variant: 'success' })
-      }
-      if (subStage) {
-        const { errors } = await startStageOrSubStage({
-          variables: {
-            id: subStage.id,
-          },
-        })
-        if (errors) throw new Error(errors[0].message)
-        enqueueSnackbar('La subetapa ha comenzado corractamente.', { variant: 'success' })
-      }
+      const { errors } = await startTask({
+        variables: {
+          projectId: project?.id,
+          stageId: stage?.id || subStage?.id,
+        },
+      })
+      if (errors) throw new Error(errors[0].message)
+      enqueueSnackbar('La tarea ha comenzado corractamente.', { variant: 'success' })
       modal.onFalse()
-      refetch()
+      // TO DO: REFETCH ASSIGNMENTS
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }

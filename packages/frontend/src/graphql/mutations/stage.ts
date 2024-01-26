@@ -126,11 +126,3 @@ export const FINISH_SUB_STAGE = gql`
     }
   }
 `
-
-export const START_STAGE_OR_SUB_STAGE = gql`
-  mutation startStageOrSubStage($id: Int!) {
-    startStageOrSubStage(id: $id) {
-      id
-    }
-  }
-`
