@@ -94,7 +94,7 @@ export default function AssignmentItem(props: TProps) {
             </Label>
           </Box>
           <Box>
-            { assignment.stateId === TASK_STATE.ON_HOLD && (
+            {assignment.stateId === TASK_STATE.ON_HOLD && (
               <Tooltip title="Comenzar">
                 <IconButton
                   // sx={{mr: -5}}
@@ -180,7 +180,6 @@ export default function AssignmentItem(props: TProps) {
             subStage={subStage || null}
           />
         )}
-
       </Stack>
     </Stack>
   )

@@ -48,7 +48,11 @@ export default function KanbanDetailsCommentList(props: TProps) {
               <Typography variant="subtitle2">
                 {note.user ? note.user.fullname : 'No asignado'}
               </Typography>
-              <Tooltip title={`${fDate(new Date(Number(note.createdAt) - 3*60*60*1000))} - ${new Date(Number(note.createdAt)).toLocaleTimeString()}`}>
+              <Tooltip
+                title={`${fDate(
+                  new Date(Number(note.createdAt) - 3 * 60 * 60 * 1000)
+                )} - ${new Date(Number(note.createdAt)).toLocaleTimeString()}`}
+              >
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                   {fToNow(Number(note.createdAt))}
                 </Typography>

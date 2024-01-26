@@ -30,7 +30,7 @@ export default function ModalStartProject(props: TProps) {
       if (project) {
         const { errors } = await startProject({
           variables: {
-            id: project.id
+            id: project.id,
           },
         })
         if (errors) throw new Error(errors[0].message)
@@ -39,7 +39,7 @@ export default function ModalStartProject(props: TProps) {
       if (stage) {
         const { errors } = await startStageOrSubStage({
           variables: {
-            id: stage.id
+            id: stage.id,
           },
         })
         if (errors) throw new Error(errors[0].message)
@@ -48,7 +48,7 @@ export default function ModalStartProject(props: TProps) {
       if (subStage) {
         const { errors } = await startStageOrSubStage({
           variables: {
-            id: subStage.id
+            id: subStage.id,
           },
         })
         if (errors) throw new Error(errors[0].message)

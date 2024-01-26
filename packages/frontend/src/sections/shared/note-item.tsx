@@ -10,7 +10,7 @@ import {
   CardContent,
   Tooltip,
 } from '@mui/material'
-import { fDate, fToNow} from 'src/utils/format-time'
+import { fDate, fToNow } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify'
 import { IProjectNote, IStageNote } from '@adp/shared'
 import { getStorageFileUrl } from 'src/utils/storage'
@@ -48,12 +48,13 @@ export default function NoteItem(props: TProps) {
         }
         subheader={
           <Box sx={{ color: 'text.disabled', typography: 'caption', mt: 0.5 }}>
-            <Tooltip title={`${fDate(Number(note.createdAt))} - ${new Date(Number(note.createdAt)).toLocaleTimeString()}`}>
-              <Typography variant="caption">
-                {fToNow(Number(note.createdAt))}
-              </Typography>
+            <Tooltip
+              title={`${fDate(Number(note.createdAt))} - ${new Date(
+                Number(note.createdAt)
+              ).toLocaleTimeString()}`}
+            >
+              <Typography variant="caption">{fToNow(Number(note.createdAt))}</Typography>
             </Tooltip>
-            
           </Box>
         }
         action={

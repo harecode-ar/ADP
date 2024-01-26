@@ -495,8 +495,8 @@ export default {
         // if startDate is diferent from previous startDate and stateId is New or On_hold then if startDate is before today, set state to new
         let { stateId } = stage
         if (
-          startDate && 
-          startDate !== stage.startDate && 
+          startDate &&
+          startDate !== stage.startDate &&
           (stage.stateId === TASK_STATE.NEW || stage.stateId === TASK_STATE.ON_HOLD)
         ) {
           const today = new Date(new Date().getTime() - 1000 * 60 * 60 * 3)
@@ -974,7 +974,11 @@ export default {
       }
     },
 
-    startStageOrSubStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext): Promise<Stage> => {
+    startStageOrSubStage: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<Stage> => {
       try {
         needPermission([PERMISSION_MAP.STAGE_UPDATE], context)
         const { id } = args

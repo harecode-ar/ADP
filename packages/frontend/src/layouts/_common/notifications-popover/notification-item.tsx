@@ -52,10 +52,12 @@ export default function NotificationItem({
             />
           }
         >
-          <Tooltip title={`${fDate(Number(notification.createdAt))} - ${new Date(Number(notification.createdAt)).toLocaleTimeString()}`}>
-            <Box>
-              {fToNow(Number(notification.createdAt))}
-            </Box>
+          <Tooltip
+            title={`${fDate(Number(notification.createdAt))} - ${new Date(
+              Number(notification.createdAt)
+            ).toLocaleTimeString()}`}
+          >
+            <Box>{fToNow(Number(notification.createdAt))}</Box>
           </Tooltip>
           {notification.category}
         </Stack>
