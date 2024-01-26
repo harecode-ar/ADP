@@ -28,7 +28,12 @@ export const getAcp = ({
   if (finished) {
     acp = (finished - end) / (deltaDate || 1)
   } else {
-    pacp = (time - end) / (deltaDate || 1)
+    const tme = time - end
+    if (tme === 0) {
+      pacp = -1
+    } else {
+      pacp = tme / (deltaDate || 1)
+    }
   }
 
   return {
