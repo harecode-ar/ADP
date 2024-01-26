@@ -170,3 +170,9 @@ export const GET_SUB_STAGE = gql`
     }
   }
 `
+
+export const GET_STAGES_ASSIGNED_TO_USER = gql`
+  query getStagesAssignedToUser {
+    stagesAssignedToUser
+  }
+`
