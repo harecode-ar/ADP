@@ -27,6 +27,7 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
+import ModalStartTask from './modal-start-task'
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,7 @@ export default function KanbanDetails(props: TProps) {
   const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
+  const modalStartTask = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
@@ -116,6 +118,13 @@ export default function KanbanDetails(props: TProps) {
           {subStage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          {subStage.stateId === TASK_STATE.ON_HOLD && (
+            <Tooltip title="Comenzar tarea">
+              <IconButton onClick={modalStartTask.onTrue}>
+                <Iconify icon="mdi:stopwatch-start-outline" />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="Detalle">
             <Link
               component={NextLink}
@@ -221,6 +230,15 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} stage={stage} subStage={subStage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={subStage.id} refetch={refetch} />
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={null}
+            subStage={subStage || null}
+            refetch={refetch}
+          />
+        )}
     </Drawer>
   )
 }

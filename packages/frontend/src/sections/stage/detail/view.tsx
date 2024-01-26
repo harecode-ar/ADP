@@ -39,6 +39,7 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
+import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
 
 enum ETab {
   NOTES = 'Notas',
@@ -60,6 +61,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
   const modalFinishStage = useBoolean()
+  const modalStartTask = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
@@ -111,6 +113,12 @@ export default function ProjectDetailView(props: TProps) {
                 gap: 1,
               }}
             >
+              {stage && stage.stateId === TASK_STATE.ON_HOLD && (
+                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                  Comenzar
+                </Button>
+              )}
               {stage &&
                 stage.stateId !== TASK_STATE.CANCELLED &&
                 stage.stateId !== TASK_STATE.COMPLETED && (
@@ -306,6 +314,15 @@ export default function ProjectDetailView(props: TProps) {
       {modalEdit.value && (
         <ModalEdit modal={modalEdit} project={stage?.project} stage={stage} refetch={refetch} />
       )}
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={stage || null}
+            subStage={null}
+            refetch={refetch}
+          />
+        )}
     </Container>
   )
 }

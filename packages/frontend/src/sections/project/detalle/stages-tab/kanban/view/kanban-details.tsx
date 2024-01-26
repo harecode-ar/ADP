@@ -24,6 +24,7 @@ import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import { paths } from 'src/routes/paths'
+import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
@@ -74,6 +75,7 @@ export default function KanbanDetails(props: TProps) {
   const { project, stageId, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
+  const modalStartTask = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
@@ -128,6 +130,13 @@ export default function KanbanDetails(props: TProps) {
           {stage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          {stage.stateId === TASK_STATE.ON_HOLD && (
+            <Tooltip title="Comenzar tarea">
+              <IconButton onClick={modalStartTask.onTrue}>
+                <Iconify icon="mdi:stopwatch-start-outline" />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="Detalle">
             <Link
               component={NextLink}
@@ -242,6 +251,15 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={stage || null}
+            subStage={null}
+            refetch={refetch}
+          />
+        )}
     </Drawer>
   )
 }
