@@ -10,7 +10,7 @@ export const PROJECT = {
   cost: 3000000 * 1000,
   progress: 0,
   areaId: 1,
-  stateId: TASK_STATE.IN_PROGRESS,
+  stateId: TASK_STATE.ON_HOLD,
 }
 
 export const STAGES = [
@@ -45,7 +45,7 @@ export const STAGES = [
     finishedAt: null,
     progress: 0,
     areaId: 1,
-    stateId: TASK_STATE.IN_PROGRESS,
+    stateId: TASK_STATE.ON_HOLD,
   },
   {
     name: 'Paisajismo y Mejoras Adicionales',
