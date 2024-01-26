@@ -53,6 +53,9 @@ const getColorVariant = (name: string) => {
   if (name === 'En progreso') {
     return 'warning'
   }
+  if (name === 'En espera') {
+    return 'warning'
+  }
   if (name === 'Completado') {
     return 'primary'
   }
