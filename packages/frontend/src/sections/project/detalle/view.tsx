@@ -39,7 +39,6 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
-import ModalStartTask from './modal-start-task'
 
 enum ETab {
   NOTES = 'Notas',
@@ -60,7 +59,6 @@ export default function ProjectDetailView(props: TProps) {
   const router = useRouter()
   const modalEdit = useBoolean()
   const modalFinishProject = useBoolean()
-  const modalStartTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -121,12 +119,6 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
-                {project.stateId === TASK_STATE.ON_HOLD && (
-                  <Button variant="contained" onClick={modalStartTask.onTrue}>
-                    <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
-                    Comenzar
-                  </Button>
-                )}
                 <Button variant="contained" onClick={modalEdit.onTrue}>
                   <Iconify icon="material-symbols:edit" mr={1} />
                   Editar
@@ -328,15 +320,6 @@ export default function ProjectDetailView(props: TProps) {
                 modal={modalFinishProject}
                 refetch={projectQuery.refetch}
                 projectId={Number(projectId)}
-              />
-            )}
-            {modalStartTask.value && (
-              <ModalStartTask
-                modal={modalStartTask}
-                project={project || null}
-                stage={null}
-                subStage={null}
-                refetch={refetch}
               />
             )}
           </React.Fragment>
