@@ -44,20 +44,18 @@ export function ChecklistItem(props: TProps) {
   const getAssignedTo = (c: IChecklist, action: string = 'no-slice') => {
     if (c.project) {
       if (action === 'no-slice') return c.project.name
-      return (
-        c.project.name.length > MAX_CHARACTERS_ASSIGNED_TO
-          ? `${c.project.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-          : c.project.name
-      )}
+      return c.project.name.length > MAX_CHARACTERS_ASSIGNED_TO
+        ? `${c.project.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+        : c.project.name
+    }
 
     if (c.stage) {
       if (action === 'no-slice') return c.stage.name
-      return (
-        c.stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
-          ? `${c.stage.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-          : c.stage.name
-      )}
-      
+      return c.stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
+        ? `${c.stage.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+        : c.stage.name
+    }
+
     return 'Sin asignar'
   }
 
@@ -95,7 +93,13 @@ export function ChecklistItem(props: TProps) {
             </Box>
 
             <Stack>
-              <Tooltip title={getAssignedTo(checklist).length > MAX_CHARACTERS_ASSIGNED_TO ? getAssignedTo(checklist) : ''}>
+              <Tooltip
+                title={
+                  getAssignedTo(checklist).length > MAX_CHARACTERS_ASSIGNED_TO
+                    ? getAssignedTo(checklist)
+                    : ''
+                }
+              >
                 <Typography
                   sx={{
                     color: theme.palette.text.disabled,
