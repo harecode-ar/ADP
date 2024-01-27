@@ -8,7 +8,12 @@ export const AREAS_FOR_LIST = gql`
       rolename
       description
       multiple
-
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
       responsible {
         id
         email

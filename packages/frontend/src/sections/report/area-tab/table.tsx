@@ -9,32 +9,87 @@ import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { AREAS_FOR_LIST } from 'src/graphql/queries'
-import { Box, IconButton, Link } from '@mui/material'
+import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
+import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
+import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
-type TRow = Pick<
-  IArea,
-  | 'id'
-  | 'name'
+type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
 
->
 
 const columns: TColumn[] = [
   {
     id: 'name',
-    label: 'Nombre de area',
+    label: 'Area',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => row.name,
     searchValue: (row: TRow) => row.name,
   },
+  {
+    id: 'projectAcp',
+    label: 'Proyecto ACP',
+    type: EColumnType.STRING,
+    searchable: true,
+    renderCell: (row: TRow) => (
+      <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp, null)}>
+      <Box
+        sx={{
+          backgroundColor: getColorFromAcp(row.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN),
+          width: 15,
+          height: 15,
+          borderRadius: '50%',
+          marginRight: 1,
+        }}
+      />
+      </Tooltip>
+    ),
+    // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
+    searchValue: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
+  },
+  {
+    id: 'projectPacp',
+    label: 'Proyecto PACP',
+    type: EColumnType.STRING,
+    searchable: true,
+    renderCell: (row: TRow) => (
+      <Box
+        sx={{
+          backgroundColor: getColorFromAcp(row.averageCompletition?.projectPacp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN),
+          width: 15,
+          height: 15,
+          borderRadius: '50%',
+          marginRight: 1,
+        }}
+      />
+    ),
+    // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
+    searchValue: (row: TRow) => (row.averageCompletition?.projectPacp ?? '-'),
+  },
+  {
+    id: 'stageAcp',
+    label: 'etapa ACP',
+    type: EColumnType.STRING,
+    searchable: true,
+    renderCell: (row: TRow) => (row.averageCompletition?.stageAcp ?? '-'),
+    searchValue: (row: TRow) => (row.averageCompletition?.stageAcp ?? '-'),
+  },
+  {
+    id: 'stagePacp',
+    label: 'etapa PACP',
+    type: EColumnType.STRING,
+    searchable: true,
+    renderCell: (row: TRow) => (row.averageCompletition?.stagePacp ?? '-'),
+    searchValue: (row: TRow) => (row.averageCompletition?.stagePacp ?? '-'),
+  }
 
 ]
 
 const Table = () => {
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
   const { hideColumns, selected, setMultiple } = useTable()
+
 
   useEffect(() => {
     hideColumns(columns)
@@ -51,34 +106,39 @@ const Table = () => {
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
-          <CustomTableToolbar
-            id="area-list-table"
-            columns={columns}
-            download
-            refetch={refetch}
-          />
+          <CustomTableToolbar id="area-list-table" columns={columns} download refetch={refetch} />
           <CustomTableSearch />
-          {/* {data && data !== ( */}
-          <CustomTable
-            id="area-list-table"
-            columns={columns}
-            data={data.areas}
-            action={
-              <React.Fragment>
-                {selected.length === 1 && (
-                  <Link
-                    component={NextLink}
-                    href={paths.dashboard.area.detail.replace(':id', selected[0])}
-                  >
-                    <IconButton>
-                      <Iconify icon="mdi:eye" />
-                    </IconButton>
-                  </Link>
-                )}
-              </React.Fragment>
-            }
-          />
-          {/* )} */}
+          {data ? (
+            <CustomTable
+              id="area-list-table"
+              columns={columns}
+              data={data.areas}
+              action={
+                <React.Fragment>
+                  {selected.length === 1 && (
+                    <Link
+                      component={NextLink}
+                      href={paths.dashboard.area.detail.replace(':id', selected[0])}
+                    >
+                      <IconButton>
+                        <Iconify icon="mdi:eye" />
+                      </IconButton>
+                    </Link>
+                  )}
+                </React.Fragment>
+              }
+            />
+          ) : (
+            <Typography
+              sx={{
+                textAlign: 'center',
+                mt: 2,
+                mb: 2,
+              }}
+            >
+              No hay areas asignadas.
+            </Typography>
+          )}
         </React.Fragment>
       )}
     </Box>
