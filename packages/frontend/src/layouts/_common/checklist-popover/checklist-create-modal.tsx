@@ -126,15 +126,21 @@ export default function CreateChecklistModal(props: TProps) {
 
   const assignationsQuery = useQuery(GET_USER_ASSIGNMENTS_FOR_LIST)
   const assignations = useMemo(() => {
-    if (!assignationsQuery.data) return [];
-  
+    if (!assignationsQuery.data) return []
+
     const array = [
-      ...assignationsQuery.data.userProjects.map((project: IProject) => ({ type: 'Proyecto', ...project })),
+      ...assignationsQuery.data.userProjects.map((project: IProject) => ({
+        type: 'Proyecto',
+        ...project,
+      })),
       ...assignationsQuery.data.userStages.map((stage: IStage) => ({ type: 'Etapa', ...stage })),
-      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({ type: 'Subetapa', ...subStage })),
-    ];
-    return array;
-  }, [assignationsQuery.data]);
+      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({
+        type: 'Subetapa',
+        ...subStage,
+      })),
+    ]
+    return array
+  }, [assignationsQuery.data])
 
   return (
     <Modal
@@ -167,7 +173,7 @@ export default function CreateChecklistModal(props: TProps) {
           </Grid>
 
           <Grid item xs={12}>
-            <Autocomplete              
+            <Autocomplete
               style={{ marginTop: '1rem', marginBottom: '1rem' }}
               fullWidth
               options={assignations}
