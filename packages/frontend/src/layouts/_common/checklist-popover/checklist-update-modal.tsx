@@ -1,7 +1,7 @@
 'use client'
 
-import type { ICheck, IChecklist } from '@adp/shared'
-import React from 'react'
+import type { ICheck, IChecklist, IProject, IStage } from '@adp/shared'
+import React, { useMemo } from 'react'
 import {
   IconButton,
   Typography,
@@ -14,6 +14,7 @@ import {
   Checkbox,
   Stack,
   Tooltip,
+  Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -23,7 +24,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_CHECKLIST } from 'src/graphql/queries'
+import { GET_CHECKLIST, GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
 import { UPDATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
@@ -43,9 +44,16 @@ type TProps = {
   checklist: IChecklist
 }
 
+type TAssignation = {
+  id: number
+  name: string
+  type: 'Proyecto' | 'Etapa' | 'Subetapa'
+}
+
 type TFormikValues = {
   title: string
   remember: boolean
+  assignedTo: TAssignation | null
   checks: TCheck[]
 }
 
@@ -58,10 +66,23 @@ export default function CreateChecklistModal(props: TProps) {
   const { enqueueSnackbar } = useSnackbar()
   const [createChecklist, { loading }] = useMutation(UPDATE_CHECKLIST)
 
+  const assignationsQuery = useQuery(GET_USER_ASSIGNMENTS_FOR_LIST)
+  const assignations = useMemo(() => {
+    if (!assignationsQuery.data) return [];
+  
+    const array = [
+      ...assignationsQuery.data.userProjects.map((project: IProject) => ({ type: 'Proyecto', ...project })),
+      ...assignationsQuery.data.userStages.map((stage: IStage) => ({ type: 'Etapa', ...stage })),
+      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({ type: 'Subetapa', ...subStage })),
+    ];
+    return array;
+  }, [assignationsQuery.data]);
+
   const formik = useFormik({
     initialValues: {
       title: '',
       remember: false,
+      assignedTo: null as TAssignation | null,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -71,6 +92,8 @@ export default function CreateChecklistModal(props: TProps) {
             id: checklist.id,
             title: values.title,
             remember: values.remember,
+            projectId: values.assignedTo?.type === 'Proyecto' ? values.assignedTo?.id : null,
+            stageId: ((values.assignedTo?.type === 'Etapa') || (values.assignedTo?.type === 'Subetapa')) ? values.assignedTo?.id : null,
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
@@ -94,6 +117,16 @@ export default function CreateChecklistModal(props: TProps) {
     validationSchema: checklistSchema,
   })
 
+  const assignedTo = (c: IChecklist) => {
+    if (c.projectId) {
+      return assignations.find((a) => a.id === c.projectId && a.type === 'Proyecto')
+    }
+    if (c.stageId) {
+      return assignations.find((a) => a.id === c.stageId && a.type === 'Etapa')
+    }
+    return null
+  }
+
   useQuery(GET_CHECKLIST, {
     variables: {
       id: checklist.id,
@@ -106,6 +139,7 @@ export default function CreateChecklistModal(props: TProps) {
       formik.setValues({
         title: d.checklist.title,
         remember: d.checklist.remember,
+        assignedTo: assignedTo(d.checklist),
         checks: d.checklist.checks || [],
       })
     },
@@ -170,6 +204,30 @@ export default function CreateChecklistModal(props: TProps) {
               helperText={formik.errors.title}
             />
           </Grid>
+
+          <Grid item xs={12}>
+            <Autocomplete          
+              style={{ marginTop: '1rem', marginBottom: '1rem' }}
+              fullWidth
+              noOptionsText="No tenes asignaciones"
+              options={assignations}
+              getOptionLabel={(option) => `${option.type}: ${option.name}`}
+              value={formik.values.assignedTo}
+              onChange={(event, value) => {
+                formik.setFieldValue('assignedTo', value)
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Asignado a:"
+                  variant="standard"
+                  error={Boolean(formik.errors.assignedTo)}
+                  helperText={formik.errors.assignedTo}
+                />
+              )}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography variant="h6" gutterBottom style={{ fontSize: '1rem' }}>

@@ -16,7 +16,8 @@ type TProps = {
   refetch: () => void
 }
 
-const MAX_CHARACTERS = 30
+const MAX_CHARACTERS_TITLE = 30
+const MAX_CHARACTERS_ASSIGNED_TO = 42
 
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
@@ -40,6 +41,26 @@ export function ChecklistItem(props: TProps) {
     refetch()
   }
 
+  const getAssignedTo = (c: IChecklist, action: string = 'no-slice') => {
+    if (c.project) {
+      if (action === 'no-slice') return c.project.name
+      return (
+        c.project.name.length > MAX_CHARACTERS_ASSIGNED_TO
+          ? `${c.project.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+          : c.project.name
+      )}
+
+    if (c.stage) {
+      if (action === 'no-slice') return c.stage.name
+      return (
+        c.stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
+          ? `${c.stage.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+          : c.stage.name
+      )}
+      
+    return 'Sin asignar'
+  }
+
   return (
     <React.Fragment>
       <MenuItem onClick={modalUpdate.onTrue}>
@@ -58,7 +79,7 @@ export function ChecklistItem(props: TProps) {
                 alignItems: 'center',
               }}
             >
-              <Tooltip title={checklist.title.length > MAX_CHARACTERS ? checklist.title : ''}>
+              <Tooltip title={checklist.title.length > MAX_CHARACTERS_TITLE ? checklist.title : ''}>
                 <Typography
                   variant="h6"
                   sx={{
@@ -66,12 +87,25 @@ export function ChecklistItem(props: TProps) {
                       checklist.finished && checklist.checks.length ? 'line-through' : 'none',
                   }}
                 >
-                  {checklist.title.length > MAX_CHARACTERS
-                    ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
+                  {checklist.title.length > MAX_CHARACTERS_TITLE
+                    ? `${checklist.title.slice(0, MAX_CHARACTERS_TITLE)}...`
                     : checklist.title}
                 </Typography>
               </Tooltip>
             </Box>
+
+            <Stack>
+              <Tooltip title={getAssignedTo(checklist).length > MAX_CHARACTERS_ASSIGNED_TO ? getAssignedTo(checklist) : ''}>
+                <Typography
+                  sx={{
+                    color: theme.palette.text.disabled,
+                    fontSize: '14px',
+                  }}
+                >
+                  {getAssignedTo(checklist, 'slice')}
+                </Typography>
+              </Tooltip>
+            </Stack>
 
             <Stack
               direction="row"
@@ -116,7 +150,6 @@ export function ChecklistItem(props: TProps) {
                 </Typography>
               </Box>
               {new Date(Number(checklist.createdAt)).toLocaleDateString()}
-              {checklist?.project?.name || 'Sin asignar'}
             </Stack>
           </Box>
 
