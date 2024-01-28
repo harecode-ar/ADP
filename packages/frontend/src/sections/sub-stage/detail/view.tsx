@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { type IStage, TASK_STATE } from '@adp/shared'
+import { type IStage, TASK_STATE, TASK_STATE_NAME } from '@adp/shared'
 import {
   Box,
   Container,
@@ -38,20 +38,21 @@ import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 
 const getColorVariant = (name: string) => {
-  if (name === 'Nuevo') {
+  if (name === TASK_STATE_NAME.NEW) {
     return 'info'
   }
-  if (name === 'En progreso') {
+  if (name === TASK_STATE_NAME.IN_PROGRESS) {
     return 'warning'
   }
-  if (name === 'En espera') {
+  if (name === TASK_STATE_NAME.ON_HOLD) {
     return 'warning'
   }
-  if (name === 'Completado') {
+  if (name === TASK_STATE_NAME.COMPLETED) {
     return 'primary'
   }
   return 'error'
 }
+
 enum ETab {
   NOTES = 'Notas',
   CONTACTS = 'Contactos',
