@@ -341,7 +341,11 @@ export default {
         throw error
       }
     },
-    stagesAssignedToUser: async (_: any, context: IContext) => {
+    stageAssignedToUser: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<boolean> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
@@ -357,11 +361,8 @@ export default {
                 {
                   model: Stage,
                   as: 'stages',
-                  order: [['startDate', 'ASC']],
-                  attributes: [
-                    'id',
-                    'name',
-                  ],
+                  where: { id: args.id },
+                  attributes: ['id', 'name'],
                 },
               ],
             },
@@ -372,8 +373,7 @@ export default {
         const { areas = [] } = foundUser
         // @ts-ignore
         const stages: Stage[] = areas.flatMap((area: Area) => area.stages)
-        if (stages.length > 0) return true
-        return false
+        return stages.length > 0
       } catch (error) {
         logger.error(error)
         throw error
