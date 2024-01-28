@@ -179,7 +179,7 @@ export const GET_COUNT_PROJECTS_BY_AREA = gql`
 `
 
 export const GET_PROJECTS_ASSIGNED_TO_USER = gql`
-  query projectsAssignedToUser {
-    projectsAssignedToUser
+  query projectAssignedToUser($id: Int!) {
+    projectAssignedToUser(id: $id)
   }
 `

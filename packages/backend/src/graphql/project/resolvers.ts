@@ -232,13 +232,15 @@ export default {
         throw error
       }
     },
-    projectsAssignedToUser: async (_: any, context: IContext) => {
+    projectAssignedToUser: async (
+      _: any,
+      args: Pick<IProject, 'id'>,
+      context: IContext
+    ): Promise<boolean> => {
       try {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
-        needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const foundUser = await User.findByPk(user.id, {
-          attributes: ['id'],
           include: [
             {
               model: Area,
@@ -248,8 +250,7 @@ export default {
                 {
                   model: Project,
                   as: 'projects',
-                  order: [['startDate', 'ASC']],
-                  attributes: ['id', 'name'],
+                  attributes: ['id'],
                 },
               ],
             },
@@ -258,10 +259,12 @@ export default {
         if (!foundUser) throw new Error('Usuario no encontrado')
         // @ts-ignore
         const { areas = [] } = foundUser
-        // @ts-ignore
-        const projects: Project[] = areas.flatMap((area: Area) => area.projects)
-        if (projects.length > 0) return true
-        return false
+        const isProjectAssigned = areas.some((area: Area) => {
+          // @ts-ignore
+          const { projects } = area
+          return projects.some((project: Project) => project.id === args.id)
+        })
+        return isProjectAssigned
       } catch (error) {
         logger.error(error)
         throw error
