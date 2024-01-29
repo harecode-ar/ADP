@@ -33,7 +33,7 @@ export default function ModalStartTask(props: TProps) {
         },
       })
       if (errors) throw new Error(errors[0].message)
-      enqueueSnackbar('La tarea ha comenzado correctamente.', { variant: 'success' })
+      enqueueSnackbar('El proyecto ha comenzado correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
     } catch (error) {
@@ -56,10 +56,10 @@ export default function ModalStartTask(props: TProps) {
     >
       <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
-          Comenzar tarea
+          Comenzar proyecto
         </Typography>
         <Typography id="modal-description" sx={{ mt: 2 }}>
-          ¿Está seguro que desea comenzar la tarea?
+          ¿Está seguro que desea comenzar el proyecto?
           <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
