@@ -23,7 +23,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_SUB_STAGE } from 'src/graphql/queries'
+import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
@@ -85,13 +85,26 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
+  const isStageAssignedToUserQuery = useQuery(GET_STAGES_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(subStageId),
+    },
+    skip: !subStageId,
+  })
+
   const subStage: IStage | null = useMemo(() => {
     if (!subStageQuery.data) return null
     return subStageQuery.data.subStage
   }, [subStageQuery.data])
 
+  const isStageAssignedToUser: boolean = useMemo(() => {
+    if (!isStageAssignedToUserQuery.data) return false
+    return isStageAssignedToUserQuery.data.stageAssignedToUser
+  }, [isStageAssignedToUserQuery.data])
+
   const refetch = () => {
     subStageQuery.refetch()
+    isStageAssignedToUserQuery.refetch()
   }
 
   return (
@@ -125,7 +138,7 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
-                {subStage && subStage.stateId === TASK_STATE.ON_HOLD && (
+                {subStage && subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
                 <Button variant="contained" onClick={modalStartTask.onTrue}>
                   <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                   Comenzar
