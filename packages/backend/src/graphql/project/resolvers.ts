@@ -232,6 +232,30 @@ export default {
         throw error
       }
     },
+    projectAssignedToUser: async (
+      _: any,
+      args: Pick<IProject, 'id'>,
+      context: IContext
+    ): Promise<boolean> => {
+      try {
+        const { user, areas } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const { id } = args
+        const foundProject = await Project.findOne({
+          where: {
+            id,
+            areaId: {
+              [Op.in]: areas.map((area) => area.id),
+            },
+          },
+        })
+        if (!foundProject) throw new Error('Proyecto no encontrado')
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createProject: async (

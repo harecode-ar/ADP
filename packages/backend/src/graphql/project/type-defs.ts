@@ -31,6 +31,7 @@ export default `#graphql
     projectsByAreaAndState(areaId: Int!, stateId: Int): [Project]
     userProjects(stateId: Int): [Project]
     countProjectsByArea(areaId: Int!): Int
+    projectAssignedToUser(id: Int!): Boolean
   }
 
   type Mutation {

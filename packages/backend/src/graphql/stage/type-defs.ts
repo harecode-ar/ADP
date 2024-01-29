@@ -36,6 +36,7 @@ export default `#graphql
     subStagesByStage(stageId: Int): [Stage]
     userStages(stateId: Int): [Stage]
     userSubStages(stateId: Int): [Stage]
+    stageAssignedToUser(id: Int): Boolean
   }
 
   type Mutation {

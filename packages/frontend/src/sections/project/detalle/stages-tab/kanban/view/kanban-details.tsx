@@ -1,6 +1,6 @@
 'use client'
 
-import { IStage, IProject, TASK_STATE } from '@adp/shared'
+import { IStage, IProject, TASK_STATE, TASK_STATE_NAME } from '@adp/shared'
 import React, { useMemo } from 'react'
 import NextLink from 'next/link'
 import Stack from '@mui/material/Stack'
@@ -49,13 +49,16 @@ const StyledLabel = styled('span')(({ theme }) => ({
 }))
 
 const getColorVariant = (name: string) => {
-  if (name === 'Nuevo') {
+  if (name === TASK_STATE_NAME.NEW) {
     return 'info'
   }
-  if (name === 'En progreso') {
+  if (name === TASK_STATE_NAME.IN_PROGRESS) {
     return 'warning'
   }
-  if (name === 'Completado') {
+  if (name === TASK_STATE_NAME.ON_HOLD) {
+    return 'warning'
+  }
+  if (name === TASK_STATE_NAME.COMPLETED) {
     return 'primary'
   }
   return 'error'

@@ -341,6 +341,25 @@ export default {
         throw error
       }
     },
+    stageAssignedToUser: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<boolean> => {
+      try {
+        const { user, areas } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const foundStage = await Stage.findOne({
+          where: { id: args.id, areaId: { [Op.in]: areas ? areas.map((area) => area.id) : [] } },
+        })
+        if (!foundStage) throw new Error('Etapa no encontrada')
+        return true
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 
   Mutation: {
