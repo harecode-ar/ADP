@@ -238,33 +238,19 @@ export default {
       context: IContext
     ): Promise<boolean> => {
       try {
-        const { user } = context
+        const { user, areas } = context
         if (!user) throw new Error('Usuario no encontrado')
-        const foundUser = await User.findByPk(user.id, {
-          include: [
-            {
-              model: Area,
-              as: 'areas',
-              attributes: ['id'],
-              include: [
-                {
-                  model: Project,
-                  as: 'projects',
-                  attributes: ['id'],
-                },
-              ],
+        const { id } = args
+        const foundProject = await Project.findOne({
+          where: {
+            id,
+            areaId: {
+              [Op.in]: areas.map((area) => area.id),
             },
-          ],
+          },
         })
-        if (!foundUser) throw new Error('Usuario no encontrado')
-        // @ts-ignore
-        const { areas = [] } = foundUser
-        const isProjectAssigned = areas.some((area: Area) => {
-          // @ts-ignore
-          const { projects } = area
-          return projects.some((project: Project) => project.id === args.id)
-        })
-        return isProjectAssigned
+        if (!foundProject) throw new Error('Proyecto no encontrado')
+        return true
       } catch (error) {
         logger.error(error)
         throw error
