@@ -69,6 +69,8 @@ export const GET_CHECKLIST = gql`
       id
       title
       remember
+      projectId
+      stageId
       createdAt
       updatedAt
       checks {

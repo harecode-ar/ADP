@@ -25,7 +25,7 @@ export default function KanbanDetailsCommentInput(props: TProps) {
   const { stageId, refetch } = props
   const attachFileModal = useBoolean()
   const { user } = useAuthContext()
-  const [createStageNote, { loading }] = useMutation(CREATE_STAGE_NOTE)
+  const [createStageNote] = useMutation(CREATE_STAGE_NOTE)
   const { enqueueSnackbar } = useSnackbar()
 
   const formik = useFormik({

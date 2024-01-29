@@ -1,13 +1,15 @@
 'use client'
 
 import { IChecklist } from '@adp/shared'
-import React from 'react'
-import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/material'
+import React, { useMemo } from 'react'
+import NextLink from 'next/link'
+import { Typography, Box, IconButton, Stack, MenuItem, Tooltip, Link } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { useTheme } from '@mui/material/styles'
 import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
 import { useMutation } from '@apollo/client'
+import { paths } from 'src/routes/paths'
 import ModalDelete from './modal-delete'
 import UpdateChecklistModal from './checklist-update-modal'
 
@@ -16,7 +18,14 @@ type TProps = {
   refetch: () => void
 }
 
-const MAX_CHARACTERS = 30
+type TTask = {
+  name: string
+  shortName: string
+  link: string | null
+}
+
+const MAX_CHARACTERS_TITLE = 30
+const MAX_CHARACTERS_ASSIGNED_TO = 42
 
 export function ChecklistItem(props: TProps) {
   const { checklist, refetch } = props
@@ -40,6 +49,37 @@ export function ChecklistItem(props: TProps) {
     refetch()
   }
 
+  const task: TTask = useMemo(() => {
+    const { project, stage } = checklist || {}
+    if (project) {
+      return {
+        name: project.name,
+        shortName:
+          project.name.length > MAX_CHARACTERS_ASSIGNED_TO
+            ? `${project.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+            : project.name,
+        link: paths.dashboard.project.detail.replace(':id', String(project.id)),
+      }
+    }
+
+    if (stage) {
+      return {
+        name: stage.name,
+        shortName:
+          stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
+            ? `${stage.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+            : stage.name,
+        link: paths.dashboard.stage.detail.replace(':id', String(stage.id)),
+      }
+    }
+
+    return {
+      name: 'Sin asignar',
+      shortName: 'Sin asignar',
+      link: null,
+    }
+  }, [checklist])
+
   return (
     <React.Fragment>
       <MenuItem onClick={modalUpdate.onTrue}>
@@ -58,7 +98,7 @@ export function ChecklistItem(props: TProps) {
                 alignItems: 'center',
               }}
             >
-              <Tooltip title={checklist.title.length > MAX_CHARACTERS ? checklist.title : ''}>
+              <Tooltip title={checklist.title}>
                 <Typography
                   variant="h6"
                   sx={{
@@ -66,12 +106,36 @@ export function ChecklistItem(props: TProps) {
                       checklist.finished && checklist.checks.length ? 'line-through' : 'none',
                   }}
                 >
-                  {checklist.title.length > MAX_CHARACTERS
-                    ? `${checklist.title.slice(0, MAX_CHARACTERS)}...`
+                  {checklist.title.length > MAX_CHARACTERS_TITLE
+                    ? `${checklist.title.slice(0, MAX_CHARACTERS_TITLE)}...`
                     : checklist.title}
                 </Typography>
               </Tooltip>
             </Box>
+
+            <Stack>
+              <Tooltip title={task.name}>
+                <Link
+                  component={NextLink}
+                  href={task.link || ''}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                  }}
+                  sx={{
+                    color: theme.palette.text.disabled,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.text.disabled,
+                      fontSize: '14px',
+                    }}
+                  >
+                    {task.shortName}
+                  </Typography>
+                </Link>
+              </Tooltip>
+            </Stack>
 
             <Stack
               direction="row"
@@ -116,7 +180,6 @@ export function ChecklistItem(props: TProps) {
                 </Typography>
               </Box>
               {new Date(Number(checklist.createdAt)).toLocaleDateString()}
-              {checklist?.project?.name || 'Sin asignar'}
             </Stack>
           </Box>
 
