@@ -347,33 +347,14 @@ export default {
       context: IContext
     ): Promise<boolean> => {
       try {
-        const { user } = context
+        const { user, areas } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
-        const foundUser = await User.findByPk(user.id, {
-          attributes: ['id'],
-          include: [
-            {
-              model: Area,
-              as: 'areas',
-              attributes: ['id'],
-              include: [
-                {
-                  model: Stage,
-                  as: 'stages',
-                  where: { id: args.id },
-                  attributes: ['id', 'name'],
-                },
-              ],
-            },
-          ],
+        const foundStage = await Stage.findOne({
+          where: { id: args.id, areaId: { [Op.in]: areas ? areas.map((area) => area.id) : [] } },
         })
-        if (!foundUser) throw new Error('Usuario no encontrado')
-        // @ts-ignore
-        const { areas = [] } = foundUser
-        // @ts-ignore
-        const stages: Stage[] = areas.flatMap((area: Area) => area.stages)
-        return stages.length > 0
+        if (!foundStage) throw new Error('Etapa no encontrada')
+        return true
       } catch (error) {
         logger.error(error)
         throw error
