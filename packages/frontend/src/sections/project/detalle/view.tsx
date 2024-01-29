@@ -22,7 +22,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
+import { GET_PROJECT, GET_STAGES_BY_PROJECT, GET_PROJECTS_ASSIGNED_TO_USER } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
@@ -39,6 +39,7 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
+import ModalStartTask from './modal-start-task'
 
 enum ETab {
   NOTES = 'Notas',
@@ -59,6 +60,7 @@ export default function ProjectDetailView(props: TProps) {
   const router = useRouter()
   const modalEdit = useBoolean()
   const modalFinishProject = useBoolean()
+  const modalStartTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -83,9 +85,17 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
+  const isProjectAssignedToUserQuery = useQuery(GET_PROJECTS_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(projectId),
+    },
+    skip: !projectId,
+  })
+
   const refetch = () => {
     projectQuery.refetch()
     stageQuery.refetch()
+    isProjectAssignedToUserQuery.refetch()
   }
 
   const project: IProject | null = useMemo(() => {
@@ -97,6 +107,11 @@ export default function ProjectDetailView(props: TProps) {
     if (!stageQuery.data) return []
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
+
+  const isProjectAssignedToUser: boolean = useMemo(() => {
+    if (!isProjectAssignedToUserQuery.data) return false
+    return isProjectAssignedToUserQuery.data.projectAssignedToUser
+  }, [isProjectAssignedToUserQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -119,6 +134,12 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
+                {project.stateId === TASK_STATE.ON_HOLD && isProjectAssignedToUser && (
+                  <Button variant="contained" onClick={modalStartTask.onTrue}>
+                    <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                    Comenzar
+                  </Button>
+                )}
                 <Button variant="contained" onClick={modalEdit.onTrue}>
                   <Iconify icon="material-symbols:edit" mr={1} />
                   Editar
@@ -325,6 +346,15 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={project || null}
+            stage={null}
+            subStage={null}
+            refetch={refetch}
+          />
+        )}
     </Container>
   )
 }

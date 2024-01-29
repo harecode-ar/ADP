@@ -22,7 +22,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_STAGE, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
+import { GET_STAGE, GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
@@ -39,6 +39,7 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
+import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
 
 enum ETab {
   NOTES = 'Notas',
@@ -60,6 +61,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
   const modalFinishStage = useBoolean()
+  const modalStartTask = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
@@ -77,6 +79,13 @@ export default function ProjectDetailView(props: TProps) {
     skip: !stageId,
   })
 
+  const isStageAssignedToUserQuery = useQuery(GET_STAGES_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(stageId),
+    },
+    skip: !stageId,
+  })
+
   const stage: IStage | null = useMemo(() => {
     if (!stageQuery.data) return null
     return stageQuery.data.stage
@@ -87,9 +96,15 @@ export default function ProjectDetailView(props: TProps) {
     return subStageQuery.data.subStagesByStage
   }, [subStageQuery.data])
 
+  const isStageAssignedToUser: boolean = useMemo(() => {
+    if (!isStageAssignedToUserQuery.data) return false
+    return isStageAssignedToUserQuery.data.stageAssignedToUser
+  }, [isStageAssignedToUserQuery.data])
+
   const refetch = () => {
     stageQuery.refetch()
     subStageQuery.refetch()
+    isStageAssignedToUserQuery.refetch()
   }
 
   return (
@@ -111,6 +126,12 @@ export default function ProjectDetailView(props: TProps) {
                 gap: 1,
               }}
             >
+              {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
+                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                  Comenzar
+                </Button>
+              )}
               {stage &&
                 stage.stateId !== TASK_STATE.CANCELLED &&
                 stage.stateId !== TASK_STATE.COMPLETED && (
@@ -306,6 +327,15 @@ export default function ProjectDetailView(props: TProps) {
       {modalEdit.value && (
         <ModalEdit modal={modalEdit} project={stage?.project} stage={stage} refetch={refetch} />
       )}
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={stage || null}
+            subStage={null}
+            refetch={refetch}
+          />
+        )}
     </Container>
   )
 }

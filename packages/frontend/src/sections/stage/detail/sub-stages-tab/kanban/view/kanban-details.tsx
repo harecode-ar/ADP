@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_SUB_STAGE } from 'src/graphql/queries'
+import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
@@ -27,6 +27,7 @@ import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
+import ModalStartTask from './modal-start-task'
 
 // ----------------------------------------------------------------------
 
@@ -66,6 +67,7 @@ export default function KanbanDetails(props: TProps) {
   const { stage, subStageItem, openDetails, onCloseDetails, refetch: stagesRefetch } = props
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
+  const modalStartTask = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
@@ -74,9 +76,17 @@ export default function KanbanDetails(props: TProps) {
     skip: !subStageItem.id,
   })
 
+  const isStageAssignedToUserQuery = useQuery(GET_STAGES_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(subStageItem.id,),
+    },
+    skip: !subStageItem.id,
+  })
+
   const refetch = () => {
     stagesRefetch()
     stageQuery.refetch()
+    isStageAssignedToUserQuery.refetch()
   }
 
   const subStage: IStage | null = useMemo(() => {
@@ -84,7 +94,16 @@ export default function KanbanDetails(props: TProps) {
     return stageQuery.data.subStage
   }, [stageQuery.data])
 
+  const isStageAssignedToUser: boolean = useMemo(() => {
+    if (!isStageAssignedToUserQuery.data) return false
+    return isStageAssignedToUserQuery.data.stageAssignedToUser
+  }, [isStageAssignedToUserQuery.data])
+
   if (!subStage) return null
+
+
+
+  
 
   return (
     <Drawer
@@ -119,6 +138,13 @@ export default function KanbanDetails(props: TProps) {
           {subStage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          {subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
+            <Tooltip title="Comenzar tarea">
+              <IconButton onClick={modalStartTask.onTrue}>
+                <Iconify icon="mdi:stopwatch-start-outline" />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="Detalle">
             <Link
               component={NextLink}
@@ -224,6 +250,15 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} stage={stage} subStage={subStage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={subStage.id} refetch={refetch} />
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={null}
+            subStage={subStage || null}
+            refetch={refetch}
+          />
+        )}
     </Drawer>
   )
 }

@@ -23,7 +23,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_SUB_STAGE } from 'src/graphql/queries'
+import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
@@ -31,6 +31,7 @@ import {
   getTootipFromAcpOrPacp,
   getSeverityFromAcp,
 } from 'src/utils/average-completition'
+import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
 import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
@@ -71,6 +72,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalEdit = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
   const modalFinishSubStage = useBoolean()
+  const modalStartTask = useBoolean()
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
@@ -83,13 +85,26 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
+  const isStageAssignedToUserQuery = useQuery(GET_STAGES_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(subStageId),
+    },
+    skip: !subStageId,
+  })
+
   const subStage: IStage | null = useMemo(() => {
     if (!subStageQuery.data) return null
     return subStageQuery.data.subStage
   }, [subStageQuery.data])
 
+  const isStageAssignedToUser: boolean = useMemo(() => {
+    if (!isStageAssignedToUserQuery.data) return false
+    return isStageAssignedToUserQuery.data.stageAssignedToUser
+  }, [isStageAssignedToUserQuery.data])
+
   const refetch = () => {
     subStageQuery.refetch()
+    isStageAssignedToUserQuery.refetch()
   }
 
   return (
@@ -123,6 +138,12 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
+                {subStage && subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
+                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                  Comenzar
+                </Button>
+              )}
                 {subStage &&
                   subStage.stateId !== TASK_STATE.CANCELLED &&
                   subStage.stateId !== TASK_STATE.COMPLETED && (
@@ -303,6 +324,15 @@ export default function ProjectDetailView(props: TProps) {
           refetch={refetch}
         />
       )}
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={null}
+            stage={null}
+            subStage={subStage || null}
+            refetch={refetch}
+          />
+        )}
     </Container>
   )
 }
