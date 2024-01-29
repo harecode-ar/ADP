@@ -43,10 +43,16 @@ type TProps = {
   refetch: () => void
 }
 
+type TAssignation = {
+  id: number
+  name: string
+  type: 'Proyecto' | 'Etapa' | 'Subetapa'
+}
+
 type TFormikValues = {
   title: string
   remember: boolean
-  assignation: []
+  assignedTo: TAssignation | null
   checks: TCheck[]
 }
 
@@ -63,7 +69,7 @@ export default function CreateChecklistModal(props: TProps) {
     initialValues: {
       title: '',
       remember: false,
-      assignation: null as any,
+      assignedTo: null as TAssignation | null,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
@@ -72,6 +78,11 @@ export default function CreateChecklistModal(props: TProps) {
           variables: {
             title: values.title,
             remember: values.remember,
+            projectId: values.assignedTo?.type === 'Proyecto' ? values.assignedTo?.id : null,
+            stageId:
+              values.assignedTo?.type === 'Etapa' || values.assignedTo?.type === 'Subetapa'
+                ? values.assignedTo?.id
+                : null,
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
@@ -176,19 +187,20 @@ export default function CreateChecklistModal(props: TProps) {
             <Autocomplete
               style={{ marginTop: '1rem', marginBottom: '1rem' }}
               fullWidth
+              noOptionsText="No tenes asignaciones"
               options={assignations}
               getOptionLabel={(option) => `${option.type}: ${option.name}`}
-              value={formik.values.assignation}
+              value={formik.values.assignedTo}
               onChange={(event, value) => {
-                formik.setFieldValue('assignation', value)
+                formik.setFieldValue('assignedTo', value)
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label="Asignado a:"
                   variant="standard"
-                  error={Boolean(formik.errors.assignation)}
-                  helperText={formik.errors.assignation}
+                  error={Boolean(formik.errors.assignedTo)}
+                  helperText={formik.errors.assignedTo}
                 />
               )}
             />

@@ -341,6 +341,44 @@ export default {
         throw error
       }
     },
+    stageAssignedToUser: async (
+      _: any,
+      args: Pick<IStage, 'id'>,
+      context: IContext
+    ): Promise<boolean> => {
+      try {
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const foundUser = await User.findByPk(user.id, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+              attributes: ['id'],
+              include: [
+                {
+                  model: Stage,
+                  as: 'stages',
+                  where: { id: args.id },
+                  attributes: ['id', 'name'],
+                },
+              ],
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        const { areas = [] } = foundUser
+        // @ts-ignore
+        const stages: Stage[] = areas.flatMap((area: Area) => area.stages)
+        return stages.length > 0
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 
   Mutation: {
