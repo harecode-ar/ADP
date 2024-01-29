@@ -12,11 +12,15 @@ import { AREAS_FOR_LIST } from 'src/graphql/queries'
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
-import { getColorFromAcp, getColorFromPacp, getTooltipFromAcp, getTooltipFromPacp } from 'src/utils/average-completition'
+import {
+  getColorFromAcp,
+  getColorFromPacp,
+  getTooltipFromAcp,
+  getTooltipFromPacp,
+} from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
-
 
 const columns: TColumn[] = [
   {
@@ -33,20 +37,23 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
-      <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp, null)}>
-      <Box
-        sx={{
-          backgroundColor: getColorFromAcp(row.averageCompletition?.projectAcp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN),
-          width: 15,
-          height: 15,
-          borderRadius: '50%',
-          marginRight: 1,
-        }}
-      />
+      <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0)}>
+        <Box
+          sx={{
+            backgroundColor: getColorFromAcp(
+              row.averageCompletition?.projectAcp || null,
+              DEFAULT_PERCENTAGE_ALERT_MARGIN
+            ),
+            width: 15,
+            height: 15,
+            borderRadius: '50%',
+            marginRight: 1,
+          }}
+        />
       </Tooltip>
     ),
     // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
-    searchValue: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
+    searchValue: (row: TRow) => row.averageCompletition?.projectAcp ?? '-',
   },
   {
     id: 'projectPacp',
@@ -54,42 +61,75 @@ const columns: TColumn[] = [
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
-      <Box
-        sx={{
-          backgroundColor: getColorFromAcp(row.averageCompletition?.projectPacp || null, DEFAULT_PERCENTAGE_ALERT_MARGIN),
-          width: 15,
-          height: 15,
-          borderRadius: '50%',
-          marginRight: 1,
-        }}
-      />
+      <Tooltip title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0)}>
+        <Box
+          sx={{
+            backgroundColor: getColorFromPacp(
+              row.averageCompletition?.projectPacp || null,
+              DEFAULT_PERCENTAGE_ALERT_MARGIN
+            ),
+            width: 15,
+            height: 15,
+            borderRadius: '50%',
+            marginRight: 1,
+          }}
+        />
+      </Tooltip>
     ),
     // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
-    searchValue: (row: TRow) => (row.averageCompletition?.projectPacp ?? '-'),
+    searchValue: (row: TRow) => row.averageCompletition?.projectPacp ?? '-',
   },
   {
     id: 'stageAcp',
     label: 'etapa ACP',
     type: EColumnType.STRING,
     searchable: true,
-    renderCell: (row: TRow) => (row.averageCompletition?.stageAcp ?? '-'),
-    searchValue: (row: TRow) => (row.averageCompletition?.stageAcp ?? '-'),
+    renderCell: (row: TRow) => (
+      <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0)}>
+        <Box
+          sx={{
+            backgroundColor: getColorFromAcp(
+              row.averageCompletition?.stageAcp || null,
+              DEFAULT_PERCENTAGE_ALERT_MARGIN
+            ),
+            width: 15,
+            height: 15,
+            borderRadius: '50%',
+            marginRight: 1,
+          }}
+        />
+      </Tooltip>
+    ),
+    searchValue: (row: TRow) => row.averageCompletition?.stageAcp ?? '-',
   },
   {
     id: 'stagePacp',
     label: 'etapa PACP',
     type: EColumnType.STRING,
     searchable: true,
-    renderCell: (row: TRow) => (row.averageCompletition?.stagePacp ?? '-'),
-    searchValue: (row: TRow) => (row.averageCompletition?.stagePacp ?? '-'),
-  }
-
+    renderCell: (row: TRow) => (
+      <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0)}>
+        <Box
+          sx={{
+            backgroundColor: getColorFromPacp(
+              row.averageCompletition?.stagePacp || null,
+              DEFAULT_PERCENTAGE_ALERT_MARGIN
+            ),
+            width: 15,
+            height: 15,
+            borderRadius: '50%',
+            marginRight: 1,
+          }}
+        />
+      </Tooltip>
+    ),
+    searchValue: (row: TRow) => row.averageCompletition?.stagePacp ?? '-',
+  },
 ]
 
 const Table = () => {
   const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
   const { hideColumns, selected, setMultiple } = useTable()
-
 
   useEffect(() => {
     hideColumns(columns)

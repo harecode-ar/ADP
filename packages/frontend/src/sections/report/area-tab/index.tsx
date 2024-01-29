@@ -9,7 +9,6 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import { paths } from 'src/routes/paths'
 import Table from './table'
 
-
 export default function AreaListView() {
   const settings = useSettingsContext()
   const [ref] = usePrint()
