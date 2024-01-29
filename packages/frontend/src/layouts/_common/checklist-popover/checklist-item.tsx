@@ -98,7 +98,7 @@ export function ChecklistItem(props: TProps) {
                 alignItems: 'center',
               }}
             >
-              <Tooltip title={checklist.title.length > MAX_CHARACTERS_TITLE ? checklist.title : ''}>
+              <Tooltip title={checklist.title}>
                 <Typography
                   variant="h6"
                   sx={{
@@ -114,7 +114,7 @@ export function ChecklistItem(props: TProps) {
             </Box>
 
             <Stack>
-              <Tooltip title={task.name.length > MAX_CHARACTERS_ASSIGNED_TO ? task.name : ''}>
+              <Tooltip title={task.name}>
                 <Link
                   component={NextLink}
                   href={task.link || ''}
