@@ -1,19 +1,27 @@
 'use client'
 
 import { IChecklist } from '@adp/shared'
-import React from 'react'
-import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/material'
+import React, { useMemo } from 'react'
+import NextLink from 'next/link'
+import { Typography, Box, IconButton, Stack, MenuItem, Tooltip, Link } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { useTheme } from '@mui/material/styles'
 import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
 import { useMutation } from '@apollo/client'
+import { paths } from 'src/routes/paths'
 import ModalDelete from './modal-delete'
 import UpdateChecklistModal from './checklist-update-modal'
 
 type TProps = {
   checklist: IChecklist
   refetch: () => void
+}
+
+type TTask = {
+  name: string
+  shortName: string
+  link: string | null
 }
 
 const MAX_CHARACTERS_TITLE = 30
@@ -41,23 +49,36 @@ export function ChecklistItem(props: TProps) {
     refetch()
   }
 
-  const getAssignedTo = (c: IChecklist, action: string = 'no-slice') => {
-    if (c.project) {
-      if (action === 'no-slice') return c.project.name
-      return c.project.name.length > MAX_CHARACTERS_ASSIGNED_TO
-        ? `${c.project.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-        : c.project.name
+  const task: TTask = useMemo(() => {
+    const { project, stage } = checklist || {}
+    if (project) {
+      return {
+        name: project.name,
+        shortName:
+          project.name.length > MAX_CHARACTERS_ASSIGNED_TO
+            ? `${project.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+            : project.name,
+        link: paths.dashboard.project.detail.replace(':id', String(project.id)),
+      }
     }
 
-    if (c.stage) {
-      if (action === 'no-slice') return c.stage.name
-      return c.stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
-        ? `${c.stage.name.slice(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-        : c.stage.name
+    if (stage) {
+      return {
+        name: stage.name,
+        shortName:
+          stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
+            ? `${stage.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
+            : stage.name,
+        link: paths.dashboard.stage.detail.replace(':id', String(stage.id)),
+      }
     }
 
-    return 'Sin asignar'
-  }
+    return {
+      name: 'Sin asignar',
+      shortName: 'Sin asignar',
+      link: null,
+    }
+  }, [checklist])
 
   return (
     <React.Fragment>
@@ -93,21 +114,26 @@ export function ChecklistItem(props: TProps) {
             </Box>
 
             <Stack>
-              <Tooltip
-                title={
-                  getAssignedTo(checklist).length > MAX_CHARACTERS_ASSIGNED_TO
-                    ? getAssignedTo(checklist)
-                    : ''
-                }
-              >
-                <Typography
+              <Tooltip title={task.name.length > MAX_CHARACTERS_ASSIGNED_TO ? task.name : ''}>
+                <Link
+                  component={NextLink}
+                  href={task.link || ''}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                  }}
                   sx={{
                     color: theme.palette.text.disabled,
-                    fontSize: '14px',
                   }}
                 >
-                  {getAssignedTo(checklist, 'slice')}
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: theme.palette.text.disabled,
+                      fontSize: '14px',
+                    }}
+                  >
+                    {task.shortName}
+                  </Typography>
+                </Link>
               </Tooltip>
             </Stack>
 
