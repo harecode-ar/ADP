@@ -44,6 +44,7 @@ import ContactTab from './contact-tab'
 import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
+import ModalStartTask from './modal-start-task'
 
 enum ETab {
   NOTES = 'Notas',
@@ -65,6 +66,7 @@ export default function ProjectDetailView(props: TProps) {
   const router = useRouter()
   const modalEdit = useBoolean()
   const modalFinishProject = useBoolean()
+  const modalStartTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -89,14 +91,17 @@ export default function ProjectDetailView(props: TProps) {
     },
   })
 
-  const projectAssignedToUserQuery = useQuery(GET_PROJECTS_ASSIGNED_TO_USER, {
-    variables: { id: Number(projectId) },
+  const isProjectAssignedToUserQuery = useQuery(GET_PROJECTS_ASSIGNED_TO_USER, {
+    variables: {
+      id: Number(projectId),
+    },
     skip: !projectId,
   })
 
   const refetch = () => {
     projectQuery.refetch()
     stageQuery.refetch()
+    isProjectAssignedToUserQuery.refetch()
   }
 
   const project: IProject | null = useMemo(() => {
@@ -108,6 +113,11 @@ export default function ProjectDetailView(props: TProps) {
     if (!stageQuery.data) return []
     return stageQuery.data.stagesByProject
   }, [stageQuery.data])
+
+  const isProjectAssignedToUser: boolean = useMemo(() => {
+    if (!isProjectAssignedToUserQuery.data) return false
+    return isProjectAssignedToUserQuery.data.projectAssignedToUser
+  }, [isProjectAssignedToUserQuery.data])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -130,6 +140,12 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
+                {project.stateId === TASK_STATE.ON_HOLD && isProjectAssignedToUser && (
+                  <Button variant="contained" onClick={modalStartTask.onTrue}>
+                    <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                    Comenzar
+                  </Button>
+                )}
                 <Button variant="contained" onClick={modalEdit.onTrue}>
                   <Iconify icon="material-symbols:edit" mr={1} />
                   Editar
@@ -311,8 +327,8 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.STAGES} value={ETab.STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
-                {projectAssignedToUserQuery.data &&
-                  projectAssignedToUserQuery.data.projectAssignedToUser && (
+                {isProjectAssignedToUserQuery.data &&
+                  isProjectAssignedToUserQuery.data.projectAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
               </Tabs>
@@ -341,6 +357,15 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
+      {modalStartTask.value && (
+          <ModalStartTask
+            modal={modalStartTask}
+            project={project || null}
+            stage={null}
+            subStage={null}
+            refetch={refetch}
+          />
+        )}
     </Container>
   )
 }
