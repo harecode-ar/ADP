@@ -8,7 +8,7 @@ import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
-import { AREAS_FOR_LIST } from 'src/graphql/queries'
+import { AREAS_FOR_REPORT } from 'src/graphql/queries'
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
@@ -128,7 +128,7 @@ const columns: TColumn[] = [
 ]
 
 const Table = () => {
-  const { data, loading, refetch } = useQuery(AREAS_FOR_LIST)
+  const { data, loading, refetch } = useQuery(AREAS_FOR_REPORT)
   const { hideColumns, selected, setMultiple } = useTable()
 
   useEffect(() => {

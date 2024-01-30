@@ -23,6 +23,21 @@ export const AREAS_FOR_LIST = gql`
     }
   }
 `
+export const AREAS_FOR_REPORT = gql`
+  query areasForReport {
+    areas {
+      id
+      name
+      multiple
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
+    }
+  }
+`
 export const AREAS_FOR_SELECT = gql`
   query areasForSelect {
     areas {
