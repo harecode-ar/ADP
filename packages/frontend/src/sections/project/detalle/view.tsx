@@ -22,7 +22,11 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_PROJECT, GET_STAGES_BY_PROJECT, GET_PROJECTS_ASSIGNED_TO_USER } from 'src/graphql/queries'
+import {
+  GET_PROJECT,
+  GET_STAGES_BY_PROJECT,
+  GET_PROJECTS_ASSIGNED_TO_USER,
+} from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
@@ -37,6 +41,7 @@ import StagesTab from './stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
+import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
 import ModalStartTask from './modal-start-task'
@@ -46,6 +51,7 @@ enum ETab {
   STAGES = 'Etapas',
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
+  CHECKLIST = 'Checklist',
 }
 
 type TProps = {
@@ -321,6 +327,10 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.STAGES} value={ETab.STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                {isProjectAssignedToUserQuery.data &&
+                  isProjectAssignedToUserQuery.data.projectAssignedToUser && (
+                    <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                  )}
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
@@ -329,6 +339,7 @@ export default function ProjectDetailView(props: TProps) {
             )}
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {tab === ETab.CONTACTS && <ContactTab project={project} />}
+            {tab === ETab.CHECKLIST && <ChecklistTab project={project} />}
             {modalEdit.value && (
               <ModalEdit
                 modal={modalEdit}

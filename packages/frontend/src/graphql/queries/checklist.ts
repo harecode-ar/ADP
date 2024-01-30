@@ -34,6 +34,8 @@ export const GET_CHECKLIST_BY_PROJECT = gql`
       title
       createdAt
       updatedAt
+      finished
+      remember
       checks {
         id
         title

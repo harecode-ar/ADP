@@ -34,7 +34,7 @@ const ModalDelete = (props: TProps) => {
       })
       modal.onFalse()
       refetch()
-      window.dispatchEvent(new Event(ECustomEvent.refetchProjectChecklist))
+      window.dispatchEvent(new Event(ECustomEvent.refetchUserChecklist))
     } catch {
       enqueueSnackbar('El checklist no pudo ser borrada.', {
         variant: 'error',
