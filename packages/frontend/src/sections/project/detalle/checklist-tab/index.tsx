@@ -71,7 +71,7 @@ export default function ChechlistTab(props: TProps) {
           ) : (
             <Grid container spacing={2}>
               {checklists.map((checklist) => (
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <ChecklistItemTab key={checklist.id} checklist={checklist} refetch={refetch} />
                 </Grid>
               ))}
