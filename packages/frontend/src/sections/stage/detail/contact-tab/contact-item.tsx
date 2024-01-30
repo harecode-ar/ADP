@@ -8,6 +8,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { IMPORT_STAGE_CONTACTS } from 'src/graphql/mutations'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { ECustomEvent } from 'src/types'
 import ModalDelete from './modal-delete'
 
 type TProps = {
@@ -43,7 +44,7 @@ export default function ContactItem(props: TProps) {
       })
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('Contacto importado', { variant: 'success' })
-      window.dispatchEvent(new Event('refetchContacts'))
+      window.dispatchEvent(new Event(ECustomEvent.refetchStageContacts))
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }
