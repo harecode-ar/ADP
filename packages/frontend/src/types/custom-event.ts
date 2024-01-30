@@ -3,4 +3,6 @@ export enum ECustomEvent {
   refetchProjectContacts = 'refetchProjectContacts',
   refetchStageContacts = 'refetchStageContacts',
   refetchSubStageContacts = 'refetchSubStageContacts',
+  refetchProjectChecklist = 'refetchProjectChecklist',
+  refetchUserChecklist = 'refetchUserChecklist',
 }

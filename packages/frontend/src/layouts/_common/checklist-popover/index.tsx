@@ -13,6 +13,7 @@ import { GET_USER_CHECKLISTS } from 'src/graphql/queries'
 import { useSnackbar } from 'src/components/snackbar'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useResponsive } from 'src/hooks/use-responsive'
+import { ECustomEvent } from 'src/types'
 import { ChecklistItem } from './checklist-item'
 import CreateChecklistModal from './checklist-create-modal'
 
@@ -56,6 +57,11 @@ export default function ChecklistPopover() {
       setInitialized(true)
     }
   }, [unfinishedChecklists, initialized, enqueueSnackbar])
+
+  useEffect(() => {
+    window.addEventListener(ECustomEvent.refetchUserChecklist, checklistQuery.refetch)
+    return () => window.removeEventListener(ECustomEvent.refetchUserChecklist, checklistQuery.refetch)
+  }, [checklistQuery.refetch])
 
   return (
     <Box>

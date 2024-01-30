@@ -27,6 +27,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import { GET_CHECKLIST, GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
 import { UPDATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { ECustomEvent } from 'src/types'
 
 const checklistSchema = Yup.object().shape({
   title: Yup.string().required('titulo requerido'),
@@ -116,6 +117,7 @@ export default function CreateChecklistModal(props: TProps) {
         helpers.resetForm()
         modal.onFalse()
         refetch()
+        window.dispatchEvent(new Event(ECustomEvent.refetchProjectChecklist))
       } catch {
         enqueueSnackbar('El listado de tareas no pudo ser editado.', {
           variant: 'error',

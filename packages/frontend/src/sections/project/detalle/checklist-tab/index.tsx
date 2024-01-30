@@ -1,10 +1,11 @@
 import { IProject, IChecklist } from '@adp/shared'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box, Button, Card, Grid } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { GET_CHECKLIST_BY_PROJECT } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { ECustomEvent } from 'src/types'
 import { ChecklistItemTab } from './checklist-item-tab'
 import ModalCreateTab from './checklist-create-modal-tab'
 
@@ -26,6 +27,11 @@ export default function ChechlistTab(props: TProps) {
     if (!data) return []
     return data.projectChecklists || []
   }, [data])
+
+  useEffect(() => {
+    window.addEventListener(ECustomEvent.refetchProjectChecklist, refetch)
+    return () => window.removeEventListener(ECustomEvent.refetchProjectChecklist, refetch)
+  }, [refetch])
 
   return (
     <Card sx={{ p: 3 }}>
