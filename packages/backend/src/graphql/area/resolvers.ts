@@ -67,6 +67,7 @@ export default {
         throw error
       }
     },
+
     areasForDashboard: async (_: any, __: any, context: IContext): Promise<IArea[]> => {
       try {
         const { user } = context

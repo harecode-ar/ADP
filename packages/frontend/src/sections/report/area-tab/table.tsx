@@ -8,7 +8,7 @@ import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
 import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
-import { AREAS_FOR_REPORT } from 'src/graphql/queries'
+import { AREAS_FOR_LIST, AREAS_FOR_REPORT } from 'src/graphql/queries'
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
@@ -38,18 +38,25 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0)}>
-        <Box
-          sx={{
-            backgroundColor: getColorFromAcp(
-              row.averageCompletition?.projectAcp || null,
-              DEFAULT_PERCENTAGE_ALERT_MARGIN
-            ),
-            width: 15,
-            height: 15,
-            borderRadius: '50%',
-            marginRight: 1,
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box
+            sx={{
+              backgroundColor: getColorFromAcp(
+                row.averageCompletition?.projectAcp || null,
+                DEFAULT_PERCENTAGE_ALERT_MARGIN
+              ),
+              width: 15,
+              height: 15,
+              borderRadius: '50%',
+              marginRight: 1,
+            }}
+          />
+          <Typography sx={{ marginLeft: 5 }}>
+            {row.averageCompletition?.projectAcp !== null
+              ? row.averageCompletition?.projectAcp.toFixed(2)
+              : '-'}
+          </Typography>
+        </Box>
       </Tooltip>
     ),
     // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
@@ -62,21 +69,27 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Tooltip title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0)}>
-        <Box
-          sx={{
-            backgroundColor: getColorFromPacp(
-              row.averageCompletition?.projectPacp || null,
-              DEFAULT_PERCENTAGE_ALERT_MARGIN
-            ),
-            width: 15,
-            height: 15,
-            borderRadius: '50%',
-            marginRight: 1,
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box
+            sx={{
+              backgroundColor: getColorFromPacp(
+                row.averageCompletition?.projectPacp || null,
+                DEFAULT_PERCENTAGE_ALERT_MARGIN
+              ),
+              width: 15,
+              height: 15,
+              borderRadius: '50%',
+              marginRight: 1,
+            }}
+          />
+          <Typography sx={{ marginLeft: 5 }}>
+            {row.averageCompletition?.projectPacp !== null
+              ? row.averageCompletition?.projectPacp.toFixed(2)
+              : '-'}
+          </Typography>
+        </Box>
       </Tooltip>
     ),
-    // renderCell: (row: TRow) => (row.averageCompletition?.projectAcp ?? '-'),
     searchValue: (row: TRow) => row.averageCompletition?.projectPacp ?? '-',
   },
   {
@@ -86,18 +99,25 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0)}>
-        <Box
-          sx={{
-            backgroundColor: getColorFromAcp(
-              row.averageCompletition?.stageAcp || null,
-              DEFAULT_PERCENTAGE_ALERT_MARGIN
-            ),
-            width: 15,
-            height: 15,
-            borderRadius: '50%',
-            marginRight: 1,
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box
+            sx={{
+              backgroundColor: getColorFromAcp(
+                row.averageCompletition?.stageAcp || null,
+                DEFAULT_PERCENTAGE_ALERT_MARGIN
+              ),
+              width: 15,
+              height: 15,
+              borderRadius: '50%',
+              marginRight: 1,
+            }}
+          />
+          <Typography sx={{ marginLeft: 5 }}>
+            {row.averageCompletition?.stageAcp !== null
+              ? row.averageCompletition?.stageAcp.toFixed(2)
+              : '-'}
+          </Typography>
+        </Box>
       </Tooltip>
     ),
     searchValue: (row: TRow) => row.averageCompletition?.stageAcp ?? '-',
@@ -109,18 +129,25 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0)}>
-        <Box
-          sx={{
-            backgroundColor: getColorFromPacp(
-              row.averageCompletition?.stagePacp || null,
-              DEFAULT_PERCENTAGE_ALERT_MARGIN
-            ),
-            width: 15,
-            height: 15,
-            borderRadius: '50%',
-            marginRight: 1,
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box
+            sx={{
+              backgroundColor: getColorFromPacp(
+                row.averageCompletition?.stagePacp || null,
+                DEFAULT_PERCENTAGE_ALERT_MARGIN
+              ),
+              width: 15,
+              height: 15,
+              borderRadius: '50%',
+              marginRight: 1,
+            }}
+          />
+          <Typography sx={{ marginLeft: 5 }}>
+            {row.averageCompletition?.stagePacp !== null
+              ? row.averageCompletition?.stagePacp.toFixed(2)
+              : '-'}
+          </Typography>
+        </Box>
       </Tooltip>
     ),
     searchValue: (row: TRow) => row.averageCompletition?.stagePacp ?? '-',
