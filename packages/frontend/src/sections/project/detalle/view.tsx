@@ -22,7 +22,11 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_PROJECT, GET_STAGES_BY_PROJECT } from 'src/graphql/queries'
+import {
+  GET_PROJECT,
+  GET_STAGES_BY_PROJECT,
+  GET_PROJECTS_ASSIGNED_TO_USER,
+} from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
@@ -83,6 +87,11 @@ export default function ProjectDetailView(props: TProps) {
         router.push(paths.dashboard.project.root)
       }
     },
+  })
+
+  const projectAssignedToUserQuery = useQuery(GET_PROJECTS_ASSIGNED_TO_USER, {
+    variables: { id: Number(projectId) },
+    skip: !projectId,
   })
 
   const refetch = () => {
@@ -302,7 +311,10 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.STAGES} value={ETab.STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
-                <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                {projectAssignedToUserQuery.data &&
+                  projectAssignedToUserQuery.data.projectAssignedToUser && (
+                    <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                  )}
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}

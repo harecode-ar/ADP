@@ -1,7 +1,7 @@
 'use client'
 
-import type { ICheck, IChecklist, IProject, IStage } from '@adp/shared'
-import React, { useMemo } from 'react'
+import type { ICheck, IChecklist } from '@adp/shared'
+import React from 'react'
 import {
   IconButton,
   Typography,
@@ -23,7 +23,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_CHECKLIST, GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
+import { GET_CHECKLIST } from 'src/graphql/queries'
 import { UPDATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 
@@ -43,12 +43,6 @@ type TProps = {
   checklist: IChecklist
 }
 
-type TAssignation = {
-  id: number
-  name: string
-  type: 'Proyecto' | 'Etapa' | 'Subetapa'
-}
-
 type TFormikValues = {
   title: string
   remember: boolean
@@ -63,24 +57,6 @@ export default function UpdateChecklistModalTab(props: TProps) {
   const { modal, refetch, checklist } = props
   const { enqueueSnackbar } = useSnackbar()
   const [createChecklist, { loading }] = useMutation(UPDATE_CHECKLIST)
-
-  const assignationsQuery = useQuery(GET_USER_ASSIGNMENTS_FOR_LIST)
-  const assignations = useMemo(() => {
-    if (!assignationsQuery.data) return []
-
-    const array = [
-      ...assignationsQuery.data.userProjects.map((project: IProject) => ({
-        type: 'Proyecto',
-        ...project,
-      })),
-      ...assignationsQuery.data.userStages.map((stage: IStage) => ({ type: 'Etapa', ...stage })),
-      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({
-        type: 'Subetapa',
-        ...subStage,
-      })),
-    ]
-    return array
-  }, [assignationsQuery.data])
 
   const formik = useFormik({
     initialValues: {
@@ -117,16 +93,6 @@ export default function UpdateChecklistModalTab(props: TProps) {
     },
     validationSchema: checklistSchema,
   })
-
-  const assignedTo = (c: IChecklist) => {
-    if (c.projectId) {
-      return assignations.find((a) => a.id === c.projectId && a.type === 'Proyecto')
-    }
-    if (c.stageId) {
-      return assignations.find((a) => a.id === c.stageId && a.type === 'Etapa')
-    }
-    return null
-  }
 
   useQuery(GET_CHECKLIST, {
     variables: {

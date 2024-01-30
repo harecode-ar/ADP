@@ -1,7 +1,7 @@
 'use client'
 
-import type { ICheck, IProject, IStage } from '@adp/shared'
-import React, { useMemo } from 'react'
+import type { ICheck, IProject } from '@adp/shared'
+import React from 'react'
 import {
   IconButton,
   Typography,
