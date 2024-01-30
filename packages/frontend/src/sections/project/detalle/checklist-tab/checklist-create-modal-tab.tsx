@@ -26,6 +26,7 @@ import { useMutation } from '@apollo/client'
 import { CREATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 
 const checklistSchema = Yup.object().shape({
   title: Yup.string().required('Título requerido'),
@@ -92,7 +93,7 @@ export default function CreateChecklistModalTab(props: TProps) {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-        window.dispatchEvent(new Event(ECustomEvent.refetchUserChecklist))
+        dispatchCustomEvent(ECustomEvent.refetchUserChecklist)
       } catch {
         enqueueSnackbar('El listado de tareas no pudo ser creado.', {
           variant: 'error',

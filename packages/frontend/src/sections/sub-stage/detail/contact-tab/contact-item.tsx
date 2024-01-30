@@ -9,6 +9,7 @@ import { IMPORT_STAGE_CONTACTS } from 'src/graphql/mutations'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 import ModalDelete from './modal-delete'
 
 type TProps = {
@@ -44,7 +45,7 @@ export default function ContactItem(props: TProps) {
       })
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('Contacto importado', { variant: 'success' })
-      window.dispatchEvent(new Event(ECustomEvent.refetchSubStageContacts))
+      dispatchCustomEvent(ECustomEvent.refetchUserContacts)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }

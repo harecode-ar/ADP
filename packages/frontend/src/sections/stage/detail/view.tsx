@@ -22,7 +22,11 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_STAGE, GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGES_BY_STAGE } from 'src/graphql/queries'
+import {
+  GET_STAGE,
+  GET_STAGES_ASSIGNED_TO_USER,
+  GET_SUB_STAGES_BY_STAGE,
+} from 'src/graphql/queries'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
@@ -328,14 +332,14 @@ export default function ProjectDetailView(props: TProps) {
         <ModalEdit modal={modalEdit} project={stage?.project} stage={stage} refetch={refetch} />
       )}
       {modalStartTask.value && (
-          <ModalStartTask
-            modal={modalStartTask}
-            project={null}
-            stage={stage || null}
-            subStage={null}
-            refetch={refetch}
-          />
-        )}
+        <ModalStartTask
+          modal={modalStartTask}
+          project={null}
+          stage={stage || null}
+          subStage={null}
+          refetch={refetch}
+        />
+      )}
     </Container>
   )
 }

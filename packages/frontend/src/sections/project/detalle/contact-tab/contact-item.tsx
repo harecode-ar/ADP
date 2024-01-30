@@ -9,6 +9,7 @@ import Iconify from 'src/components/iconify'
 import { ECustomEvent } from 'src/types'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 import ModalDelete from './modal-delete'
 
 type TProps = {
@@ -44,7 +45,7 @@ export default function ContactItem(props: TProps) {
       })
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('Contacto importado', { variant: 'success' })
-      window.dispatchEvent(new Event(ECustomEvent.refetchUserContacts))
+      dispatchCustomEvent(ECustomEvent.refetchUserContacts)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }

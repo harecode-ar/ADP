@@ -6,6 +6,7 @@ import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
+import { ECustomEvent } from 'src/types'
 import AssignmentSection from './assignment-section'
 
 enum EOption {
@@ -107,9 +108,9 @@ export default function AssignmentTab() {
 
   useEffect(() => {
     const handleRefetch = () => refetch()
-    window.addEventListener('refetch-assignment-tab', handleRefetch)
+    window.addEventListener(ECustomEvent.refetchAssignmentTab, handleRefetch)
     return () => {
-      window.removeEventListener('refetch-assignment-tab', handleRefetch)
+      window.removeEventListener(ECustomEvent.refetchAssignmentTab, handleRefetch)
     }
   }, [refetch])
 

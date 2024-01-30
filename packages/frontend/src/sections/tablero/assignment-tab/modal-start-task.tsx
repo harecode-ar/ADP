@@ -9,6 +9,8 @@ import { useSnackbar } from 'src/components/snackbar'
 import { START_TASK } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { IProject, IStage } from '@adp/shared'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
+import { ECustomEvent } from 'src/types'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
@@ -34,8 +36,7 @@ export default function ModalStartTask(props: TProps) {
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('La tarea ha comenzado corractamente.', { variant: 'success' })
       modal.onFalse()
-      const event = new CustomEvent('refetch-assignment-tab')
-      window.dispatchEvent(event)
+      dispatchCustomEvent(ECustomEvent.refetchAssignmentTab)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }

@@ -28,6 +28,7 @@ import { CREATE_CHECKLIST } from 'src/graphql/mutations'
 import { GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 
 const checklistSchema = Yup.object().shape({
   title: Yup.string().required('Título requerido'),
@@ -97,7 +98,7 @@ export default function CreateChecklistModal(props: TProps) {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-        window.dispatchEvent(new Event(ECustomEvent.refetchProjectChecklist))
+        dispatchCustomEvent(ECustomEvent.refetchProjectChecklist)
       } catch {
         enqueueSnackbar('El listado de tareas no pudo ser creado.', {
           variant: 'error',

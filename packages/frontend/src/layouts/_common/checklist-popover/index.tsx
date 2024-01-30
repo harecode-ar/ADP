@@ -60,7 +60,8 @@ export default function ChecklistPopover() {
 
   useEffect(() => {
     window.addEventListener(ECustomEvent.refetchUserChecklist, checklistQuery.refetch)
-    return () => window.removeEventListener(ECustomEvent.refetchUserChecklist, checklistQuery.refetch)
+    return () =>
+      window.removeEventListener(ECustomEvent.refetchUserChecklist, checklistQuery.refetch)
   }, [checklistQuery.refetch])
 
   return (

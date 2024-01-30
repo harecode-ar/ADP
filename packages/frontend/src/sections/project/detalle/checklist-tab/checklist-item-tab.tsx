@@ -9,6 +9,7 @@ import { useTheme } from '@mui/material/styles'
 import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
 import { useMutation } from '@apollo/client'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 import ModalDeleteTab from './modal-delete-tab'
 import UpdateChecklistModalTab from './checklist-update-modal-tab'
 
@@ -39,7 +40,7 @@ export function ChecklistItemTab(props: TProps) {
       },
     })
     refetch()
-    window.dispatchEvent(new Event(ECustomEvent.refetchUserChecklist))
+    dispatchCustomEvent(ECustomEvent.refetchUserChecklist)
   }
 
   return (

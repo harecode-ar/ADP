@@ -11,6 +11,7 @@ import {
   TablePaginationCustom,
 } from 'src/components/table'
 import { exportXLSX } from 'src/utils/xlsx'
+import { ECustomEvent } from 'src/types'
 import { EColumnType } from '../types'
 import type { TColumn } from '../types'
 
@@ -90,10 +91,11 @@ const CustomTable = (props: CustomTableProps) => {
   }, [filteredData, filteredColumns])
 
   useEffect(() => {
-    window.addEventListener(`onDownload-${id}`, download)
+    const eventName = ECustomEvent.onTableDownload.replace(':id', id) as ECustomEvent
+    window.addEventListener(eventName, download)
 
     return () => {
-      window.removeEventListener(`onDownload-${id}`, download)
+      window.removeEventListener(eventName, download)
     }
   }, [id, download])
 

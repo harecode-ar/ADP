@@ -8,6 +8,7 @@ import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { paths } from 'src/routes/paths'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 
 const EXCLUDE_PATHS = [
   paths[403],
@@ -21,7 +22,7 @@ export default function PrintButton() {
   if (EXCLUDE_PATHS.some((p) => pathname.includes(p))) return null
 
   const print = () => {
-    window.dispatchEvent(new Event(ECustomEvent.printScreen))
+    dispatchCustomEvent(ECustomEvent.printScreen)
   }
 
   return (
