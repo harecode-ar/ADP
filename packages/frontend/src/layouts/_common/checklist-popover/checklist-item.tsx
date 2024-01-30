@@ -11,6 +11,7 @@ import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
 import { useMutation } from '@apollo/client'
 import { paths } from 'src/routes/paths'
 import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 import ModalDelete from './modal-delete'
 import UpdateChecklistModal from './checklist-update-modal'
 
@@ -48,7 +49,7 @@ export function ChecklistItem(props: TProps) {
       },
     })
     refetch()
-    window.dispatchEvent(new Event(ECustomEvent.refetchProjectChecklist))
+    dispatchCustomEvent(ECustomEvent.refetchUserChecklist)
   }
 
   const task: TTask = useMemo(() => {

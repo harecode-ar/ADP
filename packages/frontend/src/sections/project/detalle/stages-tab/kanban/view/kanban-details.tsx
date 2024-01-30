@@ -268,14 +268,14 @@ export default function KanbanDetails(props: TProps) {
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
       {modalStartTask.value && (
-          <ModalStartTask
-            modal={modalStartTask}
-            project={null}
-            stage={stage || null}
-            subStage={null}
-            refetch={refetch}
-          />
-        )}
+        <ModalStartTask
+          modal={modalStartTask}
+          project={null}
+          stage={stage || null}
+          subStage={null}
+          refetch={refetch}
+        />
+      )}
     </Drawer>
   )
 }

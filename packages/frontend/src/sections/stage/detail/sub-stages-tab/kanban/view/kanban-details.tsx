@@ -78,7 +78,7 @@ export default function KanbanDetails(props: TProps) {
 
   const isStageAssignedToUserQuery = useQuery(GET_STAGES_ASSIGNED_TO_USER, {
     variables: {
-      id: Number(subStageItem.id,),
+      id: Number(subStageItem.id),
     },
     skip: !subStageItem.id,
   })
@@ -100,10 +100,6 @@ export default function KanbanDetails(props: TProps) {
   }, [isStageAssignedToUserQuery.data])
 
   if (!subStage) return null
-
-
-
-  
 
   return (
     <Drawer
@@ -251,14 +247,14 @@ export default function KanbanDetails(props: TProps) {
       )}
       <ModalDelete modal={modalDelete} stageId={subStage.id} refetch={refetch} />
       {modalStartTask.value && (
-          <ModalStartTask
-            modal={modalStartTask}
-            project={null}
-            stage={null}
-            subStage={subStage || null}
-            refetch={refetch}
-          />
-        )}
+        <ModalStartTask
+          modal={modalStartTask}
+          project={null}
+          stage={null}
+          subStage={subStage || null}
+          refetch={refetch}
+        />
+      )}
     </Drawer>
   )
 }

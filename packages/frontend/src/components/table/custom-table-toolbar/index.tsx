@@ -3,6 +3,8 @@ import Iconify from 'src/components/iconify'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { useMenu } from 'src/hooks/use-menu'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { ECustomEvent } from 'src/types'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 import useTable from 'src/components/table/use-table'
 import ColumnMenu from './column-menu'
 import DensityMenu from './density-menu'
@@ -30,6 +32,11 @@ const CustomTableToolbar = (props: CustomTableToolbarProps) => {
   const { density } = useTable()
 
   const isMobile = useResponsive('down', 'sm')
+
+  const handleDownload = () => {
+    const eventName = ECustomEvent.onTableDownload.replace(':id', id) as ECustomEvent
+    dispatchCustomEvent(eventName)
+  }
 
   return (
     <Box
@@ -91,9 +98,7 @@ const CustomTableToolbar = (props: CustomTableToolbarProps) => {
             color="inherit"
             size="medium"
             startIcon={<Iconify icon="ic:baseline-download" />}
-            onClick={() => {
-              window.dispatchEvent(new CustomEvent(`onDownload-${id}`))
-            }}
+            onClick={handleDownload}
           >
             Descargar
           </Button>

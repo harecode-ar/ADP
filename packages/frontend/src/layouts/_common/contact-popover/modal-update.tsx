@@ -17,6 +17,7 @@ import { getStorageFileUrl } from 'src/utils/storage'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { ECustomEvent } from 'src/types'
 import { logger } from 'src/utils/logger'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nombre requerido'),
@@ -83,9 +84,9 @@ export default function ModalUpdate(props: TProps) {
         helpers.resetForm()
         modal.onFalse()
         refetch()
-        window.dispatchEvent(new Event(ECustomEvent.refetchProjectContacts))
-        window.dispatchEvent(new Event(ECustomEvent.refetchStageContacts))
-        window.dispatchEvent(new Event(ECustomEvent.refetchSubStageContacts))
+        dispatchCustomEvent(ECustomEvent.refetchUserContacts)
+        dispatchCustomEvent(ECustomEvent.refetchProjectContacts)
+        dispatchCustomEvent(ECustomEvent.refetchStageContacts)
       } catch (error) {
         logger.error(error)
         enqueueSnackbar('El contacto no pudo ser editado.', { variant: 'error' })

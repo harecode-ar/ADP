@@ -139,11 +139,11 @@ export default function ProjectDetailView(props: TProps) {
                 }}
               >
                 {subStage && subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-                <Button variant="contained" onClick={modalStartTask.onTrue}>
-                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
-                  Comenzar
-                </Button>
-              )}
+                  <Button variant="contained" onClick={modalStartTask.onTrue}>
+                    <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                    Comenzar
+                  </Button>
+                )}
                 {subStage &&
                   subStage.stateId !== TASK_STATE.CANCELLED &&
                   subStage.stateId !== TASK_STATE.COMPLETED && (
@@ -325,14 +325,14 @@ export default function ProjectDetailView(props: TProps) {
         />
       )}
       {modalStartTask.value && (
-          <ModalStartTask
-            modal={modalStartTask}
-            project={null}
-            stage={null}
-            subStage={subStage || null}
-            refetch={refetch}
-          />
-        )}
+        <ModalStartTask
+          modal={modalStartTask}
+          project={null}
+          stage={null}
+          subStage={subStage || null}
+          refetch={refetch}
+        />
+      )}
     </Container>
   )
 }

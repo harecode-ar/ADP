@@ -358,14 +358,14 @@ export default function ProjectDetailView(props: TProps) {
         )}
       </Box>
       {modalStartTask.value && (
-          <ModalStartTask
-            modal={modalStartTask}
-            project={project || null}
-            stage={null}
-            subStage={null}
-            refetch={refetch}
-          />
-        )}
+        <ModalStartTask
+          modal={modalStartTask}
+          project={project || null}
+          stage={null}
+          subStage={null}
+          refetch={refetch}
+        />
+      )}
     </Container>
   )
 }
