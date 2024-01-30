@@ -36,52 +36,52 @@ export default function ChechlistTab(props: TProps) {
           gap: 2,
         }}
       >
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'end',
-      }}
-    >
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={modalCreate.onTrue}
-        sx={{ width: 'fit-content' }}
-      >
-        <Iconify icon="mingcute:add-fill" mr={1} />
-        Crear checklist
-      </Button>
-    </Box>
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
-      {checklists.length === 0 ? (
         <Box
           sx={{
-            textAlign: 'center',
-            color: 'text.disabled',
+            display: 'flex',
+            justifyContent: 'end',
           }}
         >
-          No hay checklist
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={modalCreate.onTrue}
+            sx={{ width: 'fit-content' }}
+          >
+            <Iconify icon="mingcute:add-fill" mr={1} />
+            Crear checklist
+          </Button>
         </Box>
-      ) : (
-        <Grid container spacing={2}>
-          {checklists.map((checklist) => 
-            <Grid item xs={6}>
-              <ChecklistItemTab key={checklist.id} checklist={checklist} refetch={refetch} />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
+          {checklists.length === 0 ? (
+            <Box
+              sx={{
+                textAlign: 'center',
+                color: 'text.disabled',
+              }}
+            >
+              No hay checklist
+            </Box>
+          ) : (
+            <Grid container spacing={2}>
+              {checklists.map((checklist) => (
+                <Grid item xs={6}>
+                  <ChecklistItemTab key={checklist.id} checklist={checklist} refetch={refetch} />
+                </Grid>
+              ))}
             </Grid>
           )}
-        </Grid>
+        </Box>
+      </Box>
+      {modalCreate.value && (
+        <ModalCreateTab modal={modalCreate} project={project} refetch={refetch} />
       )}
-    </Box>
-    </Box>
-    {modalCreate.value && (
-          <ModalCreateTab modal={modalCreate} project={project} refetch={refetch} />
-        )}
     </Card>
   )
 }

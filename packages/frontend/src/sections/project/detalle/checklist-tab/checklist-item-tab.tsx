@@ -42,7 +42,7 @@ export function ChecklistItemTab(props: TProps) {
 
   return (
     <React.Fragment>
-      <MenuItem onClick={modalUpdate.onTrue} sx={{bgcolor: 'background.neutral'}}>
+      <MenuItem onClick={modalUpdate.onTrue} sx={{ bgcolor: 'background.neutral' }}>
         <Box
           sx={{
             display: 'flex',
