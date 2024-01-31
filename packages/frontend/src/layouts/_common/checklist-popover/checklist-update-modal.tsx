@@ -120,6 +120,7 @@ export default function CreateChecklistModal(props: TProps) {
         refetch()
         dispatchCustomEvent(ECustomEvent.refetchProjectChecklist)
         dispatchCustomEvent(ECustomEvent.refetchStageChecklist)
+        dispatchCustomEvent(ECustomEvent.refetchSubStageChecklist)
       } catch {
         enqueueSnackbar('El listado de tareas no pudo ser editado.', {
           variant: 'error',
