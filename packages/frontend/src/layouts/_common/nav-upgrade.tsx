@@ -3,15 +3,12 @@ import { IStorage } from '@adp/shared'
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
 // hooks
 import { useAuthContext } from 'src/auth/hooks'
 import { useQuery } from '@apollo/client'
 import { GET_STORAGE } from 'src/graphql/queries'
-// routes
-import { paths } from 'src/routes/paths'
 // components
 import Label from 'src/components/label'
 import { getStorageFileUrl } from 'src/utils/storage'
@@ -19,6 +16,13 @@ import { LinearProgress } from '@mui/material'
 import { fShortenFileSize } from 'src/utils/format-number'
 
 // ----------------------------------------------------------------------
+
+const calculateColorPorcentage = (used: number, total: number) => {
+  const porcentage = (used / total) * 100
+  if (porcentage < 65) return 'success'
+  if (porcentage < 85) return 'warning'
+  return 'error'
+}
 
 export default function NavUpgrade() {
   const { user } = useAuthContext()
@@ -84,6 +88,7 @@ export default function NavUpgrade() {
           <LinearProgress
             variant="determinate"
             value={(Number(usedSpace) / Number(totalSpace)) * 100}
+            color={calculateColorPorcentage(Number(usedSpace), Number(totalSpace))}
             sx={{
               marginBottom: 1,
             }}
@@ -97,9 +102,6 @@ export default function NavUpgrade() {
             Quedan {freeSpace} de {totalSpace} restantes
           </Typography>
         </Box>
-        <Button variant="contained" href={paths.minimalUI} target="_blank" rel="noopener">
-          Upgrade to Pro
-        </Button>
       </Stack>
     </Stack>
   )
