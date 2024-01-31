@@ -67,6 +67,7 @@ export default {
         throw error
       }
     },
+
     areasForDashboard: async (_: any, __: any, context: IContext): Promise<IArea[]> => {
       try {
         const { user } = context
@@ -102,6 +103,25 @@ export default {
             id: ids,
           },
           order: [['parentId', 'ASC']],
+        })
+        return areas
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    areasForReport: async (): Promise<IArea[]> => {
+      try {
+        const areas = await Area.findAll({
+          order: [['parentId', 'ASC']],
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: AreaAverageCompletition,
+              as: 'averageCompletition',
+              attributes: ['projectAcp', 'projectPacp', 'stageAcp', 'stagePacp'],
+            },
+          ],
         })
         return areas
       } catch (error) {

@@ -41,6 +41,7 @@ import SubStagesTab from './sub-stages-tab'
 import GanttTab from './gantt-tab'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
+import ChecklistTab from './checklist-tab'
 import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
@@ -50,6 +51,7 @@ enum ETab {
   SUB_STAGES = 'Sub etapas',
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
+  CHECKLIST = 'Checklist',
 }
 
 type TProps = {
@@ -305,6 +307,10 @@ export default function ProjectDetailView(props: TProps) {
                 <Tab label={ETab.SUB_STAGES} value={ETab.SUB_STAGES} />
                 <Tab label={ETab.GANTT} value={ETab.GANTT} />
                 <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                {isStageAssignedToUserQuery.data &&
+                  isStageAssignedToUserQuery.data.stageAssignedToUser && (
+                    <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                  )}
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -316,6 +322,8 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.GANTT && <GanttTab stage={stage} subStages={subStages} />}
 
             {tab === ETab.CONTACTS && <ContactTab stage={stage} />}
+
+            {tab === ETab.CHECKLIST && <ChecklistTab stage={stage} />}
 
             {modalFinishStage.value && (
               <ModalFinishStage

@@ -24,6 +24,7 @@ export default `#graphql
     area(id: Int!): Area
     areas: [Area]
     areasForDashboard: [Area]
+    areasForReport: [Area]
     userAreasForSelect: [Area]
     areaTree(areaId: Int!): [Area]
     directAreaDescendants(areaId: Int!): [Area]

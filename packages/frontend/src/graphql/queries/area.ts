@@ -8,7 +8,12 @@ export const AREAS_FOR_LIST = gql`
       rolename
       description
       multiple
-
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
       responsible {
         id
         email
@@ -18,9 +23,24 @@ export const AREAS_FOR_LIST = gql`
     }
   }
 `
+export const AREAS_FOR_REPORT = gql`
+  query areasForReport {
+    areasForReport {
+      id
+      name
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
+    }
+  }
+`
+
 export const AREAS_FOR_SELECT = gql`
-  query areasForSelect {
-    areas {
+  query areasForSelect($areaId: Int!) {
+    areas(areaId: $areaId) {
       id
       name
     }
