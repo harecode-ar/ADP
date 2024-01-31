@@ -85,9 +85,7 @@ export default function ChechlistTab(props: TProps) {
           )}
         </Box>
       </Box>
-      {modalCreate.value && (
-        <ModalCreateTab modal={modalCreate} stage={stage} refetch={refetch} />
-      )}
+      {modalCreate.value && <ModalCreateTab modal={modalCreate} stage={stage} refetch={refetch} />}
     </Card>
   )
 }
