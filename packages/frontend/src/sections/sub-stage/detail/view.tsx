@@ -36,6 +36,7 @@ import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
+import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 
 const getColorVariant = (name: string) => {
@@ -57,6 +58,7 @@ const getColorVariant = (name: string) => {
 enum ETab {
   NOTES = 'Notas',
   CONTACTS = 'Contactos',
+  CHECKLIST = 'Checklist',
 }
 
 type TProps = {
@@ -298,10 +300,15 @@ export default function ProjectDetailView(props: TProps) {
                   <Tabs value={tab} onChange={(e, v) => setTab(v)}>
                     <Tab label={ETab.NOTES} value={ETab.NOTES} />
                     <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                    {isStageAssignedToUserQuery.data &&
+                      isStageAssignedToUserQuery.data.stageAssignedToUser && (
+                        <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                  )}
                   </Tabs>
                 </Card>
                 {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
                 {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
+                {tab === ETab.CHECKLIST && <ChecklistTab subStage={subStage} />}
 
                 {modalFinishSubStage.value && (
                   <ModalFinishSubStage

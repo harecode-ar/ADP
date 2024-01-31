@@ -1,35 +1,26 @@
 'use client'
 
 import { IChecklist } from '@adp/shared'
-import React, { useMemo } from 'react'
-import NextLink from 'next/link'
-import { Typography, Box, IconButton, Stack, MenuItem, Tooltip, Link } from '@mui/material'
+import React from 'react'
+import { Typography, Box, IconButton, Stack, MenuItem, Tooltip } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import Iconify from 'src/components/iconify'
 import { useTheme } from '@mui/material/styles'
 import { UPDATE_REMEMBER_CHECKLIST } from 'src/graphql/mutations'
 import { useMutation } from '@apollo/client'
-import { paths } from 'src/routes/paths'
 import { ECustomEvent } from 'src/types'
 import { dispatchCustomEvent } from 'src/utils/custom-event'
-import ModalDelete from './modal-delete'
-import UpdateChecklistModal from './checklist-update-modal'
+import ModalDeleteTab from './modal-delete-tab'
+import UpdateChecklistModalTab from './checklist-update-modal-tab'
 
 type TProps = {
   checklist: IChecklist
   refetch: () => void
 }
 
-type TTask = {
-  name: string
-  shortName: string
-  link: string | null
-}
-
 const MAX_CHARACTERS_TITLE = 30
-const MAX_CHARACTERS_ASSIGNED_TO = 42
 
-export function ChecklistItem(props: TProps) {
+export function ChecklistItemTab(props: TProps) {
   const { checklist, refetch } = props
   const { checks = [] } = checklist
   const theme = useTheme()
@@ -49,44 +40,12 @@ export function ChecklistItem(props: TProps) {
       },
     })
     refetch()
-    dispatchCustomEvent(ECustomEvent.refetchProjectChecklist)
-    dispatchCustomEvent(ECustomEvent.refetchSubStageChecklist)
+    dispatchCustomEvent(ECustomEvent.refetchUserChecklist)
   }
-
-  const task: TTask = useMemo(() => {
-    const { project, stage } = checklist || {}
-    if (project) {
-      return {
-        name: project.name,
-        shortName:
-          project.name.length > MAX_CHARACTERS_ASSIGNED_TO
-            ? `${project.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-            : project.name,
-        link: paths.dashboard.project.detail.replace(':id', String(project.id)),
-      }
-    }
-
-    if (stage) {
-      return {
-        name: stage.name,
-        shortName:
-          stage.name.length > MAX_CHARACTERS_ASSIGNED_TO
-            ? `${stage.name.substring(0, MAX_CHARACTERS_ASSIGNED_TO)}...`
-            : stage.name,
-        link: paths.dashboard.stage.detail.replace(':id', String(stage.id)),
-      }
-    }
-
-    return {
-      name: 'Sin asignar',
-      shortName: 'Sin asignar',
-      link: null,
-    }
-  }, [checklist])
 
   return (
     <React.Fragment>
-      <MenuItem onClick={modalUpdate.onTrue}>
+      <MenuItem onClick={modalUpdate.onTrue} sx={{ bgcolor: 'background.neutral' }}>
         <Box
           sx={{
             display: 'flex',
@@ -116,30 +75,6 @@ export function ChecklistItem(props: TProps) {
                 </Typography>
               </Tooltip>
             </Box>
-
-            <Stack>
-              <Tooltip title={task.name}>
-                <Link
-                  component={NextLink}
-                  href={task.link || ''}
-                  onClick={(event) => {
-                    event.stopPropagation()
-                  }}
-                  sx={{
-                    color: theme.palette.text.disabled,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: theme.palette.text.disabled,
-                      fontSize: '14px',
-                    }}
-                  >
-                    {task.shortName}
-                  </Typography>
-                </Link>
-              </Tooltip>
-            </Stack>
 
             <Stack
               direction="row"
@@ -217,10 +152,10 @@ export function ChecklistItem(props: TProps) {
         </Box>
       </MenuItem>
       {modalDelete.value && (
-        <ModalDelete modal={modalDelete} checklistId={Number(checklist.id)} refetch={refetch} />
+        <ModalDeleteTab modal={modalDelete} checklistId={Number(checklist.id)} refetch={refetch} />
       )}
       {modalUpdate.value && (
-        <UpdateChecklistModal modal={modalUpdate} refetch={refetch} checklist={checklist} />
+        <UpdateChecklistModalTab modal={modalUpdate} refetch={refetch} checklist={checklist} />
       )}
     </React.Fragment>
   )
