@@ -44,16 +44,9 @@ type TProps = {
   refetch: () => void
 }
 
-type TAssignation = {
-  id: number
-  name: string
-  type: 'Proyecto' | 'Etapa' | 'Subetapa'
-}
-
 type TFormikValues = {
   title: string
   remember: boolean
-  assignedTo: TAssignation | null
   checks: TCheck[]
 }
 
@@ -70,7 +63,6 @@ export default function CreateChecklistModalTab(props: TProps) {
     initialValues: {
       title: '',
       remember: false,
-      assignedTo: null as TAssignation | null,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
