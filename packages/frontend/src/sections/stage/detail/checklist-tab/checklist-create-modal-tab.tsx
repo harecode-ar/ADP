@@ -1,7 +1,7 @@
 'use client'
 
-import type { ICheck, IChecklist, IProject, IStage } from '@adp/shared'
-import React, { useMemo } from 'react'
+import type { ICheck, IStage } from '@adp/shared'
+import React from 'react'
 import {
   IconButton,
   Typography,
@@ -14,7 +14,6 @@ import {
   Checkbox,
   Stack,
   Tooltip,
-  Autocomplete,
 } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import Scrollbar from 'src/components/scrollbar'
@@ -23,39 +22,31 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
 import { uuidv4 } from 'src/utils/uuidv4'
 import * as Yup from 'yup'
-import { useQuery, useMutation } from '@apollo/client'
-import { GET_CHECKLIST, GET_USER_ASSIGNMENTS_FOR_LIST } from 'src/graphql/queries'
-import { UPDATE_CHECKLIST } from 'src/graphql/mutations'
+import { useMutation } from '@apollo/client'
+import { CREATE_CHECKLIST } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { ECustomEvent } from 'src/types'
 import { dispatchCustomEvent } from 'src/utils/custom-event'
 
 const checklistSchema = Yup.object().shape({
-  title: Yup.string().required('titulo requerido'),
+  title: Yup.string().required('Título requerido'),
   checks: Yup.array().of(
     Yup.object().shape({
-      title: Yup.string().required('titulo requerido'),
-      checked: Yup.boolean().required('checked requerido'),
+      title: Yup.string().required('Título requerido'),
+      checked: Yup.boolean().required('Checked requerido'),
     })
   ),
 })
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
+  stage: IStage
   refetch: () => void
-  checklist: IChecklist
-}
-
-type TAssignation = {
-  id: number
-  name: string
-  type: 'Proyecto' | 'Etapa' | 'Subetapa'
 }
 
 type TFormikValues = {
   title: string
   remember: boolean
-  assignedTo: TAssignation | null
   checks: TCheck[]
 }
 
@@ -63,65 +54,40 @@ type TCheck = Pick<ICheck, 'title' | 'checked'> & {
   id: string
 }
 
-export default function CreateChecklistModal(props: TProps) {
-  const { modal, refetch, checklist } = props
+export default function CreateChecklistModalTab(props: TProps) {
+  const { modal, stage, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
-  const [createChecklist, { loading }] = useMutation(UPDATE_CHECKLIST)
-
-  const assignationsQuery = useQuery(GET_USER_ASSIGNMENTS_FOR_LIST)
-  const assignations = useMemo(() => {
-    if (!assignationsQuery.data) return []
-
-    const array = [
-      ...assignationsQuery.data.userProjects.map((project: IProject) => ({
-        type: 'Proyecto',
-        ...project,
-      })),
-      ...assignationsQuery.data.userStages.map((stage: IStage) => ({ type: 'Etapa', ...stage })),
-      ...assignationsQuery.data.userSubStages.map((subStage: IStage) => ({
-        type: 'Subetapa',
-        ...subStage,
-      })),
-    ]
-    return array
-  }, [assignationsQuery.data])
+  const [createChecklist, { loading }] = useMutation(CREATE_CHECKLIST)
 
   const formik = useFormik({
     initialValues: {
       title: '',
       remember: false,
-      assignedTo: null as TAssignation | null,
       checks: [],
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         await createChecklist({
           variables: {
-            id: checklist.id,
             title: values.title,
             remember: values.remember,
-            projectId: values.assignedTo?.type === 'Proyecto' ? values.assignedTo?.id : null,
-            stageId:
-              values.assignedTo?.type === 'Etapa' || values.assignedTo?.type === 'Subetapa'
-                ? values.assignedTo?.id
-                : null,
+            stageId: Number(stage.id),
             checks: values.checks.map((check) => ({
               title: check.title,
               checked: check.checked,
             })),
           },
         })
-        enqueueSnackbar('Listado de tareas editado correctamente.', {
+        enqueueSnackbar('Listado de tareas creada correctamente.', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'center' },
         })
         helpers.resetForm()
         modal.onFalse()
         refetch()
-        dispatchCustomEvent(ECustomEvent.refetchProjectChecklist)
-        dispatchCustomEvent(ECustomEvent.refetchStageChecklist)
+        dispatchCustomEvent(ECustomEvent.refetchUserChecklist)
       } catch {
-        enqueueSnackbar('El listado de tareas no pudo ser editado.', {
+        enqueueSnackbar('El listado de tareas no pudo ser creado.', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'center' },
         })
@@ -129,35 +95,6 @@ export default function CreateChecklistModal(props: TProps) {
     },
     validationSchema: checklistSchema,
   })
-
-  const assignedTo = (c: IChecklist) => {
-    if (c.projectId) {
-      return assignations.find((a) => a.id === c.projectId && a.type === 'Proyecto')
-    }
-    if (c.stageId) {
-      return assignations.find((a) => a.id === c.stageId && a.type === 'Etapa')
-    }
-    return null
-  }
-
-  useQuery(GET_CHECKLIST, {
-    variables: {
-      id: checklist.id,
-    },
-    onCompleted: (d) => {
-      if (!d.checklist) {
-        enqueueSnackbar('Checklist no encontrado', { variant: 'error' })
-        modal.onFalse()
-      }
-      formik.setValues({
-        title: d.checklist.title,
-        remember: d.checklist.remember,
-        assignedTo: assignedTo(d.checklist),
-        checks: d.checklist.checks || [],
-      })
-    },
-  })
-
   const handleAddCheck = () => {
     const newCheck: TCheck = {
       id: uuidv4(),
@@ -219,29 +156,6 @@ export default function CreateChecklistModal(props: TProps) {
           </Grid>
 
           <Grid item xs={12}>
-            <Autocomplete
-              style={{ marginTop: '1rem', marginBottom: '1rem' }}
-              fullWidth
-              noOptionsText="No tenes asignaciones"
-              options={assignations}
-              getOptionLabel={(option) => `${option.type}: ${option.name}`}
-              value={formik.values.assignedTo}
-              onChange={(event, value) => {
-                formik.setFieldValue('assignedTo', value)
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Asignado a:"
-                  variant="standard"
-                  error={Boolean(formik.errors.assignedTo)}
-                  helperText={formik.errors.assignedTo}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography variant="h6" gutterBottom style={{ fontSize: '1rem' }}>
                 Tareas
@@ -276,10 +190,16 @@ export default function CreateChecklistModal(props: TProps) {
               </Stack>
             </Scrollbar>
           </Grid>
-
           <Grid item xs={12}>
             {!!formik.errors.checks && (
-              <Typography color="error" variant="caption">
+              <Typography
+                color="error"
+                variant="caption"
+                sx={{
+                  display: 'block',
+                  mt: 2,
+                }}
+              >
                 No puede haber tareas vacias
               </Typography>
             )}
@@ -315,7 +235,7 @@ export default function CreateChecklistModal(props: TProps) {
                   disabled={loading}
                 >
                   <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
-                  {loading ? 'Guardando...' : 'Guardar'}
+                  {loading ? 'Creando...' : 'Crear'}
                 </Button>
               </Box>
             </Box>
