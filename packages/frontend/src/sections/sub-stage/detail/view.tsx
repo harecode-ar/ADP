@@ -303,7 +303,7 @@ export default function ProjectDetailView(props: TProps) {
                     {isStageAssignedToUserQuery.data &&
                       isStageAssignedToUserQuery.data.stageAssignedToUser && (
                         <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
-                  )}
+                      )}
                   </Tabs>
                 </Card>
                 {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
