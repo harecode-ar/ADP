@@ -25,7 +25,7 @@ export const AREAS_FOR_LIST = gql`
 `
 export const AREAS_FOR_REPORT = gql`
   query areasForReport {
-    areas {
+    areasForReport {
       id
       name
       averageCompletition {
@@ -37,9 +37,10 @@ export const AREAS_FOR_REPORT = gql`
     }
   }
 `
+
 export const AREAS_FOR_SELECT = gql`
   query areasForSelect($areaId: Int!) {
-    areas (areaId: $areaId){
+    areas(areaId: $areaId) {
       id
       name
     }
