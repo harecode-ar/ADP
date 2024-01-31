@@ -10,7 +10,7 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { PROJECTS_FOR_LIST } from 'src/graphql/queries'
-import { Box, IconButton, Link } from '@mui/material'
+import { Box, IconButton, Link, Typography } from '@mui/material'
 import Label from 'src/components/label'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
@@ -118,28 +118,40 @@ const Table = () => {
             refetch={refetch}
           />
           <CustomTableSearch />
-          <CustomTable
-            id="project-list-table"
-            columns={columns}
-            data={data.projects}
-            action={
-              <React.Fragment>
-                {selected.length === 1 && (
-                  <Link
-                    component={NextLink}
-                    href={paths.dashboard.project.detail.replace(':id', selected[0])}
-                  >
-                    <IconButton>
-                      <Iconify icon="mdi:eye" />
-                    </IconButton>
-                  </Link>
-                )}
-                <IconButton onClick={modalEdit.onTrue}>
-                  <Iconify icon="material-symbols:edit" />
-                </IconButton>
-              </React.Fragment>
-            }
-          />
+          {data ? (
+            <CustomTable
+              id="project-list-table"
+              columns={columns}
+              data={data.projects}
+              action={
+                <React.Fragment>
+                  {selected.length === 1 && (
+                    <Link
+                      component={NextLink}
+                      href={paths.dashboard.project.detail.replace(':id', selected[0])}
+                    >
+                      <IconButton>
+                        <Iconify icon="mdi:eye" />
+                      </IconButton>
+                    </Link>
+                  )}
+                  <IconButton onClick={modalEdit.onTrue}>
+                    <Iconify icon="material-symbols:edit" />
+                  </IconButton>
+                </React.Fragment>
+              }
+            />
+          ) : (
+            <Typography
+              sx={{
+                textAlign: 'center',
+                mt: 2,
+                mb: 2,
+              }}
+            >
+              No hay proyectos para mostrar.
+            </Typography>
+          )}
           {modalEdit.value && <ModalEdit modal={modalEdit} refetch={refetch} />}
         </React.Fragment>
       )}
