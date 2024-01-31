@@ -54,6 +54,8 @@ export const GET_CHECKLIST_BY_STAGE = gql`
       title
       createdAt
       updatedAt
+      finished
+      remember
       checks {
         id
         title
