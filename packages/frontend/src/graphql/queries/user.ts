@@ -13,6 +13,21 @@ export const USERS_FOR_LIST = gql`
     }
   }
 `
+export const USERS_FOR_REPORT = gql`
+  query usersForReport {
+    usersForReport {
+      id
+      firstname
+      lastname
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
+    }
+  }
+`
 export const USERS_FOR_SELECT = gql`
   query usersForSelect {
     users {
