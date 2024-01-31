@@ -39,8 +39,8 @@ export const AREAS_FOR_REPORT = gql`
 `
 
 export const AREAS_FOR_SELECT = gql`
-  query areasForSelect($areaId: Int!) {
-    areas(areaId: $areaId) {
+  query areasForSelect {
+    areas {
       id
       name
     }
