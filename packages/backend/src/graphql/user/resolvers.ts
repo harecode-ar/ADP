@@ -68,6 +68,24 @@ export default {
         throw error
       }
     },
+    usersForReport: async (): Promise<IUser[]> => {
+      try {
+        const users = await User.findAll({
+          attributes: ['id', 'firstname', 'lastname'],
+          include: [
+            {
+              model: UserAverageCompletition,
+              as: 'averageCompletition',
+              attributes: ['projectAcp', 'projectPacp', 'stageAcp', 'stagePacp'],
+            },
+          ],
+        })
+        return users
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
     countUserAssignations: async (_: any, __: any, context: IContext) => {
       try {
         const { user } = context

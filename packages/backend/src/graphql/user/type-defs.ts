@@ -19,6 +19,7 @@ export default `#graphql
   type Query {
     user(id: Int!): User
     users: [User]
+    usersForReport: [User]
     countUserAssignations: Int
   }
 
