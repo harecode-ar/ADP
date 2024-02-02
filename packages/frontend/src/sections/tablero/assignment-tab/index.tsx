@@ -22,7 +22,7 @@ export default function AssignmentTab() {
   const [search, setSearch] = useState('')
   const defaultState = TASK_STATE_ARRAY.find((state) => state.name === TASK_STATE_NAME.IN_PROGRESS)
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<ITaskState | null>(defaultState ?? null)
+  const [selectedState, setSelectedState] = useState<ITaskState[]>([defaultState ?? {} as ITaskState]);
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
     if (newValue.length === 0 || EOption.ALL === newValue[newValue.length - 1]) {
@@ -31,21 +31,29 @@ export default function AssignmentTab() {
       setSelectedOptions(newValue.filter((option) => option !== EOption.ALL))
     }
   }
-  const handleStateChange = (event: React.ChangeEvent<{}>, newValue: ITaskState | null) => {
-    setSelectedState(newValue)
-  }
+  const handleStateChange = (_: React.ChangeEvent<{}>, newValues: ITaskState[] | null) => {
+    if (!newValues || newValues.length === 0 || newValues[newValues.length - 1].id === 0) {
+      setSelectedState([]);
+      return;
+    }
+    setSelectedState(newValues.filter((state) => state.id !== 0));
+
+  };
 
   const handleSearch = (event: any) => {
     const { value } = event.target
     setSearch(value)
   }
 
+  const selectedStateIds = selectedState.map(state => state.id);
+  // el error pareciera estar aca , stateId en este caso es un array pero la consulta get user assignments, me parece q no acepta que sea un array los ids...
   const { data, refetch } = useQuery(GET_USER_ASSIGNMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      stateId: selectedState?.id,
+      stateId: selectedStateIds.length === 1 ? selectedStateIds[0] : null,
     },
-  })
+  });
+
 
   const { projects, stages, subStages } = useMemo(() => {
     const assignment: {
@@ -130,6 +138,7 @@ export default function AssignmentTab() {
               onChange={handleChangeOptions}
             />
             <Autocomplete
+              multiple
               sx={{ minWidth: 170 }}
               options={TASK_STATE_ARRAY as ITaskState[]}
               getOptionLabel={(option) => option.name}
