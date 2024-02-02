@@ -110,6 +110,11 @@ export function useNavData(): TNavData[] {
               path: paths.dashboard.configuration.root,
               icon: ICONS.user,
             },
+            {
+              title: 'Cron',
+              path: paths.dashboard.cron.root,
+              icon: ICONS.user,
+            },
           ],
           roles: [ROLE_MAP.ADMIN],
         },
