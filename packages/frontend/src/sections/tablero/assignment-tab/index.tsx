@@ -1,6 +1,6 @@
 'use client'
 
-import { IProject, ITaskState, IStage, TASK_STATE_ARRAY, TASK_STATE_NAME } from '@adp/shared'
+import { IProject, ITaskState, IStage, TASK_STATE_ARRAY, TASK_STATE } from '@adp/shared'
 import React, { useState, useMemo, useEffect } from 'react'
 import { Box, Stack, TextField, InputAdornment, Card, Autocomplete } from '@mui/material'
 import { GET_USER_ASSIGNMENTS } from 'src/graphql/queries'
@@ -18,11 +18,20 @@ enum EOption {
 
 const OPTIONS = [EOption.ALL, EOption.PROJECT, EOption.STAGE, EOption.SUB_STAGE]
 
+const DEFAULT_STATE = [
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.ON_HOLD),
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.IN_PROGRESS),
+] as ITaskState[]
+
+const ALL_STATE = {
+  id: 0,
+  name: 'Todos',
+} as ITaskState
+
 export default function AssignmentTab() {
   const [search, setSearch] = useState('')
-  const defaultState = TASK_STATE_ARRAY.find((state) => state.name === TASK_STATE_NAME.IN_PROGRESS)
   const [selectedOptions, setSelectedOptions] = useState<EOption[]>([EOption.ALL])
-  const [selectedState, setSelectedState] = useState<ITaskState[]>([defaultState ?? {} as ITaskState]);
+  const [selectedState, setSelectedState] = useState<ITaskState[]>(DEFAULT_STATE)
 
   const handleChangeOptions = (event: React.ChangeEvent<{}>, newValue: EOption[]) => {
     if (newValue.length === 0 || EOption.ALL === newValue[newValue.length - 1]) {
@@ -31,29 +40,31 @@ export default function AssignmentTab() {
       setSelectedOptions(newValue.filter((option) => option !== EOption.ALL))
     }
   }
+
   const handleStateChange = (_: React.ChangeEvent<{}>, newValues: ITaskState[] | null) => {
     if (!newValues || newValues.length === 0 || newValues[newValues.length - 1].id === 0) {
-      setSelectedState([]);
-      return;
+      setSelectedState([ALL_STATE])
+      return
     }
-    setSelectedState(newValues.filter((state) => state.id !== 0));
-
-  };
+    setSelectedState(newValues.filter((state) => state.id !== 0))
+  }
 
   const handleSearch = (event: any) => {
     const { value } = event.target
     setSearch(value)
   }
 
-  const selectedStateIds = selectedState.map(state => state.id);
-  // el error pareciera estar aca , stateId en este caso es un array pero la consulta get user assignments, me parece q no acepta que sea un array los ids...
+  const selectedStateIds = useMemo(() => {
+    if (selectedState[0].id === 0) return TASK_STATE_ARRAY.map((state) => state.id)
+    return selectedState.map((state) => state.id)
+  }, [selectedState])
+
   const { data, refetch } = useQuery(GET_USER_ASSIGNMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
-      stateId: selectedStateIds.length === 1 ? selectedStateIds[0] : null,
+      stateId: selectedStateIds,
     },
-  });
-
+  })
 
   const { projects, stages, subStages } = useMemo(() => {
     const assignment: {
@@ -140,7 +151,7 @@ export default function AssignmentTab() {
             <Autocomplete
               multiple
               sx={{ minWidth: 170 }}
-              options={TASK_STATE_ARRAY as ITaskState[]}
+              options={[ALL_STATE, ...TASK_STATE_ARRAY] as ITaskState[]}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"

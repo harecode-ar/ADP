@@ -232,7 +232,7 @@ export default {
     userStages: async (
       _: any,
       args: {
-        stateId?: number
+        stateId: number[]
       },
       context: IContext
     ) => {
@@ -243,7 +243,9 @@ export default {
         const where = { parentStageId: null }
         if (args.stateId) {
           // @ts-ignore
-          where.stateId = args.stateId
+          where.stateId = {
+            [Op.in]: args.stateId,
+          }
         }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
@@ -288,7 +290,7 @@ export default {
     userSubStages: async (
       _: any,
       args: {
-        stateId?: number
+        stateId: number[]
       },
       context: IContext
     ) => {
@@ -299,7 +301,9 @@ export default {
         const where = { parentStageId: { [Op.ne]: null } }
         if (args.stateId) {
           // @ts-ignore
-          where.stateId = args.stateId
+          where.stateId = {
+            [Op.in]: args.stateId,
+          }
         }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],
