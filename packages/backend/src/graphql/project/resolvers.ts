@@ -192,7 +192,10 @@ export default {
                 {
                   model: Project,
                   as: 'projects',
-                  order: [['startDate', 'ASC']],
+                  order: [
+                    ['stateId', 'DESC'],
+                    ['startDate', 'ASC'],
+                  ],
                   where,
                   attributes: [
                     'id',

@@ -78,19 +78,13 @@ export default function AssignmentTab() {
     }
     if (!data) return assignment
     if (data.userProjects) {
-      assignment.projects = [...(data.userProjects || [])].sort((a, b) =>
-        a.startDate > b.startDate ? 1 : -1
-      )
+      assignment.projects = data.userProjects
     }
     if (data.userStages) {
-      assignment.stages = [...(data.userStages || [])].sort((a, b) =>
-        a.startDate > b.startDate ? 1 : -1
-      )
+      assignment.stages = data.userStages
     }
     if (data.userSubStages) {
-      assignment.subStages = [...(data.userSubStages || [])].sort((a, b) =>
-        a.startDate > b.startDate ? 1 : -1
-      )
+      assignment.subStages = data.userSubStages
     }
     return assignment
   }, [data])

@@ -258,7 +258,10 @@ export default {
                 {
                   model: Stage,
                   as: 'stages',
-                  order: [['startDate', 'ASC']],
+                  order: [
+                    ['stateId', 'DESC'],
+                    ['startDate', 'ASC'],
+                  ],
                   where,
                   attributes: [
                     'id',
@@ -316,7 +319,10 @@ export default {
                 {
                   model: Stage,
                   as: 'stages',
-                  order: [['startDate', 'ASC']],
+                  order: [
+                    ['stateId', 'DESC'],
+                    ['startDate', 'ASC'],
+                  ],
                   where,
                   attributes: [
                     'id',
