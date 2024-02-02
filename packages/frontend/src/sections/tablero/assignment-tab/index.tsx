@@ -78,13 +78,13 @@ export default function AssignmentTab() {
     }
     if (!data) return assignment
     if (data.userProjects) {
-      assignment.projects = data.userProjects
+      assignment.projects = [...data.userProjects].sort((a, b) => a.stateId - b.stateId)
     }
     if (data.userStages) {
-      assignment.stages = data.userStages
+      assignment.stages = [...data.userStages].sort((a, b) => a.stateId - b.stateId)
     }
     if (data.userSubStages) {
-      assignment.subStages = data.userSubStages
+      assignment.subStages = [...data.userSubStages].sort((a, b) => a.stateId - b.stateId)
     }
     return assignment
   }, [data])
