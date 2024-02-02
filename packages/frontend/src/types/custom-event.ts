@@ -12,6 +12,6 @@ export enum ECustomEvent {
   refetchSubStageChecklist = 'refetchSubStageChecklist',
 
   refetchAssignmentTab = 'refetchAssignmentTab',
-  
+
   onTableDownload = 'onTableDownload-:id',
 }

@@ -48,6 +48,9 @@ export const paths = {
     configuration: {
       root: `${ROOTS.DASHBOARD}/configuracion`,
     },
+    cron: {
+      root: `${ROOTS.DASHBOARD}/cron`,
+    },
   },
 }
 
