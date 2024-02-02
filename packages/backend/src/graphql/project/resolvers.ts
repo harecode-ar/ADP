@@ -166,7 +166,7 @@ export default {
     userProjects: async (
       _: any,
       args: {
-        stateId?: number
+        stateId: number[]
       },
       context: IContext
     ) => {
@@ -177,7 +177,9 @@ export default {
         const where = {}
         if (args.stateId) {
           // @ts-ignore
-          where.stateId = args.stateId
+          where.stateId = {
+            [Op.in]: args.stateId,
+          }
         }
         const foundUser = await User.findByPk(user.id, {
           attributes: ['id'],

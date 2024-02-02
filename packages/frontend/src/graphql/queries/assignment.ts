@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GET_USER_ASSIGNMENTS = gql`
-  query userAssignments($stateId: Int) {
+  query userAssignments($stateId: [Int]) {
     userProjects(stateId: $stateId) {
       id
       name
@@ -39,7 +39,7 @@ export const GET_USER_ASSIGNMENTS = gql`
   }
 `
 export const GET_USER_ASSIGNMENTS_FOR_LIST = gql`
-  query userAssignments($stateId: Int) {
+  query userAssignments($stateId: [Int]) {
     userProjects(stateId: $stateId) {
       id
       name
