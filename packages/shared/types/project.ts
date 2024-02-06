@@ -28,4 +28,5 @@ export interface IProject {
   responsible: IUser | null
   notes: IProjectNote[]
   contacts?: IContact[]
+  viewers?: IUser[]
 }

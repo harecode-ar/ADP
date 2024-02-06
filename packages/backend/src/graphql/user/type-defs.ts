@@ -13,6 +13,7 @@ export default `#graphql
     averageCompletition: UserAverageCompletition
     sharedStages: [Stage]
     sharedSubStages: [Stage]
+    sharedProjects: [Project]
 
     createdAt: String
     updatedAt: String
