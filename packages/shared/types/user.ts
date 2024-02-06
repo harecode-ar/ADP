@@ -1,4 +1,5 @@
 import type { IArea } from './area'
+import type { IStage } from './stage'
 import type { IUserAverageCompletition } from './average-completition'
 import type { IContact } from './contact'
 import type { IRole } from './role'
@@ -23,6 +24,8 @@ export interface IUser {
   contacts?: IContact[]
   averageCompletition?: IUserAverageCompletition
   areas?: IArea[]
+  sharedStages?: IStage[]
+  sharedSubStages?: IStage[]
 }
 
 export type TChangePasswordInput = {

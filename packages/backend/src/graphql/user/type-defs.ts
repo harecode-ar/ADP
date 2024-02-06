@@ -11,6 +11,8 @@ export default `#graphql
     role: Role
     fullname: String
     averageCompletition: UserAverageCompletition
+    sharedStages: [Stage]
+    sharedSubStages: [Stage]
 
     createdAt: String
     updatedAt: String
