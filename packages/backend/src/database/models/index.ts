@@ -27,6 +27,7 @@ import { UserFinishedProject } from './user-finished-project'
 import { UserFinishedStage } from './user-finished-stage'
 import { UserNotification } from './user-notification'
 import { User } from './user'
+import { StageViewer } from './stage-viewer'
 
 Role.hasMany(User, { as: 'users', foreignKey: 'roleId' })
 User.belongsTo(Role, { as: 'role', foreignKey: 'roleId' })
@@ -157,6 +158,9 @@ FileRecord.belongsToMany(StageNote, {
   foreignKey: 'fileRecordId',
 })
 
+Stage.belongsToMany(User, { as: 'viewers', through: StageViewer, foreignKey: 'stageId' })
+User.belongsToMany(Stage, { as: 'sharedStages', through: StageViewer, foreignKey: 'userId' })
+
 export {
   AreaAverageCompletition,
   Area,
@@ -179,6 +183,7 @@ export {
   Session,
   StageNoteFile,
   StageNote,
+  StageViewer,
   TaskState,
   Stage,
   Token,

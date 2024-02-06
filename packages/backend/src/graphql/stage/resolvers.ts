@@ -61,6 +61,20 @@ export default {
       if (stage.notes) return Promise.resolve(stage.notes)
       return StageNote.findAll({ where: { stageId: stage.id } })
     },
+    viewers: async (parent: IStage): Promise<IUser[]> => {
+      if (parent.viewers) return parent.viewers
+      const stage = await Stage.findByPk(parent.id, {
+        include: [
+          {
+            model: User,
+            as: 'viewers',
+          },
+        ],
+      })
+      if (!stage) throw new Error('Etapa no encontrada')
+      // @ts-ignore
+      return stage.viewers
+    },
   },
   Query: {
     stages: (

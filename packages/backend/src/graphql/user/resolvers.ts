@@ -1,6 +1,7 @@
 import { ETokenType, PERMISSION_MAP } from '@adp/shared'
-import type { IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import type { IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import dotenv from 'dotenv'
+import { Op } from 'sequelize'
 import {
   Role,
   User,
@@ -43,6 +44,42 @@ export default {
       })
       if (!averageCompletition) throw new Error('No encontrado')
       return averageCompletition
+    },
+    sharedStages: async (parent: IUser): Promise<IStage[]> => {
+      if (parent.sharedStages) return Promise.resolve(parent.sharedStages)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Stage,
+            as: 'sharedStages',
+            where: {
+              parentId: null,
+            },
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedStages
+    },
+    sharedSubStages: async (parent: IUser): Promise<IStage[]> => {
+      if (parent.sharedSubStages) return Promise.resolve(parent.sharedSubStages)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Stage,
+            as: 'sharedSubStages',
+            where: {
+              parentId: {
+                [Op.ne]: null,
+              },
+            },
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedSubStages
     },
   },
   Query: {

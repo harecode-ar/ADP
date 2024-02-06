@@ -32,4 +32,5 @@ export interface IStage {
   childStages: IStage[]
   notes: IStageNote[]
   contacts?: IContact[]
+  viewers?: IUser[]
 }

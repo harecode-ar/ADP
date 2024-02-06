@@ -26,6 +26,7 @@ export default `#graphql
     childStages: [Stage]
     project: Project
     notes: [StageNote]
+    viewers: [User]
   }
 
   type Query {
