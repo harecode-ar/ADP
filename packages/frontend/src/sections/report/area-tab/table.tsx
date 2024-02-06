@@ -22,6 +22,8 @@ import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
 
+const calculatePercentage = (value: number) => value * 100
+
 const columns: TColumn[] = [
   {
     id: 'name',
@@ -54,7 +56,9 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.projectAcp !== null
-            ? row.averageCompletition?.projectAcp.toFixed(2)
+            ? `${calculatePercentage(
+                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -85,7 +89,9 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.projectPacp !== null
-            ? row.averageCompletition?.projectPacp.toFixed(2)
+            ? `${calculatePercentage(
+                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -115,7 +121,7 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.stageAcp !== null
-            ? row.averageCompletition?.stageAcp.toFixed(2)
+            ? `${calculatePercentage(Number(row.averageCompletition?.stageAcp?.toFixed(2)) || 0)}%`
             : '-'}
         </Typography>
       </Box>
@@ -145,7 +151,7 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.stagePacp !== null
-            ? row.averageCompletition?.stagePacp.toFixed(2)
+            ? `${calculatePercentage(Number(row.averageCompletition?.stagePacp?.toFixed(2)) || 0)}%`
             : '-'}
         </Typography>
       </Box>
