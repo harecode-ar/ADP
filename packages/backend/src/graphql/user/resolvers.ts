@@ -1,5 +1,5 @@
 import { ETokenType, PERMISSION_MAP } from '@adp/shared'
-import type { IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import type { IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Op } from 'sequelize'
 import {
@@ -80,6 +80,20 @@ export default {
       if (!user) throw new Error('Usuario no encontrado')
       // @ts-ignore
       return user.sharedSubStages
+    },
+    sharedProjects: async (parent: IUser): Promise<IProject[]> => {
+      if (parent.sharedProjects) return Promise.resolve(parent.sharedProjects)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Project,
+            as: 'sharedProjects',
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedProjects
     },
   },
   Query: {

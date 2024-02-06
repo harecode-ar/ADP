@@ -258,6 +258,20 @@ export default {
         throw error
       }
     },
+    viewers: async (parent: IProject): Promise<IUser[]> => {
+      if (parent.viewers) return parent.viewers
+      const project = await Project.findByPk(parent.id, {
+        include: [
+          {
+            model: User,
+            as: 'viewers',
+          },
+        ],
+      })
+      if (!project) throw new Error('Projecto no encontrado')
+      // @ts-ignore
+      return project.viewers
+    },
   },
   Mutation: {
     createProject: async (
