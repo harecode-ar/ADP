@@ -116,7 +116,7 @@ export default function UserDetailView(props: TProps) {
 
           <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
             {_socials.map((social) => (
-              <Link key={social.name} href={social.path} style={{ textDecoration: 'none' }}>
+              <Link key={social.name} href={`${social.path}${user?.telephone}`} style={{ textDecoration: 'none' }}>
                 <IconButton
                   key={social.name}
                   sx={{
