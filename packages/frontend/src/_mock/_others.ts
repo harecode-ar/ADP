@@ -145,6 +145,13 @@ export const _socials = [
     color: '#00AAEC',
     path: 'https://www.twitter.com/caitlyn.kerluke',
   },
+  {
+    value: 'whatsapp',
+    name: 'WhatsApp',
+    icon: 'mdi:whatsapp',
+    color: '#25D366',
+    path: 'https://wa.me/1234567', // Reemplaza con tu número de teléfono
+  }
 ]
 
 // ----------------------------------------------------------------------

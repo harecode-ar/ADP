@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { IUser, IUserCard } from '@adp/shared'
+import { IUser } from '@adp/shared'
 import Image from 'src/components/image'
 import {
   Box,
@@ -29,6 +29,7 @@ import Iconify from 'src/components/iconify'
 import { _socials } from 'src/_mock'
 import { alpha } from '@mui/material/styles'
 import { getStorageFileUrl } from 'src/utils/storage'
+import Link from 'next/link'
 
 enum ETab {
   ASSIGNMENT = 'Asignaciones',
@@ -115,17 +116,19 @@ export default function UserDetailView(props: TProps) {
 
           <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
             {_socials.map((social) => (
-              <IconButton
-                key={social.name}
-                sx={{
-                  color: social.color,
-                  '&:hover': {
-                    bgcolor: alpha(social.color, 0.08),
-                  },
-                }}
-              >
+              <Link key={social.name} href={social.path} style={{ textDecoration: 'none' }}>
+                <IconButton
+                  key={social.name}
+                  sx={{
+                    color: social.color,
+                    '&:hover': {
+                      bgcolor: alpha(social.color, 0.08),
+                    },
+                  }}
+                >
                 <Iconify icon={social.icon} />
               </IconButton>
+               </Link>
             ))}
           </Stack>
 
