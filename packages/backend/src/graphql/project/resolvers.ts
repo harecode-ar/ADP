@@ -61,6 +61,20 @@ export default {
       if (project.progress) return Number(project.progress.toFixed(2))
       return 0
     },
+    viewers: async (parent: IProject): Promise<IUser[]> => {
+      if (parent.viewers) return parent.viewers
+      const project = await Project.findByPk(parent.id, {
+        include: [
+          {
+            model: User,
+            as: 'viewers',
+          },
+        ],
+      })
+      if (!project) throw new Error('Projecto no encontrado')
+      // @ts-ignore
+      return project.viewers
+    },
   },
   Query: {
     projects: (
@@ -257,20 +271,6 @@ export default {
         logger.error(error)
         throw error
       }
-    },
-    viewers: async (parent: IProject): Promise<IUser[]> => {
-      if (parent.viewers) return parent.viewers
-      const project = await Project.findByPk(parent.id, {
-        include: [
-          {
-            model: User,
-            as: 'viewers',
-          },
-        ],
-      })
-      if (!project) throw new Error('Projecto no encontrado')
-      // @ts-ignore
-      return project.viewers
     },
   },
   Mutation: {

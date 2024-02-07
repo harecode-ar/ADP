@@ -11,7 +11,7 @@ export class User extends Model {
 
   public email!: string
 
-  public telephone!: string
+  public phone!: string
 
   public password!: string
 
@@ -45,7 +45,7 @@ User.init(
       type: DataTypes.STRING(128),
       allowNull: false,
     },
-    telephone: {
+    phone: {
       type: DataTypes.STRING(128),
       allowNull: true,
     },

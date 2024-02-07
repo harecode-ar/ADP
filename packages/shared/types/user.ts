@@ -10,7 +10,7 @@ export interface IUser {
   firstname: string
   lastname: string
   email: string
-  telephone: string | null
+  phone: string | null
   password: string
   image: string | null
   roleId: number

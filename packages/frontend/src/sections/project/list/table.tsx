@@ -111,7 +111,12 @@ const Table = () => {
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
-          <CustomTableToolbar id="project-list-table" columns={columns} download refetch={refetch} />
+          <CustomTableToolbar
+            id="project-list-table"
+            columns={columns}
+            download
+            refetch={refetch}
+          />
           <CustomTableSearch />
           {data ? (
             <CustomTable

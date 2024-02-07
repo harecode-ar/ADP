@@ -151,7 +151,7 @@ export const _socials = [
     icon: 'mdi:whatsapp',
     color: '#25D366',
     path: 'https://wa.me/', // Se elimino el numero de ejemplo y se agrega del lado del front.
-  }
+  },
 ]
 
 // ----------------------------------------------------------------------

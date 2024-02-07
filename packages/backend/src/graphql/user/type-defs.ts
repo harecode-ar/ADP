@@ -4,7 +4,7 @@ export default `#graphql
     firstname: String
     lastname: String
     email: String
-    telephone: String
+    phone: String
     image: String
     roleId: Int
 
@@ -31,7 +31,7 @@ export default `#graphql
       firstname: String!
       lastname: String!
       email: String!
-      telephone: String
+      phone: String
       roleId: Int!
       image: Upload
     ): User
@@ -41,7 +41,7 @@ export default `#graphql
       firstname: String!
       lastname: String!
       email: String!
-      telephone: String
+      phone: String
       roleId: Int!
       image: Upload
     ): User

@@ -2,7 +2,6 @@
 
 import React, { useMemo, useState } from 'react'
 import { IUser } from '@adp/shared'
-import Image from 'src/components/image'
 import {
   Box,
   Container,
@@ -27,9 +26,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcru
 import AvatarShape from 'src/assets/illustrations/avatar-shape'
 import Iconify from 'src/components/iconify'
 import { _socials } from 'src/_mock'
-import { alpha } from '@mui/material/styles'
 import { getStorageFileUrl } from 'src/utils/storage'
-import Link from 'next/link'
 
 enum ETab {
   ASSIGNMENT = 'Asignaciones',
@@ -40,7 +37,7 @@ type TProps = {
 }
 
 export default function UserDetailView(props: TProps) {
-  const { userId} = props
+  const { userId } = props
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const [ref] = usePrint()
@@ -63,6 +60,15 @@ export default function UserDetailView(props: TProps) {
     return userQuery.data.user
   }, [userQuery.data])
 
+  const handleCall = () => {
+    if (!user || !user.phone) return
+    window.open(`tel:${user.phone}`)
+  }
+  const handleSendEmail = () => {
+    if (!user) return
+    window.open(`mailto:${user.email}`)
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -77,7 +83,7 @@ export default function UserDetailView(props: TProps) {
           heading="Detalle de Usuario"
           links={[{ name: 'Usuario', href: paths.dashboard.user.root }, { name: 'Detalle' }]}
         />
-        <Card sx={{ textAlign: 'center', width: 800, mx: 'auto' }}>
+        <Card sx={{ textAlign: 'center', mx: 'auto', width: '100%' }}>
           <Box sx={{ position: 'relative' }}>
             <AvatarShape
               sx={{
@@ -103,41 +109,39 @@ export default function UserDetailView(props: TProps) {
                 position: 'absolute',
               }}
             />
-            <Image src="/assets/background/overlay_3.jpg" alt="" ratio="16/9" />{' '}
+            <Box
+              sx={{
+                width: '100%',
+                height: 125,
+                backgroundColor: 'primary.darker',
+              }}
+            />
             {/* eslint-disable-line */}
           </Box>
 
           <ListItemText
             sx={{ mt: 7, mb: 1 }}
             primary={`${user?.firstname} ${user?.lastname}`}
+            secondary={user?.role?.name}
             primaryTypographyProps={{ typography: 'subtitle1' }}
             secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
           />
 
           <Stack direction="row" alignItems="center" justifyContent="center" sx={{ mb: 2.5 }}>
-            {_socials.map((social) => (
-              <Link key={social.name} href={`${social.path}${user?.telephone}`} style={{ textDecoration: 'none' }}>
-                <IconButton
-                  key={social.name}
-                  sx={{
-                    color: social.color,
-                    '&:hover': {
-                      bgcolor: alpha(social.color, 0.08),
-                    },
-                  }}
-                >
-                <Iconify icon={social.icon} />
+            {user?.phone && (
+              <IconButton onClick={handleCall}>
+                <Iconify icon="solar:phone-bold" />
               </IconButton>
-               </Link>
-            ))}
+            )}
+            <IconButton onClick={handleSendEmail}>
+              <Iconify icon="fluent:mail-24-filled" />
+            </IconButton>
           </Stack>
 
           <Divider sx={{ borderStyle: 'dashed' }} />
 
           <Box
-            display="grid"
-            gridTemplateColumns="repeat(3, 1fr)"
-            sx={{ py: 3, typography: 'subtitle1' }}
+            sx={{ py: 3, typography: 'subtitle1', display: 'flex', justifyContent: 'space-evenly' }}
           >
             <Box>
               <Typography
@@ -145,20 +149,9 @@ export default function UserDetailView(props: TProps) {
                 component="div"
                 sx={{ mb: 0.5, color: 'text.secondary' }}
               >
-                Rol
+                Finaliza los proyectos en
               </Typography>
-              {user?.role?.name}
-            </Box>
-
-            <Box>
-              <Typography
-                variant="caption"
-                component="div"
-                sx={{ mb: 0.5, color: 'text.secondary' }}
-              >
-                Email
-              </Typography>
-              &nbsp;{user?.email}
+              &nbsp;No tiene proyectos
             </Box>
             <Box>
               <Typography
@@ -166,9 +159,9 @@ export default function UserDetailView(props: TProps) {
                 component="div"
                 sx={{ mb: 0.5, color: 'text.secondary' }}
               >
-                Telefono
+                Finaliza las etapas en
               </Typography>
-              &nbsp;{user?.telephone}
+              &nbsp;No tiene etapas
             </Box>
           </Box>
         </Card>

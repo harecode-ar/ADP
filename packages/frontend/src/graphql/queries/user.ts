@@ -7,7 +7,7 @@ export const USERS_FOR_LIST = gql`
       firstname
       lastname
       email
-      telephone
+      phone
       image
       roleId
     }
@@ -43,7 +43,7 @@ export const GET_USER = gql`
       firstname
       lastname
       email
-      telephone
+      phone
       image
       roleId
       role {

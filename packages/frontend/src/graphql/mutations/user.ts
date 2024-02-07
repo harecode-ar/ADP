@@ -5,7 +5,7 @@ export const CREATE_USER = gql`
     $firstname: String!
     $lastname: String!
     $email: String!
-    $telephone: String!
+    $phone: String!
     $image: Upload
     $roleId: Int!
   ) {
@@ -13,7 +13,7 @@ export const CREATE_USER = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      telephone: $telephone
+      phone: $phone
       image: $image
       roleId: $roleId
     ) {
@@ -28,7 +28,7 @@ export const UPDATE_USER = gql`
     $firstname: String!
     $lastname: String!
     $email: String!
-    $telephone: String!
+    $phone: String!
     $image: Upload
     $roleId: Int!
   ) {
@@ -37,7 +37,7 @@ export const UPDATE_USER = gql`
       firstname: $firstname
       lastname: $lastname
       email: $email
-      telephone: $telephone
+      phone: $phone
       image: $image
       roleId: $roleId
     ) {

@@ -43,7 +43,7 @@ type TFormikValues = {
   firstname: string
   lastname: string
   email: string
-  telephone: string
+  phone: string
   role: IRole | null
   file: File | null
   preview: string | null
@@ -66,7 +66,7 @@ const ModalCreate = (props: TProps) => {
       lastname: '',
       role: null as IRole | null,
       email: '',
-      telephone: '',
+      phone: '',
       file: null,
       preview: null,
     } as TFormikValues,
@@ -77,7 +77,7 @@ const ModalCreate = (props: TProps) => {
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
-            telephone: values.telephone,
+            phone: values.phone,
             image: values.file,
             roleId: values.role?.id,
           },
@@ -206,13 +206,13 @@ const ModalCreate = (props: TProps) => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  id="telephone"
-                  name="telephone"
+                  id="phone"
+                  name="phone"
                   label="Telefono"
                   variant="outlined"
                   fullWidth
-                  value={formik.values.telephone}
-                  error={Boolean(formik.errors.telephone)}
+                  value={formik.values.phone}
+                  error={Boolean(formik.errors.phone)}
                   onChange={formik.handleChange}
                 />
               </Grid>
