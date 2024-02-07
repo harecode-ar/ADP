@@ -150,7 +150,7 @@ export const _socials = [
     name: 'WhatsApp',
     icon: 'mdi:whatsapp',
     color: '#25D366',
-    path: 'https://wa.me/', // Reemplaza con tu número de teléfono
+    path: 'https://wa.me/', // Se elimino el numero de ejemplo y se agrega del lado del front.
   }
 ]
 
