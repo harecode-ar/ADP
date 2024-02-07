@@ -30,6 +30,15 @@ export interface IUser {
   sharedProjects?: IProject[]
 }
 
+export type IUserCard = {
+  id: string
+  name: string
+  role: string
+  coverUrl: string
+  avatarUrl: string
+  totalPosts: number
+}
+
 export type TChangePasswordInput = {
   oldPassword: string
   newPassword: string

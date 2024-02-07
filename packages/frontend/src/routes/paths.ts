@@ -25,6 +25,7 @@ export const paths = {
     user: {
       root: `${ROOTS.DASHBOARD}/usuario`,
       list: `${ROOTS.DASHBOARD}/usuario/listado`,
+      detail: `${ROOTS.DASHBOARD}/usuario/detalle/:id`,
     },
     area: {
       root: `${ROOTS.DASHBOARD}/area`,

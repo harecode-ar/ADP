@@ -46,6 +46,10 @@ export const GET_USER = gql`
       telephone
       image
       roleId
+      role {
+        id
+        name
+      }
     }
   }
 `
