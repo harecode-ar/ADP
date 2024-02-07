@@ -111,13 +111,13 @@ const Table = () => {
         <CustomTableSkeleton columns={columns.length} search />
       ) : (
         <React.Fragment>
-          <CustomTableToolbar id="user-list-table" columns={columns} download refetch={refetch} />
+          <CustomTableToolbar id="project-list-table" columns={columns} download refetch={refetch} />
           <CustomTableSearch />
           {data ? (
             <CustomTable
-              id="user-list-table"
+              id="project-list-table"
               columns={columns}
-              data={data.users}
+              data={data.projects}
               action={
                 <React.Fragment>
                   {selected.length === 1 && (
