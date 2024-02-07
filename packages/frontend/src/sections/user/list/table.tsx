@@ -12,6 +12,9 @@ import { USERS_FOR_LIST, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
 import { Avatar, Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { getStorageFileUrl } from 'src/utils/storage'
+import NextLink from 'next/link'
+import { paths } from 'src/routes/paths'
+import Link from 'next/link'
 import ModalCreate from './modal-create'
 import ModalEdit from './modal-edit'
 import ModalDelete from './modal-delete'
@@ -123,6 +126,15 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
+                    <Link
+                      component={NextLink}
+                      href={paths.dashboard.user.detail.replace(':id', selected[0])}
+                    >
+                      <IconButton>
+                        <Iconify icon="mdi:eye" />
+                      </IconButton>
+                    </Link>
+
                     <IconButton onClick={modalEdit.onTrue}>
                       <Iconify icon="material-symbols:edit" />
                     </IconButton>
