@@ -140,16 +140,16 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
+                <Button variant="contained" onClick={modalEdit.onTrue}>
+                  <Iconify icon="material-symbols:edit" mr={1} />
+                  Editar
+                </Button>
                 {project.stateId === TASK_STATE.ON_HOLD && isProjectAssignedToUser && (
                   <Button variant="contained" onClick={modalStartTask.onTrue}>
                     <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                     Comenzar
                   </Button>
                 )}
-                <Button variant="contained" onClick={modalEdit.onTrue}>
-                  <Iconify icon="material-symbols:edit" mr={1} />
-                  Editar
-                </Button>
                 {project.stateId === TASK_STATE.IN_PROGRESS && (
                   <Button variant="contained" onClick={modalFinishProject.onTrue}>
                     <Iconify icon="pajamas:todo-done" mr={1} />

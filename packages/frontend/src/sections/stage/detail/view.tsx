@@ -132,12 +132,6 @@ export default function ProjectDetailView(props: TProps) {
                 gap: 1,
               }}
             >
-              {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-                <Button variant="contained" onClick={modalStartTask.onTrue}>
-                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
-                  Comenzar
-                </Button>
-              )}
               {stage &&
                 stage.stateId !== TASK_STATE.CANCELLED &&
                 stage.stateId !== TASK_STATE.COMPLETED && (
@@ -146,7 +140,12 @@ export default function ProjectDetailView(props: TProps) {
                     Editar
                   </Button>
                 )}
-
+              {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
+                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                  Comenzar
+                </Button>
+              )}
               {stage && stage.stateId === TASK_STATE.IN_PROGRESS && (
                 <Button variant="contained" onClick={modalFinishStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
