@@ -57,8 +57,8 @@ const columns: TColumn[] = [
         <Typography>
           {row.averageCompletition?.projectAcp !== null
             ? `${calculatePercentage(
-                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
-              )}%`
+              Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+            )}%`
             : '-'}
         </Typography>
       </Box>
@@ -90,8 +90,8 @@ const columns: TColumn[] = [
         <Typography>
           {row.averageCompletition?.projectPacp !== null
             ? `${calculatePercentage(
-                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
-              )}%`
+              Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+            )}%`
             : '-'}
         </Typography>
       </Box>
@@ -100,7 +100,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stageAcp',
-    label: 'etapa ACP',
+    label: 'Etapa ACP',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -130,7 +130,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stagePacp',
-    label: 'etapa PACP',
+    label: 'Etapa PACP',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (

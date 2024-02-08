@@ -7,6 +7,7 @@ import { usePrint } from 'src/hooks/use-print'
 import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
 import { useQuery } from '@apollo/client'
 import { GET_COUNT_USER_ASSIGNATIONS } from 'src/graphql/queries'
+import { localStorageGetItem, localStorageSetItem } from 'src/utils/storage-available'
 import UserCard from './user-card'
 import AreaTab from './area-tab'
 import AssignmentTab from './assignment-tab'
@@ -20,16 +21,31 @@ enum ETab {
   REPORT = 'Estadísticas',
 }
 
+const DASHBOARD_TAB = 'dashboard_tab'
+
+const getSelectedTab = () => {
+  const selectedTab = localStorageGetItem(DASHBOARD_TAB) as ETab
+  if (Object.values(ETab).includes(selectedTab)) {
+    return selectedTab
+  }
+  return ETab.ASSIGNMENT
+}
+
 export default function TableroView() {
   const settings = useSettingsContext()
   const [ref] = usePrint()
-  const [tab, setTab] = useState<ETab>(ETab.AREAS)
+  const [tab, setTab] = useState<ETab>(getSelectedTab())
   const { data } = useQuery(GET_COUNT_USER_ASSIGNATIONS)
 
   const isAssignmentTabDisabled: boolean = useMemo(() => {
     if (!data) return true
     return data.countUserAssignations === 0
   }, [data])
+
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: ETab) => {
+    setTab(newValue)
+    localStorageSetItem(DASHBOARD_TAB, newValue)
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -43,7 +59,7 @@ export default function TableroView() {
               alignItems: 'center',
             }}
           >
-            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+            <Tabs value={tab} onChange={handleTabChange}>
               <Tab label={ETab.AREAS} value={ETab.AREAS} />
               <Tab
                 label={ETab.ASSIGNMENT}
