@@ -39,14 +39,16 @@ export function buildTree(areas: IArea[]): IArea[] {
   return removeEmptyChildren(tree)
 }
 
-export function getAreaAncestors(area: IArea): IArea[] {
+export function getAreaAncestors(tree: IArea[], areaId: number): IArea[] {
+  const areaTree = getAreaFromTree(tree, areaId)
   const ancestors: IArea[] = []
-  if (area.parentId) {
-    const parent = area.parentId
-    const parentArea = area
-    parentArea.id = parent
-    ancestors.push(parentArea)
-    ancestors.push(...getAreaAncestors(parentArea))
+  if (!areaTree) return ancestors
+  const { parentId } = areaTree
+  if (parentId) {
+    const parent = getAreaFromTree(tree, parentId)
+    if (!parent) return ancestors
+    ancestors.push(parent)
+    ancestors.push(...getAreaAncestors(tree, parent.id))
   }
   return ancestors
 }

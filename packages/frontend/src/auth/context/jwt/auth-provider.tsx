@@ -168,7 +168,7 @@ export function AuthProvider({ children }: Props) {
         },
       })
 
-      if (!response.data.login) throw new Error('No session')
+      if (!response.data.login) throw new Error('No se pudo iniciar sesión')
 
       const { token, user } = response.data.login
       const { role } = user
