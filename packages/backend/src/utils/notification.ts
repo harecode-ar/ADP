@@ -21,7 +21,7 @@ export const sendNotification = async (settings: TSettings) => {
     where: {
       id: userIds,
     },
-    attributes: ['id', 'email'],
+    attributes: ['id', 'email', 'firstname', 'lastname'],
   })
 
   await UserNotification.bulkCreate(
