@@ -57,8 +57,8 @@ const columns: TColumn[] = [
         <Typography>
           {row.averageCompletition?.projectAcp !== null
             ? `${calculatePercentage(
-              Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
-            )}%`
+                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -90,8 +90,8 @@ const columns: TColumn[] = [
         <Typography>
           {row.averageCompletition?.projectPacp !== null
             ? `${calculatePercentage(
-              Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
-            )}%`
+                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>

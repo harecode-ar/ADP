@@ -89,5 +89,7 @@ export default `#graphql
     deleteSubStage(id: Int!): Stage
 
     finishSubStage(id: Int!): Stage
+
+    cancelStage(id: Int!): Stage
   }
 `

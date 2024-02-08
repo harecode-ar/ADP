@@ -38,6 +38,7 @@ import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
 import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
+import ModalCancelSubStage from './modal-cancel-sub-stage'
 
 const getColorVariant = (name: string) => {
   if (name === TASK_STATE_NAME.NEW) {
@@ -75,6 +76,7 @@ export default function ProjectDetailView(props: TProps) {
   const [tab, setTab] = useState<ETab>(ETab.NOTES)
   const modalFinishSubStage = useBoolean()
   const modalStartTask = useBoolean()
+  const modalCancelSubStage = useBoolean()
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
@@ -148,6 +150,12 @@ export default function ProjectDetailView(props: TProps) {
                       Editar
                     </Button>
                   )}
+                {subStage && subStage.stateId === TASK_STATE.NEW && (
+                  <Button variant="contained" onClick={modalCancelSubStage.onTrue}>
+                    <Iconify icon="material-symbols:cancel" mr={1} />
+                    Cancelar sub etapa
+                  </Button>
+                )}
                 {subStage && subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
                   <Button variant="contained" onClick={modalStartTask.onTrue}>
                     <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
@@ -339,6 +347,9 @@ export default function ProjectDetailView(props: TProps) {
           subStage={subStage || null}
           refetch={refetch}
         />
+      )}
+      {!!subStage && modalCancelSubStage.value && (
+        <ModalCancelSubStage modal={modalCancelSubStage} stage={subStage} refetch={refetch} />
       )}
     </Container>
   )

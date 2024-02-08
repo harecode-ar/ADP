@@ -23,6 +23,7 @@ import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { paths } from 'src/routes/paths'
+import ModalCancelSubStage from 'src/sections/sub-stage/detail/modal-cancel-sub-stage'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
@@ -68,6 +69,7 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
   const modalStartTask = useBoolean()
+  const modalCancelSubStage = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
     variables: {
@@ -134,8 +136,15 @@ export default function KanbanDetails(props: TProps) {
           {subStage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          {subStage.stateId === TASK_STATE.NEW && isStageAssignedToUser && (
+            <Tooltip title="Cancelar sub etapa">
+              <IconButton onClick={modalCancelSubStage.onTrue}>
+                <Iconify icon="material-symbols:cancel" />
+              </IconButton>
+            </Tooltip>
+          )}
           {subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-            <Tooltip title="Comenzar tarea">
+            <Tooltip title="Comenzar sub etapa">
               <IconButton onClick={modalStartTask.onTrue}>
                 <Iconify icon="mdi:stopwatch-start-outline" />
               </IconButton>
@@ -254,6 +263,9 @@ export default function KanbanDetails(props: TProps) {
           subStage={subStage || null}
           refetch={refetch}
         />
+      )}
+      {modalCancelSubStage.value && (
+        <ModalCancelSubStage modal={modalCancelSubStage} stage={subStage} refetch={refetch} />
       )}
     </Drawer>
   )

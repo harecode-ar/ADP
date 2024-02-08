@@ -126,3 +126,11 @@ export const FINISH_SUB_STAGE = gql`
     }
   }
 `
+
+export const CANCEL_STAGE = gql`
+  mutation cancelStage($id: Int!) {
+    cancelStage(id: $id) {
+      id
+    }
+  }
+`

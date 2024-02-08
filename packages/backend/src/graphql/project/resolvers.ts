@@ -541,5 +541,64 @@ export default {
         throw error
       }
     },
+
+    cancelProject: async (_: any, args: Pick<IProject, 'id'>, context: IContext) => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_UPDATE], context)
+        const { id } = args
+        const project = await Project.findByPk(id, {
+          attributes: ['id', 'stateId'],
+          include: [
+            {
+              model: Stage,
+              as: 'stages',
+              attributes: ['id', 'stateId'],
+            },
+          ],
+        })
+        if (!project) {
+          throw new Error('Proyecto no encontrado')
+        }
+        if (project.stateId === TASK_STATE.COMPLETED) {
+          throw new Error('No se puede cancelar un proyecto finalizado')
+        }
+        if (project.stateId === TASK_STATE.CANCELLED) {
+          throw new Error('El proyecto ya se encuentra cancelado')
+        }
+        if (project.stateId === TASK_STATE.IN_PROGRESS) {
+          throw new Error('No se puede cancelar un proyecto en progreso')
+        }
+
+        // @ts-ignore
+        const { stages = [] } = project as { stages: Stage[] }
+
+        const someStage = stages.some(
+          (stage) =>
+            stage.stateId === TASK_STATE.ON_HOLD ||
+            stage.stateId === TASK_STATE.IN_PROGRESS ||
+            stage.stateId === TASK_STATE.COMPLETED
+        )
+
+        if (someStage) {
+          throw new Error(
+            'No se puede cancelar un proyecto con etapas en espera, en progreso o finalizadas'
+          )
+        }
+
+        await Promise.all(
+          stages
+            .filter((stage) => stage.stateId === TASK_STATE.NEW)
+            .map((stage) => stage.update({ stateId: TASK_STATE.CANCELLED }))
+        )
+
+        await project.update({
+          stateId: TASK_STATE.CANCELLED,
+        })
+        return project
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
 }

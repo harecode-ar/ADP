@@ -10,6 +10,7 @@ import TextMaxLine from 'src/components/text-max-line'
 import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import getLabelColor from 'src/utils/color-progress'
 import { useBoolean } from 'src/hooks/use-boolean'
+import ModalCancelTask from 'src/sections/shared/modal-cancel-task'
 import ModalStartTask from './modal-start-task'
 
 // ----------------------------------------------------------------------
@@ -23,6 +24,7 @@ type TProps = {
 export default function AssignmentItem(props: TProps) {
   const { project, stage, subStage } = props
   const modalStartTask = useBoolean()
+  const modalCancelTask = useBoolean()
 
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
@@ -94,6 +96,13 @@ export default function AssignmentItem(props: TProps) {
             </Label>
           </Box>
           <Box>
+            {assignment.stateId === TASK_STATE.NEW && (
+              <Tooltip title="Cancelar tarea">
+                <IconButton onClick={modalCancelTask.onTrue}>
+                  <Iconify icon="material-symbols:cancel" />
+                </IconButton>
+              </Tooltip>
+            )}
             {assignment.stateId === TASK_STATE.ON_HOLD && (
               <Tooltip title="Comenzar tarea">
                 <IconButton onClick={modalStartTask.onTrue}>
@@ -171,6 +180,15 @@ export default function AssignmentItem(props: TProps) {
         {modalStartTask.value && (
           <ModalStartTask
             modal={modalStartTask}
+            project={project || null}
+            stage={stage || null}
+            subStage={subStage || null}
+          />
+        )}
+
+        {modalCancelTask.value && (
+          <ModalCancelTask
+            modal={modalCancelTask}
             project={project || null}
             stage={stage || null}
             subStage={subStage || null}

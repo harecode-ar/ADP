@@ -25,6 +25,7 @@ import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import { paths } from 'src/routes/paths'
 import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
+import ModalCancelStage from 'src/sections/stage/detail/modal-cancel-stage'
 import ModalDelete from './modal-delete'
 import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
@@ -79,6 +80,7 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
   const modalStartTask = useBoolean()
+  const modalCancelTask = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: {
@@ -146,8 +148,15 @@ export default function KanbanDetails(props: TProps) {
           {stage.state.name}
         </Button>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
+          {stage.stateId === TASK_STATE.NEW && isStageAssignedToUser && (
+            <Tooltip title="Cancelar etapa">
+              <IconButton onClick={modalCancelTask.onTrue}>
+                <Iconify icon="material-symbols:cancel" />
+              </IconButton>
+            </Tooltip>
+          )}
           {stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-            <Tooltip title="Comenzar tarea">
+            <Tooltip title="Comenzar etapa">
               <IconButton onClick={modalStartTask.onTrue}>
                 <Iconify icon="mdi:stopwatch-start-outline" />
               </IconButton>
@@ -275,6 +284,9 @@ export default function KanbanDetails(props: TProps) {
           subStage={null}
           refetch={refetch}
         />
+      )}
+      {modalCancelTask.value && (
+        <ModalCancelStage modal={modalCancelTask} stage={stage} refetch={refetch} />
       )}
     </Drawer>
   )
