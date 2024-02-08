@@ -1,6 +1,7 @@
 import type { IArea,IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import { ECacheKey, ETokenType, PERMISSION_MAP, getAreaAncestors } from '@adp/shared'
 import dotenv from 'dotenv'
+import { Op } from 'sequelize'
 import {
   Role,
   User,
@@ -44,6 +45,56 @@ export default {
       })
       if (!averageCompletition) throw new Error('No encontrado')
       return averageCompletition
+    },
+    sharedStages: async (parent: IUser): Promise<IStage[]> => {
+      if (parent.sharedStages) return Promise.resolve(parent.sharedStages)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Stage,
+            as: 'sharedStages',
+            where: {
+              parentId: null,
+            },
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedStages
+    },
+    sharedSubStages: async (parent: IUser): Promise<IStage[]> => {
+      if (parent.sharedSubStages) return Promise.resolve(parent.sharedSubStages)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Stage,
+            as: 'sharedSubStages',
+            where: {
+              parentId: {
+                [Op.ne]: null,
+              },
+            },
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedSubStages
+    },
+    sharedProjects: async (parent: IUser): Promise<IProject[]> => {
+      if (parent.sharedProjects) return Promise.resolve(parent.sharedProjects)
+      const user = await User.findByPk(parent.id, {
+        include: [
+          {
+            model: Project,
+            as: 'sharedProjects',
+          },
+        ],
+      })
+      if (!user) throw new Error('Usuario no encontrado')
+      // @ts-ignore
+      return user.sharedProjects
     },
   },
   Query: {
@@ -238,13 +289,13 @@ export default {
         firstname: string
         lastname: string
         email: string
-        telephone: string | null
+        phone: string | null
         image: IUpload | null
         roleId: number
       }
     ): Promise<IUser> => {
       try {
-        const { firstname, lastname, email, telephone, image, roleId } = args
+        const { firstname, lastname, email, phone, image, roleId } = args
         const password = generateRandomPassword(8)
         const hashedPassword = await hashPassword(password)
 
@@ -253,7 +304,7 @@ export default {
           lastname,
           email,
           password: hashedPassword,
-          telephone,
+          phone,
           image: null,
           roleId,
         }
@@ -286,13 +337,13 @@ export default {
         firstname: string
         lastname: string
         email: string
-        telephone: string
+        phone: string
         image: IUpload | null
         roleId: number
       }
     ): Promise<IUser | null> => {
       try {
-        const { id, firstname, lastname, email, telephone, image, roleId } = args
+        const { id, firstname, lastname, email, phone, image, roleId } = args
         const user = await User.findByPk(id)
         if (!user) {
           throw new Error('Usuario no encontrado')
@@ -304,7 +355,7 @@ export default {
           firstname,
           lastname,
           email,
-          telephone,
+          phone,
           image: prevImage,
           roleId,
         }

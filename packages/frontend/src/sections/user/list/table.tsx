@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
 import type { IRole, IUser } from '@adp/shared'
+import React, { useEffect, useMemo } from 'react'
+import NextLink from 'next/link'
 import CustomTable from 'src/components/table/custom-table'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomTableSearch from 'src/components/table/custom-table-search'
@@ -9,16 +10,17 @@ import { EColumnType, useTable } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { useQuery } from '@apollo/client'
 import { USERS_FOR_LIST, GET_ROLES_FOR_SELECT } from 'src/graphql/queries'
-import { Avatar, Box, IconButton } from '@mui/material'
+import { Avatar, Box, IconButton, Link } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { getStorageFileUrl } from 'src/utils/storage'
+import { paths } from 'src/routes/paths'
 import ModalCreate from './modal-create'
 import ModalEdit from './modal-edit'
 import ModalDelete from './modal-delete'
 
 type TRow = Pick<
   IUser,
-  'id' | 'firstname' | 'lastname' | 'email' | 'telephone' | 'image' | 'roleId' | 'role'
+  'id' | 'firstname' | 'lastname' | 'email' | 'phone' | 'image' | 'roleId' | 'role'
 >
 
 const columns: TColumn[] = [
@@ -57,11 +59,11 @@ const columns: TColumn[] = [
     renderCell: (row: TRow) => row.email,
   },
   {
-    id: 'telephone',
+    id: 'phone',
     label: 'Telefono',
     type: EColumnType.STRING,
-    renderCell: (row: TRow) => row.telephone || 'Sin telefono',
-    searchValue: (row: TRow) => row.telephone || 'Sin telefono',
+    renderCell: (row: TRow) => row.phone || 'Sin telefono',
+    searchValue: (row: TRow) => row.phone || 'Sin telefono',
   },
   {
     id: 'roleId',
@@ -123,6 +125,15 @@ const Table = (props: TProps) => {
               <React.Fragment>
                 {selected.length === 1 && (
                   <React.Fragment>
+                    <Link
+                      component={NextLink}
+                      href={paths.dashboard.user.detail.replace(':id', selected[0])}
+                    >
+                      <IconButton>
+                        <Iconify icon="mdi:eye" />
+                      </IconButton>
+                    </Link>
+
                     <IconButton onClick={modalEdit.onTrue}>
                       <Iconify icon="material-symbols:edit" />
                     </IconButton>

@@ -21,6 +21,7 @@ export default `#graphql
     stages: [Stage]
     responsible: User
     notes: [ProjectNote]
+    viewers: [User]
   }
 
   type Query {
@@ -58,5 +59,7 @@ export default `#graphql
     deleteProject(id: Int!): Project
 
     finishProject(id: Int!): Project
+
+    cancelProject(id: Int!): Project
   }
 `

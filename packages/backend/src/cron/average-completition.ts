@@ -12,11 +12,10 @@ import {
   Area,
   AreaAverageCompletition,
   Configuration,
-  Notification,
-  UserNotification,
 } from '../database/models'
 import { getAcp } from '../utils/average-completition'
 import { getDaysDiff } from '../utils/date'
+import { sendNotification } from '../utils/notification'
 
 const daysToText = (days: number) => {
   const abs = Math.abs(days)
@@ -260,14 +259,11 @@ cron.schedule('35 3 * * *', async () => {
     }
 
     if (notificationTitle) {
-      Notification.create({
+      sendNotification({
         title: notificationTitle,
         category: ENotificationCategory.PROJECT,
-      }).then((notification) => {
-        UserNotification.create({
-          userId: area.responsibleId,
-          notificationId: notification.id,
-        })
+        userIds: [area.responsibleId],
+        email: true,
       })
     }
 
@@ -301,14 +297,11 @@ cron.schedule('35 3 * * *', async () => {
     }
 
     if (notificationTitle) {
-      Notification.create({
+      sendNotification({
         title: notificationTitle,
         category: ENotificationCategory.STAGE,
-      }).then((notification) => {
-        UserNotification.create({
-          userId: area.responsibleId,
-          notificationId: notification.id,
-        })
+        userIds: [area.responsibleId],
+        email: true,
       })
     }
 
@@ -344,14 +337,11 @@ cron.schedule('35 3 * * *', async () => {
     }
 
     if (notificationTitle) {
-      Notification.create({
+      sendNotification({
         title: notificationTitle,
         category: ENotificationCategory.SUB_STAGE,
-      }).then((notification) => {
-        UserNotification.create({
-          userId: area.responsibleId,
-          notificationId: notification.id,
-        })
+        userIds: [area.responsibleId],
+        email: true,
       })
     }
 

@@ -45,7 +45,7 @@ type TUser = {
   firstname: string | null
   lastname: string | null
   email: string | null
-  telephone: string | null
+  phone: string | null
   role: IRole | null
   file: File | null
   preview: string | null
@@ -64,7 +64,7 @@ const ModalEdit = (props: TProps) => {
       firstname: '',
       lastname: '',
       email: '',
-      telephone: '',
+      phone: '',
       role: null as IRole | null,
       file: null,
       preview: null,
@@ -77,7 +77,7 @@ const ModalEdit = (props: TProps) => {
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
-            telephone: values.telephone,
+            phone: values.phone,
             image: values.file,
             roleId: Number(values.role?.id),
           },
@@ -108,7 +108,7 @@ const ModalEdit = (props: TProps) => {
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,
-          telephone: user.telephone,
+          phone: user.phone,
           role: roles.find((role) => role.id === Number(user.roleId)) || null,
           file: null,
           preview: getStorageFileUrl(user.image),
@@ -232,13 +232,13 @@ const ModalEdit = (props: TProps) => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  id="telephone"
-                  name="telephone"
+                  id="phone"
+                  name="phone"
                   label="Telefono"
                   variant="outlined"
                   fullWidth
-                  value={formik.values.telephone}
-                  error={Boolean(formik.errors.telephone)}
+                  value={formik.values.phone}
+                  error={Boolean(formik.errors.phone)}
                   onChange={formik.handleChange}
                 />
               </Grid>

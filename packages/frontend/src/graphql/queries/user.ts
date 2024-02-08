@@ -7,7 +7,7 @@ export const USERS_FOR_LIST = gql`
       firstname
       lastname
       email
-      telephone
+      phone
       image
       roleId
     }
@@ -32,6 +32,8 @@ export const USERS_FOR_SELECT = gql`
   query usersForSelect {
     users {
       id
+      firstname
+      lastname
       fullname
     }
   }
@@ -43,9 +45,13 @@ export const GET_USER = gql`
       firstname
       lastname
       email
-      telephone
+      phone
       image
       roleId
+      role {
+        id
+        name
+      }
     }
   }
 `

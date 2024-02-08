@@ -45,6 +45,7 @@ import ChecklistTab from './checklist-tab'
 import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
+import ModalCancelStage from './modal-cancel-stage'
 
 enum ETab {
   NOTES = 'Notas',
@@ -68,6 +69,7 @@ export default function ProjectDetailView(props: TProps) {
   const [tab, setTab] = useState<ETab>(ETab.SUB_STAGES)
   const modalFinishStage = useBoolean()
   const modalStartTask = useBoolean()
+  const modalCancelStage = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
@@ -132,12 +134,6 @@ export default function ProjectDetailView(props: TProps) {
                 gap: 1,
               }}
             >
-              {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-                <Button variant="contained" onClick={modalStartTask.onTrue}>
-                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
-                  Comenzar
-                </Button>
-              )}
               {stage &&
                 stage.stateId !== TASK_STATE.CANCELLED &&
                 stage.stateId !== TASK_STATE.COMPLETED && (
@@ -146,7 +142,18 @@ export default function ProjectDetailView(props: TProps) {
                     Editar
                   </Button>
                 )}
-
+              {stage?.stateId === TASK_STATE.NEW && (
+                <Button variant="contained" onClick={modalCancelStage.onTrue}>
+                  <Iconify icon="material-symbols:cancel" mr={1} />
+                  Cancelar etapa
+                </Button>
+              )}
+              {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
+                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
+                  Comenzar
+                </Button>
+              )}
               {stage && stage.stateId === TASK_STATE.IN_PROGRESS && (
                 <Button variant="contained" onClick={modalFinishStage.onTrue}>
                   <Iconify icon="pajamas:todo-done" mr={1} />
@@ -347,6 +354,9 @@ export default function ProjectDetailView(props: TProps) {
           subStage={null}
           refetch={refetch}
         />
+      )}
+      {!!stage && modalCancelStage.value && (
+        <ModalCancelStage modal={modalCancelStage} stage={stage} refetch={refetch} />
       )}
     </Container>
   )

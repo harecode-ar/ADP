@@ -45,6 +45,7 @@ import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
 import ModalStartTask from './modal-start-task'
+import ModalCancelProject from './modal-cancel-project'
 
 enum ETab {
   NOTES = 'Notas',
@@ -67,6 +68,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalEdit = useBoolean()
   const modalFinishProject = useBoolean()
   const modalStartTask = useBoolean()
+  const modalCancelTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -140,16 +142,22 @@ export default function ProjectDetailView(props: TProps) {
                   gap: 1,
                 }}
               >
+                <Button variant="contained" onClick={modalEdit.onTrue}>
+                  <Iconify icon="material-symbols:edit" mr={1} />
+                  Editar
+                </Button>
+                {project.stateId === TASK_STATE.NEW && (
+                  <Button variant="contained" onClick={modalCancelTask.onTrue}>
+                    <Iconify icon="material-symbols:cancel" mr={1} />
+                    Cancelar proyecto
+                  </Button>
+                )}
                 {project.stateId === TASK_STATE.ON_HOLD && isProjectAssignedToUser && (
                   <Button variant="contained" onClick={modalStartTask.onTrue}>
                     <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                     Comenzar
                   </Button>
                 )}
-                <Button variant="contained" onClick={modalEdit.onTrue}>
-                  <Iconify icon="material-symbols:edit" mr={1} />
-                  Editar
-                </Button>
                 {project.stateId === TASK_STATE.IN_PROGRESS && (
                   <Button variant="contained" onClick={modalFinishProject.onTrue}>
                     <Iconify icon="pajamas:todo-done" mr={1} />
@@ -365,6 +373,10 @@ export default function ProjectDetailView(props: TProps) {
           subStage={null}
           refetch={refetch}
         />
+      )}
+
+      {!!project && modalCancelTask.value && (
+        <ModalCancelProject modal={modalCancelTask} project={project} refetch={refetch} />
       )}
     </Container>
   )

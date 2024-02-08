@@ -22,6 +22,8 @@ import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 
 type TRow = Pick<IUser, 'id' | 'firstname' | 'lastname' | 'averageCompletition'>
 
+const calculatePercentage = (value: number) => value * 100
+
 const columns: TColumn[] = [
   {
     id: 'fullname',
@@ -54,7 +56,9 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.projectAcp !== null
-            ? row.averageCompletition?.projectAcp.toFixed(2)
+            ? `${calculatePercentage(
+                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -85,7 +89,9 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.projectPacp !== null
-            ? row.averageCompletition?.projectPacp.toFixed(2)
+            ? `${calculatePercentage(
+                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -94,7 +100,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stageAcp',
-    label: 'etapa ACP',
+    label: 'Etapa ACP',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -115,7 +121,7 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.stageAcp !== null
-            ? row.averageCompletition?.stageAcp.toFixed(2)
+            ? `${calculatePercentage(Number(row.averageCompletition?.stageAcp?.toFixed(2)) || 0)}%`
             : '-'}
         </Typography>
       </Box>
@@ -124,7 +130,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stagePacp',
-    label: 'etapa PACP',
+    label: 'Etapa PACP',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -145,7 +151,7 @@ const columns: TColumn[] = [
         </Tooltip>
         <Typography>
           {row.averageCompletition?.stagePacp !== null
-            ? row.averageCompletition?.stagePacp.toFixed(2)
+            ? `${calculatePercentage(Number(row.averageCompletition?.stagePacp?.toFixed(2)) || 0)}%`
             : '-'}
         </Typography>
       </Box>
@@ -192,7 +198,7 @@ const Table = () => {
                   {selected.length === 1 && (
                     <Link
                       component={NextLink}
-                      href={paths.dashboard.user.list.replace(':id', selected[0])}
+                      href={paths.dashboard.user.detail.replace(':id', selected[0])}
                     >
                       <IconButton>
                         <Iconify icon="mdi:eye" />

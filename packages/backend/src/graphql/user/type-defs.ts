@@ -4,13 +4,16 @@ export default `#graphql
     firstname: String
     lastname: String
     email: String
-    telephone: String
+    phone: String
     image: String
     roleId: Int
 
     role: Role
     fullname: String
     averageCompletition: UserAverageCompletition
+    sharedStages: [Stage]
+    sharedSubStages: [Stage]
+    sharedProjects: [Project]
 
     createdAt: String
     updatedAt: String
@@ -30,7 +33,7 @@ export default `#graphql
       firstname: String!
       lastname: String!
       email: String!
-      telephone: String
+      phone: String
       roleId: Int!
       image: Upload
     ): User
@@ -40,7 +43,7 @@ export default `#graphql
       firstname: String!
       lastname: String!
       email: String!
-      telephone: String
+      phone: String
       roleId: Int!
       image: Upload
     ): User

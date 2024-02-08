@@ -26,6 +26,7 @@ export default `#graphql
     childStages: [Stage]
     project: Project
     notes: [StageNote]
+    viewers: [User]
   }
 
   type Query {
@@ -88,5 +89,7 @@ export default `#graphql
     deleteSubStage(id: Int!): Stage
 
     finishSubStage(id: Int!): Stage
+
+    cancelStage(id: Int!): Stage
   }
 `

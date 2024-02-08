@@ -61,6 +61,20 @@ export default {
       if (stage.notes) return Promise.resolve(stage.notes)
       return StageNote.findAll({ where: { stageId: stage.id } })
     },
+    viewers: async (parent: IStage): Promise<IUser[]> => {
+      if (parent.viewers) return parent.viewers
+      const stage = await Stage.findByPk(parent.id, {
+        include: [
+          {
+            model: User,
+            as: 'viewers',
+          },
+        ],
+      })
+      if (!stage) throw new Error('Etapa no encontrada')
+      // @ts-ignore
+      return stage.viewers
+    },
   },
   Query: {
     stages: (
@@ -991,6 +1005,65 @@ export default {
         })
 
         return subStage
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    cancelStage: async (_: any, args: Pick<IStage, 'id'>, context: IContext) => {
+      try {
+        needPermission([PERMISSION_MAP.STAGE_UPDATE], context)
+        const { id } = args
+        const stage = await Stage.findByPk(id, {
+          attributes: ['id', 'stateId'],
+          include: [
+            {
+              model: Stage,
+              as: 'childStages',
+              attributes: ['id', 'stateId'],
+            },
+          ],
+        })
+        if (!stage) {
+          throw new Error('Etapa no encontrado')
+        }
+        if (stage.stateId === TASK_STATE.COMPLETED) {
+          throw new Error('No se puede cancelar una etapa finalizado')
+        }
+        if (stage.stateId === TASK_STATE.CANCELLED) {
+          throw new Error('La etapa ya se encuentra cancelado')
+        }
+        if (stage.stateId === TASK_STATE.IN_PROGRESS) {
+          throw new Error('No se puede cancelar una etapa en progreso')
+        }
+
+        // @ts-ignore
+        const { childStages = [] } = stage as { childStages: Stage[] }
+
+        const someStage = childStages.some(
+          (childStage) =>
+            childStage.stateId === TASK_STATE.ON_HOLD ||
+            childStage.stateId === TASK_STATE.IN_PROGRESS ||
+            childStage.stateId === TASK_STATE.COMPLETED
+        )
+
+        if (someStage) {
+          throw new Error(
+            'No se puede cancelar una etapa con sub etapas en espera, en progreso o finalizadas'
+          )
+        }
+
+        await Promise.all(
+          childStages
+            .filter((subStage) => subStage.stateId === TASK_STATE.NEW)
+            .map((subStage) => subStage.update({ stateId: TASK_STATE.CANCELLED }))
+        )
+
+        await stage.update({
+          stateId: TASK_STATE.CANCELLED,
+        })
+        return stage
       } catch (error) {
         logger.error(error)
         throw error
