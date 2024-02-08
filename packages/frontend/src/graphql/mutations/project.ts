@@ -61,3 +61,11 @@ export const FINISH_PROJECT = gql`
     }
   }
 `
+
+export const CANCEL_PROJECT = gql`
+  mutation cancelProject($id: Int!) {
+    cancelProject(id: $id) {
+      id
+    }
+  }
+`

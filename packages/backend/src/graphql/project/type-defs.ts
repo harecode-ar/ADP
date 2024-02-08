@@ -59,5 +59,7 @@ export default `#graphql
     deleteProject(id: Int!): Project
 
     finishProject(id: Int!): Project
+
+    cancelProject(id: Int!): Project
   }
 `
