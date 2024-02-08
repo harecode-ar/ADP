@@ -8,8 +8,9 @@ import {
 import { getAreaFromTree, getAreaDescendantsIds, getDirectAreaDescendantsIds } from '@adp/shared'
 import { Area, AreaAverageCompletition, Cache, Project, User } from '../../database/models'
 import logger from '../../logger'
-import { createNotification, generateAreaTreeCache } from '../../database/jobs'
+import { generateAreaTreeCache } from '../../database/jobs'
 import { IContext } from '../types'
+import { sendNotification } from '../../utils/notification'
 
 export default {
   Area: {
@@ -326,21 +327,19 @@ export default {
         generateAreaTreeCache()
         if (differentResponsible) {
           if (previousResponsibleId) {
-            createNotification(
-              {
-                title: `Te han quitado la responsabilidad del area ${area.name}`,
-                category: ENotificationCategory.AREA,
-              },
-              [previousResponsibleId]
-            )
-          }
-          createNotification(
-            {
-              title: `Te han asignado la responsabilidad del area ${area.name}`,
+            sendNotification({
+              title: `Te han quitado la responsabilidad del area ${area.name}`,
               category: ENotificationCategory.AREA,
-            },
-            [responsibleId]
-          )
+              userIds: [previousResponsibleId],
+              email: true,
+            })
+          }
+          sendNotification({
+            title: `Te han asignado la responsabilidad del area ${area.name}`,
+            category: ENotificationCategory.AREA,
+            userIds: [responsibleId],
+            email: true,
+          })
         }
         return area
       } catch (error) {

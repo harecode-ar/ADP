@@ -19,7 +19,6 @@ import {
   AreaAverageCompletition,
   Configuration,
   Notification,
-  UserNotification,
   Contact,
 } from '../../database/models'
 import { getAcp } from '../../utils/average-completition'
@@ -27,6 +26,7 @@ import { getDaysDiff } from '../../utils/date'
 import logger from '../../logger'
 import { IContext } from '../types'
 import { needRole } from '../../utils/auth'
+import { sendNotification } from '../../utils/notification'
 
 const daysToText = (days: number) => {
   const abs = Math.abs(days)
@@ -293,14 +293,11 @@ export default {
           }
 
           if (notificationTitle) {
-            Notification.create({
+            sendNotification({
               title: notificationTitle,
               category: ENotificationCategory.PROJECT,
-            }).then((notification) => {
-              UserNotification.create({
-                userId: area.responsibleId,
-                notificationId: notification.id,
-              })
+              userIds: [area.responsibleId],
+              email: true,
             })
           }
 
@@ -336,14 +333,11 @@ export default {
           }
 
           if (notificationTitle) {
-            Notification.create({
+            sendNotification({
               title: notificationTitle,
               category: ENotificationCategory.STAGE,
-            }).then((notification) => {
-              UserNotification.create({
-                userId: area.responsibleId,
-                notificationId: notification.id,
-              })
+              userIds: [area.responsibleId],
+              email: true,
             })
           }
 
@@ -379,14 +373,11 @@ export default {
           }
 
           if (notificationTitle) {
-            Notification.create({
+            sendNotification({
               title: notificationTitle,
               category: ENotificationCategory.SUB_STAGE,
-            }).then((notification) => {
-              UserNotification.create({
-                userId: area.responsibleId,
-                notificationId: notification.id,
-              })
+              userIds: [area.responsibleId],
+              email: true,
             })
           }
 
