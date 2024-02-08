@@ -198,7 +198,7 @@ const Table = () => {
                   {selected.length === 1 && (
                     <Link
                       component={NextLink}
-                      href={paths.dashboard.user.list.replace(':id', selected[0])}
+                      href={paths.dashboard.user.detail.replace(':id', selected[0])}
                     >
                       <IconButton>
                         <Iconify icon="mdi:eye" />
