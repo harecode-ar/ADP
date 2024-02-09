@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { TASK_STATE, type IProject, type IStage } from '@adp/shared'
 import {
   Box,
@@ -26,6 +26,7 @@ import {
   GET_PROJECT,
   GET_STAGES_BY_PROJECT,
   GET_PROJECTS_ASSIGNED_TO_USER,
+  GET_USER_VIEW_PROJECT,
 } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
@@ -71,6 +72,13 @@ export default function ProjectDetailView(props: TProps) {
   const modalCancelTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
 
+  const { data: access } = useQuery(GET_USER_VIEW_PROJECT, {
+    variables: {
+      projectId: Number(projectId),
+    },
+    skip: !projectId,
+  });
+
   const projectQuery = useQuery(GET_PROJECT, {
     variables: { id: Number(projectId) },
     skip: !projectId,
@@ -106,6 +114,14 @@ export default function ProjectDetailView(props: TProps) {
     isProjectAssignedToUserQuery.refetch()
   }
 
+  
+  useEffect(() => {
+    if (access && !access.userViewProject) {
+      enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' });
+      router.push(paths.dashboard.root);
+    }
+  }, [access, enqueueSnackbar, router]);
+
   const project: IProject | null = useMemo(() => {
     if (!projectQuery.data) return null
     return projectQuery.data.project
@@ -120,6 +136,10 @@ export default function ProjectDetailView(props: TProps) {
     if (!isProjectAssignedToUserQuery.data) return false
     return isProjectAssignedToUserQuery.data.projectAssignedToUser
   }, [isProjectAssignedToUserQuery.data])
+
+  if (!access || !access.userViewProject) {
+    return null;
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -365,7 +385,7 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
-      {modalStartTask.value && (
+      {!!project && modalStartTask.value && (
         <ModalStartTask
           modal={modalStartTask}
           project={project || null}

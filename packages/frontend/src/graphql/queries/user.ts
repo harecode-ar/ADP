@@ -61,3 +61,9 @@ export const GET_COUNT_USER_ASSIGNATIONS = gql`
     countUserAssignations
   }
 `
+
+export const GET_USER_VIEW_PROJECT = gql`
+  query userViewProject($projectId: Int!) {
+    userViewProject(projectId: $projectId)
+  } 
+`
