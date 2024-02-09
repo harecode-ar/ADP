@@ -1,5 +1,5 @@
-import { ETokenType, PERMISSION_MAP } from '@adp/shared'
-import type { IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import type { IArea,IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import { ECacheKey, ETokenType, PERMISSION_MAP, getAreaAncestors } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Op } from 'sequelize'
 import {
@@ -9,6 +9,7 @@ import {
   Project,
   Area,
   Stage,
+  Cache,
   UserAverageCompletition,
 } from '../../database/models'
 import logger from '../../logger'
@@ -177,6 +178,109 @@ export default {
         throw error
       }
     },
+    userViewProject: async (_: any, args: { projectId: number }, context: IContext) => {
+      try {
+        const { projectId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const project = await Project.findByPk(projectId, {
+          attributes: ['id', 'areaId'],
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id', 'responsibleId'],
+            },
+          ],
+        })
+        if (!project) throw new Error('Proyecto no encontrado')
+
+        const [cachedTree] = await Promise.all([
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        const ancestors = getAreaAncestors(tree, Number(project.areaId))
+
+        const responsibleIds = await Area.findAll({
+          where: {
+            id: {
+              [Op.in]: ancestors.map((ancestor) => ancestor.id),
+            },
+          },
+          attributes: ['responsibleId'],
+        })
+        
+        // @ts-ignore
+        if (project.area.responsibleId === user.id) {
+          return true
+        }
+        if (responsibleIds.some((responsible) => responsible.responsibleId === user.id)) {
+          return true
+        }
+        return false
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    userViewStage: async (_: any, args: { stageId: number }, context: IContext) => {
+      try {
+        const { stageId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const stage = await Stage.findByPk(stageId, {
+          attributes: ['id', 'areaId'],
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id', 'responsibleId'],
+            },
+          ],
+        })
+        if (!stage) throw new Error('Etapa no encontrada')
+
+        const [cachedTree] = await Promise.all([
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        const ancestors = getAreaAncestors(tree, Number(stage.areaId))
+
+        const responsibleIds = await Area.findAll({
+          where: {
+            id: {
+              [Op.in]: ancestors.map((ancestor) => ancestor.id),
+            },
+          },
+          attributes: ['responsibleId'],
+        })
+        // @ts-ignore
+        if (stage.area.responsibleId === user.id) {
+          return true
+        }
+        if (responsibleIds.some((responsible) => responsible.responsibleId === user.id)) {
+          return true
+        }
+        return false
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
   Mutation: {
     createUser: async (

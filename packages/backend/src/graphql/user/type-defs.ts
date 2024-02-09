@@ -24,6 +24,8 @@ export default `#graphql
     users: [User]
     usersForReport: [User]
     countUserAssignations: Int
+    userViewProject(projectId: Int): Boolean
+    userViewStage(stageId: Int): Boolean
   }
 
   type Mutation {
