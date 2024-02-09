@@ -5,13 +5,14 @@ import { useTheme } from '@mui/material/styles'
 
 type TProps = {
   news: number
+  onHold: number
   inProgress: number
   completed: number
   cancelled: number
 }
 
 export default function ComponentTwo(props: TProps) {
-  const { news, inProgress, completed, cancelled } = props
+  const { news, onHold, inProgress, completed, cancelled } = props
 
   const theme = useTheme()
 
@@ -62,6 +63,7 @@ export default function ComponentTwo(props: TProps) {
           type="bar"
           series={[
             { name: 'Nuevos', data: [news, 0, 0, 0] },
+            { name: 'En espera', data: [onHold, 0, 0, 0] },
             { name: 'En proceso', data: [0, inProgress, 0, 0] },
             { name: 'Finalizados', data: [0, 0, completed, 0] },
             { name: 'Cancelados', data: [0, 0, 0, cancelled] },

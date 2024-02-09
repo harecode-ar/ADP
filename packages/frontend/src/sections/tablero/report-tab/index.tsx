@@ -18,7 +18,7 @@ import ComponentFive from './component-five'
 import ComponentSix from './component-six'
 
 type TArea = Pick<IArea, 'id' | 'name'>
-const DEFAULT_VALUE = { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
+const DEFAULT_VALUE = { new: 0, onHold: 0, inProgress: 0, completed: 0, cancelled: 0 }
 
 export default function ReportTab() {
   const { selectedAreas, selectedInitialDate, selectedFinalDate } = useDashboardReportContext()
@@ -54,6 +54,7 @@ export default function ReportTab() {
 
   const {
     new: newCount,
+    onHold: onHoldCount,
     inProgress: inProgressCount,
     completed: completedCount,
     cancelled: cancelledCount,
@@ -66,6 +67,7 @@ export default function ReportTab() {
 
   const {
     new: newCost,
+    onHold: onHoldCost,
     inProgress: inProgressCost,
     completed: completedCost,
     cancelled: cancelledCost,
@@ -74,7 +76,7 @@ export default function ReportTab() {
     return projectCostData.projectCostByState || DEFAULT_VALUE
   }, [projectCostData])
 
-  const totalCost = newCost + inProgressCost + completedCost + cancelledCost
+  const totalCost = newCost + onHoldCost + inProgressCost + completedCost + cancelledCost
   return (
     <Box
       sx={{
@@ -87,6 +89,7 @@ export default function ReportTab() {
 
       <ComponentOne
         news={newCount}
+        onHold={onHoldCount}
         inProgress={inProgressCount}
         completed={completedCount}
         cancelled={cancelledCount}
@@ -96,6 +99,7 @@ export default function ReportTab() {
         <Grid item xs={12} md={4}>
           <ComponentThree
             news={newCount}
+            onHold={onHoldCount}
             inProgress={inProgressCount}
             completed={completedCount}
             cancelled={cancelledCount}
@@ -105,6 +109,7 @@ export default function ReportTab() {
         <Grid item xs={12} md={8}>
           <ComponentTwo
             news={newCount}
+            onHold={onHoldCount}
             inProgress={inProgressCount}
             completed={completedCount}
             cancelled={cancelledCount}
@@ -113,6 +118,7 @@ export default function ReportTab() {
       </Grid>
       <ComponentSix
         news={newCost}
+        onHold={onHoldCost}
         inProgress={inProgressCost}
         completed={completedCost}
         cancelled={cancelledCost}
@@ -122,6 +128,7 @@ export default function ReportTab() {
         <Grid item xs={12} md={4}>
           <ComponentFive
             news={newCost}
+            onHold={onHoldCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}
@@ -131,6 +138,7 @@ export default function ReportTab() {
         <Grid item xs={12} md={8}>
           <ComponentFour
             news={newCost}
+            onHold={onHoldCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}

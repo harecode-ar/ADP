@@ -15,6 +15,7 @@ import Label, { LabelColor } from 'src/components/label'
 
 type TProps = {
   news: number
+  onHold: number
   inProgress: number
   completed: number
   cancelled: number
@@ -48,7 +49,7 @@ function Row(props: TRowProps) {
 }
 
 export default function ComponentTree(props: TProps) {
-  const { news, inProgress, completed, cancelled, total } = props
+  const { news, onHold, inProgress, completed, cancelled, total } = props
 
   return (
     <Card
@@ -67,6 +68,7 @@ export default function ComponentTree(props: TProps) {
           </TableHead>
           <TableBody>
             <Row label="Nuevos" value={news} color="info" />
+            <Row label="En espera" value={onHold} color="warning" />
             <Row label="En proceso" value={inProgress} color="warning" />
             <Row label="Finalizados" value={completed} color="success" />
             <Row label="Cancelados" value={cancelled} color="default" />
