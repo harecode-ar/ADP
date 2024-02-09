@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { type IStage, TASK_STATE } from '@adp/shared'
 import {
   Box,
@@ -26,6 +26,7 @@ import {
   GET_STAGE,
   GET_STAGES_ASSIGNED_TO_USER,
   GET_SUB_STAGES_BY_STAGE,
+  GET_USER_VIEW_STAGE,
 } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -71,6 +72,13 @@ export default function ProjectDetailView(props: TProps) {
   const modalStartTask = useBoolean()
   const modalCancelStage = useBoolean()
 
+  const { data: access } = useQuery(GET_USER_VIEW_STAGE, {
+    variables: {
+      stageId: Number(stageId),
+    },
+    skip: !stageId,
+  });
+
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
     skip: !stageId,
@@ -113,6 +121,17 @@ export default function ProjectDetailView(props: TProps) {
     stageQuery.refetch()
     subStageQuery.refetch()
     isStageAssignedToUserQuery.refetch()
+  }
+
+  useEffect(() => {
+    if (access && !access.userViewStage) {
+      enqueueSnackbar('No tienes permisos para ver esta etapa', { variant: 'error' });
+      router.push(paths.dashboard.root);
+    }
+  }, [access, enqueueSnackbar, router]);
+
+  if (!access || !access.userViewStage) {
+    return null;
   }
 
   return (

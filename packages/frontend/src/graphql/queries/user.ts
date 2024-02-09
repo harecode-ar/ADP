@@ -61,3 +61,9 @@ export const GET_COUNT_USER_ASSIGNATIONS = gql`
     countUserAssignations
   }
 `
+
+export const GET_USER_VIEW_STAGE = gql`
+  query userViewStage($stageId: Int!) {
+    userViewStage(stageId: $stageId)
+  } 
+`
