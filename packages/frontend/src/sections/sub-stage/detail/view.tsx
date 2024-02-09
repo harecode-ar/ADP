@@ -23,7 +23,7 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE } from 'src/graphql/queries'
+import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE, GET_USER_VIEW_STAGE } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
@@ -78,6 +78,19 @@ export default function ProjectDetailView(props: TProps) {
   const modalStartTask = useBoolean()
   const modalCancelSubStage = useBoolean()
 
+  const { data: access } = useQuery(GET_USER_VIEW_STAGE, {
+    variables: {
+      stageId: Number(subStageId),
+    },
+    skip: !subStageId,
+    onCompleted: (data) => {
+      if (!data || !data.userViewStage) {
+        enqueueSnackbar('No tienes permisos para ver esta sub-etapa', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    }
+  });
+
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
     skip: !subStageId,
@@ -109,6 +122,10 @@ export default function ProjectDetailView(props: TProps) {
   const refetch = () => {
     subStageQuery.refetch()
     isStageAssignedToUserQuery.refetch()
+  }
+
+  if (!access || !access.userViewStage) {
+    return null;
   }
 
   return (
