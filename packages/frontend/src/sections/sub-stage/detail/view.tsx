@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { type IStage, TASK_STATE, TASK_STATE_NAME } from '@adp/shared'
 import {
   Box,
@@ -83,6 +83,12 @@ export default function ProjectDetailView(props: TProps) {
       stageId: Number(subStageId),
     },
     skip: !subStageId,
+    onCompleted: (data) => {
+      if (!data || !data.userViewStage) {
+        enqueueSnackbar('No tienes permisos para ver esta sub-etapa', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    }
   });
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
@@ -117,13 +123,6 @@ export default function ProjectDetailView(props: TProps) {
     subStageQuery.refetch()
     isStageAssignedToUserQuery.refetch()
   }
-
-  useEffect(() => {
-    if (access && !access.userViewStage) {
-      enqueueSnackbar('No tienes permisos para ver esta sub-etapa', { variant: 'error' });
-      router.push(paths.dashboard.root);
-    }
-  }, [access, enqueueSnackbar, router]);
 
   if (!access || !access.userViewStage) {
     return null;
