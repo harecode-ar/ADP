@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { TASK_STATE, type IProject, type IStage } from '@adp/shared'
 import {
   Box,
