@@ -77,7 +77,13 @@ export default function ProjectDetailView(props: TProps) {
       projectId: Number(projectId),
     },
     skip: !projectId,
-  });
+    onCompleted: (data) => {
+      if (!data || !data.userViewProject) {
+        enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    }
+  })
 
   const projectQuery = useQuery(GET_PROJECT, {
     variables: { id: Number(projectId) },
@@ -113,14 +119,6 @@ export default function ProjectDetailView(props: TProps) {
     stageQuery.refetch()
     isProjectAssignedToUserQuery.refetch()
   }
-
-  
-  useEffect(() => {
-    if (access && !access.userViewProject) {
-      enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' });
-      router.push(paths.dashboard.root);
-    }
-  }, [access, enqueueSnackbar, router]);
 
   const project: IProject | null = useMemo(() => {
     if (!projectQuery.data) return null
