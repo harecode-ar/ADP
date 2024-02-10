@@ -90,7 +90,7 @@ export default function ComponentOne(props: TProps) {
             amount={onHold}
             subtitle="En espera"
             percent={Math.round((onHold / (total || 1)) * 100)}
-            color={theme.palette.info.main}
+            color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic

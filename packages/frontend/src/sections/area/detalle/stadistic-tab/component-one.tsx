@@ -61,6 +61,7 @@ function InvoiceAnalytic(props: InvoiceAnalyticProps) {
 
 type TProps = {
   news: number
+  onHold: number
   inProgress: number
   completed: number
   cancelled: number
@@ -68,7 +69,7 @@ type TProps = {
 }
 
 export default function ComponentOne(props: TProps) {
-  const { news, inProgress, completed, cancelled, total } = props
+  const { news, onHold, inProgress, completed, cancelled, total } = props
   const theme = useTheme()
 
   return (
@@ -84,6 +85,13 @@ export default function ComponentOne(props: TProps) {
             subtitle="Nuevos"
             percent={Math.round((news / (total || 1)) * 100)}
             color={theme.palette.info.main}
+          />
+
+          <InvoiceAnalytic
+            amount={onHold}
+            subtitle="En espera"
+            percent={Math.round((onHold / (total || 1)) * 100)}
+            color={theme.palette.warning.main}
           />
 
           <InvoiceAnalytic
@@ -105,13 +113,6 @@ export default function ComponentOne(props: TProps) {
             subtitle="Cancelados"
             percent={Math.round((cancelled / (total || 1)) * 100)}
             color={theme.palette.text.secondary}
-          />
-
-          <InvoiceAnalytic
-            amount={total}
-            subtitle="Totales"
-            percent={100}
-            color={theme.palette.secondary.main}
           />
         </Stack>
       </Scrollbar>

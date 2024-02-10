@@ -41,6 +41,7 @@ export default function ComponentTwo(props: TProps) {
     colors: [
       theme.palette.info.dark,
       theme.palette.warning.main,
+      theme.palette.warning.main,
       theme.palette.success.main,
       theme.palette.text.secondary,
     ],
@@ -62,11 +63,11 @@ export default function ComponentTwo(props: TProps) {
           dir="ltr"
           type="bar"
           series={[
-            { name: 'Nuevos', data: [news, 0, 0, 0] },
-            { name: 'En espera', data: [onHold, 0, 0, 0] },
-            { name: 'En proceso', data: [0, inProgress, 0, 0] },
-            { name: 'Finalizados', data: [0, 0, completed, 0] },
-            { name: 'Cancelados', data: [0, 0, 0, cancelled] },
+            { name: 'Nuevos', data: [news, 0, 0, 0, 0] },
+            { name: 'En espera', data: [0, onHold, 0, 0, 0] },
+            { name: 'En proceso', data: [0, 0, inProgress, 0, 0] },
+            { name: 'Finalizados', data: [0, 0, 0, completed, 0] },
+            { name: 'Cancelados', data: [0, 0, 0, 0, cancelled] },
           ]}
           options={chartOptions}
           width="100%"

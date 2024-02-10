@@ -1,6 +1,7 @@
 export default `#graphql
   type ProjectAreaReport {
     new: Int
+    onHold: Int
     inProgress: Int
     completed: Int
     cancelled: Int
@@ -8,6 +9,7 @@ export default `#graphql
 
   type ProjectCostAreaReport {
     new: Float
+    onHold: Int
     inProgress: Float
     completed: Float
     cancelled: Float

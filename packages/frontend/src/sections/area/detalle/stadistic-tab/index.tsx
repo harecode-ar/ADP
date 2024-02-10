@@ -42,6 +42,7 @@ export default function ReportTab({ area }: TProps) {
 
   const {
     new: newCount,
+    onHold: onHoldCount,
     inProgress: inProgressCount,
     completed: completedCount,
     cancelled: cancelledCount,
@@ -50,10 +51,11 @@ export default function ReportTab({ area }: TProps) {
     return projectCountData.projectCountByState || DEFAULT_VALUE
   }, [projectCountData])
 
-  const totalProjects = newCount + inProgressCount + completedCount + cancelledCount
+  const totalProjects = newCount + onHoldCount + inProgressCount + completedCount + cancelledCount
 
   const {
     new: newCost,
+    onHold: onHoldCost,
     inProgress: inProgressCost,
     completed: completedCost,
     cancelled: cancelledCost,
@@ -62,7 +64,7 @@ export default function ReportTab({ area }: TProps) {
     return projectCostData.projectCostByState || DEFAULT_VALUE
   }, [projectCostData])
 
-  const totalCost = newCost + inProgressCost + completedCost + cancelledCost
+  const totalCost = newCost + onHoldCost + inProgressCost + completedCost + cancelledCost
   return (
     <Box
       sx={{
@@ -74,6 +76,7 @@ export default function ReportTab({ area }: TProps) {
       <FilterComponent />
       <ComponentOne
         news={newCount}
+        onHold={onHoldCount}
         inProgress={inProgressCount}
         completed={completedCount}
         cancelled={cancelledCount}
@@ -83,6 +86,7 @@ export default function ReportTab({ area }: TProps) {
         <Grid item xs={12} md={4}>
           <ComponentThree
             news={newCount}
+            onHold={onHoldCount}
             inProgress={inProgressCount}
             completed={completedCount}
             cancelled={cancelledCount}
@@ -92,6 +96,7 @@ export default function ReportTab({ area }: TProps) {
         <Grid item xs={12} md={8}>
           <ComponentTwo
             news={newCount}
+            onHold={onHoldCount}
             inProgress={inProgressCount}
             completed={completedCount}
             cancelled={cancelledCount}
@@ -100,6 +105,7 @@ export default function ReportTab({ area }: TProps) {
       </Grid>
       <ComponentSix
         news={newCost}
+        onHold={onHoldCost}
         inProgress={inProgressCost}
         completed={completedCost}
         cancelled={cancelledCost}
@@ -109,6 +115,7 @@ export default function ReportTab({ area }: TProps) {
         <Grid item xs={12} md={4}>
           <ComponentFive
             news={newCost}
+            onHold={onHoldCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}
@@ -118,6 +125,7 @@ export default function ReportTab({ area }: TProps) {
         <Grid item xs={12} md={8}>
           <ComponentFour
             news={newCost}
+            onHold={onHoldCost}
             inProgress={inProgressCost}
             completed={completedCost}
             cancelled={cancelledCost}

@@ -1,7 +1,11 @@
-import { ENotificationCategory, INotification } from '@adp/shared'
+import { ENotificationCategory, INotification, IBackendEnvironment, EAppMode } from '@adp/shared'
+import dotenv from 'dotenv'
 import { Notification, User, UserNotification } from '../database/models'
 import { sendNotificationMail } from '../services/nodemailer/notification'
 
+dotenv.config()
+
+const { APP_MODE } = process.env as unknown as IBackendEnvironment
 interface TSettings {
   title: string
   category: ENotificationCategory
@@ -31,7 +35,7 @@ export const sendNotification = async (settings: TSettings) => {
     }))
   )
 
-  if (email) {
+  if (email && APP_MODE !== EAppMode.LOCAL) {
     users.forEach((user) => {
       sendNotificationMail(user, notification as INotification)
     })
