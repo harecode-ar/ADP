@@ -201,7 +201,7 @@ export default {
         needRole([ROLE_MAP.ADMIN], context)
         if (!context.user) throw new Error('No autorizado')
         const configuration = await Configuration.findOne({
-          where: { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN },
+          where: { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT },
         })
 
         const percentageAlertMargin = configuration ? Number(configuration.value) : 0
