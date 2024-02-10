@@ -1,5 +1,6 @@
 export enum EConfigurationKey {
-  PERCENTAGE_ALERT_MARGIN = 'percentageAlertMargin',
+  PERCENTAGE_ALERT_MARGIN_PROJECT = 'percentageAlertMarginProject',
+  PERCENTAGE_ALERT_MARGIN_STAGE = 'percentageAlertMarginStage',
 }
 
 export interface IConfiguration {

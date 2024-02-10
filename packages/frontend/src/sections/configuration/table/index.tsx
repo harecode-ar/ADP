@@ -9,11 +9,13 @@ import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { Box, IconButton } from '@mui/material'
 import Iconify from 'src/components/iconify'
-import PercentageAlertMarginModal from './modals/percentage-alert-margin'
+import PercentageAlertMarginProjectModal from './modals/percentage-alert-margin-project'
+import PercentageAlertMarginStageModal from './modals/percentage-alert-margin-stage'
 import { COLUMNS, TABLE_ID } from './config'
 
 export default function Table() {
-  const percentageAlertMarginModal = useBoolean()
+  const percentageAlertMarginProjectModal = useBoolean()
+  const percentageAlertMarginStageModal = useBoolean()
   const { selected, setMultiple } = useTable()
   const { configurations, loading, refetch } = useConfigurationContext()
 
@@ -39,8 +41,12 @@ export default function Table() {
   const handleClick = () => {
     if (selected.length > 1) return
 
-    if (selected[0] === EConfigurationKey.PERCENTAGE_ALERT_MARGIN) {
-      percentageAlertMarginModal.onTrue()
+    if (selected[0] === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT) {
+      percentageAlertMarginProjectModal.onTrue()
+    }
+
+    if (selected[0] === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE) {
+      percentageAlertMarginStageModal.onTrue()
     }
   }
 
@@ -68,8 +74,11 @@ export default function Table() {
           />
         </React.Fragment>
       )}
-      {percentageAlertMarginModal.value && (
-        <PercentageAlertMarginModal modal={percentageAlertMarginModal} refetch={refetch} />
+      {percentageAlertMarginProjectModal.value && (
+        <PercentageAlertMarginProjectModal modal={percentageAlertMarginProjectModal} refetch={refetch} />
+      )}
+      {percentageAlertMarginStageModal.value && (
+        <PercentageAlertMarginStageModal modal={percentageAlertMarginStageModal} refetch={refetch} />
       )}
     </Box>
   )
