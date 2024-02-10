@@ -71,7 +71,7 @@ export default function ComponentTwo(props: TProps) {
           ]}
           options={chartOptions}
           width="100%"
-          height={320}
+          height={360}
         />
       </Card>
     </Card>
