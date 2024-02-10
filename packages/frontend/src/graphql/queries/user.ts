@@ -67,3 +67,9 @@ export const GET_USER_VIEW_PROJECT = gql`
     userViewProject(projectId: $projectId)
   } 
 `
+
+export const GET_USER_VIEW_STAGE = gql`
+  query userViewStage($stageId: Int!) {
+    userViewStage(stageId: $stageId)
+  } 
+`
