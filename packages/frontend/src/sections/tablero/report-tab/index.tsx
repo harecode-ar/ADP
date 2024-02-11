@@ -63,7 +63,7 @@ export default function ReportTab() {
     return projectCountData.projectCountByState || DEFAULT_VALUE
   }, [projectCountData])
 
-  const totalProjects = newCount + inProgressCount + completedCount + cancelledCount
+  const totalProjects = newCount + onHoldCount + inProgressCount + completedCount + cancelledCount
 
   const {
     new: newCost,
