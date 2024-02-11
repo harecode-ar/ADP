@@ -168,19 +168,19 @@ export default function ProjectDetailView(props: TProps) {
                     </Button>
                   )}
                 {subStage && subStage.stateId === TASK_STATE.NEW && (
-                  <Button variant="contained" onClick={modalCancelSubStage.onTrue}>
+                  <Button variant="contained" onClick={modalCancelSubStage.onTrue} color="error">
                     <Iconify icon="material-symbols:cancel" mr={1} />
                     Cancelar sub etapa
                   </Button>
                 )}
                 {subStage && subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-                  <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Button variant="contained" onClick={modalStartTask.onTrue} color="primary">
                     <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                     Comenzar
                   </Button>
                 )}
                 {subStage && subStage.stateId === TASK_STATE.IN_PROGRESS && (
-                  <Button variant="contained" onClick={modalFinishSubStage.onTrue}>
+                  <Button variant="contained" onClick={modalFinishSubStage.onTrue} color="primary">
                     <Iconify icon="pajamas:todo-done" mr={1} />
                     Finalizar
                   </Button>

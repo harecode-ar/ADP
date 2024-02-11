@@ -105,7 +105,7 @@ export default function AssignmentItem(props: TProps) {
             )}
             {assignment.stateId === TASK_STATE.ON_HOLD && (
               <Tooltip title="Comenzar tarea">
-                <IconButton onClick={modalStartTask.onTrue}>
+                <IconButton onClick={modalStartTask.onTrue} color='primary'>
                   <Iconify icon="mdi:stopwatch-start-outline" />
                 </IconButton>
               </Tooltip>
