@@ -69,11 +69,11 @@ export default function ModalCancelTask(props: TProps) {
                     gap: 1,
                   }}
                 >
-                  <Button onClick={modal.onFalse} variant="outlined" color="primary">
+                  <Button onClick={modal.onFalse} variant="outlined" color="error">
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="primary" onClick={() => onAccept()}>
+                  <Button variant="contained" color="error" onClick={() => onAccept()}>
                     <Iconify sx={{ mr: 1 }} icon="pajamas:todo-done" />
                     Aceptar
                   </Button>
