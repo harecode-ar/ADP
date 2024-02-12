@@ -23,7 +23,11 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE, GET_USER_VIEW_STAGE } from 'src/graphql/queries'
+import {
+  GET_STAGES_ASSIGNED_TO_USER,
+  GET_SUB_STAGE,
+  GET_USER_VIEW_STAGE,
+} from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
@@ -39,6 +43,7 @@ import ContactTab from './contact-tab'
 import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 import ModalCancelSubStage from './modal-cancel-sub-stage'
+import UserTab from './user-tab'
 
 const getColorVariant = (name: string) => {
   if (name === TASK_STATE_NAME.NEW) {
@@ -60,6 +65,7 @@ enum ETab {
   NOTES = 'Notas',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  USERS = 'Usuarios',
 }
 
 type TProps = {
@@ -88,8 +94,8 @@ export default function ProjectDetailView(props: TProps) {
         enqueueSnackbar('No tienes permisos para ver esta sub-etapa', { variant: 'error' })
         router.push(paths.dashboard.root)
       }
-    }
-  });
+    },
+  })
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
@@ -125,7 +131,7 @@ export default function ProjectDetailView(props: TProps) {
   }
 
   if (!access || !access.userViewStage) {
-    return null;
+    return null
   }
 
   return (
@@ -329,11 +335,13 @@ export default function ProjectDetailView(props: TProps) {
                       isStageAssignedToUserQuery.data.stageAssignedToUser && (
                         <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                       )}
+                    <Tab label={ETab.USERS} value={ETab.USERS} />
                   </Tabs>
                 </Card>
                 {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
                 {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
                 {tab === ETab.CHECKLIST && <ChecklistTab subStage={subStage} />}
+                {tab === ETab.USERS && <UserTab stage={subStage} />}
 
                 {modalFinishSubStage.value && (
                   <ModalFinishSubStage

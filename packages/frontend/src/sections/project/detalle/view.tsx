@@ -47,6 +47,7 @@ import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
 import ModalStartTask from './modal-start-task'
 import ModalCancelProject from './modal-cancel-project'
+import UserTab from './user-tab'
 
 enum ETab {
   NOTES = 'Notas',
@@ -54,6 +55,7 @@ enum ETab {
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  USERS = 'Usuarios',
 }
 
 type TProps = {
@@ -82,7 +84,7 @@ export default function ProjectDetailView(props: TProps) {
         enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' })
         router.push(paths.dashboard.root)
       }
-    }
+    },
   })
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -136,7 +138,7 @@ export default function ProjectDetailView(props: TProps) {
   }, [isProjectAssignedToUserQuery.data])
 
   if (!access || !access.userViewProject) {
-    return null;
+    return null
   }
 
   return (
@@ -177,7 +179,7 @@ export default function ProjectDetailView(props: TProps) {
                   </Button>
                 )}
                 {project.stateId === TASK_STATE.IN_PROGRESS && (
-                  <Button variant="contained" onClick={modalFinishProject.onTrue} color='primary'>
+                  <Button variant="contained" onClick={modalFinishProject.onTrue} color="primary">
                     <Iconify icon="pajamas:todo-done" mr={1} />
                     Finalizar
                   </Button>
@@ -357,6 +359,7 @@ export default function ProjectDetailView(props: TProps) {
                   isProjectAssignedToUserQuery.data.projectAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
+                <Tab label={ETab.USERS} value={ETab.USERS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
@@ -366,6 +369,7 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {tab === ETab.CONTACTS && <ContactTab project={project} />}
             {tab === ETab.CHECKLIST && <ChecklistTab project={project} />}
+            {tab === ETab.USERS && <UserTab project={project} />}
             {modalEdit.value && (
               <ModalEdit
                 modal={modalEdit}

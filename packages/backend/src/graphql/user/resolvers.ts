@@ -1,4 +1,4 @@
-import type { IArea,IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import type { IArea, IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import { ECacheKey, ETokenType, PERMISSION_MAP, getAreaAncestors } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Op } from 'sequelize'
@@ -11,6 +11,8 @@ import {
   Stage,
   Cache,
   UserAverageCompletition,
+  ProjectViewer,
+  StageViewer,
 } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
@@ -216,7 +218,7 @@ export default {
           },
           attributes: ['responsibleId'],
         })
-        
+
         // @ts-ignore
         if (project.area.responsibleId === user.id) {
           return true
@@ -280,7 +282,53 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
+    usersViewProject: async (_: any, args: { projectId: number }, context: IContext) => {
+      try {
+        const { projectId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.PROJECT_READ], context)
+        const viewers = await ProjectViewer.findAll({
+          where: { projectId },
+          attributes: ['userId'],
+        })
+        const userIds = viewers.map((viewer) => viewer.userId)
+        return await User.findAll({
+          where: {
+            id: {
+              [Op.in]: userIds,
+            },
+          },
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+    usersViewStage: async (_: any, args: { stageId: number }, context: IContext) => {
+      try {
+        const { stageId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        needPermission([PERMISSION_MAP.STAGE_READ], context)
+        const stage = await StageViewer.findAll({
+          where: { stageId },
+          attributes: ['userId'],
+        })
+        const userIds = stage.map((viewer) => viewer.userId)
+        return await User.findAll({
+          where: {
+            id: {
+              [Op.in]: userIds,
+            },
+          },
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
   },
   Mutation: {
     createUser: async (

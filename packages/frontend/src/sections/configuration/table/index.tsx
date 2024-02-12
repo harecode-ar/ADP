@@ -75,10 +75,16 @@ export default function Table() {
         </React.Fragment>
       )}
       {percentageAlertMarginProjectModal.value && (
-        <PercentageAlertMarginProjectModal modal={percentageAlertMarginProjectModal} refetch={refetch} />
+        <PercentageAlertMarginProjectModal
+          modal={percentageAlertMarginProjectModal}
+          refetch={refetch}
+        />
       )}
       {percentageAlertMarginStageModal.value && (
-        <PercentageAlertMarginStageModal modal={percentageAlertMarginStageModal} refetch={refetch} />
+        <PercentageAlertMarginStageModal
+          modal={percentageAlertMarginStageModal}
+          refetch={refetch}
+        />
       )}
     </Box>
   )

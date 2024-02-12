@@ -47,6 +47,7 @@ import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
 import ModalCancelStage from './modal-cancel-stage'
+import UserTab from './user-tab'
 
 enum ETab {
   NOTES = 'Notas',
@@ -54,6 +55,7 @@ enum ETab {
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  USERS = 'Usuarios',
 }
 
 type TProps = {
@@ -82,8 +84,8 @@ export default function ProjectDetailView(props: TProps) {
         enqueueSnackbar('No tienes permisos para ver esta etapa', { variant: 'error' })
         router.push(paths.dashboard.root)
       }
-    }
-  });
+    },
+  })
 
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
@@ -130,7 +132,7 @@ export default function ProjectDetailView(props: TProps) {
   }
 
   if (!access || !access.userViewStage) {
-    return null;
+    return null
   }
 
   return (
@@ -336,6 +338,7 @@ export default function ProjectDetailView(props: TProps) {
                   isStageAssignedToUserQuery.data.stageAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
+                <Tab label={ETab.USERS} value={ETab.USERS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -349,6 +352,8 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.CONTACTS && <ContactTab stage={stage} />}
 
             {tab === ETab.CHECKLIST && <ChecklistTab stage={stage} />}
+
+            {tab === ETab.USERS && <UserTab stage={stage} />}
 
             {modalFinishStage.value && (
               <ModalFinishStage
