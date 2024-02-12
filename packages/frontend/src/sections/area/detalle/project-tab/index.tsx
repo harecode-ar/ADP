@@ -1,4 +1,4 @@
-import { IProject, TASK_STATE_ARRAY } from '@adp/shared'
+import { IProject, ITaskState, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
 import { Box, Autocomplete, TextField, Typography, Divider, Card } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
@@ -9,25 +9,44 @@ type TProps = {
   areaId: string
 }
 
+const DEFAULT_STATE = [
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.ON_HOLD),
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.IN_PROGRESS),
+] as ITaskState[]
+
+const ALL_STATE = {
+  id: 0,
+  name: 'Todos',
+} as ITaskState
+
 export default function ProjectTab(props: TProps) {
   const { areaId } = props
 
-  const [viewOption, setViewOption] = useState(TASK_STATE_ARRAY[1]) // IN_PROGRESS
+  const [selectedState, setSelectedState] = useState<ITaskState[]>(DEFAULT_STATE)
 
-  const handleViewModeChange = (event: React.ChangeEvent<{}>, option: any | null) => {
-    if (option !== null) {
-      setViewOption(option)
-    }
-  }
+  const selectedStateIds = useMemo(() => {
+    if (selectedState[0].id === 0) return TASK_STATE_ARRAY.map((state) => state.id)
+    return selectedState.map((state) => state.id)
+  }, [selectedState])
+
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
-    variables: { areaId: Number(areaId), stateId: viewOption.id !== 0 ? viewOption.id : undefined },
+    variables: { areaId: Number(areaId), stateId: selectedStateIds },
     skip: !areaId,
   })
 
   const projects: IProject[] = useMemo(() => {
     if (!projectsQuery.data) return []
-    return projectsQuery.data.projectsByAreaAndState
+    const { projectsByAreaAndState = [] } = projectsQuery.data
+    return [...projectsByAreaAndState].sort((a, b) => a.stateId - b.stateId)
   }, [projectsQuery.data])
+
+  const handleStateChange = (_: React.ChangeEvent<{}>, newValues: ITaskState[] | null) => {
+    if (!newValues || newValues.length === 0 || newValues[newValues.length - 1].id === 0) {
+      setSelectedState([ALL_STATE])
+      return
+    }
+    setSelectedState(newValues.filter((state) => state.id !== 0))
+  }
 
   return (
     <Box
@@ -42,13 +61,14 @@ export default function ProjectTab(props: TProps) {
       <Card sx={{ p: 2 }}>
         <Box className="ViewContainer">
           <Autocomplete
-            noOptionsText="No hay estados"
-            style={{ width: 170, marginBottom: '16px' }}
-            options={[{ id: 0, name: 'Todos' }, ...TASK_STATE_ARRAY]}
+            multiple
+            sx={{ minWidth: 170, marginBottom: '16px' }}
+            options={[ALL_STATE, ...TASK_STATE_ARRAY] as ITaskState[]}
             getOptionLabel={(option) => option.name}
-            value={viewOption}
-            onChange={handleViewModeChange}
             renderInput={(params) => <TextField {...params} label="Estado" />}
+            noOptionsText="No hay estados"
+            value={selectedState}
+            onChange={handleStateChange}
             clearIcon={null}
           />
         </Box>

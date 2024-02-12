@@ -18,7 +18,7 @@ type TProps = {
 }
 
 type TFormikValues = {
-  [EConfigurationKey.PERCENTAGE_ALERT_MARGIN]: number
+  [EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT]: number
 }
 
 const marks = [
@@ -30,14 +30,14 @@ function valueLabelFormat(value: number) {
   return `${value}%`
 }
 
-export default function PercentageAlertMarginModal(props: TProps) {
+export default function PercentageAlertMarginProjectModal(props: TProps) {
   const { modal, refetch } = props
   const { enqueueSnackbar } = useSnackbar()
   const [updateConfigurations] = useMutation(UPDATE_CONFIGURATIONS)
 
   const formik = useFormik({
     initialValues: {
-      [EConfigurationKey.PERCENTAGE_ALERT_MARGIN]: 0,
+      [EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT]: 0,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
@@ -45,8 +45,8 @@ export default function PercentageAlertMarginModal(props: TProps) {
           variables: {
             input: [
               {
-                key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN,
-                value: String(values[EConfigurationKey.PERCENTAGE_ALERT_MARGIN] / 100),
+                key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT,
+                value: String(values[EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT] / 100),
               },
             ],
           },
@@ -66,12 +66,15 @@ export default function PercentageAlertMarginModal(props: TProps) {
 
   useQuery(GET_CONFIGURATION, {
     variables: {
-      key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN,
+      key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT,
     },
     onCompleted: (data) => {
       if (!data) return
       const { configuration = '0' } = data
-      formik.setFieldValue(EConfigurationKey.PERCENTAGE_ALERT_MARGIN, Number(configuration) * 100)
+      formik.setFieldValue(
+        EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT,
+        Number(configuration) * 100
+      )
     },
   })
 
@@ -103,9 +106,9 @@ export default function PercentageAlertMarginModal(props: TProps) {
                   min={0}
                   step={5}
                   max={100}
-                  value={formik.values[EConfigurationKey.PERCENTAGE_ALERT_MARGIN]}
+                  value={formik.values[EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT]}
                   onChange={(e, value) => {
-                    formik.setFieldValue(EConfigurationKey.PERCENTAGE_ALERT_MARGIN, value)
+                    formik.setFieldValue(EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT, value)
                   }}
                   valueLabelDisplay="auto"
                   valueLabelFormat={valueLabelFormat}

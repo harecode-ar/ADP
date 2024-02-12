@@ -19,16 +19,20 @@ export const COLUMNS: TColumn[] = [
     type: EColumnType.STRING,
     renderCell: (row: TRow) => {
       switch (row.key) {
-        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
-          return 'Margen de alerta'
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
+          return 'Margen de alerta de proyectos'
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
+          return 'Margen de alerta de etapas'
         default:
           return row.key
       }
     },
     searchValue: (row: TRow) => {
       switch (row.key) {
-        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
-          return 'Margen de alerta'
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
+          return 'Margen de alerta de proyectos'
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
+          return 'Margen de alerta de etapas'
         default:
           return row.key
       }
@@ -40,7 +44,9 @@ export const COLUMNS: TColumn[] = [
     type: EColumnType.STRING,
     renderCell: (row: TRow) => {
       switch (row.key) {
-        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
+          return `${Number(row.value) * 100}%`
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
           return `${Number(row.value) * 100}%`
         default:
           return row.value
@@ -48,7 +54,9 @@ export const COLUMNS: TColumn[] = [
     },
     searchValue: (row: TRow) => {
       switch (row.key) {
-        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN:
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
+          return `${Number(row.value) * 100}%`
+        case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
           return `${Number(row.value) * 100}%`
         default:
           return row.value

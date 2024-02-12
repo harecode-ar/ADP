@@ -26,6 +26,7 @@ import {
   GET_STAGE,
   GET_STAGES_ASSIGNED_TO_USER,
   GET_SUB_STAGES_BY_STAGE,
+  GET_USER_VIEW_STAGE,
 } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
@@ -71,6 +72,19 @@ export default function ProjectDetailView(props: TProps) {
   const modalStartTask = useBoolean()
   const modalCancelStage = useBoolean()
 
+  const { data: access } = useQuery(GET_USER_VIEW_STAGE, {
+    variables: {
+      stageId: Number(stageId),
+    },
+    skip: !stageId,
+    onCompleted: (data) => {
+      if (!data || !data.userViewStage) {
+        enqueueSnackbar('No tienes permisos para ver esta etapa', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    },
+  })
+
   const stageQuery = useQuery(GET_STAGE, {
     variables: { id: Number(stageId) },
     skip: !stageId,
@@ -115,6 +129,10 @@ export default function ProjectDetailView(props: TProps) {
     isStageAssignedToUserQuery.refetch()
   }
 
+  if (!access || !access.userViewStage) {
+    return null
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -143,19 +161,19 @@ export default function ProjectDetailView(props: TProps) {
                   </Button>
                 )}
               {stage?.stateId === TASK_STATE.NEW && (
-                <Button variant="contained" onClick={modalCancelStage.onTrue}>
+                <Button variant="contained" onClick={modalCancelStage.onTrue} color="error">
                   <Iconify icon="material-symbols:cancel" mr={1} />
                   Cancelar etapa
                 </Button>
               )}
               {stage && stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
-                <Button variant="contained" onClick={modalStartTask.onTrue}>
+                <Button variant="contained" onClick={modalStartTask.onTrue} color="primary">
                   <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                   Comenzar
                 </Button>
               )}
               {stage && stage.stateId === TASK_STATE.IN_PROGRESS && (
-                <Button variant="contained" onClick={modalFinishStage.onTrue}>
+                <Button variant="contained" onClick={modalFinishStage.onTrue} color="primary">
                   <Iconify icon="pajamas:todo-done" mr={1} />
                   Finalizar
                 </Button>

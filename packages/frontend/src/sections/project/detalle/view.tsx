@@ -26,6 +26,7 @@ import {
   GET_PROJECT,
   GET_STAGES_BY_PROJECT,
   GET_PROJECTS_ASSIGNED_TO_USER,
+  GET_USER_VIEW_PROJECT,
 } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
@@ -70,6 +71,19 @@ export default function ProjectDetailView(props: TProps) {
   const modalStartTask = useBoolean()
   const modalCancelTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
+
+  const { data: access } = useQuery(GET_USER_VIEW_PROJECT, {
+    variables: {
+      projectId: Number(projectId),
+    },
+    skip: !projectId,
+    onCompleted: (data) => {
+      if (!data || !data.userViewProject) {
+        enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    },
+  })
 
   const projectQuery = useQuery(GET_PROJECT, {
     variables: { id: Number(projectId) },
@@ -121,6 +135,10 @@ export default function ProjectDetailView(props: TProps) {
     return isProjectAssignedToUserQuery.data.projectAssignedToUser
   }, [isProjectAssignedToUserQuery.data])
 
+  if (!access || !access.userViewProject) {
+    return null
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box
@@ -147,19 +165,19 @@ export default function ProjectDetailView(props: TProps) {
                   Editar
                 </Button>
                 {project.stateId === TASK_STATE.NEW && (
-                  <Button variant="contained" onClick={modalCancelTask.onTrue}>
+                  <Button variant="contained" onClick={modalCancelTask.onTrue} color="error">
                     <Iconify icon="material-symbols:cancel" mr={1} />
                     Cancelar proyecto
                   </Button>
                 )}
                 {project.stateId === TASK_STATE.ON_HOLD && isProjectAssignedToUser && (
-                  <Button variant="contained" onClick={modalStartTask.onTrue}>
+                  <Button variant="contained" onClick={modalStartTask.onTrue} color="primary">
                     <Iconify icon="mdi:stopwatch-start-outline" mr={1} />
                     Comenzar
                   </Button>
                 )}
                 {project.stateId === TASK_STATE.IN_PROGRESS && (
-                  <Button variant="contained" onClick={modalFinishProject.onTrue}>
+                  <Button variant="contained" onClick={modalFinishProject.onTrue} color="primary">
                     <Iconify icon="pajamas:todo-done" mr={1} />
                     Finalizar
                   </Button>
@@ -365,7 +383,7 @@ export default function ProjectDetailView(props: TProps) {
           </React.Fragment>
         )}
       </Box>
-      {modalStartTask.value && (
+      {!!project && modalStartTask.value && (
         <ModalStartTask
           modal={modalStartTask}
           project={project || null}

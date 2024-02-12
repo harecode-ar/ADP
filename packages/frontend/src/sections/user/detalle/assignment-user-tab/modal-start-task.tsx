@@ -1,39 +1,42 @@
 'use client'
 
-import { IProject } from '@adp/shared'
 import React from 'react'
 import { Typography, Button, Modal, Box, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { CANCEL_PROJECT } from 'src/graphql/mutations'
+import { START_TASK } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
+import { IProject, IStage } from '@adp/shared'
+import { dispatchCustomEvent } from 'src/utils/custom-event'
+import { ECustomEvent } from 'src/types'
 
 type TProps = {
   modal: ReturnType<typeof useBoolean>
-  project: IProject
-  refetch: () => void
+  project: IProject | null
+  stage: IStage | null
+  subStage: IStage | null
 }
 
-export default function ModalCancelTask(props: TProps) {
-  const { modal, project, refetch } = props
-  const [cancelProject, { loading }] = useMutation(CANCEL_PROJECT)
+export default function ModalStartTask(props: TProps) {
+  const { modal, project, stage, subStage } = props
+  const [startTask, { loading }] = useMutation(START_TASK)
   const { enqueueSnackbar } = useSnackbar()
 
   const onAccept = async () => {
     if (loading) return
     try {
-      if (!project) throw new Error('No se ha encontrado el proyecto.')
-      const { errors } = await cancelProject({
+      const { errors } = await startTask({
         variables: {
-          id: project.id,
+          projectId: project?.id,
+          stageId: stage?.id || subStage?.id,
         },
       })
       if (errors) throw new Error(errors[0].message)
-      enqueueSnackbar('El proyecto se ha cancelado corractamente.', { variant: 'success' })
+      enqueueSnackbar('La tarea ha comenzado corractamente.', { variant: 'success' })
       modal.onFalse()
-      refetch()
+      dispatchCustomEvent(ECustomEvent.refetchAssignmentTab)
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' })
     }
@@ -54,10 +57,10 @@ export default function ModalCancelTask(props: TProps) {
     >
       <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
-          Cancelar proyecto
+          Comenzar tarea
         </Typography>
         <Typography id="modal-description" sx={{ mt: 2 }}>
-          ¿Está seguro que desea cancelar el proyecto?
+          ¿Está seguro que desea comenzar la tarea?
           <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -69,13 +72,13 @@ export default function ModalCancelTask(props: TProps) {
                     gap: 1,
                   }}
                 >
-                  <Button onClick={modal.onFalse} variant="outlined" color="error">
+                  <Button onClick={modal.onFalse} variant="outlined" color="primary">
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="error" onClick={() => onAccept()}>
+                  <Button variant="contained" color="primary" onClick={() => onAccept()}>
                     <Iconify sx={{ mr: 1 }} icon="pajamas:todo-done" />
-                    Aceptar
+                    Comenzar
                   </Button>
                 </Box>
               </Grid>

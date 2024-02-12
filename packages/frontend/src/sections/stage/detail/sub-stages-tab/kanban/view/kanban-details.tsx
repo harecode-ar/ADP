@@ -138,14 +138,14 @@ export default function KanbanDetails(props: TProps) {
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           {subStage.stateId === TASK_STATE.NEW && isStageAssignedToUser && (
             <Tooltip title="Cancelar sub etapa">
-              <IconButton onClick={modalCancelSubStage.onTrue}>
+              <IconButton onClick={modalCancelSubStage.onTrue} color="error">
                 <Iconify icon="material-symbols:cancel" />
               </IconButton>
             </Tooltip>
           )}
           {subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
             <Tooltip title="Comenzar sub etapa">
-              <IconButton onClick={modalStartTask.onTrue}>
+              <IconButton onClick={modalStartTask.onTrue} color="primary">
                 <Iconify icon="mdi:stopwatch-start-outline" />
               </IconButton>
             </Tooltip>

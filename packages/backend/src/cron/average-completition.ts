@@ -177,7 +177,9 @@ cron.schedule('30 3 * * *', async () => {
 // Run every dat at 03:35 AM (UTC)
 cron.schedule('35 3 * * *', async () => {
   const configuration = await Configuration.findOne({
-    where: { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN },
+    where: {
+      key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT,
+    },
   })
 
   const percentageAlertMargin = configuration ? Number(configuration.value) : 0
