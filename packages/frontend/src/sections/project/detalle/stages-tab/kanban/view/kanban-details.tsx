@@ -24,6 +24,7 @@ import { useQuery } from '@apollo/client'
 import Iconify from 'src/components/iconify'
 import { ERROR, INFO, WARNING } from 'src/theme/palette'
 import { paths } from 'src/routes/paths'
+import ModalFinishTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-task'
 import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
 import ModalCancelStage from 'src/sections/stage/detail/modal-cancel-stage'
 import ModalDelete from './modal-delete'
@@ -80,6 +81,7 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
   const modalStartTask = useBoolean()
+  const modalFinishTask = useBoolean()
   const modalCancelTask = useBoolean()
 
   const stageQuery = useQuery(GET_STAGE, {
@@ -155,6 +157,11 @@ export default function KanbanDetails(props: TProps) {
               </IconButton>
             </Tooltip>
           )}
+           <Tooltip title="Finalizar tarea">
+              <IconButton onClick={modalFinishTask.onTrue}>
+                <Iconify icon="material-symbols:cancel" />
+              </IconButton>
+            </Tooltip>
           {stage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
             <Tooltip title="Comenzar etapa">
               <IconButton onClick={modalStartTask.onTrue}>
@@ -276,6 +283,15 @@ export default function KanbanDetails(props: TProps) {
         <ModalEdit modal={modalEdit} project={project} stage={stage} refetch={refetch} />
       )}
       <ModalDelete modal={modalDelete} stageId={stage.id} refetch={refetch} />
+      {modalFinishTask.value && (
+        <ModalFinishTask
+          modal={modalFinishTask}
+          project={null}
+          stage={stage || null}
+          subStage={null}
+          refetch={refetch}
+        />
+      )}
       {modalStartTask.value && (
         <ModalStartTask
           modal={modalStartTask}

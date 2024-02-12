@@ -8,6 +8,7 @@ export const PERMISSION_MAP = {
   PERMISSION_UPDATE: 'permission:update',
   PERMISSION_DELETE: 'permission:delete',
   TASK_START: 'task:start',
+  TASK_FINISH: 'task:finish',
   TASK_STATE_READ: 'taskState:read',
   TASK_STATE_CREATE: 'taskState:create',
   TASK_STATE_UPDATE: 'taskState:update',

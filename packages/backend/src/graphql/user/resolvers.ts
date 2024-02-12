@@ -1,4 +1,4 @@
-import type { IArea,IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
+import type { IArea, IProject, IStage, IUpload, IUser, IUserAverageCompletition } from '@adp/shared'
 import { ECacheKey, ETokenType, PERMISSION_MAP, getAreaAncestors } from '@adp/shared'
 import dotenv from 'dotenv'
 import { Op } from 'sequelize'
@@ -216,7 +216,7 @@ export default {
           },
           attributes: ['responsibleId'],
         })
-        
+
         // @ts-ignore
         if (project.area.responsibleId === user.id) {
           return true
@@ -280,7 +280,7 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
   Mutation: {
     createUser: async (
