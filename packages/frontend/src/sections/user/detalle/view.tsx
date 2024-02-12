@@ -27,6 +27,7 @@ import AvatarShape from 'src/assets/illustrations/avatar-shape'
 import Iconify from 'src/components/iconify'
 import { _socials } from 'src/_mock'
 import { getStorageFileUrl } from 'src/utils/storage'
+import AssignmentUserTab from './assignment-user-tab'
 
 enum ETab {
   ASSIGNMENT = 'Asignaciones',
@@ -181,7 +182,7 @@ export default function UserDetailView(props: TProps) {
       </Card>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
-          {/* <AssignmentUserTab /> */}
+          <AssignmentUserTab />
         </Box>
       </Box>
     </Container>
