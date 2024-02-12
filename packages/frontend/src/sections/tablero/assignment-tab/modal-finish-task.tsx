@@ -1,12 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Typography, Button, Modal, Box, Grid, Backdrop } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { useMutation } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useSnackbar } from 'src/components/snackbar'
-import { FINISH_TASK } from 'src/graphql/mutations'
+import { FINISH_PROJECT, FINISH_STAGE, FINISH_SUB_STAGE } from 'src/graphql/mutations'
 import { DEFAULT_STYLE_MODAL } from 'src/constants'
 import { IProject, IStage } from '@adp/shared'
 import { dispatchCustomEvent } from 'src/utils/custom-event'
@@ -21,8 +21,16 @@ type TProps = {
 
 export default function ModalFinishTask(props: TProps) {
   const { modal, project, stage, subStage } = props
-  const [finishTask, { loading }] = useMutation(FINISH_TASK)
+  const [finishProject, { loading: loadingProject }] = useMutation(FINISH_PROJECT)
+  const [finishStage, { loading: loadingStage }] = useMutation(FINISH_STAGE)
+  const [finishSubStage, { loading: loadingSubStage }] = useMutation(FINISH_SUB_STAGE)
   const { enqueueSnackbar } = useSnackbar()
+
+  const loading = useMemo(() => loadingProject || loadingStage || loadingSubStage, [
+    loadingProject,
+    loadingStage,
+    loadingSubStage,
+  ]);
 
   const onAccept = async () => {
     if (loading) return
@@ -73,7 +81,7 @@ export default function ModalFinishTask(props: TProps) {
                   }}
                 >
                   <Button onClick={modal.onFalse} variant="outlined" color="primary">
-                    <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
+                    <Iconify sx={{ mr: 1 }} icon="lets-icons:done-ring-round" />
                     Cancelar
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => onAccept()}>
