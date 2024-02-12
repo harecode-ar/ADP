@@ -27,9 +27,9 @@ export default function UserTab(props: TProps) {
   }, [data])
 
   const filteredUsers = useMemo(() => {
-    if (!search) return users
-    return users.filter((user) => user.firstname.toLowerCase().includes(search.toLowerCase()))
-  }, [users, search])
+    const lowerSearch = search.toLowerCase()
+    return users.filter((user) => user.fullname.toLowerCase().includes(lowerSearch) || user.email.toLowerCase().includes(lowerSearch))
+  }, [users, search]);
 
   return (
     <React.Fragment>

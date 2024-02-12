@@ -13,14 +13,14 @@ export default function UserItem(props: TProps) {
   return (
     <Stack component={Card} direction="row" spacing={2} key={user.id} sx={{ p: 3 }}>
       <Avatar
-        alt={`${user.firstname} ${user.lastname}`}
+        alt={user.fullname}
         src={getStorageFileUrl(user.image)}
         sx={{ width: 48, height: 48 }}
       />
 
       <Stack spacing={2} flexGrow={1}>
         <ListItemText
-          primary={`${user.firstname} ${user.lastname}`}
+          primary={user.fullname}
           secondary={
             <React.Fragment>
               <Stack direction="row" alignItems="center" spacing={0.5}>

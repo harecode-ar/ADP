@@ -11,8 +11,6 @@ import {
   Stage,
   Cache,
   UserAverageCompletition,
-  ProjectViewer,
-  StageViewer,
 } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
@@ -289,18 +287,22 @@ export default {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
-        const viewers = await ProjectViewer.findAll({
-          where: { projectId },
-          attributes: ['userId'],
+        const project = await Project.findByPk(projectId, {
+          attributes: ['id'],
+          include: [
+            {
+              model: User,
+              as: 'viewers',
+              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image']
+            }
+          ]
         })
-        const userIds = viewers.map((viewer) => viewer.userId)
-        return await User.findAll({
-          where: {
-            id: {
-              [Op.in]: userIds,
-            },
-          },
-        })
+        
+        if (!project) throw new Error('No se encontro el proyecto')
+        
+        // @ts-ignore
+        return project.viewers || []
+        
       } catch (error) {
         logger.error(error)
         throw error
@@ -312,18 +314,21 @@ export default {
         const { user } = context
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
-        const stage = await StageViewer.findAll({
-          where: { stageId },
-          attributes: ['userId'],
+        const stage = await Stage.findByPk(stageId, {
+          attributes: ['id'],
+          include: [
+            {
+              model: User,
+              as: 'viewers',
+              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image']
+            }
+          ]
         })
-        const userIds = stage.map((viewer) => viewer.userId)
-        return await User.findAll({
-          where: {
-            id: {
-              [Op.in]: userIds,
-            },
-          },
-        })
+        
+        if (!stage) throw new Error('No se encontro la etapa')
+        
+        // @ts-ignore
+        return stage.viewers || []
       } catch (error) {
         logger.error(error)
         throw error

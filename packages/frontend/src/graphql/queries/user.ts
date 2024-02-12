@@ -78,8 +78,7 @@ export const USERS_VIEW_PROJECT = gql`
   query usersViewProject($projectId: Int!) {
     usersViewProject(projectId: $projectId) {
       id
-      firstname
-      lastname
+      fullname
       email
       phone
       image
@@ -92,8 +91,7 @@ export const USERS_VIEW_STAGE = gql`
   query usersViewStage($stageId: Int!) {
     usersViewStage(stageId: $stageId) {
       id
-      firstname
-      lastname
+      fullname
       email
       phone
       image
