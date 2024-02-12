@@ -71,6 +71,13 @@ const GanttComponent = (props: TProps) => {
     }
   }
 
+  const emptyMessage = useMemo(() => {
+    if (projectState[0].id === 0) {
+      return 'No hay proyectos en esta area.'
+    }
+    return 'No hay proyectos en ese estado en esta area.'
+  }, [projectState])
+
   return (
     <Card sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', gap: 2 }}>
@@ -97,7 +104,7 @@ const GanttComponent = (props: TProps) => {
             marginTop: '16px',
           }}
         >
-          <Typography>No hay proyectos asignados en ese estado en esta area.</Typography>
+          <Typography>{emptyMessage}</Typography>
         </Box>
       ) : (
         <Gantt
