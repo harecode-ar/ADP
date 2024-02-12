@@ -20,7 +20,7 @@ export default function AssignmentSection(props: TProps) {
   return (
     <Box>
       <Box
-        gap={3}
+        gap={2}
         display="grid"
         gridTemplateColumns={{
           xs: 'repeat(1, 1fr)',

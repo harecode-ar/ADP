@@ -166,23 +166,23 @@ export default function UserDetailView(props: TProps) {
             </Box>
           </Box>
         </Card>
-      </Box>
-      <Card sx={{ p: 1 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-            <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} />
-          </Tabs>
-        </Box>
-      </Card>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
-          <AssignmentUserTab />
+        <Card sx={{ p: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+              <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} />
+            </Tabs>
+          </Box>
+        </Card>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
+            <AssignmentUserTab />
+          </Box>
         </Box>
       </Box>
     </Container>
