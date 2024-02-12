@@ -1,4 +1,4 @@
-import { IStage, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
+import { IStage, ITaskState, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Task } from 'gantt-task-react'
 import { Card, Box, Autocomplete, TextField, Typography } from '@mui/material'
@@ -13,6 +13,11 @@ type TProps = {
   handleProjectStateChange: (a: any, b: any) => void
   projectState: any
 }
+
+const ALL_STATE = {
+  id: 0,
+  name: 'Todos',
+} as ITaskState
 
 const GanttComponent = (props: TProps) => {
   const { tasks, handleProjectStateChange, projectState } = props
@@ -67,16 +72,17 @@ const GanttComponent = (props: TProps) => {
   }
 
   return (
-    <Card sx={{ p: 3 }}>
+    <Card sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Autocomplete
-          noOptionsText="No hay estados"
-          style={{ width: 170, marginBottom: '16px' }}
-          options={[{ id: 0, name: 'Todos' }, ...TASK_STATE_ARRAY]}
+          multiple
+          sx={{ minWidth: 170, marginBottom: '16px' }}
+          options={[ALL_STATE, ...TASK_STATE_ARRAY] as ITaskState[]}
           getOptionLabel={(option) => option.name}
+          renderInput={(params) => <TextField {...params} label="Estado" />}
+          noOptionsText="No hay estados"
           value={projectState}
           onChange={handleProjectStateChange}
-          renderInput={(params) => <TextField {...params} label="Estado" />}
           clearIcon={null}
         />
         <ViewSwitcher viewOption={viewOption} handleChangeView={handleChangeView} />

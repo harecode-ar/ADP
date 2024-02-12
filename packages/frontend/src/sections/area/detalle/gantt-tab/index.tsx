@@ -1,4 +1,4 @@
-import { IProject, TASK_STATE_ARRAY } from '@adp/shared'
+import { IProject, ITaskState, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import { Task } from 'gantt-task-react'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
@@ -9,28 +9,35 @@ type TProps = {
   areaId: string
 }
 
+const DEFAULT_STATE = [
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.ON_HOLD),
+  TASK_STATE_ARRAY.find((state) => state.id === TASK_STATE.IN_PROGRESS),
+] as ITaskState[]
+
+const ALL_STATE = {
+  id: 0,
+  name: 'Todos',
+} as ITaskState
+
 export default function GanttTab(props: TProps) {
   const { areaId } = props
 
-  const [projectState, setProjectState] = useState(TASK_STATE_ARRAY[1]) // IN_PROGRESS
+  const [selectedState, setSelectedState] = useState<ITaskState[]>(DEFAULT_STATE)
 
-  const handleProjectStateChange = (event: React.ChangeEvent<{}>, option: any | null) => {
-    if (option !== null) {
-      setProjectState(option)
-    }
-  }
+  const selectedStateIds = useMemo(() => {
+    if (selectedState[0].id === 0) return TASK_STATE_ARRAY.map((state) => state.id)
+    return selectedState.map((state) => state.id)
+  }, [selectedState])
 
   const projectsQuery = useQuery(GET_PROJECTS_BY_AREA_AND_STATE, {
-    variables:
-      projectState.id !== 0
-        ? { areaId: Number(areaId), stateId: projectState.id }
-        : { areaId: Number(areaId) },
+    variables: { areaId: Number(areaId), stateId: selectedStateIds },
     skip: !areaId,
   })
 
   const projects: IProject[] = useMemo(() => {
     if (!projectsQuery.data) return []
-    return projectsQuery?.data?.projectsByAreaAndState
+    const { projectsByAreaAndState = [] } = projectsQuery.data
+    return [...projectsByAreaAndState].sort((a, b) => a.stateId - b.stateId)
   }, [projectsQuery?.data])
 
   // const mappedStages: Task[] = stages.map((stage, index) => ({
@@ -56,11 +63,19 @@ export default function GanttTab(props: TProps) {
   }))
   const tasks: Task[] = mappedProjects
 
+  const handleStateChange = (_: React.ChangeEvent<{}>, newValues: ITaskState[] | null) => {
+    if (!newValues || newValues.length === 0 || newValues[newValues.length - 1].id === 0) {
+      setSelectedState([ALL_STATE])
+      return
+    }
+    setSelectedState(newValues.filter((state) => state.id !== 0))
+  }
+
   return (
     <GanttComponent
       tasks={tasks}
-      handleProjectStateChange={handleProjectStateChange}
-      projectState={projectState}
+      handleProjectStateChange={handleStateChange}
+      projectState={selectedState}
     />
   )
 }
