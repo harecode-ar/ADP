@@ -293,16 +293,15 @@ export default {
             {
               model: User,
               as: 'viewers',
-              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image']
-            }
-          ]
+              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image'],
+            },
+          ],
         })
-        
+
         if (!project) throw new Error('No se encontro el proyecto')
-        
+
         // @ts-ignore
         return project.viewers || []
-        
       } catch (error) {
         logger.error(error)
         throw error
@@ -320,13 +319,13 @@ export default {
             {
               model: User,
               as: 'viewers',
-              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image']
-            }
-          ]
+              attributes: ['id', 'firstname', 'lastname', 'email', 'phone', 'image'],
+            },
+          ],
         })
-        
+
         if (!stage) throw new Error('No se encontro la etapa')
-        
+
         // @ts-ignore
         return stage.viewers || []
       } catch (error) {
