@@ -1,12 +1,17 @@
 import { IProject, ITaskState, TASK_STATE, TASK_STATE_ARRAY } from '@adp/shared'
-import { Box, Autocomplete, TextField, Typography, Divider, Card } from '@mui/material'
+import { Box, Autocomplete, TextField, Typography, Divider, Card, Button } from '@mui/material'
 import { GET_PROJECTS_BY_AREA_AND_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
 import React, { useState, useMemo } from 'react'
+import Iconify from 'src/components/iconify'
+import { useBoolean } from 'src/hooks/use-boolean'
+import { useAuthContext } from 'src/auth/hooks'
+import ModalCreate from './create-project'
 import ProjectLine from './project-line'
 
 type TProps = {
   areaId: string
+  responsableId: number | null
 }
 
 const DEFAULT_STATE = [
@@ -20,7 +25,9 @@ const ALL_STATE = {
 } as ITaskState
 
 export default function ProjectTab(props: TProps) {
-  const { areaId } = props
+  const { areaId, responsableId } = props
+  const modalCreate = useBoolean()
+  const { user } = useAuthContext()
 
   const [selectedState, setSelectedState] = useState<ITaskState[]>(DEFAULT_STATE)
 
@@ -59,19 +66,40 @@ export default function ProjectTab(props: TProps) {
       }}
     >
       <Card sx={{ p: 2 }}>
-        <Box className="ViewContainer">
-          <Autocomplete
-            multiple
-            sx={{ minWidth: 170, marginBottom: '16px' }}
-            options={[ALL_STATE, ...TASK_STATE_ARRAY] as ITaskState[]}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => <TextField {...params} label="Estado" />}
-            noOptionsText="No hay estados"
-            value={selectedState}
-            onChange={handleStateChange}
-            clearIcon={null}
-          />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box className="ViewContainer">
+            <Autocomplete
+              multiple
+              sx={{ minWidth: 170, marginBottom: '16px' }}
+              options={[ALL_STATE, ...TASK_STATE_ARRAY] as ITaskState[]}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => <TextField {...params} label="Estado" />}
+              noOptionsText="No hay estados"
+              value={selectedState}
+              onChange={handleStateChange}
+              clearIcon={null}
+            />
+          </Box>
+          {user && user.id === responsableId && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'end',
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={modalCreate.onTrue}
+                sx={{ width: 'fit-content' }}
+              >
+                <Iconify icon="mingcute:add-fill" mr={1} />
+                Crear etapa
+              </Button>
+            </Box>
+          )}
         </Box>
+
         {projects.length === 0 ? (
           <Box
             sx={{
@@ -99,6 +127,9 @@ export default function ProjectTab(props: TProps) {
           </React.Fragment>
         )}
       </Card>
+      {modalCreate.value && (
+        <ModalCreate modal={modalCreate} areaId={Number(areaId)} refetch={projectsQuery.refetch}/>
+      )}
     </Box>
   )
 }
