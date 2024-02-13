@@ -27,6 +27,7 @@ import AvatarShape from 'src/assets/illustrations/avatar-shape'
 import Iconify from 'src/components/iconify'
 import { _socials } from 'src/_mock'
 import { getStorageFileUrl } from 'src/utils/storage'
+import AssignmentUserTab from './assignment-user-tab'
 
 enum ETab {
   ASSIGNMENT = 'Asignaciones',
@@ -165,23 +166,23 @@ export default function UserDetailView(props: TProps) {
             </Box>
           </Box>
         </Card>
-      </Box>
-      <Card sx={{ p: 1 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-            <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} />
-          </Tabs>
-        </Box>
-      </Card>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
-          {/* <AssignmentUserTab /> */}
+        <Card sx={{ p: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+              <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} />
+            </Tabs>
+          </Box>
+        </Card>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
+            <AssignmentUserTab />
+          </Box>
         </Box>
       </Box>
     </Container>

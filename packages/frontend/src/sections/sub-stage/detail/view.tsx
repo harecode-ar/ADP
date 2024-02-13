@@ -36,7 +36,7 @@ import {
   getSeverityFromAcp,
 } from 'src/utils/average-completition'
 import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
-import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
+import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-sub-stage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
