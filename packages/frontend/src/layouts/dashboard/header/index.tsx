@@ -66,7 +66,6 @@ export default function Header({ onOpenNav }: Props) {
         <ChecklistPopover />
         <ContactPopover />
         <NotificationsPopover />
-        <SettingsButton />
         <AccountPopover />
       </Stack>
     </React.Fragment>

@@ -58,16 +58,18 @@ export default function ContactPopover() {
 
   return (
     <React.Fragment>
-      <IconButton
-        component={m.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
-        color="default"
-        onClick={drawer.onTrue}
-      >
-        <Iconify icon="solar:users-group-rounded-bold-duotone" width={24} />
-      </IconButton>
+      <Tooltip title="Contactos" arrow>
+        <IconButton
+          component={m.button}
+          whileTap="tap"
+          whileHover="hover"
+          variants={varHover(1.05)}
+          color="default"
+          onClick={drawer.onTrue}
+        >
+          <Iconify icon="solar:users-group-rounded-bold-duotone" width={24} />
+        </IconButton>
+      </Tooltip>
 
       <Drawer
         open={drawer.value}

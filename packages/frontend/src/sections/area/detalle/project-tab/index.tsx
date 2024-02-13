@@ -128,7 +128,7 @@ export default function ProjectTab(props: TProps) {
         )}
       </Card>
       {modalCreate.value && (
-        <ModalCreate modal={modalCreate} areaId={Number(areaId)} refetch={projectsQuery.refetch}/>
+        <ModalCreate modal={modalCreate} areaId={Number(areaId)} refetch={projectsQuery.refetch} />
       )}
     </Box>
   )

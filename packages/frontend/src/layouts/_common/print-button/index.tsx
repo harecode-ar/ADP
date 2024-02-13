@@ -3,7 +3,7 @@
 import { m } from 'framer-motion'
 import React from 'react'
 import { usePathname } from 'src/routes/hooks'
-import { IconButton, Box } from '@mui/material'
+import { IconButton, Box, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
 import { varHover } from 'src/components/animate'
 import { paths } from 'src/routes/paths'
@@ -27,16 +27,18 @@ export default function PrintButton() {
 
   return (
     <Box>
-      <IconButton
-        component={m.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
-        color="default"
-        onClick={print}
-      >
-        <Iconify icon="lets-icons:print-duotone" width={24} />
-      </IconButton>
+      <Tooltip title="Imprimir" arrow>
+        <IconButton
+          component={m.button}
+          whileTap="tap"
+          whileHover="hover"
+          variants={varHover(1.05)}
+          color="default"
+          onClick={print}
+        >
+          <Iconify icon="lets-icons:print-duotone" width={24} />
+        </IconButton>
+      </Tooltip>
     </Box>
   )
 }

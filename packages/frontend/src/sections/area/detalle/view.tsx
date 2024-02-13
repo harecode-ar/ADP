@@ -167,7 +167,12 @@ export default function AreaDetailView(props: TProps) {
                 No hay proyectos asignados a esta área
               </Typography>
             )}
-            {tab === ETab.PROJECTS && hasProjects && <ProjectTab areaId={areaId} responsableId={area.responsible ? area.responsible.id : null} />}
+            {tab === ETab.PROJECTS && hasProjects && (
+              <ProjectTab
+                areaId={areaId}
+                responsableId={area.responsible ? area.responsible.id : null}
+              />
+            )}
             {tab === ETab.GANTT && hasProjects && <GanttTab areaId={areaId} />}
             {tab === ETab.STATISTICS && (
               <DashboardReportProvider>
