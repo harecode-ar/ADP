@@ -1,7 +1,16 @@
 'use client'
 
 import React from 'react'
-import { Button, Box, TextField, Grid, InputAdornment, Modal, Backdrop, Typography } from '@mui/material'
+import {
+  Button,
+  Box,
+  TextField,
+  Grid,
+  InputAdornment,
+  Modal,
+  Backdrop,
+  Typography,
+} from '@mui/material'
 import { useFormik, FormikHelpers } from 'formik'
 import { useSnackbar } from 'src/components/snackbar'
 import { useMutation } from '@apollo/client'
@@ -79,7 +88,6 @@ const ModalCreate = (props: TProps) => {
     },
     validationSchema: projectSchema,
   })
-
 
   return (
     <Modal
