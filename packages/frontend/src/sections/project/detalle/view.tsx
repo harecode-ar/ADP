@@ -47,6 +47,7 @@ import ModalEdit from './modal-edit'
 import ModalFinishProject from './modal-finish-project'
 import ModalStartTask from './modal-start-task'
 import ModalCancelProject from './modal-cancel-project'
+import UserTab from './user-tab'
 
 enum ETab {
   NOTES = 'Notas',
@@ -54,6 +55,7 @@ enum ETab {
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  VISUALIZERS = 'Visualizadores',
 }
 
 type TProps = {
@@ -357,6 +359,7 @@ export default function ProjectDetailView(props: TProps) {
                   isProjectAssignedToUserQuery.data.projectAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
+                <Tab label={ETab.VISUALIZERS} value={ETab.VISUALIZERS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}
@@ -366,6 +369,7 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.GANTT && <GanttTab project={project} stages={stages} />}
             {tab === ETab.CONTACTS && <ContactTab project={project} />}
             {tab === ETab.CHECKLIST && <ChecklistTab project={project} />}
+            {tab === ETab.VISUALIZERS && <UserTab project={project} />}
             {modalEdit.value && (
               <ModalEdit
                 modal={modalEdit}

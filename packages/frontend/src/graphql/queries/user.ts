@@ -73,3 +73,29 @@ export const GET_USER_VIEW_STAGE = gql`
     userViewStage(stageId: $stageId)
   }
 `
+
+export const USERS_VIEW_PROJECT = gql`
+  query usersViewProject($projectId: Int!) {
+    usersViewProject(projectId: $projectId) {
+      id
+      fullname
+      email
+      phone
+      image
+      roleId
+    }
+  }
+`
+
+export const USERS_VIEW_STAGE = gql`
+  query usersViewStage($stageId: Int!) {
+    usersViewStage(stageId: $stageId) {
+      id
+      fullname
+      email
+      phone
+      image
+      roleId
+    }
+  }
+`
