@@ -43,6 +43,7 @@ import ContactTab from './contact-tab'
 import ChecklistTab from './checklist-tab'
 import ModalEdit from './modal-edit'
 import ModalCancelSubStage from './modal-cancel-sub-stage'
+import UserTab from './user-tab'
 
 const getColorVariant = (name: string) => {
   if (name === TASK_STATE_NAME.NEW) {
@@ -64,6 +65,7 @@ enum ETab {
   NOTES = 'Notas',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  VISUALIZERS = 'Visualizadores',
 }
 
 type TProps = {
@@ -333,11 +335,13 @@ export default function ProjectDetailView(props: TProps) {
                       isStageAssignedToUserQuery.data.stageAssignedToUser && (
                         <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                       )}
+                    <Tab label={ETab.VISUALIZERS} value={ETab.VISUALIZERS} />
                   </Tabs>
                 </Card>
                 {tab === ETab.NOTES && <NotesTab subStage={subStage} />}
                 {tab === ETab.CONTACTS && <ContactTab subStage={subStage} />}
                 {tab === ETab.CHECKLIST && <ChecklistTab subStage={subStage} />}
+                {tab === ETab.VISUALIZERS && <UserTab stage={subStage} />}
 
                 {modalFinishSubStage.value && (
                   <ModalFinishSubStage

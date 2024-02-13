@@ -47,6 +47,7 @@ import StagePath from './stage-path'
 import ModalEdit from './modal-edit'
 import ModalStartTask from './sub-stages-tab/kanban/view/modal-start-task'
 import ModalCancelStage from './modal-cancel-stage'
+import UserTab from './user-tab'
 
 enum ETab {
   NOTES = 'Notas',
@@ -54,6 +55,7 @@ enum ETab {
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
+  VISUALIZERS = 'Visualizadores',
 }
 
 type TProps = {
@@ -336,6 +338,7 @@ export default function ProjectDetailView(props: TProps) {
                   isStageAssignedToUserQuery.data.stageAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
+                <Tab label={ETab.VISUALIZERS} value={ETab.VISUALIZERS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -349,6 +352,8 @@ export default function ProjectDetailView(props: TProps) {
             {tab === ETab.CONTACTS && <ContactTab stage={stage} />}
 
             {tab === ETab.CHECKLIST && <ChecklistTab stage={stage} />}
+
+            {tab === ETab.VISUALIZERS && <UserTab stage={stage} />}
 
             {modalFinishStage.value && (
               <ModalFinishStage
