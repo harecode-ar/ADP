@@ -23,10 +23,12 @@ export default function UserItem(props: TProps) {
           primary={user.fullname}
           secondary={
             <React.Fragment>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Iconify icon="solar:phone-bold" width={16} />
-                {user.phone}
-              </Stack>
+              {!!user.phone && (
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <Iconify icon="solar:phone-bold" width={16} />
+                  {user.phone}
+                </Stack>
+              )}
               {!!user.email && (
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <Iconify icon="fluent:mail-24-filled" width={16} />

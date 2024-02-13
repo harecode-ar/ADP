@@ -55,7 +55,7 @@ enum ETab {
   GANTT = 'Gantt',
   CONTACTS = 'Contactos',
   CHECKLIST = 'Checklist',
-  USERS = 'Usuarios',
+  VISUALIZERS = 'Visualizadores',
 }
 
 type TProps = {
@@ -338,7 +338,7 @@ export default function ProjectDetailView(props: TProps) {
                   isStageAssignedToUserQuery.data.stageAssignedToUser && (
                     <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
                   )}
-                <Tab label={ETab.USERS} value={ETab.USERS} />
+                <Tab label={ETab.VISUALIZERS} value={ETab.VISUALIZERS} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab stage={stage} />}
@@ -353,7 +353,7 @@ export default function ProjectDetailView(props: TProps) {
 
             {tab === ETab.CHECKLIST && <ChecklistTab stage={stage} />}
 
-            {tab === ETab.USERS && <UserTab stage={stage} />}
+            {tab === ETab.VISUALIZERS && <UserTab stage={stage} />}
 
             {modalFinishStage.value && (
               <ModalFinishStage

@@ -52,7 +52,7 @@ export default function UserTab(props: TProps) {
           <TextField
             size="small"
             variant="outlined"
-            placeholder="Buscar usuario"
+            placeholder="Buscar visualizador"
             InputProps={{
               startAdornment: <Iconify icon="material-symbols:search" width={18} mr={1} />,
             }}
@@ -67,7 +67,7 @@ export default function UserTab(props: TProps) {
           >
             <Button variant="contained" color="primary">
               <Iconify icon="ic:round-person-add" width={18} mr={1} />
-              Agregar usuario
+              Agregar visualizador
             </Button>
           </Box>
         </Box>
@@ -79,7 +79,7 @@ export default function UserTab(props: TProps) {
             color: 'text.disabled',
           }}
         >
-          No hay usuarios asignados al proyecto
+          No hay visualizadores asignados al proyecto
         </Box>
       )}
       <Box
