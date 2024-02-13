@@ -66,18 +66,20 @@ export default function ChecklistPopover() {
 
   return (
     <Box>
-      <IconButton
-        component={m.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
-        color="default"
-        onClick={drawer.onTrue}
-      >
-        <Badge badgeContent={unfinishedChecklists.length} color="error">
-          <Iconify icon="fluent:note-add-16-filled" width={24} />
-        </Badge>
-      </IconButton>
+      <Tooltip title="Checklist" arrow>
+        <IconButton
+          component={m.button}
+          whileTap="tap"
+          whileHover="hover"
+          variants={varHover(1.05)}
+          color="default"
+          onClick={drawer.onTrue}
+        >
+          <Badge badgeContent={unfinishedChecklists.length} color="error">
+            <Iconify icon="fluent:note-add-16-filled" width={24} />
+          </Badge>
+        </IconButton>
+      </Tooltip>
 
       <Drawer
         open={drawer.value}

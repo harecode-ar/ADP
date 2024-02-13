@@ -299,18 +299,20 @@ export default function NotificationsPopover() {
 
   return (
     <React.Fragment>
-      <IconButton
-        component={m.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
-        color={drawer.value ? 'primary' : 'default'}
-        onClick={drawer.onTrue}
-      >
-        <Badge badgeContent={unreadedNotifications.length} color="error">
-          <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
-        </Badge>
-      </IconButton>
+      <Tooltip title="Notificaciones" arrow>
+        <IconButton
+          component={m.button}
+          whileTap="tap"
+          whileHover="hover"
+          variants={varHover(1.05)}
+          color={drawer.value ? 'primary' : 'default'}
+          onClick={drawer.onTrue}
+        >
+          <Badge badgeContent={unreadedNotifications.length} color="error">
+            <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
+          </Badge>
+        </IconButton>
+      </Tooltip>
 
       <Drawer
         open={drawer.value}
