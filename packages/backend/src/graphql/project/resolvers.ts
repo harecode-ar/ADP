@@ -149,13 +149,19 @@ export default {
     },
     projectsByAreaAndState: (
       _: any,
-      args: Pick<IProject, 'areaId' | 'stateId'>,
+      args: {
+        areaId: number
+        stateId: number[]
+      },
       context: IContext
     ): Promise<Omit<IProject, 'state' | 'area' | 'stages' | 'responsible' | 'notes'>[]> => {
       try {
         needPermission([PERMISSION_MAP.PROJECT_READ], context)
         const where: any = { areaId: args.areaId }
-        if (args.stateId) where.stateId = args.stateId
+        if (args.stateId)
+          where.stateId = {
+            [Op.in]: args.stateId,
+          }
         return Project.findAll({
           where,
           include: [

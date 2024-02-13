@@ -82,7 +82,7 @@ export default function ProjectDetailView(props: TProps) {
         enqueueSnackbar('No tienes permisos para ver este proyecto', { variant: 'error' })
         router.push(paths.dashboard.root)
       }
-    }
+    },
   })
 
   const projectQuery = useQuery(GET_PROJECT, {
@@ -136,7 +136,7 @@ export default function ProjectDetailView(props: TProps) {
   }, [isProjectAssignedToUserQuery.data])
 
   if (!access || !access.userViewProject) {
-    return null;
+    return null
   }
 
   return (
@@ -177,7 +177,7 @@ export default function ProjectDetailView(props: TProps) {
                   </Button>
                 )}
                 {project.stateId === TASK_STATE.IN_PROGRESS && (
-                  <Button variant="contained" onClick={modalFinishProject.onTrue} color='primary'>
+                  <Button variant="contained" onClick={modalFinishProject.onTrue} color="primary">
                     <Iconify icon="pajamas:todo-done" mr={1} />
                     Finalizar
                   </Button>

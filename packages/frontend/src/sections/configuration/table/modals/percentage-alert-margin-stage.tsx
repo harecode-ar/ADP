@@ -71,7 +71,10 @@ export default function PercentageAlertMarginStageModal(props: TProps) {
     onCompleted: (data) => {
       if (!data) return
       const { configuration = '0' } = data
-      formik.setFieldValue(EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE, Number(configuration) * 100)
+      formik.setFieldValue(
+        EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE,
+        Number(configuration) * 100
+      )
     },
   })
 

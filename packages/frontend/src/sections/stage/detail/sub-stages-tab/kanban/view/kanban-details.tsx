@@ -29,6 +29,7 @@ import ModalEdit from './modal-edit'
 import KanbanDetailsCommentInput from './kanban-details-comment-input'
 import KanbanDetailsCommentList from './kanban-details-comment-list'
 import ModalStartTask from './modal-start-task'
+import ModalFinishSubStage from './modal-finish-sub-stage'
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +70,7 @@ export default function KanbanDetails(props: TProps) {
   const modalDelete = useBoolean()
   const modalEdit = useBoolean()
   const modalStartTask = useBoolean()
+  const modalFinishSubStage = useBoolean()
   const modalCancelSubStage = useBoolean()
 
   const stageQuery = useQuery(GET_SUB_STAGE, {
@@ -138,14 +140,21 @@ export default function KanbanDetails(props: TProps) {
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
           {subStage.stateId === TASK_STATE.NEW && isStageAssignedToUser && (
             <Tooltip title="Cancelar sub etapa">
-              <IconButton onClick={modalCancelSubStage.onTrue} color='error'>
+              <IconButton onClick={modalCancelSubStage.onTrue} color="error">
                 <Iconify icon="material-symbols:cancel" />
+              </IconButton>
+            </Tooltip>
+          )}
+          {subStage.stateId === TASK_STATE.IN_PROGRESS && isStageAssignedToUser && (
+            <Tooltip title="Finalizar etapa">
+              <IconButton onClick={modalFinishSubStage.onTrue} color="primary">
+                <Iconify icon="lets-icons:done-ring-round" />
               </IconButton>
             </Tooltip>
           )}
           {subStage.stateId === TASK_STATE.ON_HOLD && isStageAssignedToUser && (
             <Tooltip title="Comenzar sub etapa">
-              <IconButton onClick={modalStartTask.onTrue} color='primary'>
+              <IconButton onClick={modalStartTask.onTrue} color="primary">
                 <Iconify icon="mdi:stopwatch-start-outline" />
               </IconButton>
             </Tooltip>
@@ -261,6 +270,13 @@ export default function KanbanDetails(props: TProps) {
           project={null}
           stage={null}
           subStage={subStage || null}
+          refetch={refetch}
+        />
+      )}
+      {modalFinishSubStage.value && (
+        <ModalFinishSubStage
+          modal={modalFinishSubStage}
+          subStageId={subStage.id}
           refetch={refetch}
         />
       )}

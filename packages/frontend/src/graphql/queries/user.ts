@@ -65,11 +65,11 @@ export const GET_COUNT_USER_ASSIGNATIONS = gql`
 export const GET_USER_VIEW_PROJECT = gql`
   query userViewProject($projectId: Int!) {
     userViewProject(projectId: $projectId)
-  } 
+  }
 `
 
 export const GET_USER_VIEW_STAGE = gql`
   query userViewStage($stageId: Int!) {
     userViewStage(stageId: $stageId)
-  } 
+  }
 `

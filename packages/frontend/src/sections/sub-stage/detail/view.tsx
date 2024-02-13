@@ -23,7 +23,11 @@ import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
 import { useBoolean } from 'src/hooks/use-boolean'
-import { GET_STAGES_ASSIGNED_TO_USER, GET_SUB_STAGE, GET_USER_VIEW_STAGE } from 'src/graphql/queries'
+import {
+  GET_STAGES_ASSIGNED_TO_USER,
+  GET_SUB_STAGE,
+  GET_USER_VIEW_STAGE,
+} from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import {
@@ -32,7 +36,7 @@ import {
   getSeverityFromAcp,
 } from 'src/utils/average-completition'
 import ModalStartTask from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-start-task'
-import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-substage'
+import ModalFinishSubStage from 'src/sections/stage/detail/sub-stages-tab/kanban/view/modal-finish-sub-stage'
 import Label from 'src/components/label'
 import NotesTab from './notes-tab'
 import ContactTab from './contact-tab'
@@ -88,8 +92,8 @@ export default function ProjectDetailView(props: TProps) {
         enqueueSnackbar('No tienes permisos para ver esta sub-etapa', { variant: 'error' })
         router.push(paths.dashboard.root)
       }
-    }
-  });
+    },
+  })
 
   const subStageQuery = useQuery(GET_SUB_STAGE, {
     variables: { id: Number(subStageId) },
@@ -125,7 +129,7 @@ export default function ProjectDetailView(props: TProps) {
   }
 
   if (!access || !access.userViewStage) {
-    return null;
+    return null
   }
 
   return (
