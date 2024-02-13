@@ -29,11 +29,11 @@ export default function ModalFinishSubStage(props: TProps) {
         },
       })
       if (errors) throw new Error(errors[0].message)
-      enqueueSnackbar('Subetapa finalizada correctamente.', { variant: 'success' })
+      enqueueSnackbar('Sub etapa finalizada correctamente.', { variant: 'success' })
       modal.onFalse()
       refetch()
-    } catch {
-      enqueueSnackbar('Error al finalizar la subetapa.', { variant: 'error' })
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' })
     }
   }
 
@@ -52,10 +52,10 @@ export default function ModalFinishSubStage(props: TProps) {
     >
       <Box sx={DEFAULT_STYLE_MODAL}>
         <Typography id="modal-title" variant="h6" component="h2">
-          Finalizar subetapa
+          Finalizar sub etapa
         </Typography>
         <Typography id="modal-description" sx={{ mt: 2 }}>
-          ¿Está seguro que desea finalizar la subetapa?
+          ¿Está seguro que desea finalizar la sub etapa?
           <Box sx={{ flexGrow: 1, mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>

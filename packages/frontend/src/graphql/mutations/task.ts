@@ -5,8 +5,3 @@ export const START_TASK = gql`
     startTask(projectId: $projectId, stageId: $stageId)
   }
 `
-export const FINISH_TASK = gql`
-  mutation finishTask($projectId: Int, $stageId: Int) {
-    finishTask(projectId: $projectId, stageId: $stageId)
-  }
-`

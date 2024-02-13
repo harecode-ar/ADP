@@ -26,21 +26,36 @@ export default function ModalFinishTask(props: TProps) {
   const [finishSubStage, { loading: loadingSubStage }] = useMutation(FINISH_SUB_STAGE)
   const { enqueueSnackbar } = useSnackbar()
 
-  const loading = useMemo(() => loadingProject || loadingStage || loadingSubStage, [
-    loadingProject,
-    loadingStage,
-    loadingSubStage,
-  ]);
+  const loading = useMemo(
+    () => loadingProject || loadingStage || loadingSubStage,
+    [loadingProject, loadingStage, loadingSubStage]
+  )
 
   const onAccept = async () => {
     if (loading) return
     try {
-      const { errors } = await finishTask({
-        variables: {
-          projectId: project?.id,
-          stageId: stage?.id || subStage?.id,
-        },
-      })
+      if (!project && !stage && !subStage) throw new Error('No se ha encontrado la tarea.')
+      let response = null as any
+      if (project) {
+        response = await finishProject({
+          variables: {
+            id: project.id,
+          },
+        })
+      } else if (stage) {
+        response = finishStage({
+          variables: {
+            id: stage.id,
+          },
+        })
+      } else {
+        response = finishSubStage({
+          variables: {
+            id: subStage?.id,
+          },
+        })
+      }
+      const { errors } = response
       if (errors) throw new Error(errors[0].message)
       enqueueSnackbar('La tarea se ha finalizado corractamente.', { variant: 'success' })
       modal.onFalse()

@@ -100,16 +100,18 @@ export default function AssignmentItem(props: TProps) {
           <Box>
             {assignment.stateId === TASK_STATE.NEW && (
               <Tooltip title="Cancelar tarea">
-                <IconButton onClick={modalCancelTask.onTrue}>
+                <IconButton onClick={modalCancelTask.onTrue} color="error">
                   <Iconify icon="material-symbols:cancel" />
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Finalizar tarea">
-              <IconButton onClick={modalFinishTask.onTrue}>
-                <Iconify icon="material-symbols:cancel" />
-              </IconButton>
-            </Tooltip>
+            {assignment.stateId === TASK_STATE.IN_PROGRESS && (
+              <Tooltip title="Finalizar tarea">
+                <IconButton onClick={modalFinishTask.onTrue} color="primary">
+                  <Iconify icon="lets-icons:done-ring-round" />
+                </IconButton>
+              </Tooltip>
+            )}
             {assignment.stateId === TASK_STATE.ON_HOLD && (
               <Tooltip title="Comenzar tarea">
                 <IconButton onClick={modalStartTask.onTrue} color="primary">
