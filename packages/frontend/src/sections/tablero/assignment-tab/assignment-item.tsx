@@ -12,6 +12,7 @@ import getLabelColor from 'src/utils/color-progress'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCancelTask from 'src/sections/shared/modal-cancel-task'
 import ModalStartTask from './modal-start-task'
+import ModalFinishTask from './modal-finish-task'
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,7 @@ export default function AssignmentItem(props: TProps) {
   const { project, stage, subStage } = props
   const modalStartTask = useBoolean()
   const modalCancelTask = useBoolean()
+  const modalFinishTask = useBoolean()
 
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
@@ -98,8 +100,15 @@ export default function AssignmentItem(props: TProps) {
           <Box>
             {assignment.stateId === TASK_STATE.NEW && (
               <Tooltip title="Cancelar tarea">
-                <IconButton onClick={modalCancelTask.onTrue}>
+                <IconButton onClick={modalCancelTask.onTrue} color="error">
                   <Iconify icon="material-symbols:cancel" />
+                </IconButton>
+              </Tooltip>
+            )}
+            {assignment.stateId === TASK_STATE.IN_PROGRESS && (
+              <Tooltip title="Finalizar tarea">
+                <IconButton onClick={modalFinishTask.onTrue} color="primary">
+                  <Iconify icon="lets-icons:done-ring-round" />
                 </IconButton>
               </Tooltip>
             )}
@@ -180,6 +189,14 @@ export default function AssignmentItem(props: TProps) {
         {modalStartTask.value && (
           <ModalStartTask
             modal={modalStartTask}
+            project={project || null}
+            stage={stage || null}
+            subStage={subStage || null}
+          />
+        )}
+        {modalFinishTask.value && (
+          <ModalFinishTask
+            modal={modalFinishTask}
             project={project || null}
             stage={stage || null}
             subStage={subStage || null}
