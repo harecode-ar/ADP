@@ -394,7 +394,7 @@ export default {
         logger.error(error)
         throw error
       }
-    }
+    },
   },
   Mutation: {
     createUser: async (

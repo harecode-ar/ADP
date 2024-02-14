@@ -21,7 +21,7 @@ const colorFromAcpOrPacp = (area: IArea) => {
 }
 
 type TProps = {
-  area: IArea,
+  area: IArea
   user: IUser
 }
 
