@@ -29,6 +29,7 @@ export default `#graphql
     userViewArea(areaId: Int): Boolean
     usersViewProject(projectId: Int): [User]
     usersViewStage(stageId: Int): [User]
+    userAreas (userId: Int!) : [Area]
   }
 
   type Mutation {

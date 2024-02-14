@@ -373,6 +373,28 @@ export default {
         throw error
       }
     },
+    userAreas: async (_: any, args: { userId: number }, context: IContext) => {
+      try {
+        const { userId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const foundUser = await User.findByPk(userId, {
+          attributes: ['id'],
+          include: [
+            {
+              model: Area,
+              as: 'areas',
+            },
+          ],
+        })
+        if (!foundUser) throw new Error('Usuario no encontrado')
+        // @ts-ignore
+        return foundUser.areas || []
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    }
   },
   Mutation: {
     createUser: async (
