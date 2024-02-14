@@ -9,12 +9,14 @@ import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { Switch, Tooltip } from '@mui/material'
+import { Link, Switch, Tooltip } from '@mui/material'
+import NextLink from 'next/link'
 // routes
 import { useRouter } from 'src/routes/hooks'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useAuthContext } from 'src/auth/hooks'
 import { useSettingsContext } from 'src/components/settings'
+import { paths } from 'src/routes/paths'
 // components
 import { varHover } from 'src/components/animate'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
@@ -92,6 +94,18 @@ export default function AccountPopover() {
             {user?.email}
           </Typography>
         </Box>
+
+        <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <Stack sx={{ p: 1 }}>
+          <Link
+            underline="none"
+            style={{ color: 'inherit'}}
+            href={paths.dashboard.user.detail.replace(':id', String(user?.id))}
+          >
+            <MenuItem>Mi perfil</MenuItem>
+          </Link>
+        </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
