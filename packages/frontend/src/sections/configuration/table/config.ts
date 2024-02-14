@@ -45,9 +45,9 @@ export const COLUMNS: TColumn[] = [
     renderCell: (row: TRow) => {
       switch (row.key) {
         case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
-          return `${Number(row.value) * 100}%`
+          return `${(Number(row.value) * 100).toFixed(0)}%`
         case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
-          return `${Number(row.value) * 100}%`
+          return `${(Number(row.value) * 100).toFixed(0)}%`
         default:
           return row.value
       }
@@ -55,9 +55,9 @@ export const COLUMNS: TColumn[] = [
     searchValue: (row: TRow) => {
       switch (row.key) {
         case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT:
-          return `${Number(row.value) * 100}%`
+          return `${(Number(row.value) * 100).toFixed(0)}%`
         case EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE:
-          return `${Number(row.value) * 100}%`
+          return `${(Number(row.value) * 100).toFixed(0)}%`
         default:
           return row.value
       }

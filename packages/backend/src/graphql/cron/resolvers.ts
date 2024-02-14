@@ -195,16 +195,31 @@ export default {
         logger.error(error)
         throw error
       }
-    },
+    },    
     generateAcpNotificationCron: async (_: any, __: any, context: IContext) => {
       try {
         needRole([ROLE_MAP.ADMIN], context)
         if (!context.user) throw new Error('No autorizado')
-        const configuration = await Configuration.findOne({
-          where: { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT },
-        })
 
-        const percentageAlertMargin = configuration ? Number(configuration.value) : 0
+        const configurations = await Configuration.findAll({
+          where: {
+              [Op.or]: [
+                  { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT },
+                  { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE }
+              ]
+          },
+        });
+        let percentageAlertMarginProject = 0
+        let percentageAlertMarginStage = 0
+      
+        configurations.forEach((configuration) => {
+          if (configuration.key === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT) {
+            percentageAlertMarginProject = Number(configuration.value)
+          }
+          else if (configuration.key === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE) {
+            percentageAlertMarginStage = Number(configuration.value)
+          }
+        })
 
         const areas = await Area.findAll({
           attributes: ['id', 'responsibleId'],
@@ -275,7 +290,7 @@ export default {
           const currentDate = new Date().toISOString().split('T')[0]
           const days = getDaysDiff(startDate, endDate)
 
-          const expectedDays = Math.round(days * percentageAlertMargin) || 1
+          const expectedDays = Math.round(days * percentageAlertMarginProject) || 1
           const currentDays = getDaysDiff(currentDate, endDate)
 
           let notificationTitle: string | null = null
@@ -315,7 +330,7 @@ export default {
           const currentDate = new Date().toISOString().split('T')[0]
           const days = getDaysDiff(startDate, endDate)
 
-          const expectedDays = Math.round(days * percentageAlertMargin) || 1
+          const expectedDays = Math.round(days * percentageAlertMarginStage) || 1
           const currentDays = getDaysDiff(currentDate, endDate)
 
           let notificationTitle: string | null = null
@@ -355,7 +370,7 @@ export default {
           const currentDate = new Date().toISOString().split('T')[0]
           const days = getDaysDiff(startDate, endDate)
 
-          const expectedDays = Math.round(days * percentageAlertMargin) || 1
+          const expectedDays = Math.round(days * percentageAlertMarginStage) || 1
           const currentDays = getDaysDiff(currentDate, endDate)
 
           let notificationTitle: string | null = null
