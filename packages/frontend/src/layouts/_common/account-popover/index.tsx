@@ -100,7 +100,7 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           <Link
             underline="none"
-            style={{ color: 'inherit'}}
+            style={{ color: 'inherit' }}
             href={paths.dashboard.user.detail.replace(':id', String(user?.id))}
           >
             <MenuItem>Mi perfil</MenuItem>

@@ -178,20 +178,19 @@ cron.schedule('30 3 * * *', async () => {
 cron.schedule('35 3 * * *', async () => {
   const configurations = await Configuration.findAll({
     where: {
-        [Op.or]: [
-            { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT },
-            { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE }
-        ]
+      [Op.or]: [
+        { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT },
+        { key: EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE },
+      ],
     },
-  });
+  })
   let percentageAlertMarginProject = 0
   let percentageAlertMarginStage = 0
 
   configurations.forEach((configuration) => {
     if (configuration.key === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_PROJECT) {
       percentageAlertMarginProject = Number(configuration.value)
-    }
-    else if (configuration.key === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE) {
+    } else if (configuration.key === EConfigurationKey.PERCENTAGE_ALERT_MARGIN_STAGE) {
       percentageAlertMarginStage = Number(configuration.value)
     }
   })

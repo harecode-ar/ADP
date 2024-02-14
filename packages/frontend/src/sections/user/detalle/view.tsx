@@ -182,7 +182,7 @@ export default function UserDetailView(props: TProps) {
             </Tabs>
           </Box>
         </Card>
-        {user && tab === ETab.AREAS && <AreasTab user={user}/>}
+        {user && tab === ETab.AREAS && <AreasTab user={user} />}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
             <AssignmentUserTab />
