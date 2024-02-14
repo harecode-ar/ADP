@@ -37,7 +37,7 @@ export default function AreaCard({ area, user }: TProps) {
   })
 
   const report: IProjectCountByState = useMemo(() => {
-    if (!data) return { new: 0, inProgress: 0, completed: 0, cancelled: 0 }
+    if (!data) return { new: 0, onHold: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectCountByState
   }, [data])
 
@@ -121,14 +121,11 @@ export default function AreaCard({ area, user }: TProps) {
               gap: 2,
             }}
           >
-            <ProyectAreaReportItem icon="entypo:new" value={report.new} size={17} />
-            <ProyectAreaReportItem icon="mdi:tools" value={report.inProgress} size={15} />
-            <ProyectAreaReportItem
-              icon="fluent-mdl2:completed-solid"
-              value={report.completed}
-              size={15}
-            />
-            <ProyectAreaReportItem icon="ic:sharp-cancel" value={report.cancelled} size={18} />
+            <ProyectAreaReportItem tooltip="Nuevos" icon="entypo:new" value={report.new} size={17} />
+            <ProyectAreaReportItem tooltip="En espera" icon="mdi:pause" value={report.onHold} size={19} />
+            <ProyectAreaReportItem tooltip="En progreso" icon="mdi:tools" value={report.inProgress} size={15} />
+            <ProyectAreaReportItem tooltip="Completados" icon="fluent-mdl2:completed-solid" value={report.completed} size={15} />
+            <ProyectAreaReportItem tooltip="Cancelados" icon="ic:sharp-cancel" value={report.cancelled} size={18} />
           </Box>
         </Box>
       </Card>
