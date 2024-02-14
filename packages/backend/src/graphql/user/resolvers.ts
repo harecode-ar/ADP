@@ -281,6 +281,46 @@ export default {
         throw error
       }
     },
+    userViewArea: async (_: any, args: { areaId: number }, context: IContext) => {
+      try {
+        const { areaId } = args
+        const { user } = context
+        if (!user) throw new Error('Usuario no encontrado')
+        const area = await Area.findByPk(areaId, {
+          attributes: ['id', 'responsibleId'],
+        })
+        if (!area) throw new Error('Area no encontrada')
+
+        const [cachedTree] = await Promise.all([
+          Cache.findOne({
+            where: {
+              key: ECacheKey.AREA_TREE,
+            },
+          }),
+        ])
+        if (!cachedTree) throw new Error('Arbol de areas no encontrado')
+
+        const tree: IArea[] = JSON.parse(cachedTree.value)
+        const ancestors = getAreaAncestors(tree, Number(areaId))
+
+        const responsibleIds = await Area.findAll({
+          where: {
+            id: {
+              [Op.in]: ancestors.map((ancestor) => ancestor.id),
+            },
+          },
+          attributes: ['responsibleId'],
+        })
+        if (area.responsibleId === user.id) return true
+        if (responsibleIds.some((responsible) => responsible.responsibleId === user.id)) {
+          return true
+        }
+        return false
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
     usersViewProject: async (_: any, args: { projectId: number }, context: IContext) => {
       try {
         const { projectId } = args
