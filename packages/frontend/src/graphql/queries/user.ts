@@ -44,6 +44,7 @@ export const GET_USER = gql`
       id
       firstname
       lastname
+      fullname
       email
       phone
       image
@@ -96,6 +97,21 @@ export const USERS_VIEW_STAGE = gql`
       phone
       image
       roleId
+    }
+  }
+`
+
+export const GET_USER_AREAS = gql`
+  query userAreas($userId: Int!) {
+    userAreas(userId: $userId) {
+      id
+      name
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
     }
   }
 `

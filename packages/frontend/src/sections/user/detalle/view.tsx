@@ -28,9 +28,11 @@ import Iconify from 'src/components/iconify'
 import { _socials } from 'src/_mock'
 import { getStorageFileUrl } from 'src/utils/storage'
 import AssignmentUserTab from './assignment-user-tab'
+import AreasTab from './areas-tab'
 
 enum ETab {
   ASSIGNMENT = 'Asignaciones',
+  AREAS = 'Áreas',
 }
 
 type TProps = {
@@ -176,9 +178,11 @@ export default function UserDetailView(props: TProps) {
           >
             <Tabs value={tab} onChange={(e, v) => setTab(v)}>
               <Tab label={ETab.ASSIGNMENT} value={ETab.ASSIGNMENT} />
+              <Tab label={ETab.AREAS} value={ETab.AREAS} />
             </Tabs>
           </Box>
         </Card>
+        {user && tab === ETab.AREAS && <AreasTab user={user}/>}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: tab === ETab.ASSIGNMENT ? 'block' : 'none' }}>
             <AssignmentUserTab />
