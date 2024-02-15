@@ -1,4 +1,4 @@
-const calc = (value: number) => (value * 100).toFixed(0)
+const calc = (value: number) => Math.abs(value * 100).toFixed(0)
 
 export const getTooltipFromAcp = (
     acp: number | null,
