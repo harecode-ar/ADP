@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Container, Card, Box, Tabs, Tab, Alert } from '@mui/material'
+import { Container, Card, Box, Tabs, Tab, Alert, Typography } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
+import { useTheme } from '@mui/material/styles'
 import { usePrint } from 'src/hooks/use-print'
 import AreaTab from './area-tab'
 import UserTab from './user-tab'
@@ -18,6 +19,7 @@ export default function TableroView() {
   const settings = useSettingsContext()
   const [ref] = usePrint()
   const [tab, setTab] = useState<ETab>(ETab.AREAS)
+  const theme = useTheme()
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -47,8 +49,29 @@ export default function TableroView() {
             padding: 1,
           }}
         >
-          Los números representan los porcentajes de exceso (circulo de color rojo) o ahorro
-          (circulo de color verde) de tiempo de los proyectos o etapas
+          Los números representan los porcentajes de exceso
+          <Box
+            sx={{
+              backgroundColor: theme.palette.error.main,
+              width: 13,
+              height: 13,
+              borderRadius: '50%',
+              marginX: 1,
+              display: 'inline-block',
+            }}
+          />
+          o ahorro
+          <Box
+            sx={{
+              backgroundColor: theme.palette.success.main,
+              width: 13,
+              height: 13,
+              borderRadius: '50%',
+              marginX: 1,
+              display: 'inline-block',
+            }}
+          />
+          de tiempo de los proyectos o etapas
         </Alert>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
