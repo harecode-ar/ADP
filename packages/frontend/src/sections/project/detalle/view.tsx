@@ -31,6 +31,7 @@ import {
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify/iconify'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useBoolean } from 'src/hooks/use-boolean'
 import {
   colorFromAcpOrPacp,
@@ -73,6 +74,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalStartTask = useBoolean()
   const modalCancelTask = useBoolean()
   const [tab, setTab] = useState<ETab>(ETab.STAGES)
+  const { projectPercentageAlertMargin } = useConfigurationContext()
 
   const { data: access } = useQuery(GET_USER_VIEW_PROJECT, {
     variables: {
@@ -194,7 +196,9 @@ export default function ProjectDetailView(props: TProps) {
         {!!project && (
           <React.Fragment>
             {project.stateId === TASK_STATE.COMPLETED && (
-              <Alert severity={getSeverityFromAcp(project.acp ?? null)}>
+              <Alert
+                severity={getSeverityFromAcp(project.acp ?? null, projectPercentageAlertMargin)}
+              >
                 El proyecto fue finalizado en la fecha: {formatDate(project.endDate)}
               </Alert>
             )}
@@ -279,14 +283,16 @@ export default function ProjectDetailView(props: TProps) {
                             <Tooltip
                               title={getTootipFromAcpOrPacp(
                                 project.acp ?? null,
-                                project.pacp ?? null
+                                project.pacp ?? null,
+                                projectPercentageAlertMargin
                               )}
                             >
                               <Box
                                 sx={{
                                   backgroundColor: colorFromAcpOrPacp(
                                     project.acp ?? null,
-                                    project.pacp ?? null
+                                    project.pacp ?? null,
+                                    projectPercentageAlertMargin
                                   ),
                                   width: 15,
                                   height: 15,

@@ -5,6 +5,8 @@ export type TConfigurationContextProps = {
   configurations: Pick<IConfiguration, 'key' | 'value'>[]
   refetch: () => void
   loading: boolean
+  stagePercentageAlertMargin: number
+  projectPercentageAlertMargin: number
 }
 
 export type TConfigurationProviderProps = {

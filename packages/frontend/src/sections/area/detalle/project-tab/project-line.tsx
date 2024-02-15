@@ -1,6 +1,7 @@
 import { IProject } from '@adp/shared'
 import React, { useState, useMemo } from 'react'
 import NextLink from 'next/link'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useResponsive } from 'src/hooks/use-responsive'
 import { Box, Typography, IconButton, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify/iconify'
@@ -15,6 +16,7 @@ type TProps = {
 
 export default function ProjectLine(props: TProps) {
   const { project } = props
+  const { projectPercentageAlertMargin } = useConfigurationContext()
 
   const [expanded, setExpanded] = useState(false)
 
@@ -40,13 +42,23 @@ export default function ProjectLine(props: TProps) {
           gap: 1,
         }}
       >
-        <Tooltip title={getTootipFromAcpOrPacp(project.acp ?? null, project.pacp ?? null)}>
+        <Tooltip
+          title={getTootipFromAcpOrPacp(
+            project.acp ?? null,
+            project.pacp ?? null,
+            projectPercentageAlertMargin
+          )}
+        >
           <Box
             sx={{
               height: 15,
               width: 15,
               borderRadius: '50%',
-              backgroundColor: colorFromAcpOrPacp(project.acp, project.pacp),
+              backgroundColor: colorFromAcpOrPacp(
+                project.acp,
+                project.pacp,
+                projectPercentageAlertMargin
+              ),
             }}
           />
         </Tooltip>
@@ -120,7 +132,11 @@ export default function ProjectLine(props: TProps) {
               <Box
                 sx={{
                   width: `${project.progress * 100}%`,
-                  backgroundColor: colorFromAcpOrPacp(project.acp, project.pacp),
+                  backgroundColor: colorFromAcpOrPacp(
+                    project.acp,
+                    project.pacp,
+                    projectPercentageAlertMargin
+                  ),
                   height: 35,
                   borderRadius: 2,
                   textAlign: 'center',

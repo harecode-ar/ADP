@@ -22,6 +22,7 @@ import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
 import Iconify from 'src/components/iconify/iconify'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useBoolean } from 'src/hooks/use-boolean'
 import {
   GET_STAGES_ASSIGNED_TO_USER,
@@ -83,6 +84,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalFinishSubStage = useBoolean()
   const modalStartTask = useBoolean()
   const modalCancelSubStage = useBoolean()
+  const { stagePercentageAlertMargin } = useConfigurationContext()
 
   const { data: access } = useQuery(GET_USER_VIEW_STAGE, {
     variables: {
@@ -202,7 +204,9 @@ export default function ProjectDetailView(props: TProps) {
           <Box>
             {subStage.stateId === TASK_STATE.COMPLETED && (
               <Box sx={{ mb: 2 }}>
-                <Alert severity={getSeverityFromAcp(subStage.acp ?? null)}>
+                <Alert
+                  severity={getSeverityFromAcp(subStage.acp ?? null, stagePercentageAlertMargin)}
+                >
                   La sub-etapa fue finalizada en la fecha: {formatDate(subStage.endDate)}
                 </Alert>
               </Box>
@@ -223,14 +227,16 @@ export default function ProjectDetailView(props: TProps) {
                           <Tooltip
                             title={getTootipFromAcpOrPacp(
                               subStage.acp ?? null,
-                              subStage.pacp ?? null
+                              subStage.pacp ?? null,
+                              stagePercentageAlertMargin
                             )}
                           >
                             <Box
                               sx={{
                                 backgroundColor: colorFromAcpOrPacp(
                                   subStage.acp ?? null,
-                                  subStage.pacp ?? null
+                                  subStage.pacp ?? null,
+                                  stagePercentageAlertMargin
                                 ),
                                 width: 15,
                                 height: 15,

@@ -3,6 +3,7 @@ import React from 'react'
 import { Stack, Box, PaperProps, Paper, Typography, Tooltip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import { fDate } from 'src/utils/format-time'
 import Iconify from 'src/components/iconify'
@@ -24,6 +25,7 @@ export default function KanbansubStageItemItem({
   ...other
 }: Props) {
   const theme = useTheme()
+  const { stagePercentageAlertMargin } = useConfigurationContext()
 
   const openDetails = useBoolean()
 
@@ -91,13 +93,18 @@ export default function KanbansubStageItemItem({
               }}
             >
               <Tooltip
-                title={getTootipFromAcpOrPacp(subStageItem.acp ?? null, subStageItem.pacp ?? null)}
+                title={getTootipFromAcpOrPacp(
+                  subStageItem.acp ?? null,
+                  subStageItem.pacp ?? null,
+                  stagePercentageAlertMargin
+                )}
               >
                 <Box
                   sx={{
                     backgroundColor: colorFromAcpOrPacp(
                       subStageItem.acp ?? null,
-                      subStageItem.pacp ?? null
+                      subStageItem.pacp ?? null,
+                      stagePercentageAlertMargin
                     ),
                     width: 15,
                     height: 15,

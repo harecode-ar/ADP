@@ -3,6 +3,7 @@ import React from 'react'
 import NextLink from 'next/link'
 import { Box, IconButton, Typography, Link, Tooltip } from '@mui/material'
 import Iconify from 'src/components/iconify'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { paths } from 'src/routes/paths'
 import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import { useResponsive } from 'src/hooks/use-responsive'
@@ -13,6 +14,7 @@ type TProps = {
 
 export default function StageLine(props: TProps) {
   const { stage } = props
+  const { stagePercentageAlertMargin } = useConfigurationContext()
 
   const isMobile = useResponsive('down', 'sm')
 
@@ -35,13 +37,23 @@ export default function StageLine(props: TProps) {
           gap: 1,
         }}
       >
-        <Tooltip title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}>
+        <Tooltip
+          title={getTootipFromAcpOrPacp(
+            stage.acp ?? null,
+            stage.pacp ?? null,
+            stagePercentageAlertMargin
+          )}
+        >
           <Box
             sx={{
               height: 15,
               width: 15,
               borderRadius: '50%',
-              backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
+              backgroundColor: colorFromAcpOrPacp(
+                stage.acp,
+                stage.pacp,
+                stagePercentageAlertMargin
+              ),
             }}
           />
         </Tooltip>
@@ -74,7 +86,7 @@ export default function StageLine(props: TProps) {
         <Box
           sx={{
             width: `${stage.progress * 100}%`,
-            backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
+            backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp, stagePercentageAlertMargin),
             height: 25,
             borderRadius: 2,
             textAlign: 'center',
