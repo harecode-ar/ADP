@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Container, Card, Box, Tabs, Tab, Alert, Typography } from '@mui/material'
+import { Container, Card, Box, Tabs, Tab, Alert } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { useTheme } from '@mui/material/styles'
 import { usePrint } from 'src/hooks/use-print'
