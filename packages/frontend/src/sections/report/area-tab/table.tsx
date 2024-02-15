@@ -35,7 +35,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'projectAcp',
-    label: 'Proyecto ACP',
+    label: 'Proyectos finalizados',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -68,7 +68,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'projectPacp',
-    label: 'Proyecto PACP',
+    label: 'Proyectos en curso',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -100,7 +100,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stageAcp',
-    label: 'Etapa ACP',
+    label: 'Etapas finalizadas',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
@@ -130,7 +130,7 @@ const columns: TColumn[] = [
   },
   {
     id: 'stagePacp',
-    label: 'Etapa PACP',
+    label: 'Etapas en curso',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
