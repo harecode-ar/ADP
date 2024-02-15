@@ -84,6 +84,8 @@ export default function UserDetailView(props: TProps) {
   const projectAcpText = useMemo(()=> {
     if (user?.averageCompletition && user.averageCompletition.projectAcp) {
       const value = user.averageCompletition.projectAcp * 100
+      // if (user.averageCompletition.projectAcp <= 0) return `Ahorra un ${value.toFixed(1)}% del plazo`
+      // if (user.averageCompletition.projectAcp > 0 ) return `Se excede ${value.toFixed(1)}% del plazo`
       return `${value.toFixed(1)}%`
     }
     return 'No tiene proyectos asignados'
@@ -186,14 +188,20 @@ export default function UserDetailView(props: TProps) {
                 component="div"
                 sx={{ mb: 0.5, color: 'text.secondary' }}
               >
-                Finaliza los proyectos en
+                Finalizaci&oacute;n de proyectos
               </Typography>
               <Typography
                 variant="h5"
                 component="div"
                 sx={{color: projectAcpColor }}
               >
-               {projectAcpText}
+               <Typography
+                variant="caption"
+                component="div"
+                sx={{color: 'text.primary' }}
+              >
+                Se ahorra un
+              </Typography>{projectAcpText}
               </Typography>
             </Box>
             <Box>
@@ -202,7 +210,7 @@ export default function UserDetailView(props: TProps) {
                 component="div"
                 sx={{ mb: 0.5, color: 'text.secondary' }}
               >
-                Finaliza las etapas en
+                Finalizaci&oacute;n de etapas
               </Typography>
               <Typography
                 variant="h5"
