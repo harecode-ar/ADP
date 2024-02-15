@@ -29,6 +29,15 @@ export default `#graphql
     viewers: [User]
   }
 
+  type StageViewer {
+    id: Int
+    userId: Int
+    stageId: Int
+    
+    createdAt: String
+    updatedAt: String
+  }
+
   type Query {
     stages: [Stage]
     stage(id: Int): Stage
@@ -91,5 +100,7 @@ export default `#graphql
     finishSubStage(id: Int!): Stage
 
     cancelStage(id: Int!): Stage
+
+    createStageViewer(stageId: Int!, userId: Int!): StageViewer
   }
 `

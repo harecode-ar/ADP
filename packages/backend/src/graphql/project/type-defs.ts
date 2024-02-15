@@ -24,6 +24,15 @@ export default `#graphql
     viewers: [User]
   }
 
+  type ProjectViewer{
+    id: Int
+    userId: Int
+    projectId: Int
+
+    createdAt: String
+    updatedAt: String
+  }
+
   type Query {
     projects: [Project]
     project(id: Int!): Project
@@ -61,5 +70,7 @@ export default `#graphql
     finishProject(id: Int!): Project
 
     cancelProject(id: Int!): Project
+
+    createProjectVisualizer(projectId: Int!, userId: Int!): ProjectViewer
   }
 `

@@ -1,10 +1,12 @@
 import { IProject, IUser } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
+import { useBoolean } from 'src/hooks/use-boolean'
 import { Card, Box, TextField, Button } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { USERS_VIEW_PROJECT } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import UserItem from './contact-item'
+import ModalAddVisualizer from './modal-add-visualizer'
 
 type TProps = {
   project: IProject
@@ -14,8 +16,9 @@ export default function UserTab(props: TProps) {
   const { project } = props
 
   const [search, setSearch] = useState('')
+  const modalAddVisualizer = useBoolean()
 
-  const { data } = useQuery(USERS_VIEW_PROJECT, {
+  const { data, refetch } = useQuery(USERS_VIEW_PROJECT, {
     variables: {
       projectId: project.id,
     },
@@ -65,7 +68,7 @@ export default function UserTab(props: TProps) {
               gap: 2,
             }}
           >
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={modalAddVisualizer.onTrue}>
               <Iconify icon="ic:round-person-add" width={18} mr={1} />
               Agregar visualizador
             </Button>
@@ -95,6 +98,7 @@ export default function UserTab(props: TProps) {
           <UserItem key={user.id} user={user} />
         ))}
       </Box>
+      <ModalAddVisualizer modal={modalAddVisualizer} refetch={refetch} project={project} />
     </React.Fragment>
   )
 }

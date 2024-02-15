@@ -1,5 +1,13 @@
 import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
-import type { IProject, ITaskState, IArea, IStage, IUser, IProjectNote } from '@adp/shared'
+import type {
+  IProject,
+  ITaskState,
+  IArea,
+  IStage,
+  IUser,
+  IProjectNote,
+  IProjectViewer,
+} from '@adp/shared'
 import { Op } from 'sequelize'
 import {
   Project,
@@ -9,6 +17,7 @@ import {
   Stage,
   User,
   UserFinishedProject,
+  ProjectViewer,
 } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
@@ -601,6 +610,33 @@ export default {
           stateId: TASK_STATE.CANCELLED,
         })
         return project
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
+
+    createProjectVisualizer: async (
+      _: any,
+      args: Pick<IProjectViewer, 'projectId' | 'userId'>,
+      context: IContext
+    ): Promise<IProjectViewer> => {
+      try {
+        needPermission([PERMISSION_MAP.PROJECT_UPDATE], context)
+        const { projectId, userId } = args
+        const project = await Project.findByPk(projectId)
+        if (!project) {
+          throw new Error('Proyecto no encontrado')
+        }
+        const user = await User.findByPk(userId)
+        if (!user) {
+          throw new Error('Usuario no encontrado')
+        }
+        const projectViewer = await ProjectViewer.create({
+          projectId,
+          userId,
+        })
+        return projectViewer as unknown as IProjectViewer
       } catch (error) {
         logger.error(error)
         throw error
