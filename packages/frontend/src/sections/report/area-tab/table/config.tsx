@@ -3,12 +3,8 @@ import type { IArea } from '@adp/shared'
 import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
 import { Box, Tooltip, Typography } from '@mui/material'
-import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
-} from 'src/utils/average-completition'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { getTooltipFromAcp, getTooltipFromPacp } from '../../tooltips'
 
 type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
 
@@ -30,12 +26,14 @@ export const getColumns = (args: TArgs): TColumn[] => [
   },
   {
     id: 'projectAcp',
-    label: 'Proyecto ACP',
+    label: 'Proyectos finalizados',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0)}>
+        <Tooltip
+          title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0, 'project')}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
@@ -63,12 +61,14 @@ export const getColumns = (args: TArgs): TColumn[] => [
   },
   {
     id: 'projectPacp',
-    label: 'Proyecto PACP',
+    label: 'Proyectos en curso',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0)}>
+        <Tooltip
+          title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0, 'project')}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
@@ -95,12 +95,12 @@ export const getColumns = (args: TArgs): TColumn[] => [
   },
   {
     id: 'stageAcp',
-    label: 'Etapa ACP',
+    label: 'Etapas finalizadas',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0)}>
+        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0, 'stage')}>
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
@@ -125,12 +125,12 @@ export const getColumns = (args: TArgs): TColumn[] => [
   },
   {
     id: 'stagePacp',
-    label: 'Etapa PACP',
+    label: 'Etapas en curso',
     type: EColumnType.STRING,
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0)}>
+        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0, 'stage')}>
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
