@@ -30,6 +30,7 @@ export default `#graphql
     usersViewProject(projectId: Int): [User]
     usersViewStage(stageId: Int): [User]
     userAreas (userId: Int!) : [Area]
+    userForDetail(id: Int!): User
   }
 
   type Mutation {

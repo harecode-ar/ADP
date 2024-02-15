@@ -112,6 +112,32 @@ export default {
         throw error
       }
     },
+    userForDetail: (
+      _: any,
+      args: {
+        id: number
+      }
+    ): Promise<IUser | null> => {
+      try {
+        const { id } = args
+        return User.findByPk(id, {
+          include: [
+            {
+              model: UserAverageCompletition,
+              as: 'averageCompletition',
+              attributes: ['projectAcp', 'projectPacp', 'stageAcp', 'stagePacp'],
+            },
+            {
+              model: Role,
+              as: 'role'
+            }
+          ],
+        })
+      } catch (error) {
+        logger.error(error)
+        throw error
+      }
+    },
     users: (): Promise<IUser[]> => {
       try {
         return User.findAll()

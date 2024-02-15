@@ -121,3 +121,27 @@ export const GET_USER_AREAS = gql`
     }
   }
 `
+export const GET_USER_FOR_DETAIL = gql`
+  query userForDetail($id: Int!) {
+    userForDetail(id: $id) {
+      id
+      firstname
+      lastname
+      fullname
+      email
+      phone
+      image
+      roleId
+      role {
+        id
+        name
+      }
+      averageCompletition {
+        projectAcp
+        projectPacp
+        stageAcp
+        stagePacp
+      }
+    }
+  }
+`
