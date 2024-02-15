@@ -10,7 +10,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_AREA, GET_COUNT_PROJECTS_BY_AREA } from 'src/graphql/queries'
+import { GET_AREA, GET_COUNT_PROJECTS_BY_AREA, GET_USER_VIEW_AREA } from 'src/graphql/queries'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import Iconify from 'src/components/iconify/iconify'
@@ -41,6 +41,19 @@ export default function AreaDetailView(props: TProps) {
   const [tab, setTab] = useState<ETab>(ETab.PROJECTS)
   const editAreaModal = useBoolean()
 
+  const { data: access } = useQuery(GET_USER_VIEW_AREA, {
+    variables: {
+      areaId: Number(areaId),
+    },
+    skip: !areaId,
+    onCompleted: (data) => {
+      if (!data || !data.userViewArea) {
+        enqueueSnackbar('No tienes permisos para ver esta area', { variant: 'error' })
+        router.push(paths.dashboard.root)
+      }
+    },
+  })
+
   const areaQuery = useQuery(GET_AREA, {
     variables: { id: Number(areaId) },
     skip: !areaId,
@@ -68,6 +81,10 @@ export default function AreaDetailView(props: TProps) {
   }, [countProjectsByAreaQuery.data])
 
   const hasProjects = countProjectsByArea > 0
+
+  if (!access || !access.userViewArea) {
+    return null
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>

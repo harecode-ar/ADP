@@ -75,6 +75,12 @@ export const GET_USER_VIEW_STAGE = gql`
   }
 `
 
+export const GET_USER_VIEW_AREA = gql`
+  query userViewArea($areaId: Int!) {
+    userViewArea(areaId: $areaId)
+  }
+`
+
 export const USERS_VIEW_PROJECT = gql`
   query usersViewProject($projectId: Int!) {
     usersViewProject(projectId: $projectId) {
