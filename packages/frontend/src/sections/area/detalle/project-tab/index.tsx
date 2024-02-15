@@ -94,7 +94,7 @@ export default function ProjectTab(props: TProps) {
                 sx={{ width: 'fit-content' }}
               >
                 <Iconify icon="mingcute:add-fill" mr={1} />
-                Crear etapa
+                Crear proyecto
               </Button>
             </Box>
           )}
