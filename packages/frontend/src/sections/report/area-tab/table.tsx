@@ -15,10 +15,9 @@ import Iconify from 'src/components/iconify'
 import {
   getColorFromAcp,
   getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
 } from 'src/utils/average-completition'
 import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { getTooltipFromAcp, getTooltipFromPacp } from '../tooltips'
 
 type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
 
@@ -40,7 +39,13 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0)}>
+        <Tooltip
+          title={
+            getTooltipFromAcp(row.averageCompletition?.projectAcp || null,
+            0,
+            'project'
+          )}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
@@ -73,7 +78,13 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0)}>
+        <Tooltip
+          title={
+            getTooltipFromPacp(row.averageCompletition?.projectPacp || null,
+            0,
+            'project'
+          )}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
@@ -105,7 +116,13 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0)}>
+        <Tooltip
+          title={
+            getTooltipFromAcp(row.averageCompletition?.stageAcp || null,
+            0,
+            'stage'
+          )}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
@@ -135,7 +152,13 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0)}>
+        <Tooltip
+          title={
+            getTooltipFromPacp(row.averageCompletition?.stagePacp || null,
+            0,
+            'stage'
+          )}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
