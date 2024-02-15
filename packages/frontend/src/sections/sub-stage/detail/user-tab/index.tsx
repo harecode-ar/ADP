@@ -1,10 +1,12 @@
 import { IStage, IUser } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
 import { Card, Box, TextField, Button, CardContent } from '@mui/material'
+import { useBoolean } from 'src/hooks/use-boolean'
 import { useQuery } from '@apollo/client'
 import { USERS_VIEW_STAGE } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import UserItem from './contact-item'
+import ModalAddVisualizer from './modal-add-visualizer'
 
 type TProps = {
   stage: IStage
@@ -14,8 +16,9 @@ export default function UserTab(props: TProps) {
   const { stage } = props
 
   const [search, setSearch] = useState('')
+  const modalAddVisualizer = useBoolean()
 
-  const { data } = useQuery(USERS_VIEW_STAGE, {
+  const { data, refetch } = useQuery(USERS_VIEW_STAGE, {
     variables: {
       stageId: stage.id,
     },
@@ -66,7 +69,7 @@ export default function UserTab(props: TProps) {
               gap: 2,
             }}
           >
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={modalAddVisualizer.onTrue}>
               <Iconify icon="ic:round-person-add" width={18} mr={1} />
               Agregar visualizador
             </Button>
@@ -100,6 +103,7 @@ export default function UserTab(props: TProps) {
           </Box>
         </CardContent>
       </Card>
+      <ModalAddVisualizer modal={modalAddVisualizer} refetch={refetch} stage={stage} />
     </React.Fragment>
   )
 }
