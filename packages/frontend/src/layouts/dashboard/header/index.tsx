@@ -20,7 +20,7 @@ import ChecklistPopover from 'src/layouts/_common/checklist-popover'
 import ContactPopover from 'src/layouts/_common/contact-popover'
 import PrintButton from 'src/layouts/_common/print-button'
 import { HEADER, NAV } from '../../config-layout'
-import { Searchbar, AccountPopover, SettingsButton } from '../../_common'
+import { Searchbar, AccountPopover } from '../../_common'
 
 // ----------------------------------------------------------------------
 

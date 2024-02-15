@@ -30,8 +30,8 @@ export default function UserTab(props: TProps) {
     const lowerSearch = search.toLowerCase()
     return users.filter(
       (user) =>
-        user.fullname.toLowerCase().includes(lowerSearch) ||
-        user.email.toLowerCase().includes(lowerSearch)
+        (user.fullname && user.fullname.toLowerCase().includes(lowerSearch)) ||
+        (user.email && user.email.toLowerCase().includes(lowerSearch))
     )
   }, [users, search])
 

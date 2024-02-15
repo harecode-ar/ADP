@@ -10,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { Link, Switch, Tooltip } from '@mui/material'
-import NextLink from 'next/link'
 // routes
 import { useRouter } from 'src/routes/hooks'
 import { useBoolean } from 'src/hooks/use-boolean'

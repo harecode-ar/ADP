@@ -1,4 +1,3 @@
-import { IUserCard } from '@adp/shared'
 import UserDetailView from 'src/sections/user/detalle/view'
 
 export const metadata = {
