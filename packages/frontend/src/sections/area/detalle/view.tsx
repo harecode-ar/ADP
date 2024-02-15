@@ -15,11 +15,13 @@ import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import Iconify from 'src/components/iconify/iconify'
 import { DashboardReportProvider } from 'src/contexts/dashboard-report-context'
+import { useAuthContext } from 'src/auth/hooks'
 import GanttTab from './gantt-tab'
 import ProjectTab from './project-tab'
 import ReportTab from './stadistic-tab'
 import ChartTab from './chart-tab'
 import ModalEdit from './edit-area-modal'
+import ModalCreate from './project-tab/create-project'
 
 enum ETab {
   PROJECTS = 'Proyectos',
@@ -40,6 +42,8 @@ export default function AreaDetailView(props: TProps) {
   const router = useRouter()
   const [tab, setTab] = useState<ETab>(ETab.PROJECTS)
   const editAreaModal = useBoolean()
+  const modalCreate = useBoolean()
+  const { user } = useAuthContext()
 
   const { data: access } = useQuery(GET_USER_VIEW_AREA, {
     variables: {
@@ -184,6 +188,28 @@ export default function AreaDetailView(props: TProps) {
                 No hay proyectos asignados a esta área
               </Typography>
             )}
+            {!hasProjects && user && area.responsible && user.id === area.responsible.id && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={modalCreate.onTrue}
+                  sx={{ width: 'fit-content' }}
+                >
+                  <Iconify icon="mingcute:add-fill" mr={1} />
+                  Crear proyecto
+                </Button>
+              </Box>
+            )}
+            {modalCreate.value && (
+              <ModalCreate modal={modalCreate} areaId={Number(areaId)} refetch={countProjectsByAreaQuery.refetch}/>
+            )}
+            
             {tab === ETab.PROJECTS && hasProjects && (
               <ProjectTab
                 areaId={areaId}
