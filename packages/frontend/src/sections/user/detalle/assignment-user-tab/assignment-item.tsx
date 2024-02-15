@@ -9,6 +9,7 @@ import Iconify from 'src/components/iconify'
 import TextMaxLine from 'src/components/text-max-line'
 import { colorFromAcpOrPacp, getTootipFromAcpOrPacp } from 'src/utils/average-completition'
 import getLabelColor from 'src/utils/color-progress'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useBoolean } from 'src/hooks/use-boolean'
 import ModalCancelTask from 'src/sections/shared/modal-cancel-task'
 import ModalStartTask from './modal-start-task'
@@ -25,18 +26,19 @@ export default function AssignmentItem(props: TProps) {
   const { project, stage, subStage } = props
   const modalStartTask = useBoolean()
   const modalCancelTask = useBoolean()
+  const { stagePercentageAlertMargin, projectPercentageAlertMargin } = useConfigurationContext()
 
   const { id, name, description, startDate, endDate, progress } = project ||
     stage ||
     subStage || {
-      id: 0,
-      name: '',
-      description: '',
-      startDate: '',
-      endDate: '',
-      progress: 0,
-      stateId: 0,
-    }
+    id: 0,
+    name: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    progress: 0,
+    stateId: 0,
+  }
 
   const assignment = useMemo(() => {
     if (project)
@@ -75,6 +77,11 @@ export default function AssignmentItem(props: TProps) {
       stateId: 0,
     }
   }, [project, stage, subStage])
+
+  const percentageAlertMargin = useMemo(() => {
+    if (project) return projectPercentageAlertMargin
+    return stagePercentageAlertMargin
+  }, [projectPercentageAlertMargin, stagePercentageAlertMargin, project])
 
   if (!project && !stage && !subStage) return null
 
@@ -128,13 +135,18 @@ export default function AssignmentItem(props: TProps) {
             }}
           >
             <Tooltip
-              title={getTootipFromAcpOrPacp(assignment.acp ?? null, assignment.pacp ?? null)}
+              title={getTootipFromAcpOrPacp(
+                assignment.acp ?? null,
+                assignment.pacp ?? null,
+                percentageAlertMargin
+              )}
             >
               <Box
                 sx={{
                   backgroundColor: colorFromAcpOrPacp(
                     assignment.acp ?? null,
-                    assignment.pacp ?? null
+                    assignment.pacp ?? null,
+                    percentageAlertMargin
                   ),
                   width: 15,
                   height: 15,
