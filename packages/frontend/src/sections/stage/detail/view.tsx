@@ -29,6 +29,7 @@ import {
   GET_USER_VIEW_STAGE,
 } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify/iconify'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { useBoolean } from 'src/hooks/use-boolean'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import { formatDate } from 'src/utils/format-time'
@@ -73,6 +74,7 @@ export default function ProjectDetailView(props: TProps) {
   const modalFinishStage = useBoolean()
   const modalStartTask = useBoolean()
   const modalCancelStage = useBoolean()
+  const { stagePercentageAlertMargin } = useConfigurationContext()
 
   const { data: access } = useQuery(GET_USER_VIEW_STAGE, {
     variables: {
@@ -191,7 +193,7 @@ export default function ProjectDetailView(props: TProps) {
         {!!stage && (
           <React.Fragment>
             {stage.stateId === TASK_STATE.COMPLETED && (
-              <Alert severity={getSeverityFromAcp(stage.acp ?? null)}>
+              <Alert severity={getSeverityFromAcp(stage.acp ?? null, stagePercentageAlertMargin)}>
                 La etapa fue finalizada en la fecha: {formatDate(stage.endDate)}
               </Alert>
             )}
@@ -259,13 +261,18 @@ export default function ProjectDetailView(props: TProps) {
                         startAdornment: (
                           <InputAdornment position="start">
                             <Tooltip
-                              title={getTootipFromAcpOrPacp(stage.acp ?? null, stage.pacp ?? null)}
+                              title={getTootipFromAcpOrPacp(
+                                stage.acp ?? null,
+                                stage.pacp ?? null,
+                                stagePercentageAlertMargin
+                              )}
                             >
                               <Box
                                 sx={{
                                   backgroundColor: colorFromAcpOrPacp(
                                     stage.acp ?? null,
-                                    stage.pacp ?? null
+                                    stage.pacp ?? null,
+                                    stagePercentageAlertMargin
                                   ),
                                   width: 15,
                                   height: 15,

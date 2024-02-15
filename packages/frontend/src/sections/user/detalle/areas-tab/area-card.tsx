@@ -1,24 +1,16 @@
 'use client'
 
 import { IArea, IProjectCountByState, IUser } from '@adp/shared'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import NextLink from 'next/link'
 import { Box, Card, Avatar, Typography, Link } from '@mui/material'
 import { GET_PROJECT_COUNT_BY_STATE } from 'src/graphql/queries'
 import { useQuery } from '@apollo/client'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 import { paths } from 'src/routes/paths'
 import { getStorageFileUrl } from 'src/utils/storage'
 import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
 import ProyectAreaReportItem from './proyect-area-report-item'
-
-const colorFromAcpOrPacp = (area: IArea) => {
-  if (!area.averageCompletition) return getColorFromAcp(null, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  if (area.averageCompletition.projectAcp === null) {
-    return getColorFromPacp(area.averageCompletition.projectPacp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-  }
-  return getColorFromAcp(area.averageCompletition.projectAcp, DEFAULT_PERCENTAGE_ALERT_MARGIN)
-}
 
 type TProps = {
   area: IArea
@@ -28,6 +20,7 @@ type TProps = {
 export default function AreaCard({ area, user }: TProps) {
   const { id, name } = area
   const responsible = user
+  const { projectPercentageAlertMargin } = useConfigurationContext()
 
   const { data } = useQuery(GET_PROJECT_COUNT_BY_STATE, {
     variables: {
@@ -40,6 +33,17 @@ export default function AreaCard({ area, user }: TProps) {
     if (!data) return { new: 0, onHold: 0, inProgress: 0, completed: 0, cancelled: 0 }
     return data.projectCountByState
   }, [data])
+
+  const colorFromAcpOrPacp = useCallback(
+    (a: IArea) => {
+      if (!a.averageCompletition) return getColorFromAcp(null, projectPercentageAlertMargin)
+      if (a.averageCompletition.projectAcp === null) {
+        return getColorFromPacp(a.averageCompletition.projectPacp, projectPercentageAlertMargin)
+      }
+      return getColorFromAcp(a.averageCompletition.projectAcp, projectPercentageAlertMargin)
+    },
+    [projectPercentageAlertMargin]
+  )
 
   return (
     <Link

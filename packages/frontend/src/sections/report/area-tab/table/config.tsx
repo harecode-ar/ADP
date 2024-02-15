@@ -1,37 +1,28 @@
-import React, { useEffect, useMemo } from 'react'
-import type { IUser } from '@adp/shared'
-import NextLink from 'next/link'
-import CustomTable from 'src/components/table/custom-table'
-import CustomTableSearch from 'src/components/table/custom-table-search'
-import CustomTableToolbar from 'src/components/table/custom-table-toolbar'
-import CustomTableSkeleton from 'src/components/table/custom-table-skeleton'
-import { EColumnType, useTable } from 'src/components/table'
+import React from 'react'
+import type { IArea } from '@adp/shared'
+import { EColumnType } from 'src/components/table'
 import type { TColumn } from 'src/components/table'
-import { useQuery } from '@apollo/client'
-import { USERS_FOR_REPORT } from 'src/graphql/queries'
-import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material'
-import { paths } from 'src/routes/paths'
-import Iconify from 'src/components/iconify'
-import {
-  getColorFromAcp,
-  getColorFromPacp,
-  getTooltipFromAcp,
-  getTooltipFromPacp,
-} from 'src/utils/average-completition'
-import { DEFAULT_PERCENTAGE_ALERT_MARGIN } from 'src/constants'
+import { Box, Tooltip, Typography } from '@mui/material'
+import { getColorFromAcp, getColorFromPacp } from 'src/utils/average-completition'
+import { getTooltipFromAcp, getTooltipFromPacp } from '../../tooltips'
 
-type TRow = Pick<IUser, 'id' | 'firstname' | 'lastname' | 'averageCompletition'>
+type TRow = Pick<IArea, 'id' | 'name' | 'averageCompletition'>
+
+type TArgs = {
+  stagePercentageAlertMargin: number
+  projectPercentageAlertMargin: number
+}
 
 const calculatePercentage = (value: number) => value * 100
 
-const columns: TColumn[] = [
+export const getColumns = (args: TArgs): TColumn[] => [
   {
-    id: 'fullname',
-    label: 'Nombre Completo',
+    id: 'name',
+    label: 'Area',
     type: EColumnType.STRING,
     searchable: true,
-    renderCell: (row: TRow) => `${row.firstname} ${row.lastname}`,
-    searchValue: (row: TRow) => `${row.firstname} ${row.lastname}`,
+    renderCell: (row: TRow) => row.name,
+    searchValue: (row: TRow) => row.name,
   },
   {
     id: 'projectAcp',
@@ -40,12 +31,14 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0)}>
+        <Tooltip
+          title={getTooltipFromAcp(row.averageCompletition?.projectAcp || null, 0, 'project')}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
                 row.averageCompletition?.projectAcp || null,
-                DEFAULT_PERCENTAGE_ALERT_MARGIN
+                args.projectPercentageAlertMargin
               ),
               width: 15,
               height: 15,
@@ -73,12 +66,14 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0)}>
+        <Tooltip
+          title={getTooltipFromPacp(row.averageCompletition?.projectPacp || null, 0, 'project')}
+        >
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
                 row.averageCompletition?.projectPacp || null,
-                DEFAULT_PERCENTAGE_ALERT_MARGIN
+                args.projectPercentageAlertMargin
               ),
               width: 15,
               height: 15,
@@ -105,12 +100,12 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0)}>
+        <Tooltip title={getTooltipFromAcp(row.averageCompletition?.stageAcp || null, 0, 'stage')}>
           <Box
             sx={{
               backgroundColor: getColorFromAcp(
                 row.averageCompletition?.stageAcp || null,
-                DEFAULT_PERCENTAGE_ALERT_MARGIN
+                args.stagePercentageAlertMargin
               ),
               width: 15,
               height: 15,
@@ -135,12 +130,12 @@ const columns: TColumn[] = [
     searchable: true,
     renderCell: (row: TRow) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0)}>
+        <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0, 'stage')}>
           <Box
             sx={{
               backgroundColor: getColorFromPacp(
                 row.averageCompletition?.stagePacp || null,
-                DEFAULT_PERCENTAGE_ALERT_MARGIN
+                args.stagePercentageAlertMargin
               ),
               width: 15,
               height: 15,
@@ -159,70 +154,3 @@ const columns: TColumn[] = [
     searchValue: (row: TRow) => row.averageCompletition?.stagePacp ?? '-',
   },
 ]
-
-const Table = () => {
-  const { data, loading, refetch } = useQuery(USERS_FOR_REPORT)
-  const { hideColumns, selected, setMultiple } = useTable()
-
-  const users: IUser[] = useMemo(() => {
-    if (data) {
-      return data.usersForReport || []
-    }
-    return []
-  }, [data])
-
-  useEffect(() => {
-    hideColumns(columns)
-  }, [hideColumns])
-
-  useEffect(() => {
-    setMultiple(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return (
-    <Box>
-      {loading ? (
-        <CustomTableSkeleton columns={columns.length} search />
-      ) : (
-        <React.Fragment>
-          <CustomTableToolbar id="area-list-table" columns={columns} download refetch={refetch} />
-          <CustomTableSearch />
-          {data ? (
-            <CustomTable
-              id="user-list-table"
-              columns={columns}
-              data={users}
-              action={
-                <React.Fragment>
-                  {selected.length === 1 && (
-                    <Link
-                      component={NextLink}
-                      href={paths.dashboard.user.detail.replace(':id', selected[0])}
-                    >
-                      <IconButton>
-                        <Iconify icon="mdi:eye" />
-                      </IconButton>
-                    </Link>
-                  )}
-                </React.Fragment>
-              }
-            />
-          ) : (
-            <Typography
-              sx={{
-                textAlign: 'center',
-                mt: 2,
-                mb: 2,
-              }}
-            >
-              No se encontraron usuarios.
-            </Typography>
-          )}
-        </React.Fragment>
-      )}
-    </Box>
-  )
-}
-
-export default Table

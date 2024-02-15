@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import { Box, Tooltip } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { colorFromAcpOrPacp } from 'src/utils/average-completition'
+import { useConfigurationContext } from 'src/contexts/configuration-context'
 
 type TProps = {
   project: IProject
@@ -21,6 +22,7 @@ const getDuration = (startDate: string, endDate: string) => {
 
 export default function StageSubLine(props: TProps) {
   const { project, stage, first, last } = props
+  const { stagePercentageAlertMargin } = useConfigurationContext()
 
   const width = useMemo(() => {
     const stageDuration = getDuration(stage.startDate, stage.endDate) + 1
@@ -34,10 +36,13 @@ export default function StageSubLine(props: TProps) {
         sx={(theme) => ({
           width: `${width}%`,
           height: '100%',
-          backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp),
+          backgroundColor: colorFromAcpOrPacp(stage.acp, stage.pacp, stagePercentageAlertMargin),
           cursor: 'pointer',
           '&:hover': {
-            backgroundColor: alpha(colorFromAcpOrPacp(stage.acp, stage.pacp), 0.25),
+            backgroundColor: alpha(
+              colorFromAcpOrPacp(stage.acp, stage.pacp, stagePercentageAlertMargin),
+              0.25
+            ),
           },
           borderTop: 'none',
           borderBottom: 'none',
