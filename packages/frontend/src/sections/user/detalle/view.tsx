@@ -21,7 +21,7 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'src/routes/hooks'
 import { useSnackbar } from 'src/components/snackbar'
 import { usePrint } from 'src/hooks/use-print'
-import { GET_USER } from 'src/graphql/queries'
+import { GET_USER_FOR_DETAIL } from 'src/graphql/queries'
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs/custom-breadcrumbs'
 import AvatarShape from 'src/assets/illustrations/avatar-shape'
 import Iconify from 'src/components/iconify'
@@ -47,11 +47,11 @@ export default function UserDetailView(props: TProps) {
   const [tab, setTab] = useState<ETab>(ETab.ASSIGNMENT)
   const settings = useSettingsContext()
 
-  const userQuery = useQuery(GET_USER, {
+  const userQuery = useQuery(GET_USER_FOR_DETAIL, {
     variables: { id: Number(userId) },
     skip: !userId,
     onCompleted: (d) => {
-      if (!d.user) {
+      if (!d.userForDetail) {
         enqueueSnackbar('Usuario no encontrado', { variant: 'error' })
         router.push(paths.dashboard.user.root)
       }
@@ -60,7 +60,7 @@ export default function UserDetailView(props: TProps) {
 
   const user: IUser | null = useMemo(() => {
     if (!userQuery.data) return null
-    return userQuery.data.user
+    return userQuery.data.userForDetail
   }, [userQuery.data])
 
   const handleCall = () => {
@@ -71,6 +71,40 @@ export default function UserDetailView(props: TProps) {
     if (!user) return
     window.open(`mailto:${user.email}`)
   }
+
+  const projectAcpColor = useMemo(()=> {
+    if (user?.averageCompletition && user.averageCompletition.projectAcp) {
+      if (user.averageCompletition.projectAcp <= 0) return 'success.main'
+      if (user.averageCompletition.projectAcp > 0 ) return 'error.main'
+      return 'text.primary'
+    }
+    return 'text.primary'
+  },[user])
+
+  const projectAcpText = useMemo(()=> {
+    if (user?.averageCompletition && user.averageCompletition.projectAcp) {
+      const value = user.averageCompletition.projectAcp * 100
+      return `${value.toFixed(1)}%`
+    }
+    return 'No tiene proyectos asignados'
+  },[user])
+
+  const stageAcpColor = useMemo(()=> {
+    if (user?.averageCompletition && user.averageCompletition.stageAcp) {
+      if (user.averageCompletition.stageAcp <= 0) return 'success.main'
+      if (user.averageCompletition.stageAcp > 0 ) return 'error.main'
+      return 'text.primary'
+    }
+    return 'text.primary'
+  },[user])
+
+  const stageAcpText = useMemo(()=> {
+    if (user?.averageCompletition && user.averageCompletition.stageAcp) {
+      const value = user.averageCompletition.stageAcp * 100
+      return `${value.toFixed(1)}%`
+    }
+    return 'No tiene etapas asignadas'
+  },[user])
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
@@ -154,7 +188,13 @@ export default function UserDetailView(props: TProps) {
               >
                 Finaliza los proyectos en
               </Typography>
-              &nbsp;No tiene proyectos
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{color: projectAcpColor }}
+              >
+               {projectAcpText}
+              </Typography>
             </Box>
             <Box>
               <Typography
@@ -164,7 +204,13 @@ export default function UserDetailView(props: TProps) {
               >
                 Finaliza las etapas en
               </Typography>
-              &nbsp;No tiene etapas
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{color: stageAcpColor }}
+              >
+               {stageAcpText}
+              </Typography>
             </Box>
           </Box>
         </Card>
