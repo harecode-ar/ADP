@@ -1,5 +1,5 @@
-import { ENotificationCategory, PERMISSION_MAP, TASK_STATE } from '@adp/shared'
-import type { IStage, IUser, ITaskState, IArea, IProject, IStageViewer } from '@adp/shared'
+import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
+import type { IStage, IUser, ITaskState, IArea, IProject } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
   Stage,
@@ -9,7 +9,6 @@ import {
   User,
   StageNote,
   UserFinishedStage,
-  StageViewer,
 } from '../../database/models'
 import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
@@ -17,7 +16,6 @@ import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
 import { getAcp } from '../../utils/average-completition'
-import { sendNotification } from '../../utils/notification'
 
 export default {
   Stage: {
@@ -1066,48 +1064,6 @@ export default {
           stateId: TASK_STATE.CANCELLED,
         })
         return stage
-      } catch (error) {
-        logger.error(error)
-        throw error
-      }
-    },
-
-    createStageViewer: async (
-      _: any,
-      args: Pick<IStageViewer, 'stageId' | 'userId'>,
-      context: IContext
-    ): Promise<IStageViewer> => {
-      try {
-        needPermission([PERMISSION_MAP.STAGE_READ], context)
-        const { stageId, userId } = args
-        const stage = await Stage.findByPk(stageId)
-        if (!stage) {
-          throw new Error('Stage no encontrado')
-        }
-        const user = await User.findByPk(userId)
-        if (!user) {
-          throw new Error('Usuario no encontrado')
-        }
-        const stageViewer = await StageViewer.create({
-          stageId,
-          userId,
-        })
-
-        const params = {
-          title: `Ahora puedes visualizar la etapa "${stage.name}"`,
-          category: ENotificationCategory.STAGE,
-          userIds: [user.id],
-          email: true,
-        }
-
-        if (stage.parentStageId) {
-          params.title = `Ahora puedes visualizar la sub etapa "${stage.name}"`
-          params.category = ENotificationCategory.SUB_STAGE
-        }
-
-        sendNotification(params)
-
-        return stageViewer as unknown as IStageViewer
       } catch (error) {
         logger.error(error)
         throw error
