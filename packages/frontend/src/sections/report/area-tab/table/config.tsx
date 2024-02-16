@@ -50,8 +50,8 @@ export const getColumns = (args: TArgs): TColumn[] => [
         <Typography>
           {row.averageCompletition?.projectAcp !== null
             ? `${calculatePercentage(
-                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
-              )}%`
+              Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+            )}%`
             : '-'}
         </Typography>
       </Box>
@@ -73,7 +73,7 @@ export const getColumns = (args: TArgs): TColumn[] => [
             sx={{
               backgroundColor: getColorFromPacp(
                 row.averageCompletition?.projectPacp || null,
-                args.projectPercentageAlertMargin
+                0
               ),
               width: 15,
               height: 15,
@@ -85,8 +85,8 @@ export const getColumns = (args: TArgs): TColumn[] => [
         <Typography>
           {row.averageCompletition?.projectPacp !== null
             ? `${calculatePercentage(
-                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
-              )}%`
+              Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+            )}%`
             : '-'}
         </Typography>
       </Box>
@@ -135,7 +135,7 @@ export const getColumns = (args: TArgs): TColumn[] => [
             sx={{
               backgroundColor: getColorFromPacp(
                 row.averageCompletition?.stagePacp || null,
-                args.stagePercentageAlertMargin
+                0
               ),
               width: 15,
               height: 15,

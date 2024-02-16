@@ -5,6 +5,7 @@ import { Container, Card, Box, Tabs, Tab, Alert } from '@mui/material'
 import { useSettingsContext } from 'src/components/settings'
 import { useTheme } from '@mui/material/styles'
 import { usePrint } from 'src/hooks/use-print'
+import { ERROR, SUCCESS } from 'src/theme/palette'
 import AreaTab from './area-tab'
 import UserTab from './user-tab'
 
@@ -13,6 +14,16 @@ import UserTab from './user-tab'
 enum ETab {
   AREAS = 'Areas',
   USERS = 'Usuarios',
+}
+
+const errorUnderline = {
+  textDecoration: 'underline',
+  textDecorationColor: ERROR.main,
+}
+
+const successUnderline = {
+  textDecoration: 'underline',
+  textDecorationColor: SUCCESS.main,
 }
 
 export default function TableroView() {
@@ -24,6 +35,40 @@ export default function TableroView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} ref={ref}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Alert
+          severity="info"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 1,
+            padding: 1,
+          }}
+        >
+          Los números representan los porcentajes de <strong style={errorUnderline}>exceso</strong>
+          <Box
+            sx={{
+              backgroundColor: theme.palette.error.main,
+              width: 13,
+              height: 13,
+              borderRadius: '50%',
+              marginX: 1,
+              display: 'inline-block',
+            }}
+          />
+          o <strong style={successUnderline}>ahorro</strong>
+          <Box
+            sx={{
+              backgroundColor: theme.palette.success.main,
+              width: 13,
+              height: 13,
+              borderRadius: '50%',
+              marginX: 1,
+              display: 'inline-block',
+            }}
+          />
+          de tiempo de los proyectos o etapas
+        </Alert>
         <Card sx={{ p: 1 }}>
           <Box
             sx={{
@@ -38,42 +83,6 @@ export default function TableroView() {
             </Tabs>
           </Box>
         </Card>
-
-        <Alert
-          severity="info"
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 1,
-            padding: 1,
-          }}
-        >
-          Los números representan los porcentajes de exceso
-          <Box
-            sx={{
-              backgroundColor: theme.palette.error.main,
-              width: 13,
-              height: 13,
-              borderRadius: '50%',
-              marginX: 1,
-              display: 'inline-block',
-            }}
-          />
-          o ahorro
-          <Box
-            sx={{
-              backgroundColor: theme.palette.success.main,
-              width: 13,
-              height: 13,
-              borderRadius: '50%',
-              marginX: 1,
-              display: 'inline-block',
-            }}
-          />
-          de tiempo de los proyectos o etapas
-        </Alert>
-
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: tab === ETab.AREAS ? 'block' : 'none' }}>
             <AreaTab />

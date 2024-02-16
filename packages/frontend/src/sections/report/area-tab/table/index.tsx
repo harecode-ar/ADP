@@ -80,7 +80,7 @@ const Table = () => {
                 mb: 2,
               }}
             >
-              No hay areas asignadas.
+              No hay areas.
             </Typography>
           )}
         </React.Fragment>
