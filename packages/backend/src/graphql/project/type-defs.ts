@@ -70,7 +70,5 @@ export default `#graphql
     finishProject(id: Int!): Project
 
     cancelProject(id: Int!): Project
-
-    createProjectVisualizer(projectId: Int!, userId: Int!): ProjectViewer
   }
 `

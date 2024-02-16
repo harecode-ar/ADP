@@ -1,6 +1,6 @@
 import { IStage, IUser } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { Card, Box, TextField, Button } from '@mui/material'
+import { Card, Box, TextField, Button, CardContent } from '@mui/material'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { useQuery } from '@apollo/client'
 import { USERS_VIEW_STAGE } from 'src/graphql/queries'
@@ -43,6 +43,7 @@ export default function UserTab(props: TProps) {
       <Card
         sx={{
           p: 2,
+          mb: 3,
         }}
       >
         <Box
@@ -75,29 +76,33 @@ export default function UserTab(props: TProps) {
           </Box>
         </Box>
       </Card>
-      {filteredUsers.length === 0 && (
-        <Box
-          sx={{
-            textAlign: 'center',
-            color: 'text.disabled',
-          }}
-        >
-          No hay visualizadores asignados al proyecto
-        </Box>
-      )}
-      <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-        }}
-      >
-        {filteredUsers.map((user) => (
-          <UserItem key={user.id} user={user} />
-        ))}
-      </Box>
+      <Card>
+        <CardContent>
+          {filteredUsers.length === 0 && (
+            <Box
+              sx={{
+                textAlign: 'center',
+                color: 'text.disabled',
+              }}
+            >
+              No hay visualizadores asignados a esta sub etapa
+            </Box>
+          )}
+          <Box
+            gap={3}
+            display="grid"
+            gridTemplateColumns={{
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }}
+          >
+            {filteredUsers.map((user) => (
+              <UserItem key={user.id} user={user} stageId={stage.id} refetch={refetch} />
+            ))}
+          </Box>
+        </CardContent>
+      </Card>
       <ModalAddVisualizer modal={modalAddVisualizer} refetch={refetch} stage={stage} />
     </React.Fragment>
   )

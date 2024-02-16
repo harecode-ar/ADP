@@ -12,11 +12,13 @@ import notification from './notification'
 import permission from './permission'
 import project from './project'
 import projectNote from './project-note'
+import projectViewer from './project-viewer'
 import report from './report'
 import role from './role'
 import session from './session'
 import stage from './stage'
 import stageNote from './stage-note'
+import stageViewer from './stage-viewer'
 import storage from './storage'
 import task from './task'
 import taskState from './task-state'
@@ -37,11 +39,13 @@ export const typeDefs = mergeTypeDefs([
   permission.typeDefs,
   project.typeDefs,
   projectNote.typeDefs,
+  projectViewer.typeDefs,
   report.typeDefs,
   role.typeDefs,
   session.typeDefs,
   stage.typeDefs,
   stageNote.typeDefs,
+  stageViewer.typeDefs,
   task.typeDefs,
   taskState.typeDefs,
   upload.typeDefs,
@@ -63,11 +67,13 @@ export const resolvers = mergeResolvers([
   permission.resolvers,
   project.resolvers,
   projectNote.resolvers,
+  projectViewer.resolvers,
   report.resolvers,
   role.resolvers,
   session.resolvers,
   stage.resolvers,
   stageNote.resolvers,
+  stageViewer.resolvers,
   storage.resolvers,
   task.resolvers,
   taskState.resolvers,

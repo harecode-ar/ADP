@@ -16,7 +16,7 @@ import { USERS_FOR_SELECT } from 'src/graphql/queries'
 import { CREATE_PROJECT_VIEWER } from 'src/graphql/mutations'
 
 const validationSchema = Yup.object().shape({
-  responsible: Yup.object().nullable().required('El responsable es requerido.'),
+  viewer: Yup.object().nullable().required('El visualizador es requerido.'),
 })
 
 type TProps = {
@@ -26,7 +26,7 @@ type TProps = {
 }
 
 type TFormikValues = {
-  responsible: IUser | null
+  viewer: IUser | null
 }
 
 export default function ModalAddVisualizer(props: TProps) {
@@ -44,14 +44,14 @@ export default function ModalAddVisualizer(props: TProps) {
 
   const formik = useFormik({
     initialValues: {
-      responsible: null,
+      viewer: null,
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
         await createProjectViewer({
           variables: {
             projectId: project.id,
-            userId: values.responsible?.id,
+            userId: values.viewer?.id,
           },
         })
         enqueueSnackbar('Visualizador creado correctamente.', { variant: 'success' })
@@ -89,14 +89,14 @@ export default function ModalAddVisualizer(props: TProps) {
               <Grid item xs={12} md={12}>
                 <UserPicker
                   users={users}
-                  value={formik.values.responsible}
-                  onChange={(_, value) => formik.setFieldValue('responsible', value)}
-                  label="Responsable"
-                  placeholder="Buscar responsible"
+                  value={formik.values.viewer}
+                  onChange={(_, value) => formik.setFieldValue('viewer', value)}
+                  label="Visualizador"
+                  placeholder="Buscar visualizador"
                   variant="outlined"
                   disabled={loading}
-                  error={Boolean(formik.errors.responsible)}
-                  helperText={formik.errors.responsible}
+                  error={Boolean(formik.errors.viewer)}
+                  helperText={formik.errors.viewer}
                 />
               </Grid>
               <Grid item xs={12}>

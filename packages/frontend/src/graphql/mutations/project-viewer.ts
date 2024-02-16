@@ -7,3 +7,11 @@ export const CREATE_PROJECT_VIEWER = gql`
     }
   }
 `
+
+export const REMOVE_PROJECT_VIEWER = gql`
+  mutation removeProjectVisualizer($projectId: Int!, $userId: Int!) {
+    removeProjectVisualizer(projectId: $projectId, userId: $userId) {
+      id
+    }
+  }
+`

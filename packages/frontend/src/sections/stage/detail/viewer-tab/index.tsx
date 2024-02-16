@@ -1,32 +1,32 @@
-import { IProject, IUser } from '@adp/shared'
+import { IStage, IUser } from '@adp/shared'
 import React, { useMemo, useState } from 'react'
-import { useBoolean } from 'src/hooks/use-boolean'
 import { Card, Box, TextField, Button } from '@mui/material'
+import { useBoolean } from 'src/hooks/use-boolean'
 import { useQuery } from '@apollo/client'
-import { USERS_VIEW_PROJECT } from 'src/graphql/queries'
+import { USERS_VIEW_STAGE } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import UserItem from './contact-item'
 import ModalAddVisualizer from './modal-add-visualizer'
 
 type TProps = {
-  project: IProject
+  stage: IStage
 }
 
-export default function UserTab(props: TProps) {
-  const { project } = props
+export default function ViewerTab(props: TProps) {
+  const { stage } = props
 
   const [search, setSearch] = useState('')
   const modalAddVisualizer = useBoolean()
 
-  const { data, refetch } = useQuery(USERS_VIEW_PROJECT, {
+  const { data, refetch } = useQuery(USERS_VIEW_STAGE, {
     variables: {
-      projectId: project.id,
+      stageId: stage.id,
     },
   })
 
   const users: IUser[] = useMemo(() => {
     if (!data) return []
-    return data.usersViewProject
+    return data.usersViewStage
   }, [data])
 
   const filteredUsers = useMemo(() => {
@@ -82,7 +82,7 @@ export default function UserTab(props: TProps) {
             color: 'text.disabled',
           }}
         >
-          No hay visualizadores asignados al proyecto
+          No hay visualizadores asignados a esta etapa
         </Box>
       )}
       <Box
@@ -95,10 +95,10 @@ export default function UserTab(props: TProps) {
         }}
       >
         {filteredUsers.map((user) => (
-          <UserItem key={user.id} user={user} />
+          <UserItem key={user.id} user={user} stageId={stage.id} refetch={refetch} />
         ))}
       </Box>
-      <ModalAddVisualizer modal={modalAddVisualizer} refetch={refetch} project={project} />
+      <ModalAddVisualizer modal={modalAddVisualizer} refetch={refetch} stage={stage} />
     </React.Fragment>
   )
 }
