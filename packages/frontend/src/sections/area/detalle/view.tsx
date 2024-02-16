@@ -207,9 +207,13 @@ export default function AreaDetailView(props: TProps) {
               </Box>
             )}
             {modalCreate.value && (
-              <ModalCreate modal={modalCreate} areaId={Number(areaId)} refetch={countProjectsByAreaQuery.refetch}/>
+              <ModalCreate
+                modal={modalCreate}
+                areaId={Number(areaId)}
+                refetch={countProjectsByAreaQuery.refetch}
+              />
             )}
-            
+
             {tab === ETab.PROJECTS && hasProjects && (
               <ProjectTab
                 areaId={areaId}

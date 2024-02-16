@@ -78,21 +78,23 @@ export default function UserDetailView(props: TProps) {
     boolean: pAcpBoolean,
   } = useMemo(() => {
     if (user?.averageCompletition && user.averageCompletition.projectAcp !== null) {
-      if (user.averageCompletition.projectAcp <= 0) return {
-        color: 'success.main',
-        text: `${Math.abs(user.averageCompletition.projectAcp * 100).toFixed(1)}%`,
-        boolean: true
-      }
-      if (user.averageCompletition.projectAcp > 0) return {
-        color: 'error.main',
-        text: `${Math.abs(user.averageCompletition.projectAcp * 100).toFixed(1)}%`,
-        boolean: false
-      }
+      if (user.averageCompletition.projectAcp <= 0)
+        return {
+          color: 'success.main',
+          text: `${Math.abs(user.averageCompletition.projectAcp * 100).toFixed(1)}%`,
+          boolean: true,
+        }
+      if (user.averageCompletition.projectAcp > 0)
+        return {
+          color: 'error.main',
+          text: `${Math.abs(user.averageCompletition.projectAcp * 100).toFixed(1)}%`,
+          boolean: false,
+        }
     }
     return {
       color: 'text.primary',
       text: 'No tiene proyectos finalizados',
-      boolean: null
+      boolean: null,
     }
   }, [user])
 
@@ -102,21 +104,23 @@ export default function UserDetailView(props: TProps) {
     boolean: sAcpBoolean,
   } = useMemo(() => {
     if (user?.averageCompletition && user.averageCompletition.stageAcp !== null) {
-      if (user.averageCompletition.stageAcp <= 0) return {
-        color: 'success.main',
-        text: `${Math.abs(user.averageCompletition.stageAcp * 100).toFixed(1)}%`,
-        boolean: true
-      }
-      if (user.averageCompletition.stageAcp > 0) return {
-        color: 'error.main',
-        text: `${Math.abs(user.averageCompletition.stageAcp * 100).toFixed(1)}%`,
-        boolean: false
-      }
+      if (user.averageCompletition.stageAcp <= 0)
+        return {
+          color: 'success.main',
+          text: `${Math.abs(user.averageCompletition.stageAcp * 100).toFixed(1)}%`,
+          boolean: true,
+        }
+      if (user.averageCompletition.stageAcp > 0)
+        return {
+          color: 'error.main',
+          text: `${Math.abs(user.averageCompletition.stageAcp * 100).toFixed(1)}%`,
+          boolean: false,
+        }
     }
     return {
       color: 'text.primary',
       text: 'No tiene etapas finalizadas',
-      boolean: null
+      boolean: null,
     }
   }, [user])
 
@@ -201,26 +205,12 @@ export default function UserDetailView(props: TProps) {
               >
                 Finalizaci&oacute;n de proyectos
               </Typography>
-              {
-                pAcpBoolean !== null && (
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    sx={{ color: 'text.primary' }}
-                  >
-                    {
-                      pAcpBoolean
-                        ? 'Antes de lo estimado'
-                        : 'Después de lo estimado'
-                    }
-                  </Typography>
-                )
-              }
-              <Typography
-                variant="h5"
-                component="div"
-                sx={{ color: pAcpColor }}
-              >
+              {pAcpBoolean !== null && (
+                <Typography variant="caption" component="div" sx={{ color: 'text.primary' }}>
+                  {pAcpBoolean ? 'Antes de lo estimado' : 'Después de lo estimado'}
+                </Typography>
+              )}
+              <Typography variant="h5" component="div" sx={{ color: pAcpColor }}>
                 {pAcpText}
               </Typography>
             </Box>
@@ -232,26 +222,12 @@ export default function UserDetailView(props: TProps) {
               >
                 Finalizaci&oacute;n de etapas
               </Typography>
-              {
-                sAcpBoolean !== null && (
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    sx={{ color: 'text.primary' }}
-                  >
-                    {
-                      sAcpBoolean
-                        ? 'Antes de lo estimado'
-                        : 'Después de lo estimado'
-                    }
-                  </Typography>
-                )
-              }
-              <Typography
-                variant="h5"
-                component="div"
-                sx={{ color: sAcpColor }}
-              >
+              {sAcpBoolean !== null && (
+                <Typography variant="caption" component="div" sx={{ color: 'text.primary' }}>
+                  {sAcpBoolean ? 'Antes de lo estimado' : 'Después de lo estimado'}
+                </Typography>
+              )}
+              <Typography variant="h5" component="div" sx={{ color: sAcpColor }}>
                 {sAcpText}
               </Typography>
             </Box>
@@ -277,7 +253,7 @@ export default function UserDetailView(props: TProps) {
             <AssignmentUserTab />
           </Box>
         </Box>
-      </Box >
-    </Container >
+      </Box>
+    </Container>
   )
 }

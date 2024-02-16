@@ -31,10 +31,7 @@ export default function ModalRemoveViewer(props: TProps) {
         },
       })
       if (errors) throw new Error(errors[0].message)
-      enqueueSnackbar(
-        'El visualizador ha sido eliminado correctamente',
-        { variant: 'success' }
-      )
+      enqueueSnackbar('El visualizador ha sido eliminado correctamente', { variant: 'success' })
       modal.onFalse()
       refetch()
     } catch (error) {
