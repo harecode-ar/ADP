@@ -91,7 +91,12 @@ export default function UserItem(props: TProps) {
         </MenuItem>
       </CustomPopover>
 
-      <ModalRemoveViewer modal={modalRemoveViewer} userId={user.id} stageId={stageId} refetch={refetch} />
+      <ModalRemoveViewer
+        modal={modalRemoveViewer}
+        userId={user.id}
+        stageId={stageId}
+        refetch={refetch}
+      />
     </Stack>
   )
 }

@@ -11,6 +11,8 @@ import {
   Stage,
   Cache,
   UserAverageCompletition,
+  ProjectViewer,
+  StageViewer,
 } from '../../database/models'
 import logger from '../../logger'
 import { sendResetPasswordMail } from '../../services/nodemailer/reset-password'
@@ -129,8 +131,8 @@ export default {
             },
             {
               model: Role,
-              as: 'role'
-            }
+              as: 'role',
+            },
           ],
         })
       } catch (error) {
@@ -222,19 +224,32 @@ export default {
         })
         if (!project) throw new Error('Proyecto no encontrado')
 
-        const [cachedTree] = await Promise.all([
-          Cache.findOne({
-            where: {
-              key: ECacheKey.AREA_TREE,
-            },
-          }),
-        ])
+        // @ts-ignore
+        if (project.area?.responsibleId === user.id) {
+          return true
+        }
+
+        const projectViewer = await ProjectViewer.findOne({
+          where: {
+            projectId,
+            userId: user.id,
+          },
+        })
+
+        if (projectViewer) return true
+
+        const cachedTree = await Cache.findOne({
+          where: {
+            key: ECacheKey.AREA_TREE,
+          },
+        })
+
         if (!cachedTree) throw new Error('Arbol de areas no encontrado')
 
         const tree: IArea[] = JSON.parse(cachedTree.value)
         const ancestors = getAreaAncestors(tree, Number(project.areaId))
 
-        const responsibleIds = await Area.findAll({
+        const areas = await Area.findAll({
           where: {
             id: {
               [Op.in]: ancestors.map((ancestor) => ancestor.id),
@@ -243,11 +258,7 @@ export default {
           attributes: ['responsibleId'],
         })
 
-        // @ts-ignore
-        if (project.area.responsibleId === user.id) {
-          return true
-        }
-        if (responsibleIds.some((responsible) => responsible.responsibleId === user.id)) {
+        if (areas.some((area) => area.responsibleId === user.id)) {
           return true
         }
         return false
@@ -263,7 +274,7 @@ export default {
         if (!user) throw new Error('Usuario no encontrado')
         needPermission([PERMISSION_MAP.STAGE_READ], context)
         const stage = await Stage.findByPk(stageId, {
-          attributes: ['id', 'areaId'],
+          attributes: ['id', 'areaId', 'projectId', 'parentStageId'],
           include: [
             {
               model: Area,
@@ -274,19 +285,51 @@ export default {
         })
         if (!stage) throw new Error('Etapa no encontrada')
 
-        const [cachedTree] = await Promise.all([
-          Cache.findOne({
+        // @ts-ignore
+        if (stage.area.responsibleId === user.id) {
+          return true
+        }
+
+        const stageViewer = await StageViewer.findOne({
+          where: {
+            stageId,
+            userId: user.id,
+          },
+        })
+
+        if (stageViewer) return true
+
+        const projectViewer = await ProjectViewer.findOne({
+          where: {
+            projectId: stage.projectId,
+            userId: user.id,
+          },
+        })
+
+        if (projectViewer) return true
+
+        if (stage.parentStageId) {
+          const parentStageViewer = await StageViewer.findOne({
             where: {
-              key: ECacheKey.AREA_TREE,
+              stageId: stage.parentStageId,
+              userId: user.id,
             },
-          }),
-        ])
+          })
+
+          if (parentStageViewer) return true
+        }
+
+        const cachedTree = await Cache.findOne({
+          where: {
+            key: ECacheKey.AREA_TREE,
+          },
+        })
         if (!cachedTree) throw new Error('Arbol de areas no encontrado')
 
         const tree: IArea[] = JSON.parse(cachedTree.value)
         const ancestors = getAreaAncestors(tree, Number(stage.areaId))
 
-        const responsibleIds = await Area.findAll({
+        const areas = await Area.findAll({
           where: {
             id: {
               [Op.in]: ancestors.map((ancestor) => ancestor.id),
@@ -294,13 +337,11 @@ export default {
           },
           attributes: ['responsibleId'],
         })
-        // @ts-ignore
-        if (stage.area.responsibleId === user.id) {
+
+        if (areas.some((area) => area.responsibleId === user.id)) {
           return true
         }
-        if (responsibleIds.some((responsible) => responsible.responsibleId === user.id)) {
-          return true
-        }
+
         return false
       } catch (error) {
         logger.error(error)

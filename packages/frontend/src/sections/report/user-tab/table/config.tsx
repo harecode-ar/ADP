@@ -50,8 +50,8 @@ export const getColumns = (args: TArgs): TColumn[] => [
         <Typography>
           {row.averageCompletition?.projectAcp !== null
             ? `${calculatePercentage(
-              Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
-            )}%`
+                Number(row.averageCompletition?.projectAcp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -71,10 +71,7 @@ export const getColumns = (args: TArgs): TColumn[] => [
         >
           <Box
             sx={{
-              backgroundColor: getColorFromPacp(
-                row.averageCompletition?.projectPacp || null,
-                0
-              ),
+              backgroundColor: getColorFromPacp(row.averageCompletition?.projectPacp || null, 0),
               width: 15,
               height: 15,
               borderRadius: '50%',
@@ -85,8 +82,8 @@ export const getColumns = (args: TArgs): TColumn[] => [
         <Typography>
           {row.averageCompletition?.projectPacp !== null
             ? `${calculatePercentage(
-              Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
-            )}%`
+                Number(row.averageCompletition?.projectPacp?.toFixed(2)) || 0
+              )}%`
             : '-'}
         </Typography>
       </Box>
@@ -133,10 +130,7 @@ export const getColumns = (args: TArgs): TColumn[] => [
         <Tooltip title={getTooltipFromPacp(row.averageCompletition?.stagePacp || null, 0, 'stage')}>
           <Box
             sx={{
-              backgroundColor: getColorFromPacp(
-                row.averageCompletition?.stagePacp || null,
-                0
-              ),
+              backgroundColor: getColorFromPacp(row.averageCompletition?.stagePacp || null, 0),
               width: 15,
               height: 15,
               borderRadius: '50%',

@@ -213,7 +213,12 @@ const ModalCreate = (props: TProps) => {
                     <Iconify sx={{ mr: 1 }} icon="ic:baseline-cancel" />
                     Cancelar
                   </Button>
-                  <Button variant="contained" color="primary" disabled={formik.isSubmitting} onClick={() => formik.handleSubmit()}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={formik.isSubmitting}
+                    onClick={() => formik.handleSubmit()}
+                  >
                     <Iconify sx={{ mr: 1 }} icon="mingcute:check-fill" />
                     Crear
                   </Button>
