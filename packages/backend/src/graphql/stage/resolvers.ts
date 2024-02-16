@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
+import { ENotificationCategory, PERMISSION_MAP, TASK_STATE } from '@adp/shared'
 import type { IStage, IUser, ITaskState, IArea, IProject, IStageViewer } from '@adp/shared'
 import { Op } from 'sequelize'
 import {
@@ -17,6 +17,7 @@ import { calculateProjectProgress } from '../../database/jobs/project'
 import type { IContext } from '../types'
 import { calculateStageProgress } from '../../database/jobs'
 import { getAcp } from '../../utils/average-completition'
+import { sendNotification } from '../../utils/notification'
 
 export default {
   Stage: {
@@ -1091,6 +1092,21 @@ export default {
           stageId,
           userId,
         })
+
+        const params = {
+          title: `Ahora puedes visualizar la etapa "${stage.name}"`,
+          category: ENotificationCategory.STAGE,
+          userIds: [user.id],
+          email: true,
+        }
+
+        if (stage.parentStageId) {
+          params.title = `Ahora puedes visualizar la sub etapa "${stage.name}"`
+          params.category = ENotificationCategory.SUB_STAGE
+        }
+
+        sendNotification(params)
+
         return stageViewer as unknown as IStageViewer
       } catch (error) {
         logger.error(error)

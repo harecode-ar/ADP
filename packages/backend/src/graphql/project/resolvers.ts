@@ -1,4 +1,4 @@
-import { PERMISSION_MAP, TASK_STATE } from '@adp/shared'
+import { ENotificationCategory, PERMISSION_MAP, TASK_STATE } from '@adp/shared'
 import type {
   IProject,
   ITaskState,
@@ -23,6 +23,7 @@ import logger from '../../logger'
 import { needPermission } from '../../utils/auth'
 import type { IContext } from '../types'
 import { getAcp } from '../../utils/average-completition'
+import { sendNotification } from '../../utils/notification'
 
 export default {
   Project: {
@@ -636,6 +637,14 @@ export default {
           projectId,
           userId,
         })
+
+        sendNotification({
+          title: `Ahora puedes visualizar el proyecto "${project.name}"`,
+          category: ENotificationCategory.PROJECT,
+          userIds: [user.id],
+          email: true,
+        })
+
         return projectViewer as unknown as IProjectViewer
       } catch (error) {
         logger.error(error)
