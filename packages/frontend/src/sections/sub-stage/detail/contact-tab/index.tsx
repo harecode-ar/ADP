@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { Card, Box, TextField, Button, CardContent } from '@mui/material'
 import { useQuery } from '@apollo/client'
 import { useBoolean } from 'src/hooks/use-boolean'
+import { useResponsive } from 'src/hooks/use-responsive'
 import { GET_STAGE_CONTACTS } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import ContactItem from './contact-item'
@@ -19,6 +20,7 @@ export default function ContactTab(props: TProps) {
   const [search, setSearch] = useState('')
   const modalAddContact = useBoolean()
   const modalImportContact = useBoolean()
+  const isMobile = useResponsive('down', 'sm')
 
   const { data, refetch } = useQuery(GET_STAGE_CONTACTS, {
     variables: {
@@ -49,6 +51,8 @@ export default function ContactTab(props: TProps) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            gap: 2,
+            flexDirection: isMobile ? 'column' : 'row',
           }}
         >
           <TextField
@@ -60,7 +64,7 @@ export default function ContactTab(props: TProps) {
             }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ marginRight: '10px' }}
+            fullWidth={isMobile}
           />
           <Box
             sx={{

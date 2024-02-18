@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { useBoolean } from 'src/hooks/use-boolean'
 import { Card, Box, TextField, Button } from '@mui/material'
 import { useQuery } from '@apollo/client'
+import { useResponsive } from 'src/hooks/use-responsive'
 import { USERS_VIEW_PROJECT } from 'src/graphql/queries'
 import Iconify from 'src/components/iconify'
 import UserItem from './user-item'
@@ -17,6 +18,7 @@ export default function UserTab(props: TProps) {
 
   const [search, setSearch] = useState('')
   const modalAddVisualizer = useBoolean()
+  const isMobile = useResponsive('down', 'sm')
 
   const { data, refetch } = useQuery(USERS_VIEW_PROJECT, {
     variables: {
@@ -50,6 +52,8 @@ export default function UserTab(props: TProps) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            gap: 2,
+            flexDirection: isMobile ? 'column' : 'row',
           }}
         >
           <TextField
@@ -61,6 +65,7 @@ export default function UserTab(props: TProps) {
             }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            fullWidth={isMobile}
           />
           <Box
             sx={{
