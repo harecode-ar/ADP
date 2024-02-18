@@ -314,7 +314,7 @@ export default {
             {
               model: Area,
               as: 'area',
-              attributes: ['id'],
+              attributes: ['id', 'responsibleId'],
             },
           ],
         })
@@ -340,7 +340,7 @@ export default {
               {
                 model: Area,
                 as: 'area',
-                attributes: ['id'],
+                attributes: ['id', 'responsibleId'],
               },
             ],
           })
