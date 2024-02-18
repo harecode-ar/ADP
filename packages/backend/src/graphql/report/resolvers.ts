@@ -18,6 +18,9 @@ export default {
       try {
         const { areas, startDate, endDate } = args
 
+        if (areas.length === 0)
+          return { new: 0, onHold: 0, inProgress: 0, completed: 0, cancelled: 0 }
+
         const startDateFilter = startDate ? `AND startDate >= '${startDate}'` : ''
         const endDateFilter = endDate ? `AND endDate <= '${endDate}'` : ''
 
@@ -52,6 +55,9 @@ export default {
     ): Promise<IProjectCountByState> => {
       try {
         const { areas, startDate, endDate } = args
+
+        if (areas.length === 0)
+          return { new: 0, onHold: 0, inProgress: 0, completed: 0, cancelled: 0 }
 
         const startDateFilter = startDate ? `AND startDate >= '${startDate}'` : ''
         const endDateFilter = endDate ? `AND endDate <= '${endDate}'` : ''
