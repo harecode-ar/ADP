@@ -308,6 +308,22 @@ export default {
 
         if (projectViewer) return true
 
+        const project = await Project.findByPk(stage.projectId, {
+          attributes: ['areaId'],
+          include: [
+            {
+              model: Area,
+              as: 'area',
+              attributes: ['id'],
+            },
+          ],
+        })
+
+        // @ts-ignore
+        if (project?.area?.responsibleId === user.id) {
+          return true
+        }
+
         if (stage.parentStageId) {
           const parentStageViewer = await StageViewer.findOne({
             where: {
@@ -317,6 +333,22 @@ export default {
           })
 
           if (parentStageViewer) return true
+
+          const parentStage = await Stage.findByPk(stage.parentStageId, {
+            attributes: ['areaId'],
+            include: [
+              {
+                model: Area,
+                as: 'area',
+                attributes: ['id'],
+              },
+            ],
+          })
+
+          // @ts-ignore
+          if (parentStage?.area?.responsibleId === user.id) {
+            return true
+          }
         }
 
         const cachedTree = await Cache.findOne({
