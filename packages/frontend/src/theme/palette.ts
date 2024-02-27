@@ -33,48 +33,48 @@ export const GREY = {
   900: '#161C24',
 }
 
-export const PRIMARY = {
-  lighter: '#C8FAD6',
-  light: '#5BE49B',
-  main: '#00A76F',
-  dark: '#007867',
-  darker: '#004B50',
+export const PRIMARY = { //2
+  "lighter": "#ddb1ff",
+  "light": "#d897eb",
+  "main": "#a93bfe",
+  "dark": "#7f2bbe",
+  "darker": "#602366",
   contrastText: '#FFFFFF',
 }
 
-export const SECONDARY = {
-  lighter: '#EFD6FF',
-  light: '#C684FF',
-  main: '#8E33FF',
-  dark: '#5119B7',
-  darker: '#27097A',
+export const SECONDARY = { //1
+  "lighter": "#f2a7c8",
+  "light": "#ef7eb4",
+  "main": "#f5478f",
+  "dark": "#bb36b5",
+  "darker": "#82285b",
   contrastText: '#FFFFFF',
 }
 
-export const INFO = {
-  lighter: '#CAFDF5',
-  light: '#61F3F3',
-  main: '#00B8D9',
-  dark: '#006C9C',
-  darker: '#003768',
+export const INFO = { //5
+  "lighter": "#ccfaf8",
+  "light": "#9af4f2",
+  "main": "#01e6e3",
+  "dark": "#01a6a2",
+  "darker": "#004f66",
   contrastText: '#FFFFFF',
 }
 
-export const SUCCESS = {
-  lighter: '#D3FCD2',
-  light: '#77ED8B',
-  main: '#22C55E',
-  dark: '#118D57',
-  darker: '#065E49',
+export const SUCCESS = { //4
+  "lighter": "#9ee8d9",
+  "light": "#9ed3c9",
+  "main": "#0dc7a2",
+  "dark": "#0a947b",
+  "darker": "#0a4c3e",
   contrastText: '#ffffff',
 }
 
-export const WARNING = {
-  lighter: '#FFF5CC',
-  light: '#FFD666',
-  main: '#FFAB00',
-  dark: '#B76E00',
-  darker: '#7A4100',
+export const WARNING = { //3
+  "lighter": "#dcdef7",
+  "light": "#959cec",
+  "main": "#4e58dc",
+  "dark": "#6269ba",
+  "darker": "#252d7e",
   contrastText: GREY[800],
 }
 
