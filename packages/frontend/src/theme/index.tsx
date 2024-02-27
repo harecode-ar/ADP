@@ -66,6 +66,7 @@ export default function ThemeProvider({ children }: Props) {
     [baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme]
   )
 
+  // @ts-ignore
   const theme = createTheme(memoizedValue as ThemeOptions)
 
   theme.components = merge(componentsOverrides(theme), contrastOption.components)

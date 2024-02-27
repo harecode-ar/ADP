@@ -1,7 +1,13 @@
 import React from 'react'
 import Card from '@mui/material/Card'
 import Chart, { useChart } from 'src/components/chart'
-import { useTheme } from '@mui/material/styles'
+import {
+  STATISTICSNEW,
+  STATISTICSONHOLD,
+  STATISTICSPROGRESS,
+  STATISTICSCOMPLETED,
+  STATISTICSCANCELLED,
+} from 'src/theme/palette'
 
 type TProps = {
   news: number
@@ -13,8 +19,6 @@ type TProps = {
 
 export default function ComponentTwo(props: TProps) {
   const { news, onHold, inProgress, completed, cancelled } = props
-
-  const theme = useTheme()
 
   const chartOptions = useChart({
     stroke: {
@@ -39,11 +43,11 @@ export default function ComponentTwo(props: TProps) {
       bar: { horizontal: true },
     },
     colors: [
-      theme.palette.statisticsNew.main,
-      theme.palette.statisticsOnHold.main,
-      theme.palette.statisticsInProgress.main,
-      theme.palette.statisticsCompleted.main,
-      theme.palette.statisticsCancelled.main,
+      STATISTICSNEW.main,
+      STATISTICSONHOLD.main,
+      STATISTICSPROGRESS.main,
+      STATISTICSCOMPLETED.main,
+      STATISTICSCANCELLED.main,
     ],
   })
 

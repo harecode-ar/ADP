@@ -1,7 +1,14 @@
 import React from 'react'
 import { Card, Stack, Divider, Typography, Box, CircularProgress } from '@mui/material'
 import Scrollbar from 'src/components/scrollbar'
-import { alpha, useTheme } from '@mui/material/styles'
+import { alpha } from '@mui/material/styles'
+import {
+  STATISTICSNEW,
+  STATISTICSONHOLD,
+  STATISTICSPROGRESS,
+  STATISTICSCOMPLETED,
+  STATISTICSCANCELLED,
+} from 'src/theme/palette'
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +77,6 @@ type TProps = {
 
 export default function ComponentOne(props: TProps) {
   const { news, onHold, inProgress, completed, cancelled, total } = props
-  const theme = useTheme()
 
   return (
     <Card>
@@ -84,34 +90,34 @@ export default function ComponentOne(props: TProps) {
             amount={news}
             subtitle="Nuevos"
             percent={Math.round((news / (total || 1)) * 100)}
-            color={theme.palette.statisticsNew.main}
+            color={STATISTICSNEW.main}
           />
           <InvoiceAnalytic
             amount={onHold}
             subtitle="En espera"
             percent={Math.round((onHold / (total || 1)) * 100)}
-            color={theme.palette.statisticsOnHold.main}
+            color={STATISTICSONHOLD.main}
           />
 
           <InvoiceAnalytic
             amount={inProgress}
             subtitle="En proceso"
             percent={Math.round((inProgress / (total || 1)) * 100)}
-            color={theme.palette.statisticsInProgress.main}
+            color={STATISTICSPROGRESS.main}
           />
 
           <InvoiceAnalytic
             amount={completed}
             subtitle="Finalizados"
             percent={Math.round((completed / (total || 1)) * 100)}
-            color={theme.palette.statisticsCompleted.main}
+            color={STATISTICSCOMPLETED.main}
           />
 
           <InvoiceAnalytic
             amount={cancelled}
             subtitle="Cancelados"
             percent={Math.round((cancelled / (total || 1)) * 100)}
-            color={theme.palette.statisticsCancelled.main}
+            color={STATISTICSCANCELLED.main}
           />
         </Stack>
       </Scrollbar>

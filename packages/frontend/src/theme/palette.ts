@@ -2,7 +2,19 @@ import { alpha } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
-export type ColorSchema = 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error' | 'statisticsNew' | 'statisticsOnHold' | 'statisticsInProgress' | 'statisticsCompleted' | 'statisticsCancelled' | 'statisticsTotal'
+export type ColorSchema =
+  | 'primary'
+  | 'secondary'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'statisticsNew'
+  | 'statisticsOnHold'
+  | 'statisticsInProgress'
+  | 'statisticsCompleted'
+  | 'statisticsCancelled'
+  | 'statisticsTotal'
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -33,49 +45,54 @@ export const GREY = {
   900: '#161C24',
 }
 
-//TODO: revisar si los colores, primary, secondary, info, success y warning no convendría volverlos al color original (el que tenían antes).
-export const PRIMARY = { //2 //4
-  "lighter": "#ddb0fe",
-  "light": "#d996ea",
-  "main": "#a63cfc",
-  "dark": "#7f2cbe",
-  "darker": "#551d7f",
+// TODO: revisar si los colores, primary, secondary, info, success y warning no convendría volverlos al color original (el que tenían antes).
+export const PRIMARY = {
+  // 2 //4
+  lighter: '#ddb0fe',
+  light: '#d996ea',
+  main: '#a63cfc',
+  dark: '#7f2cbe',
+  darker: '#551d7f',
   contrastText: '#FFFFFF',
 }
 
-export const SECONDARY = { //1 //5
-  "lighter": "#f2a6c6",
-  "light": "#ee7eb4",
-  "main": "#f3478f",
-  "dark": "#ba36b4",
-  "darker": "#83295a",
+export const SECONDARY = {
+  // 1 //5
+  lighter: '#f2a6c6',
+  light: '#ee7eb4',
+  main: '#f3478f',
+  dark: '#ba36b4',
+  darker: '#83295a',
   contrastText: '#FFFFFF',
 }
 
-export const INFO = { //5 //1
-  "lighter": "#ccfaf9",
-  "light": "#9af5f3",
-  "main": "#4cc9fe",
-  "dark": "#178cbe",
-  "darker": "#042d3f",
+export const INFO = {
+  // 5 //1
+  lighter: '#ccfaf9',
+  light: '#9af5f3',
+  main: '#4cc9fe',
+  dark: '#178cbe',
+  darker: '#042d3f',
   contrastText: '#FFFFFF',
 }
 
-export const SUCCESS = { //4 //2
-  "lighter": "#b7f9ec",
-  "light": "#9dd4c9",
-  "main": "#03c7a0",
-  "dark": "#09957a",
-  "darker": "#094c3f",
+export const SUCCESS = {
+  // 4 //2
+  lighter: '#b7f9ec',
+  light: '#9dd4c9',
+  main: '#03c7a0',
+  dark: '#09957a',
+  darker: '#094c3f',
   contrastText: '#ffffff',
 }
 
-export const WARNING = { //3 //3
-  "lighter": "#dcdef8",
-  "light": "#959beb",
-  "main": "#4d57da",
-  "dark": "#6369bb",
-  "darker": "#242e7e",
+export const WARNING = {
+  // 3 //3
+  lighter: '#dcdef8',
+  light: '#959beb',
+  main: '#4d57da',
+  dark: '#6369bb',
+  darker: '#242e7e',
   contrastText: GREY[800],
 }
 
@@ -89,47 +106,47 @@ export const ERROR = {
 }
 
 export const STATISTICSNEW = {
-  "lighter": "#ccfaf9",
-  "light": "#9af5f3",
-  "main": "#4cc9fe",
-  "dark": "#178cbe",
-  "darker": "#042d3f",
+  lighter: '#ccfaf9',
+  light: '#9af5f3',
+  main: '#4cc9fe',
+  dark: '#178cbe',
+  darker: '#042d3f',
   contrastText: '#061B64',
 }
 
 export const STATISTICSONHOLD = {
-  "lighter": "#ddb0fe",
-  "light": "#d996ea",
-  "main": "#a63cfc",
-  "dark": "#7f2cbe",
-  "darker": "#551d7f",
+  lighter: '#ddb0fe',
+  light: '#d996ea',
+  main: '#a63cfc',
+  dark: '#7f2cbe',
+  darker: '#551d7f',
   contrastText: '#FFFFFF',
 }
 
 export const STATISTICSPROGRESS = {
-  "lighter": "#dcdef8",
-  "light": "#959beb",
-  "main": "#4d57da",
-  "dark": "#6369bb",
-  "darker": "#242e7e",
+  lighter: '#dcdef8',
+  light: '#959beb',
+  main: '#4d57da',
+  dark: '#6369bb',
+  darker: '#242e7e',
   contrastText: '#FFFFFF',
 }
 
 export const STATISTICSCOMPLETED = {
-  "lighter": "#b7f9ec",
-  "light": "#9dd4c9",
-  "main": "#03c7a0",
-  "dark": "#09957a",
-  "darker": "#094c3f",
+  lighter: '#b7f9ec',
+  light: '#9dd4c9',
+  main: '#03c7a0',
+  dark: '#09957a',
+  darker: '#094c3f',
   contrastText: '#FFFFFF',
 }
 
 export const STATISTICSCANCELLED = {
-  "lighter": "#f2a6c6",
-  "light": "#ee7eb4",
-  "main": "#f3478f",
-  "dark": "#ba36b4",
-  "darker": "#83295a",
+  lighter: '#f2a6c6',
+  light: '#ee7eb4',
+  main: '#f3478f',
+  dark: '#ba36b4',
+  darker: '#83295a',
   contrastText: '#FFFFFF',
 }
 
@@ -141,8 +158,6 @@ export const STATISTICSTOTAL = {
   darker: '#ddb0fe',
   contrastText: '#551d7f',
 }
-
-
 
 export const COMMON = {
   common: {

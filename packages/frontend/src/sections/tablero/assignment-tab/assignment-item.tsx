@@ -47,7 +47,7 @@ export default function AssignmentItem(props: TProps) {
       return {
         title: 'Proyecto',
         color: 'primary',
-        
+
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,

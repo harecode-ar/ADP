@@ -49,18 +49,24 @@ export const StyledLabel = styled(Box)(({
     ...(ownerState.color !== 'default' && {
       // FILLED
       ...(filledVariant && {
+        // @ts-ignore
         color: theme.palette[ownerState.color].contrastText,
+        // @ts-ignore
         backgroundColor: theme.palette[ownerState.color].main,
       }),
       // OUTLINED
       ...(outlinedVariant && {
         backgroundColor: 'transparent',
+        // @ts-ignore
         color: theme.palette[ownerState.color].main,
+        // @ts-ignore
         border: `2px solid ${theme.palette[ownerState.color].main}`,
       }),
       // SOFT
       ...(softVariant && {
+        // @ts-ignore
         color: theme.palette[ownerState.color][isLight ? 'dark' : 'light'],
+        // @ts-ignore
         backgroundColor: alpha(theme.palette[ownerState.color].main, 0.16),
       }),
     }),
