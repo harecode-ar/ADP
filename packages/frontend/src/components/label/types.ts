@@ -10,6 +10,12 @@ export type LabelColor =
   | 'success'
   | 'warning'
   | 'error'
+  | 'statisticsNew'
+  | 'statisticsOnHold'
+  | 'statisticsInProgress'
+  | 'statisticsCompleted'
+  | 'statisticsCancelled'
+  | 'statisticsTotal'
 
 export type LabelVariant = 'filled' | 'outlined' | 'soft'
 

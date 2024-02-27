@@ -39,11 +39,11 @@ export default function ComponentTwo(props: TProps) {
       bar: { horizontal: true },
     },
     colors: [
-      theme.palette.info.dark,
-      theme.palette.warning.main,
-      theme.palette.warning.main,
-      theme.palette.success.main,
-      theme.palette.text.secondary,
+      theme.palette.statisticsNew.main,
+      theme.palette.statisticsOnHold.main,
+      theme.palette.statisticsInProgress.main,
+      theme.palette.statisticsCompleted.main,
+      theme.palette.statisticsCancelled.main,
     ],
   })
 

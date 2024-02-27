@@ -100,6 +100,7 @@ export default function FilterComponent(props: TProps) {
               getOptionLabel={(option) => option.name}
               renderInput={(params) => <TextField {...params} label="Areas" />}
               noOptionsText="No hay areas"
+              ChipProps={{ color: 'primary' }}
               disableClearable
               value={selectedAreas}
               onChange={handleChange}

@@ -140,6 +140,7 @@ export default function AssignmentTab() {
               noOptionsText="No hay tipos"
               disableClearable
               value={selectedOptions}
+              ChipProps={{ color: 'primary' }}
               onChange={handleChangeOptions}
             />
             <Autocomplete
@@ -150,6 +151,7 @@ export default function AssignmentTab() {
               renderInput={(params) => <TextField {...params} label="Estado" />}
               noOptionsText="No hay estados"
               value={selectedState}
+              ChipProps={{ color: 'primary' }}
               onChange={handleStateChange}
             />
           </Stack>

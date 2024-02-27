@@ -85,34 +85,34 @@ export default function ComponentSix(props: TProps) {
             amount={news}
             subtitle="Nuevos"
             percent={Math.round((news / (total || 1)) * 100)}
-            color={theme.palette.info.main}
+            color={theme.palette.statisticsNew.main}
           />
           <InvoiceAnalytic
             amount={onHold}
             subtitle="En espera"
             percent={Math.round((onHold / (total || 1)) * 100)}
-            color={theme.palette.warning.main}
+            color={theme.palette.statisticsOnHold.main}
           />
 
           <InvoiceAnalytic
             amount={inProgress}
             subtitle="En proceso"
             percent={Math.round((inProgress / (total || 1)) * 100)}
-            color={theme.palette.warning.main}
+            color={theme.palette.statisticsInProgress.main}
           />
 
           <InvoiceAnalytic
             amount={completed}
             subtitle="Finalizados"
             percent={Math.round((completed / (total || 1)) * 100)}
-            color={theme.palette.success.main}
+            color={theme.palette.statisticsCompleted.main}
           />
 
           <InvoiceAnalytic
             amount={cancelled}
             subtitle="Cancelados"
             percent={Math.round((cancelled / (total || 1)) * 100)}
-            color={theme.palette.text.secondary}
+            color={theme.palette.statisticsCancelled.main}
           />
         </Stack>
       </Scrollbar>

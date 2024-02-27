@@ -357,15 +357,15 @@ export default function ProjectDetailView(props: TProps) {
               }}
             >
               <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                <Tab label={ETab.NOTES} value={ETab.NOTES} />
-                <Tab label={ETab.STAGES} value={ETab.STAGES} />
-                <Tab label={ETab.GANTT} value={ETab.GANTT} />
-                <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} />
+                <Tab label={ETab.NOTES} value={ETab.NOTES} sx={{ color: '#a63dfd' }} />
+                <Tab label={ETab.STAGES} value={ETab.STAGES} sx={{ color: '#a63dfd' }} />
+                <Tab label={ETab.GANTT} value={ETab.GANTT} sx={{ color: '#a63dfd' }} />
+                <Tab label={ETab.CONTACTS} value={ETab.CONTACTS} sx={{ color: '#a63dfd' }} />
                 {isProjectAssignedToUserQuery.data &&
                   isProjectAssignedToUserQuery.data.projectAssignedToUser && (
-                    <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} />
+                    <Tab label={ETab.CHECKLIST} value={ETab.CHECKLIST} sx={{ color: '#a63dfd' }} />
                   )}
-                <Tab label={ETab.VIEWERS} value={ETab.VIEWERS} />
+                <Tab label={ETab.VIEWERS} value={ETab.VIEWERS} sx={{ color: '#a63dfd' }} />
               </Tabs>
             </Card>
             {tab === ETab.NOTES && <NotesTab project={project} />}

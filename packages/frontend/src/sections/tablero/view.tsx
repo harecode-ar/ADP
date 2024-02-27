@@ -60,14 +60,14 @@ export default function TableroView() {
             }}
           >
             <Tabs value={tab} onChange={handleTabChange}>
-              <Tab label={ETab.AREAS} value={ETab.AREAS} />
+              <Tab label={ETab.AREAS} value={ETab.AREAS} sx={{ pl: 1, color: '#a63dfd' }}/>
               <Tab
                 label={ETab.ASSIGNMENT}
                 value={ETab.ASSIGNMENT}
-                sx={{ pl: 1 }}
+                sx={{ pl: 1, color: '#a63dfd' }}
                 disabled={isAssignmentTabDisabled}
               />
-              <Tab label={ETab.REPORT} value={ETab.REPORT} sx={{ pl: 1 }} />
+              <Tab label={ETab.REPORT} value={ETab.REPORT} sx={{ pl: 1, color: '#a63dfd' }} />
             </Tabs>
           </Box>
         </Card>
