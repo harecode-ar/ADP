@@ -33,9 +33,11 @@ export default function NavUpgrade() {
     return storageQuery.data.storage
   }, [storageQuery.data])
 
-  const freeSpace = fShortenFileSize(storage?.freeStorageSize ?? 0)
-  const usedSpace = fShortenFileSize(storage?.occupiedStorageSize ?? 0)
-  const totalSpace = fShortenFileSize(storage?.storageSize ?? 0)
+  const freeStorageSize = storage?.freeStorageSize ?? 0
+  const occupiedStorageSize = storage?.occupiedStorageSize ?? 0
+  const storageSize = storage?.storageSize ?? 0
+  const freeSpace = fShortenFileSize(freeStorageSize)
+  const totalSpace = fShortenFileSize(storageSize)
 
   return (
     <Stack
@@ -87,8 +89,8 @@ export default function NavUpgrade() {
         <Box sx={{ width: '80%' }}>
           <LinearProgress
             variant="determinate"
-            value={(Number(usedSpace) / Number(totalSpace)) * 100}
-            color={calculateColorPorcentage(Number(usedSpace), Number(totalSpace))}
+            value={(occupiedStorageSize / storageSize) * 100}
+            color={calculateColorPorcentage(occupiedStorageSize, storageSize)}
             sx={{
               marginBottom: 1,
             }}
