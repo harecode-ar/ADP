@@ -6,5 +6,5 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  redirect(paths.dashboard.project.list)
+  redirect(paths.dashboard.project.new)
 }

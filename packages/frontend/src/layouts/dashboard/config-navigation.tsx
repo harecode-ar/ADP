@@ -100,21 +100,18 @@ export function useNavData(): TNavData[] {
               title: 'Proyecto',
               path: paths.dashboard.project.root,
               icon: ICONS.user,
-              children: [
-                { title: 'Nuevo', path: paths.dashboard.project.new },
-                { title: 'Listado', path: paths.dashboard.project.list },
-              ],
+              children: [{ title: 'Nuevo', path: paths.dashboard.project.new }],
             },
             {
               title: 'Configuración',
               path: paths.dashboard.configuration.root,
               icon: ICONS.user,
             },
-            {
-              title: 'Cron',
-              path: paths.dashboard.cron.root,
-              icon: ICONS.user,
-            },
+            // {
+            //   title: 'Cron',
+            //   path: paths.dashboard.cron.root,
+            //   icon: ICONS.user,
+            // },
           ],
           roles: [ROLE_MAP.ADMIN],
         },

@@ -13,7 +13,6 @@ export interface LogoProps extends BoxProps {
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
   ({ disabledLink = false, sx, ...other }, ref) => {
-
     // OR using local (public folder)
     // -------------------------------------------------------
     // const logo = (

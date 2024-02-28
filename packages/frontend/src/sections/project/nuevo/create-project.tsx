@@ -61,7 +61,7 @@ const CreateProject = () => {
     } as TFormikValues,
     onSubmit: async (values, helpers: FormikHelpers<TFormikValues>) => {
       try {
-        await createProject({
+        const response = await createProject({
           variables: {
             name: values.name,
             description: values.description,
@@ -71,12 +71,14 @@ const CreateProject = () => {
             endDate: values.endDate,
           },
         })
+        if (response.errors) throw new Error(response.errors[0].message)
+        const { id } = response.data.createProject
         enqueueSnackbar('Proyecto creado correctamente.', { variant: 'success' })
-        router.push(paths.dashboard.project.list)
+        router.push(paths.dashboard.project.detail.replace(':id', String(id)))
         helpers.resetForm()
       } catch (error) {
         logger.error(error)
-        enqueueSnackbar('El proyecto no pudo ser creado.', { variant: 'error' })
+        enqueueSnackbar(error.message, { variant: 'error' })
       }
     },
     validationSchema: projectSchema,

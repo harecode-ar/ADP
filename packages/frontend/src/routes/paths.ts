@@ -35,7 +35,6 @@ export const paths = {
     project: {
       root: `${ROOTS.DASHBOARD}/proyecto`,
       new: `${ROOTS.DASHBOARD}/proyecto/nuevo`,
-      list: `${ROOTS.DASHBOARD}/proyecto/listado`,
       detail: `${ROOTS.DASHBOARD}/proyecto/detalle/:id`,
     },
     stage: {
