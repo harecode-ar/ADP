@@ -46,7 +46,8 @@ export default function AssignmentItem(props: TProps) {
     if (project)
       return {
         title: 'Proyecto',
-        color: 'info',
+        color: 'primary',
+
         path: paths.dashboard.project.detail,
         acp: project.acp,
         pacp: project.pacp,
@@ -129,7 +130,7 @@ export default function AssignmentItem(props: TProps) {
             <Tooltip title="Ver detalle">
               <Link component={NextLink} href={assignment.path.replace(':id', String(id))}>
                 <IconButton>
-                  <Iconify icon="mdi:eye" />
+                  <Iconify icon="mdi:eye" color="#a63cfc" />
                 </IconButton>
               </Link>
             </Tooltip>

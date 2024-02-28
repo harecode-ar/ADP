@@ -78,8 +78,8 @@ export default function TableroView() {
             }}
           >
             <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-              <Tab label={ETab.AREAS} value={ETab.AREAS} />
-              <Tab label={ETab.USERS} value={ETab.USERS} />
+              <Tab label={ETab.AREAS} value={ETab.AREAS} sx={{ color: '#a63dfd' }} />
+              <Tab label={ETab.USERS} value={ETab.USERS} sx={{ color: '#a63dfd' }} />
             </Tabs>
           </Box>
         </Card>

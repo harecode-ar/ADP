@@ -1,7 +1,7 @@
 // @mui
 import { alpha } from '@mui/material/styles'
 //
-import { palette as themePalette } from './palette'
+import { palette as themePalette, STATISTICSNEW } from './palette'
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +20,12 @@ interface CustomShadowOptions {
   success: string
   warning: string
   error: string
+  statisticsNew: string
+  statisticsOnHold: string
+  statisticsInProgress: string
+  statisticsCompleted: string
+  statisticsCancelled: string
+  statisticsTotal: string
   //
   card: string
   dialog: string
@@ -64,6 +70,7 @@ function createShadow(color: string) {
     success: `0 8px 16px 0 ${alpha(palette.success.main, 0.24)}`,
     warning: `0 8px 16px 0 ${alpha(palette.warning.main, 0.24)}`,
     error: `0 8px 16px 0 ${alpha(palette.error.main, 0.24)}`,
+    statisticsNew: `0 8px 16px 0 ${alpha(STATISTICSNEW.main, 0.24)}`,
   }
 }
 

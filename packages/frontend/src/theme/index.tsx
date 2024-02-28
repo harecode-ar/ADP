@@ -32,7 +32,7 @@ export default function ThemeProvider({ children }: Props) {
 
   const darkModeOption = darkMode(settings.themeMode)
 
-  const presetsOption = presets(settings.themeColorPresets)
+  const presetsOption = presets('default')
 
   const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
 
@@ -66,6 +66,7 @@ export default function ThemeProvider({ children }: Props) {
     [baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme]
   )
 
+  // @ts-ignore
   const theme = createTheme(memoizedValue as ThemeOptions)
 
   theme.components = merge(componentsOverrides(theme), contrastOption.components)

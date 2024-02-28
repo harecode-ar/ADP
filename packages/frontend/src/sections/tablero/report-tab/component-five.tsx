@@ -34,7 +34,7 @@ function Row(props: TRowProps) {
   return (
     <TableRow>
       <TableCell>
-        <Label color={color} variant="soft">
+        <Label color={color} variant="filled">
           {label}
         </Label>
       </TableCell>
@@ -68,12 +68,12 @@ export default function ComponentFive(props: TProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Row label="Nuevos" value={news} color="info" />
-            <Row label="En espera" value={onHold} color="warning" />
-            <Row label="En proceso" value={inProgress} color="warning" />
-            <Row label="Finalizados" value={completed} color="success" />
-            <Row label="Cancelados" value={cancelled} color="default" />
-            <Row label="Totales" value={total} color="secondary" />
+            <Row label="Nuevos" value={news} color="statisticsNew" />
+            <Row label="En espera" value={onHold} color="statisticsOnHold" />
+            <Row label="En proceso" value={inProgress} color="statisticsInProgress" />
+            <Row label="Finalizados" value={completed} color="statisticsCompleted" />
+            <Row label="Cancelados" value={cancelled} color="statisticsCancelled" />
+            <Row label="Totales" value={total} color="statisticsTotal" />
           </TableBody>
         </Table>
       </TableContainer>

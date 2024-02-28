@@ -14,7 +14,7 @@ import { Box, IconButton, Link, Typography } from '@mui/material'
 import Label from 'src/components/label'
 import { paths } from 'src/routes/paths'
 import Iconify from 'src/components/iconify'
-import getLabelColor from 'src/utils/color-progress'
+import getLabelColor from 'src/utils/color-state-progress'
 import ModalEdit from './modal-edit'
 
 type TRow = Pick<
@@ -79,7 +79,7 @@ const columns: TColumn[] = [
       const result = row.state?.name
       return (
         <Label
-          variant="soft"
+          variant="filled"
           sx={{ ml: 1 }}
           color={getLabelColor(row.state?.id || row.state?.name)}
         >
