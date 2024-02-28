@@ -14,17 +14,15 @@ import { RouterLink } from 'src/routes/components'
 import { useResponsive } from 'src/hooks/use-responsive'
 // theme
 import { bgGradient } from 'src/theme/css'
-// components
-import Logo from 'src/components/logo'
 
 // ----------------------------------------------------------------------
 
 const METHODS = [
   {
     id: 'jwt',
-    label: 'Jwt',
+    label: 'GoDevs',
     path: paths.auth.login,
-    icon: '/assets/icons/auth/ic_jwt.svg',
+    icon: '/assets/icons/auth/godevs.svg',
   },
 ]
 
@@ -40,16 +38,6 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
   const theme = useTheme()
 
   const mdUp = useResponsive('up', 'md')
-
-  const renderLogo = (
-    <Logo
-      sx={{
-        zIndex: 9,
-        position: 'absolute',
-        m: { xs: 2, md: 5 },
-      }}
-    />
-  )
 
   const renderContent = (
     <Stack
@@ -89,7 +77,7 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
       <Box
         component="img"
         alt="auth"
-        src={image || '/assets/illustrations/illustration_dashboard.png'}
+        src={image || '/assets/illustrations/logo-gestor.png'}
         sx={{
           maxWidth: {
             xs: 480,
@@ -108,8 +96,8 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
                 alt={option.label}
                 src={option.icon}
                 sx={{
-                  width: 32,
-                  height: 32,
+                  width: 96,
+                  height: 96,
                   ...(method !== option.id && {
                     filter: 'grayscale(100%)',
                   }),
@@ -130,8 +118,6 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
         minHeight: '100vh',
       }}
     >
-      {renderLogo}
-
       {mdUp && renderSection}
 
       {renderContent}
