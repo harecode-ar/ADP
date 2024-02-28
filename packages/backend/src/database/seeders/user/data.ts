@@ -7,7 +7,7 @@ export default [
     email: 'martin_facciuto@hotmail.com',
     phone: '1234567',
     password: '123',
-    image: '743a9c60-a0ef-4844-88e1-34a748a3d263.jpg',
+    image: 'e128565b-2b83-480a-80ae-110a933b8501.jpg',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -16,7 +16,7 @@ export default [
     email: 'andresgomezic@gmail.com',
     phone: '1234567',
     password: '123',
-    image: '2cf58dcb-746b-4100-a7d9-9948c25c8522.jpg',
+    image: '21c39f90-9cfa-48c7-a79d-cfcb834e98f4.jpg',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -25,7 +25,7 @@ export default [
     email: 'lukitaslezano@gmail.com',
     phone: '1234567',
     password: '123',
-    image: '7b485e18-261e-4be4-83eb-01c3c34d57df.jpg',
+    image: '2acab028-4acf-4c01-8403-baf151d8c238.jpg',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -34,7 +34,7 @@ export default [
     email: 'kasspablo@gmail.com',
     phone: '1234567',
     password: '123',
-    image: '1b8fe509-68dd-49b4-a1d3-653f78a794c4.jpg',
+    image: '7ebf0109-ec9f-40ab-80cc-a6ae9fc19c24.jpg',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -43,7 +43,7 @@ export default [
     email: 'dpalacios@adp.com',
     phone: '1234567',
     password: '123',
-    image: 'bcfafdb8-8df0-4aaa-8722-0cd5dcdb5355.png',
+    image: 'ff864172-5ea2-4e90-adec-4fcb0fa90922.png',
     role: ROLE_MAP.ADMIN,
   },
   {
@@ -52,7 +52,7 @@ export default [
     email: 'elreparaz31@gmail.com',
     phone: '1234567',
     password: '123456789',
-    image: '6d467dba-31c0-4d56-b4e7-b65fdce8b523.png',
+    image: '13a1d1c7-dfca-47cc-9f15-6d02fad3e32e.jpg',
     role: ROLE_MAP.USER,
   },
   {
