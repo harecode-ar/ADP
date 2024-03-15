@@ -136,8 +136,14 @@ export function AuthProvider({ children }: Props) {
     } catch {
       setSession(null)
       localStorage.removeItem(STORAGE_KEY)
-      router.push(paths.auth.login)
-      dispatch({ type: Types.LOGOUT })
+      dispatch({
+        type: Types.INITIAL,
+        payload: {
+          user: null,
+          role: null,
+          permissions: [],
+        },
+      })
     }
   }, [getSession, router, state])
 
