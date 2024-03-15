@@ -7,8 +7,6 @@ import { GET_SESSION } from 'src/graphql/queries'
 import { LOGIN as LOGIN_MUTATION } from 'src/graphql/mutations'
 import { localStorageSetItem, localStorageGetItem } from 'src/utils/storage-available'
 import { wait } from 'src/utils/wait'
-import { paths } from 'src/routes/paths'
-import { useRouter } from 'src/routes/hooks'
 import { isEqual } from 'lodash'
 import { AuthContext } from './auth-context'
 import { setSession } from './utils'
@@ -84,7 +82,6 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [initialized, setInitialized] = useState(false)
-  const router = useRouter()
 
   // INITIAL
   const [getSession] = useLazyQuery(GET_SESSION)
@@ -145,7 +142,7 @@ export function AuthProvider({ children }: Props) {
         },
       })
     }
-  }, [getSession, router, state])
+  }, [getSession, state])
 
   useEffect(() => {
     if (!initialized) {
